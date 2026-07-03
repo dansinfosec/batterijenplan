@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch.js";
 import { fetchPosts, fetchTags } from "../api.js";
 import PostCard from "../components/PostCard.jsx";
@@ -8,6 +9,10 @@ export default function Home() {
   const [tag, setTag] = useState(null);
   const posts = useFetch(() => fetchPosts({ tag }), [tag]);
   const tags = useFetch(fetchTags, []);
+
+  useEffect(() => {
+    document.title = "Batterijenplan — Blog";
+  }, []);
 
   const items = posts.data?.results ?? posts.data ?? [];
 
@@ -25,6 +30,9 @@ export default function Home() {
             Onafhankelijke uitleg over thuisbatterijen, zonnepanelen en
             dynamische energiecontracten. Geen verkooppraat, wel getallen.
           </p>
+          <Link to="/calculator" className="cta-button">
+            Bereken uw thuisbatterij
+          </Link>
           <div className="meta-strip">
             <div className="stat"><b>kWh</b><span className="mono">opslag uitgelegd</span></div>
             <div className="stat"><b>€/dag</b><span className="mono">besparing berekend</span></div>

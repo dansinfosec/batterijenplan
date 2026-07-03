@@ -28,3 +28,17 @@ export async function postComment(slug, data) {
   if (!res.ok) throw new Error(`API ${res.status}`);
   return res.json();
 }
+
+export async function postCalculator(data) {
+  const res = await fetch(`${BASE}/calculator/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  const json = await res.json().catch(() => null);
+  if (!res.ok) {
+    const message = json?.error || "Controleer de ingevulde gegevens.";
+    throw new Error(message);
+  }
+  return json;
+}
