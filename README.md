@@ -8,10 +8,10 @@ Django backend (calculator, blog API, admin) with a React frontend (blog + calcu
 manage.py
 config/            # Django project settings/urls
 calculators/        # Thuisbatterij calculator (Django view + /api/calculator/)
-leads/               # Leads app
+leads/               # Leads app — Lead model + POST /api/leads/
 blog/                # Blog models/admin
-api/                 # DRF endpoints (/api/posts/, /api/calculator/, ...)
-frontend/            # React (Vite) app — blog + /calculator route
+api/                 # DRF endpoints (/api/posts/, /api/calculator/, /api/leads/, ...)
+frontend/            # React (Vite) app — blog + /calculator route + lead capture
 ```
 
 `backend/` contains the original scaffold copy of `blog`/`api` and is unused —
@@ -43,6 +43,15 @@ python manage.py runserver
 
 Django runs on **http://127.0.0.1:8000**.
 
+### Creating migrations
+
+After changing any model (e.g. `leads/models.py`):
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
 ## Frontend setup
 
 Same commands on Windows and Linux/macOS:
@@ -63,6 +72,7 @@ React (Vite) runs on **http://localhost:5173**. In development, Vite proxies
 - `http://127.0.0.1:8000/admin/` — Django admin (create blog posts here, status "published")
 - `http://127.0.0.1:8000/api/posts/` — blog posts (JSON)
 - `http://127.0.0.1:8000/api/calculator/` — calculator (POST, JSON)
+- `http://127.0.0.1:8000/api/leads/` — lead capture (POST, JSON)
 - `http://localhost:5173/` — React blog (articles)
 - `http://localhost:5173/calculator` — React calculator, backed by `/api/calculator/`
 
@@ -76,6 +86,26 @@ React (Vite) runs on **http://localhost:5173**. In development, Vite proxies
 4. Visit `http://localhost:5173/calculator` — fill in the form and submit; it calls
    `POST /api/calculator/` and reuses the exact same calculation logic as the Django
    view (`calculators/services.py`).
+
+## Lead capture
+
+After a calculation on `http://localhost:5173/calculator`, a form appears
+("Gratis batterijadvies ontvangen"). Submitting it sends a `POST /api/leads/`
+with the contact details **plus** the calculator inputs and result as JSON.
+
+To test:
+
+1. Run both servers, do a calculation on `/calculator`.
+2. Fill in naam / telefoonnummer / e-mail, tick the consent checkbox, and
+   submit. You should see "Bedankt, wij nemen binnenkort contact met u op."
+3. Open `http://127.0.0.1:8000/admin/` → **Leads** → **Leads**. The new lead
+   is listed with name, phone, email, postcode, source (`react_calculator`),
+   consent and created-at. Open it to see `calculator_inputs` and
+   `calculator_result` (read-only JSON).
+
+Spam protection: the form contains a hidden `website` honeypot field. If a bot
+fills it, the API responds as if it succeeded but stores nothing. Submissions
+without consent are rejected with a Dutch error message.
 
 ## Design
 

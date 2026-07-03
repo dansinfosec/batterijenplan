@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { postCalculator } from "../api.js";
+import { postCalculator, postLead } from "../api.js";
 
 const CUSTOMER_TYPES = [
   { value: "residential", label: "Particulier" },
@@ -10,6 +10,122 @@ const GOALS = [
   { value: "trading", label: "Handel / Dynamisch energiecontract" },
   { value: "self_consumption", label: "Zelfconsumptie" },
 ];
+
+function LeadForm({ calculatorInputs, calculatorResult }) {
+  const [lead, setLead] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    postcode: "",
+    message: "",
+    consent: false,
+    website: "", // honeypot — mensen laten dit leeg
+  });
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState(null);
+  const [sending, setSending] = useState(false);
+
+  const update = (field) => (e) =>
+    setLead({
+      ...lead,
+      [field]: e.target.type === "checkbox" ? e.target.checked : e.target.value,
+    });
+
+  const submit = async (e) => {
+    e.preventDefault();
+    setError(null);
+    if (!lead.consent) {
+      setError("U moet akkoord gaan voordat wij contact mogen opnemen.");
+      return;
+    }
+    setSending(true);
+    try {
+      await postLead({
+        name: lead.name,
+        phone: lead.phone,
+        email: lead.email,
+        postcode: lead.postcode,
+        message: lead.message,
+        consent: lead.consent,
+        website: lead.website,
+        calculator_inputs: calculatorInputs,
+        calculator_result: calculatorResult,
+        source: "react_calculator",
+      });
+      setSent(true);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSending(false);
+    }
+  };
+
+  if (sent) {
+    return (
+      <div className="lead-form lead-form-success">
+        <h2>Bedankt, wij nemen binnenkort contact met u op.</h2>
+        <p>Uw berekening is meegestuurd, zodat de specialist direct kan meekijken.</p>
+      </div>
+    );
+  }
+
+  return (
+    <form className="lead-form" onSubmit={submit}>
+      <h2>Gratis batterijadvies ontvangen</h2>
+      <p>Laat uw berekening gratis controleren door een specialist.</p>
+
+      <div className="lead-fields">
+        <label>
+          Naam *
+          <input value={lead.name} onChange={update("name")} required autoComplete="name" />
+        </label>
+        <label>
+          Telefoonnummer *
+          <input type="tel" value={lead.phone} onChange={update("phone")} required autoComplete="tel" />
+        </label>
+        <label>
+          E-mail *
+          <input type="email" value={lead.email} onChange={update("email")} required autoComplete="email" />
+        </label>
+        <label>
+          Postcode
+          <input value={lead.postcode} onChange={update("postcode")} autoComplete="postal-code" />
+        </label>
+      </div>
+
+      <label className="lead-message">
+        Bericht
+        <textarea
+          value={lead.message} onChange={update("message")}
+          placeholder="Bijvoorbeeld: ik heb 12 zonnepanelen en een dynamisch contract."
+        />
+      </label>
+
+      {/* Honeypot: verborgen voor mensen, bots vullen hem in */}
+      <label className="lead-website" aria-hidden="true">
+        Website
+        <input
+          type="text" value={lead.website} onChange={update("website")}
+          tabIndex={-1} autoComplete="off"
+        />
+      </label>
+
+      <label className="lead-consent">
+        <input type="checkbox" checked={lead.consent} onChange={update("consent")} required />
+        <span>
+          Ik ga akkoord dat Batterijenplan contact met mij opneemt over mijn
+          berekening.
+        </span>
+      </label>
+
+      {error && <div className="calc-error mono">{error}</div>}
+
+      <button type="submit" disabled={sending}>
+        {sending ? "Bezig…" : "Advies aanvragen"}
+      </button>
+    </form>
+  );
+}
 
 export default function Calculator() {
   const [form, setForm] = useState({
@@ -122,6 +238,18 @@ export default function Calculator() {
             omvormervermogen, energiecontract en toekomstig verbruik.
           </div>
         </div>
+      )}
+
+      {result && (
+        <LeadForm
+          calculatorInputs={{
+            customer_type: form.customer_type,
+            yearly_usage: parseFloat(form.yearly_usage),
+            goal: form.goal,
+            exported_energy: parseFloat(form.exported_energy),
+          }}
+          calculatorResult={result}
+        />
       )}
     </article>
   );

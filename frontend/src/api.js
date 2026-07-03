@@ -29,6 +29,22 @@ export async function postComment(slug, data) {
   return res.json();
 }
 
+export async function postLead(data) {
+  const res = await fetch(`${BASE}/leads/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  const json = await res.json().catch(() => null);
+  if (!res.ok) {
+    // DRF geeft veldfouten als {veld: ["bericht"]}; pak de eerste.
+    const first = json && Object.values(json)[0];
+    const message = Array.isArray(first) ? first[0] : "Versturen mislukt. Controleer de ingevulde gegevens.";
+    throw new Error(message);
+  }
+  return json;
+}
+
 export async function postCalculator(data) {
   const res = await fetch(`${BASE}/calculator/`, {
     method: "POST",

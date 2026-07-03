@@ -17,6 +17,26 @@ function ReadProgress() {
   return <div className="read-progress" style={{ width: `${w}%` }} aria-hidden="true" />;
 }
 
+function CalculatorCta() {
+  return (
+    <aside className="cta-block">
+      <h2>Bereken welke thuisbatterij bij uw woning past</h2>
+      <p>
+        Gebruik de gratis thuisbatterij calculator en ontvang direct een eerste
+        indicatie op basis van uw verbruik en teruglevering.
+      </p>
+      <div className="cta-block-actions">
+        <Link to="/calculator" className="cta-button cta-button-sm">
+          Start de calculator
+        </Link>
+        <Link to="/calculator" className="cta-text-link">
+          Of vraag gratis advies aan
+        </Link>
+      </div>
+    </aside>
+  );
+}
+
 function Comments({ slug }) {
   const { data, loading } = useFetch(() => fetchComments(slug), [slug]);
   const [form, setForm] = useState({ name: "", email: "", body: "" });
@@ -99,8 +119,14 @@ export default function PostDetail() {
         <span>{date}</span>
         <span>{post.reading_minutes} min leestijd</span>
       </div>
+      <p className="cta-inline mono">
+        Niet zeker welke batterijcapaciteit u nodig heeft?{" "}
+        <Link to="/calculator">Bereken het gratis.</Link>
+      </p>
       {post.cover_image && <img className="cover" src={post.cover_image} alt="" />}
+      <CalculatorCta />
       <div className="prose" dangerouslySetInnerHTML={{ __html: post.body_html }} />
+      <CalculatorCta />
       <Comments slug={slug} />
     </article>
   );
