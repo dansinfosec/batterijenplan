@@ -1,0 +1,273 @@
+/* ── Design tokens: "industrieel energielabel" ─────────────────
+   Papierwit + inktzwart + hazard-geel (hoogspanningsborden,
+   batterijlabels) + koper (stroomgeleiders). Mono voor data. */
+:root {
+  --paper:   #F7F6F2;
+  --ink:     #12130F;
+  --ink-60:  #4C4D46;
+  --volt:    #FFD100;   /* hazard-geel */
+  --volt-dk: #8A6D00;   /* leesbaar geel-op-licht */
+  --copper:  #B4592E;
+  --line:    #12130F;
+
+  --font-display: "Archivo", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+
+.container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Focus zichtbaar houden voor toetsenbord */
+:focus-visible { outline: 3px solid var(--volt); outline-offset: 2px; }
+
+/* ── Header ── */
+.site-header {
+  border-bottom: 2px solid var(--line);
+  background: var(--paper);
+  position: sticky; top: 0; z-index: 10;
+}
+.site-header .container {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+}
+.logo {
+  font-family: var(--font-display);
+  font-weight: 900; font-size: 20px; letter-spacing: -0.02em;
+  text-decoration: none; display: flex; align-items: center; gap: 10px;
+}
+.logo .cell {
+  width: 26px; height: 14px; border: 2px solid var(--ink); border-radius: 2px;
+  position: relative; display: inline-block;
+}
+.logo .cell::before {
+  content: ""; position: absolute; inset: 2px; right: 40%;
+  background: var(--volt);
+}
+.logo .cell::after {
+  content: ""; position: absolute; right: -5px; top: 3px;
+  width: 3px; height: 4px; background: var(--ink);
+}
+.nav { display: flex; gap: 24px; }
+.nav a { text-decoration: none; font-weight: 500; font-size: 15px; }
+.nav a:hover { color: var(--volt-dk); }
+
+/* ── Hero ── */
+.hero {
+  border-bottom: 2px solid var(--line);
+  padding: 72px 0;
+  position: relative;
+  overflow: hidden;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: 115%;
+  font-size: clamp(40px, 7vw, 84px);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  max-width: 12ch;
+}
+.hero h1 .accent { color: var(--copper); }
+.hero p.sub {
+  margin-top: 24px; max-width: 52ch; font-size: 18px; color: var(--ink-60);
+}
+.hero .meta-strip {
+  margin-top: 40px; display: flex; gap: 32px; flex-wrap: wrap;
+}
+.hero .meta-strip .stat { border-left: 3px solid var(--volt); padding-left: 12px; }
+.hero .meta-strip .stat b { font-family: var(--font-mono); font-size: 20px; display: block; }
+
+/* Grote decoratieve batterij rechts, laadt op bij page load */
+.hero-battery {
+  position: absolute; right: -30px; top: 50%; transform: translateY(-50%) rotate(-8deg);
+  width: 320px; height: 150px;
+  border: 4px solid var(--ink); border-radius: 12px;
+  background: var(--paper);
+  display: none;
+}
+.hero-battery::after {
+  content: ""; position: absolute; right: -18px; top: 45px;
+  width: 14px; height: 60px; background: var(--ink); border-radius: 0 4px 4px 0;
+}
+.hero-battery .charge {
+  position: absolute; inset: 8px;
+  background: repeating-linear-gradient(
+    -45deg, var(--volt), var(--volt) 14px, #E8BD00 14px, #E8BD00 28px);
+  border-radius: 6px;
+  transform-origin: left;
+  animation: chargeUp 1.8s cubic-bezier(.2,.7,.3,1) forwards;
+}
+@keyframes chargeUp { from { transform: scaleX(0.05); } to { transform: scaleX(0.82); } }
+@media (min-width: 960px) { .hero-battery { display: block; } }
+
+/* ── Tag filter ── */
+.tagbar {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  padding: 28px 0 4px;
+}
+.tagbar button {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em;
+  text-transform: uppercase; cursor: pointer;
+  background: transparent; color: var(--ink);
+  border: 1.5px solid var(--ink); border-radius: 999px;
+  padding: 6px 14px;
+}
+.tagbar button:hover { background: var(--ink); color: var(--paper); }
+.tagbar button.active { background: var(--volt); border-color: var(--ink); }
+
+/* ── Post grid: kaarten als batterijcellen ── */
+.post-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 28px; padding: 36px 0 72px;
+}
+.post-card {
+  border: 2px solid var(--line); border-radius: 10px;
+  background: #FFFFFF;
+  display: flex; flex-direction: column;
+  text-decoration: none;
+  position: relative;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.post-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 6px 6px 0 var(--volt);
+}
+/* batterij-nokje bovenop elke kaart */
+.post-card::before {
+  content: ""; position: absolute; top: -8px; left: 24px;
+  width: 34px; height: 8px; background: var(--ink); border-radius: 4px 4px 0 0;
+}
+.post-card .cover {
+  aspect-ratio: 16/9; object-fit: cover; width: 100%;
+  border-bottom: 2px solid var(--line); border-radius: 8px 8px 0 0;
+  background: var(--paper);
+}
+.post-card .body { padding: 20px 22px 16px; flex: 1; }
+.post-card h2 {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: 21px; line-height: 1.2; letter-spacing: -0.01em;
+}
+.post-card p { margin-top: 10px; font-size: 15px; color: var(--ink-60); }
+.post-card .tags { margin-top: 14px; display: flex; gap: 6px; flex-wrap: wrap; }
+.post-card .tags span {
+  font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+  background: var(--paper); border: 1px solid var(--ink); border-radius: 3px;
+  padding: 2px 7px;
+}
+/* laadbalk onderaan = leestijd-indicator */
+.post-card .gauge {
+  border-top: 2px solid var(--line); padding: 12px 22px 14px;
+  display: flex; align-items: center; gap: 12px;
+}
+.post-card .gauge .track {
+  flex: 1; height: 10px; border: 1.5px solid var(--ink); border-radius: 3px;
+  display: flex; gap: 2px; padding: 1.5px;
+}
+.post-card .gauge .track i {
+  flex: 1; background: var(--volt); border-radius: 1px;
+}
+.post-card .gauge .track i.empty { background: transparent; }
+.post-card .gauge .label { font-family: var(--font-mono); font-size: 11px; white-space: nowrap; }
+
+/* ── Post detail ── */
+.post-detail { padding: 56px 0 96px; max-width: 760px; }
+.post-detail .kicker { color: var(--volt-dk); }
+.post-detail h1 {
+  font-family: var(--font-display); font-weight: 900; font-stretch: 110%;
+  font-size: clamp(34px, 5vw, 56px); line-height: 1.04;
+  letter-spacing: -0.02em; margin: 12px 0 20px;
+}
+.post-detail .byline {
+  display: flex; gap: 20px; flex-wrap: wrap;
+  border-top: 2px solid var(--line); border-bottom: 2px solid var(--line);
+  padding: 12px 0; margin-bottom: 36px;
+}
+.post-detail .cover { border: 2px solid var(--line); border-radius: 10px; margin-bottom: 36px; }
+.prose h2 { font-family: var(--font-display); font-weight: 800; font-size: 26px; margin: 40px 0 12px; }
+.prose h3 { font-family: var(--font-display); font-weight: 700; font-size: 20px; margin: 32px 0 10px; }
+.prose p { margin: 16px 0; }
+.prose ul, .prose ol { margin: 16px 0 16px 24px; }
+.prose blockquote {
+  border-left: 4px solid var(--volt); padding: 4px 0 4px 20px;
+  color: var(--ink-60); margin: 24px 0;
+}
+.prose code {
+  font-family: var(--font-mono); font-size: 0.9em;
+  background: #ECEAE3; padding: 1px 6px; border-radius: 4px;
+}
+.prose pre {
+  background: var(--ink); color: var(--paper);
+  padding: 20px; border-radius: 8px; overflow-x: auto; margin: 24px 0;
+}
+.prose pre code { background: none; color: inherit; padding: 0; }
+.prose table { border-collapse: collapse; margin: 24px 0; width: 100%; }
+.prose th, .prose td { border: 1.5px solid var(--ink); padding: 8px 12px; text-align: left; }
+.prose th { background: var(--volt); font-family: var(--font-mono); font-size: 13px; text-transform: uppercase; }
+
+/* leesvoortgang bovenin, als laadbalk */
+.read-progress {
+  position: fixed; top: 64px; left: 0; height: 5px;
+  background: var(--volt); z-index: 9; width: 0;
+}
+
+/* ── Reacties ── */
+.comments { margin-top: 64px; border-top: 2px solid var(--line); padding-top: 32px; }
+.comments h2 { font-family: var(--font-display); font-weight: 800; font-size: 24px; margin-bottom: 20px; }
+.comment { border: 1.5px solid var(--line); border-radius: 8px; padding: 16px 18px; margin-bottom: 14px; background: #fff; }
+.comment .who { font-family: var(--font-mono); font-size: 12px; margin-bottom: 6px; color: var(--ink-60); }
+.comment-form { margin-top: 28px; display: grid; gap: 12px; }
+.comment-form input, .comment-form textarea {
+  font: inherit; padding: 10px 14px; border: 2px solid var(--line);
+  border-radius: 6px; background: #fff; width: 100%;
+}
+.comment-form textarea { min-height: 120px; resize: vertical; }
+.comment-form button {
+  justify-self: start; cursor: pointer;
+  font-family: var(--font-display); font-weight: 800; font-size: 15px;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  background: var(--volt); color: var(--ink);
+  border: 2px solid var(--ink); border-radius: 6px; padding: 10px 22px;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.comment-form button:hover { transform: translate(1px, 1px); box-shadow: 2px 2px 0 var(--ink); }
+
+/* ── States ── */
+.state { padding: 80px 0; text-align: center; color: var(--ink-60); }
+.state .blink { animation: blink 1.1s steps(2) infinite; }
+@keyframes blink { 50% { opacity: 0.2; } }
+
+/* ── Footer ── */
+.site-footer {
+  border-top: 2px solid var(--line); margin-top: auto;
+  padding: 28px 0; background: var(--ink); color: var(--paper);
+}
+.site-footer .container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.site-footer a { color: var(--volt); }
