@@ -40,4 +40,9 @@ export function trackLeadSubmit(source = "calculator_advies") {
     event_category: "lead",
     event_label: source,
   });
+
+  window.gtag("event", "ads_conversion_signup", {
+    event_category: "lead",
+    event_label: source,
+  });
 }
