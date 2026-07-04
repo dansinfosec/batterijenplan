@@ -1,5 +1,7 @@
 // Dunne fetch-wrapper. In dev proxied Vite /api naar Django (zie vite.config.js).
-const BASE = "/api";
+// In productie wijst VITE_API_BASE_URL naar de gedeployde backend (zonder /api en zonder trailing slash).
+const API_ORIGIN = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/+$/, "");
+const BASE = `${API_ORIGIN}/api`;
 
 async function get(path) {
   const res = await fetch(`${BASE}${path}`);
