@@ -46,11 +46,6 @@ export default function Privacy() {
           hiervoor contact met ons op.
         </p>
 
-        <blockquote>
-          Dit is een concept-privacyverklaring. Laat deze tekst juridisch
-          controleren en vul de contactgegevens aan voordat de site live gaat.
-        </blockquote>
-
         <p>
           <Link to="/calculator">Terug naar de calculator</Link>
         </p>

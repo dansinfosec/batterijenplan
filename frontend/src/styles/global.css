@@ -560,3 +560,260 @@ img { max-width: 100%; display: block; }
   .lead-form h2, .cta-block h2 { font-size: 19px; }
   .comment { padding: 14px 14px; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   FINAL MOBILE GUTTER FIX — Blogpost + Calculator
+   Zorgt dat content nooit tegen de schermranden plakt.
+   ═══════════════════════════════════════════════════════════════ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Algemene containers veilig houden */
+.container {
+  width: 100%;
+  max-width: 1080px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(16px, 4vw, 24px);
+  padding-right: clamp(16px, 4vw, 24px);
+}
+
+/* BLOGPOST DETAIL — belangrijkste fix */
+.post-detail {
+  width: min(760px, calc(100% - 32px));
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 56px;
+  padding-bottom: 96px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Alles binnen blogpost mag nooit buiten scherm duwen */
+.post-detail,
+.post-detail *,
+.prose,
+.prose * {
+  max-width: 100%;
+}
+
+.prose {
+  width: 100%;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.prose img,
+.prose iframe,
+.prose video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Brede tabellen scrollbaar maken */
+.prose table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* CTA blokken in blogpost moeten binnen de mobiele gutter blijven */
+.cta-block {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Calculator ook veilig centreren */
+.calc-form,
+.calc-error,
+.calc-result,
+.lead-form {
+  width: 100%;
+  max-width: 560px;
+}
+
+/* Mobile specifiek */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .post-detail {
+    width: calc(100% - 32px);
+    max-width: none;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 32px;
+    padding-bottom: 64px;
+  }
+
+  .post-detail h1 {
+    font-size: clamp(24px, 8vw, 34px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+  }
+
+  .post-detail .byline {
+    gap: 8px 14px;
+    flex-wrap: wrap;
+  }
+
+  .prose p {
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .prose h2 {
+    font-size: 22px;
+    line-height: 1.2;
+  }
+
+  .prose h3 {
+    font-size: 18px;
+    line-height: 1.25;
+  }
+
+  .cta-block {
+    padding: 18px 16px;
+    margin: 28px 0;
+  }
+
+  .cta-block-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .cta-block-actions .cta-button-sm,
+  .cta-button,
+  .calc-form button,
+  .lead-form button:not(.lead-modal-dismiss) {
+    width: 100%;
+    display: block;
+    text-align: center;
+  }
+
+  .calc-form,
+  .calc-error,
+  .calc-result,
+  .lead-form {
+    max-width: 100%;
+  }
+
+  .calc-result,
+  .lead-form {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+/* Kleine telefoons */
+@media (max-width: 480px) {
+  .post-detail {
+    width: calc(100% - 28px);
+  }
+
+  .post-detail h1 {
+    font-size: clamp(23px, 8.5vw, 30px);
+  }
+
+  .cta-block h2,
+  .lead-form h2 {
+    font-size: 19px;
+  }
+}
+
+/* ── Calculator goal choice cards ── */
+.goal-choice {
+  border: 0;
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+}
+
+.goal-choice legend {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-60);
+  margin-bottom: 2px;
+}
+
+.goal-card {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  padding: 16px 18px;
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.goal-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 var(--volt);
+}
+
+.goal-card.active {
+  background: var(--volt);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.goal-card input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.goal-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.goal-text {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink-60);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.goal-card.active .goal-text {
+  color: var(--ink);
+}
+
+@media (max-width: 640px) {
+  .goal-card {
+    padding: 15px 16px;
+  }
+
+  .goal-title {
+    font-size: 17px;
+  }
+
+  .goal-text {
+    font-size: 14px;
+  }
+}

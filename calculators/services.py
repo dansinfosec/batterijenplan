@@ -35,17 +35,29 @@ def _product_advice_for(average_capacity):
 
 def calculate_battery_advice(customer_type, yearly_usage, goal, exported_energy):
     """Core thuisbatterij-advies berekening, gedeeld door de Django-view en de API."""
+
+    # Particulier: extreem hoog verbruik afvangen
     if customer_type == "residential" and yearly_usage > 50000:
         raise BatteryAdviceError(
             "Voor particulier gebruik lijkt dit verbruik erg hoog. "
             "Kies eventueel zakelijk."
         )
 
-    if customer_type == "business" and yearly_usage > 1000000:
-        raise BatteryAdviceError("Het zakelijke verbruik lijkt te hoog. Controleer de invoer.")
+    # Particulier: max 10.000 kWh opgewekte/teruggeleverde stroom per jaar
+    if customer_type == "residential" and exported_energy > 10000:
+        raise BatteryAdviceError(
+            "Voor particulier gebruik ondersteunen we maximaal 10.000 kWh "
+            "opgewekte/teruggeleverde stroom per jaar. Kies eventueel zakelijk."
+        )
 
-    if exported_energy > yearly_usage * 3:
-        raise BatteryAdviceError("De teruglevering lijkt erg hoog vergeleken met het verbruik.")
+    # Particulier: teruglevering mag niet extreem hoger zijn dan verbruik
+    if customer_type == "residential" and exported_energy > yearly_usage * 3:
+        raise BatteryAdviceError(
+            "De teruglevering lijkt erg hoog vergeleken met het verbruik. "
+            "Controleer de invoer of kies zakelijk."
+        )
+
+    # Zakelijk: geen harde bovengrens op verbruik of teruglevering
 
     daily_export = exported_energy / SOLAR_DAYS_PER_YEAR
     daily_usage = yearly_usage / DAYS_PER_YEAR

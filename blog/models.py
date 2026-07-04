@@ -29,8 +29,10 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
-        # ~200 woorden per minuut
+
+        # Ongeveer 200 woorden per minuut
         self.reading_minutes = max(1, len(self.body.split()) // 200)
+
         super().save(*args, **kwargs)
 
     def __str__(self):
