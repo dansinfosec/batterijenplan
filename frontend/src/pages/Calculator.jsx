@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { postCalculator } from "../api.js";
 import LeadCaptureForm, { useLeadCapture } from "../components/LeadCaptureForm.jsx";
+import { setPageMeta } from "../seo.js";
 
 const CUSTOMER_TYPES = [
   { value: "residential", label: "Particulier" },
@@ -67,7 +68,7 @@ export default function Calculator() {
   const leadState = useLeadCapture();
 
   useEffect(() => {
-    document.title = "Thuisbatterij Calculator — Batterijenplan";
+    setPageMeta({ title: "Thuisbatterij Calculator — Batterijenplan" });
     window.scrollTo(0, 0);
   }, []);
 

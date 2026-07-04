@@ -1,3 +1,5 @@
+from django.utils.html import strip_tags
+from django.utils.text import Truncator
 from rest_framework import serializers
 from blog.models import Post, Comment
 import markdown
@@ -25,12 +27,20 @@ class PostListSerializer(serializers.ModelSerializer):
 
 class PostDetailSerializer(PostListSerializer):
     body_html = serializers.SerializerMethodField()
+    meta_description = serializers.SerializerMethodField()
 
     class Meta(PostListSerializer.Meta):
-        fields = PostListSerializer.Meta.fields + ["body_html", "updated_at"]
+        fields = PostListSerializer.Meta.fields + ["body_html", "meta_description", "updated_at"]
 
     def get_body_html(self, obj):
         return markdown.markdown(obj.body, extensions=["fenced_code", "tables", "nl2br"])
+
+    def get_meta_description(self, obj):
+        # Excerpt is leidend; anders een korte platte-tekst versie van de body.
+        if obj.excerpt and obj.excerpt.strip():
+            return obj.excerpt.strip()
+        text = " ".join(strip_tags(markdown.markdown(obj.body)).split())
+        return Truncator(text).chars(160, truncate="…")
 
 
 class CommentSerializer(serializers.ModelSerializer):

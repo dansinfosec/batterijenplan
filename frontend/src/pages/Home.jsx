@@ -4,6 +4,7 @@ import useFetch from "../hooks/useFetch.js";
 import { fetchPosts, fetchTags } from "../api.js";
 import PostCard from "../components/PostCard.jsx";
 import TagBar from "../components/TagBar.jsx";
+import { setPageMeta } from "../seo.js";
 
 export default function Home() {
   const [tag, setTag] = useState(null);
@@ -11,7 +12,8 @@ export default function Home() {
   const tags = useFetch(fetchTags, []);
 
   useEffect(() => {
-    document.title = "Batterijenplan — Blog";
+    // Defaults uit seo.js: titel + omschrijving van de site.
+    setPageMeta();
   }, []);
 
   const items = posts.data?.results ?? posts.data ?? [];

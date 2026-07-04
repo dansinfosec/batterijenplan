@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch.js";
 import { fetchPost, fetchComments, postComment } from "../api.js";
+import { setPageMeta, DEFAULT_DESCRIPTION } from "../seo.js";
 
 function ReadProgress() {
   const [w, setW] = useState(0);
@@ -166,7 +167,11 @@ export default function PostDetail() {
 
   useEffect(() => {
     if (post) {
-      document.title = `${post.title} — Batterijenplan`;
+      setPageMeta({
+        title: `${post.title} — Batterijenplan`,
+        description: post.meta_description || post.excerpt || DEFAULT_DESCRIPTION,
+        type: "article",
+      });
     }
 
     window.scrollTo(0, 0);
