@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { setPageMeta } from "../seo.js";
+import { setPageMeta, setJsonLd, ORGANIZATION_SCHEMA } from "../seo.js";
 
 export default function Privacy() {
   useEffect(() => {
@@ -8,7 +8,9 @@ export default function Privacy() {
       title: "Privacyverklaring — Batterijenplan",
       description:
         "Lees hoe Batterijenplan.nl omgaat met persoonsgegevens, contactaanvragen en calculatorgegevens.",
+      path: "/privacy",
     });
+    setJsonLd([ORGANIZATION_SCHEMA]);
     window.scrollTo(0, 0);
   }, []);
 

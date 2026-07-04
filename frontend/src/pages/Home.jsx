@@ -4,7 +4,7 @@ import useFetch from "../hooks/useFetch.js";
 import { fetchPosts, fetchTags } from "../api.js";
 import PostCard from "../components/PostCard.jsx";
 import TagBar from "../components/TagBar.jsx";
-import { setPageMeta } from "../seo.js";
+import { setPageMeta, setJsonLd, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "../seo.js";
 
 export default function Home() {
   const [tag, setTag] = useState(null);
@@ -13,7 +13,8 @@ export default function Home() {
 
   useEffect(() => {
     // Defaults uit seo.js: titel + omschrijving van de site.
-    setPageMeta();
+    setPageMeta({ path: "/" });
+    setJsonLd([ORGANIZATION_SCHEMA, WEBSITE_SCHEMA]);
   }, []);
 
   const items = posts.data?.results ?? posts.data ?? [];
