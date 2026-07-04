@@ -32,3 +32,12 @@ export function trackPageView(path) {
     page_title: document.title,
   });
 }
+
+export function trackLeadSubmit(source = "calculator_advies") {
+  if (!GA_MEASUREMENT_ID || !window.gtag) return;
+
+  window.gtag("event", "generate_lead", {
+    event_category: "lead",
+    event_label: source,
+  });
+}

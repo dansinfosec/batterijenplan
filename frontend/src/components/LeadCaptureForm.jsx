@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { postLead } from "../api.js";
+import { trackLeadSubmit } from "../analytics.js";
 
 const EMPTY_LEAD = {
   name: "",
@@ -47,6 +48,7 @@ export function useLeadCapture() {
         source: "react_calculator",
       });
       setSent(true);
+      trackLeadSubmit("calculator_advies");
       return true;
     } catch (err) {
       setError(err.message);
