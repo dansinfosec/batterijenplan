@@ -89,16 +89,26 @@ React (Vite) runs on **http://localhost:5173**. In development, Vite proxies
 
 ## Lead capture
 
-After a calculation on `http://localhost:5173/calculator`, a form appears
-("Gratis batterijadvies ontvangen"). Submitting it sends a `POST /api/leads/`
-with the contact details **plus** the calculator inputs and result as JSON.
+After a calculation on `http://localhost:5173/calculator`, an inline form
+appears under the result ("Gratis batterijadvies ontvangen"). Four seconds
+after the result, a modal popup opens ("Laat uw berekening gratis
+controleren") with the same form — the modal and inline form share state, so
+anything typed in one shows in the other. The modal shows at most once per
+calculation (closing it keeps it closed until a new calculation) and never
+again after a lead was submitted. Submitting either form sends a
+`POST /api/leads/` with the contact details **plus** the calculator inputs
+and result as JSON. The consent text links to a placeholder privacy page at
+`/privacy`.
 
 To test:
 
 1. Run both servers, do a calculation on `/calculator`.
-2. Fill in naam / telefoonnummer / e-mail, tick the consent checkbox, and
+2. Wait 4 seconds — the modal appears. Close it with the ×,
+   "Ik bekijk eerst mijn resultaat", the backdrop, or Escape; the inline
+   form stays available under the result.
+3. Fill in naam / telefoonnummer / e-mail, tick the consent checkbox, and
    submit. You should see "Bedankt, wij nemen binnenkort contact met u op."
-3. Open `http://127.0.0.1:8000/admin/` → **Leads** → **Leads**. The new lead
+4. Open `http://127.0.0.1:8000/admin/` → **Leads** → **Leads**. The new lead
    is listed with name, phone, email, postcode, source (`react_calculator`),
    consent and created-at. Open it to see `calculator_inputs` and
    `calculator_result` (read-only JSON).

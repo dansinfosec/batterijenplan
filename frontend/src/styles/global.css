@@ -368,8 +368,54 @@ img { max-width: 100%; display: block; }
 .lead-form .calc-error { margin-top: 16px; }
 .lead-form-success h2 { color: var(--volt-dk); }
 .lead-form-success p { margin: 0; color: var(--ink-60); }
+.lead-privacy {
+  margin: 12px 0 0 !important; font-size: 13px; color: var(--ink-60) !important;
+}
+.lead-privacy a { color: var(--volt-dk); }
 @media (max-width: 560px) {
   .lead-fields { grid-template-columns: 1fr; }
+}
+
+/* ── Lead modal ── */
+.lead-modal-backdrop {
+  position: fixed; inset: 0; z-index: 60;
+  background: rgba(18, 19, 15, 0.55);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px; overflow-y: auto;
+}
+.lead-modal {
+  position: relative; width: 100%; max-width: 640px;
+  max-height: calc(100vh - 48px); overflow-y: auto;
+  animation: lead-modal-in 0.18s ease-out;
+}
+@keyframes lead-modal-in {
+  from { transform: translateY(14px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.lead-modal .lead-form {
+  margin-top: 0; max-width: none;
+  border-width: 4px; box-shadow: 8px 8px 0 var(--volt);
+}
+.lead-modal-close {
+  position: absolute; top: 10px; right: 10px; z-index: 1;
+  width: 36px; height: 36px; cursor: pointer;
+  font-family: var(--font-display); font-weight: 900; font-size: 20px; line-height: 1;
+  background: var(--ink); color: var(--paper);
+  border: 2px solid var(--ink); border-radius: 6px;
+}
+.lead-modal-close:hover { background: var(--volt); color: var(--ink); }
+.lead-modal-dismiss {
+  display: block; margin-top: 14px !important; padding: 0 !important;
+  background: none !important; border: none !important; box-shadow: none !important;
+  font-family: var(--font-body) !important; font-weight: 400 !important;
+  font-size: 14px !important; text-transform: none !important; letter-spacing: normal !important;
+  color: var(--ink-60) !important; text-decoration: underline; cursor: pointer;
+}
+.lead-modal-dismiss:hover { color: var(--ink) !important; transform: none !important; }
+@media (max-width: 560px) {
+  .lead-modal-backdrop { padding: 12px; align-items: flex-end; }
+  .lead-modal { max-height: calc(100vh - 24px); }
+  .lead-modal .lead-form { padding: 22px 18px; box-shadow: 5px 5px 0 var(--volt); }
 }
 
 /* ── CTA blocks (blog) ── */

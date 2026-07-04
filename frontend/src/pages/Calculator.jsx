@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { postCalculator, postLead } from "../api.js";
+import { postCalculator } from "../api.js";
+import LeadCaptureForm, { useLeadCapture } from "../components/LeadCaptureForm.jsx";
 
 const CUSTOMER_TYPES = [
   { value: "residential", label: "Particulier" },
@@ -11,119 +12,39 @@ const GOALS = [
   { value: "self_consumption", label: "Zelfconsumptie" },
 ];
 
-function LeadForm({ calculatorInputs, calculatorResult }) {
-  const [lead, setLead] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    postcode: "",
-    message: "",
-    consent: false,
-    website: "", // honeypot — mensen laten dit leeg
-  });
-  const [sent, setSent] = useState(false);
-  const [error, setError] = useState(null);
-  const [sending, setSending] = useState(false);
+const MODAL_DELAY_MS = 4000;
 
-  const update = (field) => (e) =>
-    setLead({
-      ...lead,
-      [field]: e.target.type === "checkbox" ? e.target.checked : e.target.value,
-    });
+function LeadModal({ open, onClose, children }) {
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [open, onClose]);
 
-  const submit = async (e) => {
-    e.preventDefault();
-    setError(null);
-    if (!lead.consent) {
-      setError("U moet akkoord gaan voordat wij contact mogen opnemen.");
-      return;
-    }
-    setSending(true);
-    try {
-      await postLead({
-        name: lead.name,
-        phone: lead.phone,
-        email: lead.email,
-        postcode: lead.postcode,
-        message: lead.message,
-        consent: lead.consent,
-        website: lead.website,
-        calculator_inputs: calculatorInputs,
-        calculator_result: calculatorResult,
-        source: "react_calculator",
-      });
-      setSent(true);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setSending(false);
-    }
-  };
-
-  if (sent) {
-    return (
-      <div className="lead-form lead-form-success">
-        <h2>Bedankt, wij nemen binnenkort contact met u op.</h2>
-        <p>Uw berekening is meegestuurd, zodat de specialist direct kan meekijken.</p>
-      </div>
-    );
-  }
+  if (!open) return null;
 
   return (
-    <form className="lead-form" onSubmit={submit}>
-      <h2>Gratis batterijadvies ontvangen</h2>
-      <p>Laat uw berekening gratis controleren door een specialist.</p>
-
-      <div className="lead-fields">
-        <label>
-          Naam *
-          <input value={lead.name} onChange={update("name")} required autoComplete="name" />
-        </label>
-        <label>
-          Telefoonnummer *
-          <input type="tel" value={lead.phone} onChange={update("phone")} required autoComplete="tel" />
-        </label>
-        <label>
-          E-mail *
-          <input type="email" value={lead.email} onChange={update("email")} required autoComplete="email" />
-        </label>
-        <label>
-          Postcode
-          <input value={lead.postcode} onChange={update("postcode")} autoComplete="postal-code" />
-        </label>
+    <div className="lead-modal-backdrop" onClick={onClose}>
+      <div
+        className="lead-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Gratis batterijadvies aanvragen"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button className="lead-modal-close" onClick={onClose} aria-label="Sluiten">
+          ×
+        </button>
+        {children}
       </div>
-
-      <label className="lead-message">
-        Bericht
-        <textarea
-          value={lead.message} onChange={update("message")}
-          placeholder="Bijvoorbeeld: ik heb 12 zonnepanelen en een dynamisch contract."
-        />
-      </label>
-
-      {/* Honeypot: verborgen voor mensen, bots vullen hem in */}
-      <label className="lead-website" aria-hidden="true">
-        Website
-        <input
-          type="text" value={lead.website} onChange={update("website")}
-          tabIndex={-1} autoComplete="off"
-        />
-      </label>
-
-      <label className="lead-consent">
-        <input type="checkbox" checked={lead.consent} onChange={update("consent")} required />
-        <span>
-          Ik ga akkoord dat Batterijenplan contact met mij opneemt over mijn
-          berekening.
-        </span>
-      </label>
-
-      {error && <div className="calc-error mono">{error}</div>}
-
-      <button type="submit" disabled={sending}>
-        {sending ? "Bezig…" : "Advies aanvragen"}
-      </button>
-    </form>
+    </div>
   );
 }
 
@@ -135,13 +56,26 @@ export default function Calculator() {
     exported_energy: "",
   });
   const [result, setResult] = useState(null);
+  // Invoer zoals die was op het moment van berekenen (form kan daarna wijzigen).
+  const [lastInputs, setLastInputs] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const leadState = useLeadCapture();
 
   useEffect(() => {
     document.title = "Thuisbatterij Calculator — Batterijenplan";
     window.scrollTo(0, 0);
   }, []);
+
+  // Na elk nieuw resultaat: popup na 4 s, maar maximaal één keer per resultaat
+  // en niet meer zodra er al een aanvraag is verstuurd.
+  useEffect(() => {
+    if (!result || leadState.sent) return;
+    const timer = setTimeout(() => setModalOpen(true), MODAL_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, [result, leadState.sent]);
 
   const update = (field) => (e) => setForm({ ...form, [field]: e.target.value });
 
@@ -150,13 +84,16 @@ export default function Calculator() {
     setLoading(true);
     setError(null);
     setResult(null);
+    setModalOpen(false);
+    const payload = {
+      customer_type: form.customer_type,
+      yearly_usage: parseFloat(form.yearly_usage),
+      goal: form.goal,
+      exported_energy: parseFloat(form.exported_energy),
+    };
     try {
-      const data = await postCalculator({
-        customer_type: form.customer_type,
-        yearly_usage: parseFloat(form.yearly_usage),
-        goal: form.goal,
-        exported_energy: parseFloat(form.exported_energy),
-      });
+      const data = await postCalculator(payload);
+      setLastInputs(payload);
       setResult(data);
     } catch (err) {
       setError(err.message);
@@ -164,6 +101,8 @@ export default function Calculator() {
       setLoading(false);
     }
   };
+
+  const closeModal = () => setModalOpen(false);
 
   return (
     <article className="container post-detail">
@@ -241,16 +180,23 @@ export default function Calculator() {
       )}
 
       {result && (
-        <LeadForm
-          calculatorInputs={{
-            customer_type: form.customer_type,
-            yearly_usage: parseFloat(form.yearly_usage),
-            goal: form.goal,
-            exported_energy: parseFloat(form.exported_energy),
-          }}
+        <LeadCaptureForm
+          state={leadState}
+          calculatorInputs={lastInputs}
           calculatorResult={result}
+          variant="inline"
         />
       )}
+
+      <LeadModal open={modalOpen} onClose={closeModal}>
+        <LeadCaptureForm
+          state={leadState}
+          calculatorInputs={lastInputs}
+          calculatorResult={result}
+          variant="modal"
+          onDismiss={closeModal}
+        />
+      </LeadModal>
     </article>
   );
 }

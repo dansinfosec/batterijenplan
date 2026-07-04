@@ -1,0 +1,60 @@
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
+
+export default function Privacy() {
+  useEffect(() => {
+    document.title = "Privacyverklaring — Batterijenplan";
+    window.scrollTo(0, 0);
+  }, []);
+
+  return (
+    <article className="container post-detail">
+      <p className="mono kicker">Privacy · AVG</p>
+      <h1>
+        Privacy<span className="accent">verklaring</span>
+      </h1>
+
+      <div className="prose">
+        <p>
+          Batterijenplan verwerkt persoonsgegevens die u zelf invult in de
+          thuisbatterij-calculator en het adviesformulier: naam,
+          telefoonnummer, e-mailadres, en optioneel postcode en bericht.
+          Daarnaast bewaren wij de door u ingevulde berekening (verbruik,
+          teruglevering en het berekende advies), zodat een specialist uw
+          situatie kan beoordelen.
+        </p>
+
+        <h2>Waarvoor gebruiken wij uw gegevens?</h2>
+        <p>
+          Uitsluitend om contact met u op te nemen over uw
+          thuisbatterij-berekening, door Batterijenplan en/of Groene Vrienden.
+          Wij versturen geen nieuwsbrieven en verkopen uw gegevens niet aan
+          derden. U geeft hiervoor expliciet toestemming via het
+          aanvinkvakje bij het formulier.
+        </p>
+
+        <h2>Bewaartermijn</h2>
+        <p>
+          Wij bewaren uw aanvraag zolang dat nodig is om uw adviesaanvraag af
+          te handelen. Daarna worden uw gegevens verwijderd.
+        </p>
+
+        <h2>Uw rechten</h2>
+        <p>
+          U heeft het recht om uw gegevens in te zien, te laten corrigeren of
+          te laten verwijderen, en om uw toestemming in te trekken. Neem
+          hiervoor contact met ons op.
+        </p>
+
+        <blockquote>
+          Dit is een concept-privacyverklaring. Laat deze tekst juridisch
+          controleren en vul de contactgegevens aan voordat de site live gaat.
+        </blockquote>
+
+        <p>
+          <Link to="/calculator">Terug naar de calculator</Link>
+        </p>
+      </div>
+    </article>
+  );
+}
