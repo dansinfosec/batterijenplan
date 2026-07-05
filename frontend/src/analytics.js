@@ -1,7 +1,7 @@
 const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
 
 let initialized = false;
-let initScheduled = false;
+let scheduled = false;
 
 // Events die binnenkomen vóórdat gtag klaar is; worden na init doorgestuurd.
 const pendingEvents = [];
@@ -12,7 +12,8 @@ function flushPendingEvents() {
   }
 }
 
-// Laadt gtag.js en zet de config. Idempotent.
+// Laadt gtag.js en zet de config. Idempotent: het script wordt maximaal
+// één keer ingevoegd.
 function setupGtag() {
   if (!GA_MEASUREMENT_ID || initialized) return;
 
@@ -35,17 +36,45 @@ function setupGtag() {
   flushPendingEvents();
 }
 
-// Perf: gtag.js pas laden als de browser idle is (of na een korte fallback-
-// timeout), zodat het script niet concurreert met de LCP op mobiel.
-// Events die eerder binnenkomen worden gequeued en gaan niet verloren.
-export function initAnalytics() {
-  if (!GA_MEASUREMENT_ID || initialized || initScheduled) return;
-  initScheduled = true;
+// Perf: gtag.js (~175 KB) mag niet meedoen in het FCP/LCP-venster.
+// We laden pas bij de eerste échte gebruikersinteractie, of anders
+// 5 seconden na window load. Geen requestIdleCallback meer: die vuurde
+// vaak al tijdens de initial load.
+const INTERACTION_EVENTS = ["pointerdown", "keydown", "touchstart", "scroll"];
 
-  if ("requestIdleCallback" in window) {
-    window.requestIdleCallback(setupGtag, { timeout: 3000 });
+export function initAnalytics() {
+  if (!GA_MEASUREMENT_ID || initialized || scheduled) return;
+  scheduled = true;
+
+  let loadTimer = null;
+
+  const cleanup = () => {
+    for (const evt of INTERACTION_EVENTS) {
+      window.removeEventListener(evt, start);
+    }
+    window.removeEventListener("load", onLoad);
+    if (loadTimer !== null) clearTimeout(loadTimer);
+  };
+
+  const start = () => {
+    cleanup();
+    setupGtag();
+  };
+
+  const onLoad = () => {
+    loadTimer = setTimeout(start, 5000);
+  };
+
+  // a) eerste gebruikersinteractie…
+  for (const evt of INTERACTION_EVENTS) {
+    window.addEventListener(evt, start, { passive: true });
+  }
+
+  // b) …of window load + 5s, wat het eerst komt.
+  if (document.readyState === "complete") {
+    onLoad();
   } else {
-    setTimeout(setupGtag, 1500);
+    window.addEventListener("load", onLoad, { once: true });
   }
 }
 
@@ -70,9 +99,9 @@ export function trackPageView(path) {
 export function trackLeadSubmit(source = "calculator_advies") {
   if (!GA_MEASUREMENT_ID) return;
 
-  // Conversies mogen niet wachten op de idle-init: eerst gtag opzetten,
-  // daarna direct versturen. De gtag-stub queuet in de dataLayer totdat
-  // gtag.js geladen is, dus de events komen gegarandeerd aan.
+  // Conversies mogen nooit wachten op het uitgestelde laden: eerst gtag
+  // opzetten, daarna direct versturen. De gtag-stub queuet in de dataLayer
+  // totdat gtag.js geladen is, dus de events komen gegarandeerd aan.
   if (!initialized) {
     setupGtag();
   }
