@@ -20,19 +20,15 @@
     <!-- Perf: verbinding met de API alvast opwarmen; de blogposts/tags worden
          direct na het laden van de app opgehaald. -->
     <link rel="preconnect" href="https://api.batterijenplan.nl" crossorigin />
-    <!-- Perf: Archivo alleen in de gebruikte assen (wght 700-900, wdth 100-115)
-         i.p.v. het volledige variabele bestand; scheelt fors in fontgrootte.
-         media="print" + onload maakt de fonts-CSS niet-render-blocking:
-         eerste paint wacht niet op Google Fonts (display=swap blijft actief). -->
+    <!-- Perf: display=optional voorkomt late font-swaps en layout shift op
+         mobiel: is het font niet binnen ~100ms beschikbaar, dan blijft de
+         (vergelijkbare) fallback staan en rendert het webfont pas bij het
+         volgende bezoek uit cache. Archivo alleen in de gebruikte assen
+         (wght 700-900, wdth 100-115). -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..115,700..900&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..115,700..900&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=optional"
       rel="stylesheet"
-      media="print"
-      onload="this.media='all'"
     />
-    <noscript>
-      <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..115,700..900&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
-    </noscript>
     <link rel="icon" href="/favicon.ico" />
   </head>
   <body>

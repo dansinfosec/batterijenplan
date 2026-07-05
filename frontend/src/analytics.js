@@ -1,8 +1,19 @@
 const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
 
 let initialized = false;
+let initScheduled = false;
 
-export function initAnalytics() {
+// Events die binnenkomen vóórdat gtag klaar is; worden na init doorgestuurd.
+const pendingEvents = [];
+
+function flushPendingEvents() {
+  for (const [name, params] of pendingEvents.splice(0)) {
+    window.gtag("event", name, params);
+  }
+}
+
+// Laadt gtag.js en zet de config. Idempotent.
+function setupGtag() {
   if (!GA_MEASUREMENT_ID || initialized) return;
 
   const script = document.createElement("script");
@@ -21,20 +32,50 @@ export function initAnalytics() {
   });
 
   initialized = true;
+  flushPendingEvents();
+}
+
+// Perf: gtag.js pas laden als de browser idle is (of na een korte fallback-
+// timeout), zodat het script niet concurreert met de LCP op mobiel.
+// Events die eerder binnenkomen worden gequeued en gaan niet verloren.
+export function initAnalytics() {
+  if (!GA_MEASUREMENT_ID || initialized || initScheduled) return;
+  initScheduled = true;
+
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(setupGtag, { timeout: 3000 });
+  } else {
+    setTimeout(setupGtag, 1500);
+  }
 }
 
 export function trackPageView(path) {
-  if (!GA_MEASUREMENT_ID || !window.gtag) return;
+  if (!GA_MEASUREMENT_ID) return;
 
-  window.gtag("event", "page_view", {
+  // Parameters nú vastleggen (titel/URL kloppen op dit moment), later versturen.
+  const params = {
     page_path: path,
     page_location: window.location.href,
     page_title: document.title,
-  });
+  };
+
+  if (!initialized) {
+    pendingEvents.push(["page_view", params]);
+    return;
+  }
+
+  window.gtag("event", "page_view", params);
 }
 
 export function trackLeadSubmit(source = "calculator_advies") {
-  if (!GA_MEASUREMENT_ID || !window.gtag) return;
+  if (!GA_MEASUREMENT_ID) return;
+
+  // Conversies mogen niet wachten op de idle-init: eerst gtag opzetten,
+  // daarna direct versturen. De gtag-stub queuet in de dataLayer totdat
+  // gtag.js geladen is, dus de events komen gegarandeerd aan.
+  if (!initialized) {
+    setupGtag();
+  }
 
   window.gtag("event", "generate_lead", {
     event_category: "lead",

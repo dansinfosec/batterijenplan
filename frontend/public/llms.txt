@@ -1,0 +1,20 @@
+# Batterijenplan.nl
+
+> Onafhankelijke Nederlandse kennisbank over thuisbatterijen, batterijopslag en
+> dynamische energiecontracten, met een gratis thuisbatterij calculator die op
+> basis van verbruik, teruglevering en energiedoel een eerste indicatie geeft.
+
+Batterijenplan.nl helpt Nederlandse huishoudens en kleine bedrijven bepalen
+welke thuisbatterij past bij hun situatie. Servicegebied: Nederland.
+
+## Belangrijke links
+
+- [Thuisbatterij Calculator](https://batterijenplan.nl/calculator): bereken gratis welke batterijcapaciteit past bij uw verbruik, zonnepanelen en energiedoel
+- [Blog / kennisbank](https://batterijenplan.nl/): artikelen over thuisbatterijen, terugverdientijd, EMS-systemen en batterijopslag
+- [Contact](https://batterijenplan.nl/contact): contactgegevens en WhatsApp
+- [Privacyverklaring](https://batterijenplan.nl/privacy): hoe wij met persoonsgegevens omgaan
+
+## Overig
+
+- [Sitemap](https://batterijenplan.nl/sitemap.xml): alle pagina's en blogposts
+- E-mail: info@batterijenplan.nl

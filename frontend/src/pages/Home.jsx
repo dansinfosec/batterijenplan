@@ -8,8 +8,22 @@ import { setPageMeta, setJsonLd, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "../
 
 export default function Home() {
   const [tag, setTag] = useState(null);
-  const posts = useFetch(() => fetchPosts({ tag }), [tag]);
-  const tags = useFetch(fetchTags, []);
+
+  // Perf: de bloglijst/tags staan onder de vouw. We stellen die API-calls
+  // uit tot de browser idle is (of kort daarna), zodat de hero — het
+  // LCP-element — niet hoeft te concurreren met fetches op mobiel.
+  const [fetchReady, setFetchReady] = useState(false);
+  useEffect(() => {
+    if ("requestIdleCallback" in window) {
+      const id = window.requestIdleCallback(() => setFetchReady(true), { timeout: 1500 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const t = setTimeout(() => setFetchReady(true), 300);
+    return () => clearTimeout(t);
+  }, []);
+
+  const posts = useFetch(() => fetchPosts({ tag }), [tag], fetchReady);
+  const tags = useFetch(fetchTags, [], fetchReady);
 
   useEffect(() => {
     // Defaults uit seo.js: titel + omschrijving van de site.
