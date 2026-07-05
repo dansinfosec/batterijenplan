@@ -148,10 +148,18 @@ STORAGES = {
     },
 }
 
+# Uploads (zoals blog cover images) gaan naar Cloudinary zodra CLOUDINARY_URL
+# is gezet (Render). Lokaal zonder CLOUDINARY_URL blijft FileSystemStorage
+# (MEDIA_ROOT) gewoon werken. Static files blijven altijd via WhiteNoise gaan.
+if os.environ.get("CLOUDINARY_URL"):
+    STORAGES["default"]["BACKEND"] = "cloudinary_storage.storage.MediaCloudinaryStorage"
+
 INSTALLED_APPS += [
     "rest_framework",
     "corsheaders",
     "taggit",
+    "cloudinary_storage",
+    "cloudinary",
     "blog",
     "api",
 ]

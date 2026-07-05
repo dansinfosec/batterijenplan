@@ -1,6 +1,8 @@
 asgiref==3.11.1
 black==26.5.1
 click==8.4.1
+cloudinary==1.45.0
+django-cloudinary-storage==0.3.0
 dj-database-url==2.3.0
 Django==6.0.6
 django-cors-headers==4.3.1

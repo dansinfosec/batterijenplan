@@ -11,8 +11,17 @@ export default function PostCard({ post }) {
 
   return (
     <Link to={`/post/${post.slug}`} className="post-card">
-      {post.cover_image && (
-        <img className="cover" src={post.cover_image} alt="" loading="lazy" />
+      {post.cover_image_url && (
+        <img
+          className="cover"
+          src={post.cover_image_url}
+          alt=""
+          loading="lazy"
+          onError={(e) => {
+            // Geen kapot-plaatje-icoon tonen; verberg de afbeelding gewoon.
+            e.currentTarget.style.display = "none";
+          }}
+        />
       )}
       <div className="body">
         <h2>{post.title}</h2>

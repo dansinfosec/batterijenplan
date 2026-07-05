@@ -13,7 +13,7 @@ class Post(models.Model):
     title = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250, unique=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
-    cover_image = models.ImageField(upload_to="blog/", blank=True, null=True)
+    cover_image = models.ImageField(upload_to="batterijenplan/blog/", blank=True, null=True)
     excerpt = models.TextField(max_length=400, blank=True, help_text="Korte intro op de bloglijst")
     body = models.TextField(help_text="Schrijf in Markdown")
     tags = TaggableManager(blank=True)

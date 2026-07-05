@@ -19,6 +19,10 @@ function setMetaTag(attr, key, content) {
   el.setAttribute("content", content);
 }
 
+function removeMetaTag(attr, key) {
+  document.head.querySelector(`meta[${attr}="${key}"]`)?.remove();
+}
+
 function setCanonical(url) {
   let el = document.head.querySelector('link[rel="canonical"]');
   if (!el) {
@@ -39,6 +43,7 @@ export function setPageMeta({
   description = DEFAULT_DESCRIPTION,
   path = window.location.pathname,
   type = "website",
+  image = null,
 } = {}) {
   const url = canonicalUrl(path);
 
@@ -53,6 +58,16 @@ export function setPageMeta({
   setMetaTag("name", "twitter:title", title);
   setMetaTag("name", "twitter:description", description);
   setCanonical(url);
+
+  // Alleen zetten als er echt een afbeelding is; anders opruimen zodat er
+  // geen verouderde og:image van een vorige pagina blijft hangen.
+  if (image) {
+    setMetaTag("property", "og:image", image);
+    setMetaTag("name", "twitter:image", image);
+  } else {
+    removeMetaTag("property", "og:image");
+    removeMetaTag("name", "twitter:image");
+  }
 }
 
 // Vervangt alle eerder door ons geplaatste JSON-LD scripts door de meegegeven set,
@@ -100,6 +115,7 @@ export function blogPostingSchema(post) {
     publisher: { "@type": "Organization", name: SITE_NAME },
   };
 
+  if (post.cover_image_url) schema.image = post.cover_image_url;
   if (post.published_at) schema.datePublished = post.published_at;
   if (post.updated_at) schema.dateModified = post.updated_at;
 

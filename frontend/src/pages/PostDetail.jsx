@@ -172,6 +172,7 @@ export default function PostDetail() {
         description: post.meta_description || post.excerpt || DEFAULT_DESCRIPTION,
         type: "article",
         path: `/post/${post.slug}`,
+        image: post.cover_image_url,
       });
       setJsonLd([blogPostingSchema(post)]);
     }
@@ -222,8 +223,16 @@ export default function PostDetail() {
         <Link to="/calculator">Bereken het gratis.</Link>
       </p>
 
-      {post.cover_image && (
-        <img className="cover" src={post.cover_image} alt="" />
+      {post.cover_image_url && (
+        <img
+          className="cover"
+          src={post.cover_image_url}
+          alt=""
+          onError={(e) => {
+            // Geen kapot-plaatje-icoon tonen; verberg de afbeelding gewoon.
+            e.currentTarget.style.display = "none";
+          }}
+        />
       )}
 
       <CalculatorCta />

@@ -9,11 +9,13 @@ class PostListSerializer(serializers.ModelSerializer):
     author = serializers.StringRelatedField()
     tags = serializers.SerializerMethodField()
     cover_image = serializers.SerializerMethodField()
+    cover_image_url = serializers.SerializerMethodField()
     meta_description = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
-        fields = ["id", "title", "slug", "author", "cover_image", "excerpt",
+        fields = ["id", "title", "slug", "author", "cover_image",
+                  "cover_image_url", "excerpt",
                   "meta_description", "tags", "reading_minutes",
                   "published_at", "updated_at", "created_at"]
 
@@ -25,6 +27,19 @@ class PostListSerializer(serializers.ModelSerializer):
         if obj.cover_image and request:
             return request.build_absolute_uri(obj.cover_image.url)
         return None
+
+    def get_cover_image_url(self, obj):
+        # Cloudinary geeft al een volledige https-URL; lokale opslag geeft
+        # een relatief pad dat we absoluut maken via het request.
+        if not obj.cover_image:
+            return None
+        url = obj.cover_image.url
+        if url.startswith(("http://", "https://")):
+            return url
+        request = self.context.get("request")
+        if request:
+            return request.build_absolute_uri(url)
+        return url
 
     def get_meta_description(self, obj):
         # Excerpt is leidend; anders een korte platte-tekst versie van de body.

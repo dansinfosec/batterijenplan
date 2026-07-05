@@ -62,6 +62,8 @@ function postMetaBlock(post) {
   const title = `${post.title} — Batterijenplan`;
   const description = post.meta_description || post.excerpt || DEFAULT_DESCRIPTION;
 
+  const image = post.cover_image_url || null;
+
   const schema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -72,6 +74,7 @@ function postMetaBlock(post) {
     author: { "@type": "Organization", name: SITE_NAME },
     publisher: { "@type": "Organization", name: SITE_NAME },
   };
+  if (image) schema.image = image;
   if (post.published_at) schema.datePublished = post.published_at;
   if (post.updated_at) schema.dateModified = post.updated_at;
 
@@ -79,7 +82,7 @@ function postMetaBlock(post) {
   const d = escapeHtml(description);
   const u = escapeHtml(url);
 
-  return [
+  const tags = [
     `<title>${t}</title>`,
     `<meta name="description" content="${d}" />`,
     `<meta property="og:title" content="${t}" />`,
@@ -90,9 +93,22 @@ function postMetaBlock(post) {
     `<meta name="twitter:card" content="summary" />`,
     `<meta name="twitter:title" content="${t}" />`,
     `<meta name="twitter:description" content="${d}" />`,
+  ];
+
+  if (image) {
+    const i = escapeHtml(image);
+    tags.push(
+      `<meta property="og:image" content="${i}" />`,
+      `<meta name="twitter:image" content="${i}" />`,
+    );
+  }
+
+  tags.push(
     `<link rel="canonical" href="${u}" />`,
     `<script type="application/ld+json">${jsonLdHtml(schema)}</script>`,
-  ].join("\n    ");
+  );
+
+  return tags.join("\n    ");
 }
 
 function buildSitemap(posts) {
