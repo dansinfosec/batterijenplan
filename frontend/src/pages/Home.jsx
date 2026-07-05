@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch.js";
 import { fetchPosts, fetchTags } from "../api.js";
@@ -9,17 +9,41 @@ import { setPageMeta, setJsonLd, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "../
 export default function Home() {
   const [tag, setTag] = useState(null);
 
-  // Perf: de bloglijst/tags staan onder de vouw. We stellen die API-calls
-  // uit tot de browser idle is (of kort daarna), zodat de hero — het
-  // LCP-element — niet hoeft te concurreren met fetches op mobiel.
+  // Perf: de bloglijst/tags staan onder de vouw. De API-calls starten pas
+  // wanneer de blogsectie in de buurt van de viewport komt (600px marge),
+  // zodat /api/posts/ en /api/tags/ volledig uit het kritieke laadpad van
+  // de hero (het LCP-element) verdwijnen.
   const [fetchReady, setFetchReady] = useState(false);
+  const blogSectionRef = useRef(null);
   useEffect(() => {
-    if ("requestIdleCallback" in window) {
-      const id = window.requestIdleCallback(() => setFetchReady(true), { timeout: 1500 });
-      return () => window.cancelIdleCallback(id);
+    if ("IntersectionObserver" in window && blogSectionRef.current) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            observer.disconnect();
+            setFetchReady(true);
+          }
+        },
+        { rootMargin: "600px" },
+      );
+      observer.observe(blogSectionRef.current);
+      return () => observer.disconnect();
     }
-    const t = setTimeout(() => setFetchReady(true), 300);
-    return () => clearTimeout(t);
+
+    // Fallback zonder IntersectionObserver: 2s na window load.
+    let timer;
+    const startLater = () => {
+      timer = setTimeout(() => setFetchReady(true), 2000);
+    };
+    if (document.readyState === "complete") {
+      startLater();
+    } else {
+      window.addEventListener("load", startLater, { once: true });
+    }
+    return () => {
+      window.removeEventListener("load", startLater);
+      clearTimeout(timer);
+    };
   }, []);
 
   const posts = useFetch(() => fetchPosts({ tag }), [tag], fetchReady);
@@ -61,7 +85,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="container">
+      <div className="container" ref={blogSectionRef}>
         <TagBar tags={tags.data} active={tag} onSelect={setTag} />
 
         {posts.loading && (

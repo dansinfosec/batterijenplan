@@ -17,18 +17,19 @@
     <!-- seo:meta:end -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Perf: verbinding met de API alvast opwarmen; de blogposts/tags worden
-         direct na het laden van de app opgehaald. -->
-    <link rel="preconnect" href="https://api.batterijenplan.nl" crossorigin />
-    <!-- Perf: display=optional voorkomt late font-swaps en layout shift op
-         mobiel: is het font niet binnen ~100ms beschikbaar, dan blijft de
-         (vergelijkbare) fallback staan en rendert het webfont pas bij het
-         volgende bezoek uit cache. Archivo alleen in de gebruikte assen
-         (wght 700-900, wdth 100-115). -->
+    <!-- Perf: fonts-CSS niet-render-blocking via media="print" + onload;
+         eerste paint wacht niet op fonts.googleapis.com. display=optional
+         voorkomt late swaps/layout shift; op herhaalbezoek komen de fonts
+         uit de cache. Archivo alleen in de gebruikte assen. -->
     <link
       href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..115,700..900&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=optional"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..115,700..900&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=optional" rel="stylesheet" />
+    </noscript>
     <link rel="icon" href="/favicon.ico" />
   </head>
   <body>
