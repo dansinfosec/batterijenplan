@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
 import Header from "./components/Header.jsx";
@@ -25,6 +25,13 @@ function AnalyticsTracker() {
 }
 
 export default function App() {
+  // Statische first-paint shell uit index.html opruimen zodra React de echte
+  // UI rendert. useLayoutEffect draait vóór de paint van de eerste commit,
+  // zodat shell en React-hero nooit tegelijk zichtbaar zijn.
+  useLayoutEffect(() => {
+    document.getElementById("static-home-shell")?.remove();
+  }, []);
+
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <AnalyticsTracker />

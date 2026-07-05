@@ -31,8 +31,68 @@
       <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..115,700..900&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=optional" rel="stylesheet" />
     </noscript>
     <link rel="icon" href="/favicon.ico" />
+    <!-- Perf: kritieke CSS voor de statische homepage-shell hieronder.
+         Alleen systeemfonts, geen afbeeldingen; React ruimt de shell op. -->
+    <style>
+      #static-home-shell{background:#F7F6F2;color:#12130F;line-height:1.7;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+      #static-home-shell .shs-w{max-width:1080px;margin:0 auto;padding:0 20px}
+      #static-home-shell .shs-header{border-bottom:2px solid #12130F}
+      #static-home-shell .shs-brand{display:flex;align-items:center;height:64px;font-weight:900;font-size:20px;letter-spacing:-.02em}
+      #static-home-shell .shs-hero{border-bottom:2px solid #12130F;padding:44px 0 48px}
+      #static-home-shell h1{font-weight:900;font-size:clamp(34px,10vw,48px);line-height:.98;letter-spacing:-.03em;text-transform:uppercase;max-width:12ch;margin:0}
+      #static-home-shell h1 span{color:#B4592E}
+      #static-home-shell .shs-sub{margin:18px 0 0;max-width:52ch;font-size:16px;color:#4C4D46}
+      #static-home-shell .shs-cta{display:block;margin-top:26px;padding:15px 20px;text-align:center;font-weight:900;font-size:16px;text-transform:uppercase;letter-spacing:.04em;text-decoration:none;color:#12130F;background:#FFD100;border:3px solid #12130F;border-radius:8px;box-shadow:5px 5px 0 #12130F}
+      #static-home-shell .shs-stats{margin-top:28px;display:flex;flex-wrap:wrap;gap:16px 24px}
+      #static-home-shell .shs-stats div{border-left:3px solid #FFD100;padding-left:12px}
+      #static-home-shell .shs-stats b{display:block;font-size:20px;font-family:ui-monospace,Menlo,Consolas,monospace}
+      #static-home-shell .shs-stats span{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-family:ui-monospace,Menlo,Consolas,monospace}
+      @media(min-width:641px){
+        #static-home-shell .shs-hero{padding:64px 0}
+        #static-home-shell h1{font-size:clamp(40px,7vw,84px)}
+        #static-home-shell .shs-sub{margin-top:24px;font-size:18px}
+        #static-home-shell .shs-cta{display:inline-block;margin-top:32px;padding:16px 32px;font-size:18px}
+        #static-home-shell .shs-stats{margin-top:40px;gap:32px}
+      }
+    </style>
   </head>
   <body>
+    <!-- home-shell:start (scripts/prerender-blog-meta.mjs verwijdert dit blok
+         uit de gegenereerde blogpost-HTML) -->
+    <!-- Statische homepage-shell: geeft mobiel direct een first paint van de
+         hero terwijl de React-bundle laadt. Alleen zichtbaar op "/" (het
+         inline script hieronder verwijdert hem op andere paden) en wordt
+         door React opgeruimd zodra de app gemount is (App.jsx). -->
+    <div id="static-home-shell">
+      <div class="shs-header">
+        <div class="shs-w"><span class="shs-brand">Batterijenplan.nl</span></div>
+      </div>
+      <section class="shs-hero">
+        <div class="shs-w">
+          <h1>Sla je <span>energie</span> slim op</h1>
+          <p class="shs-sub">
+            Onafhankelijke uitleg over thuisbatterijen, zonnepanelen en
+            dynamische energiecontracten. Geen verkooppraat, wel getallen.
+          </p>
+          <a class="shs-cta" href="/calculator">Bereken uw thuisbatterij</a>
+          <div class="shs-stats">
+            <div><b>kWh</b><span>opslag uitgelegd</span></div>
+            <div><b>€/dag</b><span>besparing berekend</span></div>
+            <div><b>NL</b><span>salderen &amp; regels</span></div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <script>
+      (function () {
+        var p = window.location.pathname;
+        if (p !== "/" && p !== "/index.html") {
+          var el = document.getElementById("static-home-shell");
+          if (el) el.remove();
+        }
+      })();
+    </script>
+    <!-- home-shell:end -->
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

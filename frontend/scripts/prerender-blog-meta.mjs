@@ -21,6 +21,25 @@ const DEFAULT_DESCRIPTION =
 const META_START = "<!-- seo:meta:start";
 const META_END = "<!-- seo:meta:end -->";
 
+// De statische homepage-shell hoort niet in blogpost-HTML; die is alleen
+// bedoeld voor de first paint van "/".
+const SHELL_START = "<!-- home-shell:start";
+const SHELL_END = "<!-- home-shell:end -->";
+
+function stripHomeShell(html) {
+  const start = html.indexOf(SHELL_START);
+  const end = html.indexOf(SHELL_END);
+  if (start === -1 || end === -1) {
+    // Niet fataal: het inline guard-script verwijdert de shell anders alsnog
+    // op niet-home paden, maar meld het wel.
+    console.warn(
+      "Waarschuwing: home-shell markers niet gevonden in dist/index.html; shell blijft in blogpost-HTML staan.",
+    );
+    return html;
+  }
+  return html.slice(0, start) + html.slice(end + SHELL_END.length);
+}
+
 const distDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../dist");
 
 function escapeHtml(value) {
@@ -159,10 +178,11 @@ async function main() {
       continue;
     }
 
-    const html =
+    const html = stripHomeShell(
       template.slice(0, startIdx) +
-      postMetaBlock(post) +
-      template.slice(endIdx + META_END.length);
+        postMetaBlock(post) +
+        template.slice(endIdx + META_END.length),
+    );
 
     const dir = path.join(distDir, "post", post.slug);
     await mkdir(dir, { recursive: true });
