@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch.js";
 import { fetchPost, fetchComments, postComment } from "../api.js";
 import { setPageMeta, setJsonLd, blogPostingSchema, DEFAULT_DESCRIPTION } from "../seo.js";
+import { optimizedImageUrl } from "../images.js";
 
 function ReadProgress() {
   const [w, setW] = useState(0);
@@ -226,8 +227,9 @@ export default function PostDetail() {
       {post.cover_image_url && (
         <img
           className="cover"
-          src={post.cover_image_url}
+          src={optimizedImageUrl(post.cover_image_url, 1200)}
           alt=""
+          decoding="async"
           onError={(e) => {
             // Geen kapot-plaatje-icoon tonen; verberg de afbeelding gewoon.
             e.currentTarget.style.display = "none";

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { optimizedImageUrl } from "../images.js";
 
 // Kaart als batterijcel: nokje bovenop (CSS ::before) en een
 // laadbalk onderaan waarvan de vulling de leestijd weergeeft.
@@ -14,9 +15,10 @@ export default function PostCard({ post }) {
       {post.cover_image_url && (
         <img
           className="cover"
-          src={post.cover_image_url}
+          src={optimizedImageUrl(post.cover_image_url, 800)}
           alt=""
           loading="lazy"
+          decoding="async"
           onError={(e) => {
             // Geen kapot-plaatje-icoon tonen; verberg de afbeelding gewoon.
             e.currentTarget.style.display = "none";
