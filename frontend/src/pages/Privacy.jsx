@@ -53,6 +53,30 @@ export default function Privacy() {
           hiervoor contact met ons op.
         </p>
 
+        <h2>Contact &amp; verwerkingsverantwoordelijke</h2>
+        <p>
+          Batterijenplan.nl
+          <br />
+          De Waal 18D
+          <br />
+          5684 PH Best
+          <br />
+          Nederland
+        </p>
+        <p>
+          E-mail:{" "}
+          <a href="mailto:info@batterijenplan.nl">info@batterijenplan.nl</a>
+          <br />
+          WhatsApp:{" "}
+          <a
+            href="https://wa.me/31641880307"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            +31 6 41 88 03 07
+          </a>
+        </p>
+
         <p>
           <Link to="/calculator">Terug naar de calculator</Link>
         </p>

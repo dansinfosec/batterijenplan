@@ -116,6 +116,7 @@ function buildSitemap(posts) {
     { loc: `${SITE_URL}/` },
     { loc: `${SITE_URL}/calculator` },
     { loc: `${SITE_URL}/privacy` },
+    { loc: `${SITE_URL}/contact` },
     ...posts.map((post) => {
       const lastmod = post.updated_at || post.published_at;
       return {
@@ -172,7 +173,7 @@ async function main() {
   await writeFile(path.join(distDir, "sitemap.xml"), buildSitemap(posts), "utf8");
 
   console.log(`Prerender klaar: ${generated} blogpost-HTML-bestanden gegenereerd in dist/post/.`);
-  console.log(`sitemap.xml gegenereerd met ${posts.length + 3} URL's.`);
+  console.log(`sitemap.xml gegenereerd met ${posts.length + 4} URL's.`);
 }
 
 main().catch((err) => {

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Footer() {
   return (
     <footer className="site-footer">
@@ -5,6 +7,28 @@ export default function Footer() {
         <span className="mono">Batterijenplan.nl — kennis over energieopslag</span>
         <span className="mono">
           <a href="https://www.batterijenplan.nl">batterijenplan.nl</a>
+        </span>
+      </div>
+
+      <div className="container footer-contact mono">
+        <span>De Waal 18D, 5684 PH Best</span>
+        <span>
+          <a href="mailto:info@batterijenplan.nl">info@batterijenplan.nl</a>
+        </span>
+        <span>
+          WhatsApp:{" "}
+          <a
+            href="https://wa.me/31641880307"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            +31 6 41 88 03 07
+          </a>
+        </span>
+        <span>Servicegebied: Nederland</span>
+        <span>Bezoek alleen op afspraak</span>
+        <span>
+          <Link to="/contact">Contact</Link>
         </span>
       </div>
     </footer>

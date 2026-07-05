@@ -7,6 +7,7 @@ import Home from "./pages/Home.jsx";
 import PostDetail from "./pages/PostDetail.jsx";
 import Calculator from "./pages/Calculator.jsx";
 import Privacy from "./pages/Privacy.jsx";
+import Contact from "./pages/Contact.jsx";
 import { initAnalytics, trackPageView } from "./analytics.js";
 
 function AnalyticsTracker() {
@@ -36,6 +37,7 @@ export default function App() {
           <Route path="/post/:slug" element={<PostDetail />} />
           <Route path="/calculator" element={<Calculator />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </main>
 
