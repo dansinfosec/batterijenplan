@@ -6,6 +6,98 @@ import PostCard from "../components/PostCard.jsx";
 import TagBar from "../components/TagBar.jsx";
 import { setPageMeta, setJsonLd, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "../seo.js";
 
+// Trust-/adviescijfers in de hero — bewust hardcoded, geen admin/API/CMS.
+// Bewust geen garanties: alles is "doorgerekend" of "inzichtelijk gemaakt",
+// op basis van de situatie.
+const HERO_TRUST_CARDS = [
+  {
+    id: "opslag",
+    value: "1.000+ kWh",
+    title: "Opslag uitgelegd",
+    text: "Voor klanten doorgerekend en uitgelegd: van kleine thuisbatterijen tot grotere opslagoplossingen.",
+    detail: "Capaciteit · teruglevering · verbruik",
+    panel: {
+      title: "Wat betekent opslag uitgelegd?",
+      text:
+        "Bij batterijadvies draait het niet alleen om een product, maar om de " +
+        "juiste capaciteit. Batterijenplan kijkt naar verbruik, teruglevering, " +
+        "zonnepanelen en toekomstplannen. Zo wordt duidelijk hoeveel opslag " +
+        "logisch is en waarom groter niet altijd beter is.",
+    },
+  },
+  {
+    id: "dagwaarde",
+    value: "€350+ / dag",
+    title: "Dagwaarde inzichtelijk",
+    text: "Besparingspotentieel en batterijwaarde inzichtelijk gemaakt op basis van verbruik, teruglevering en contractvorm.",
+    detail: "Geen belofte · wel rekenwerk",
+    panel: {
+      title: "Waarom dagwaarde inzichtelijk maken?",
+      text:
+        "De waarde van een batterij verschilt per situatie. Op basis van " +
+        "teruglevering, stroomprijzen, eigen verbruik en contractvorm kan " +
+        "worden doorgerekend wat slim opslaan mogelijk betekent. Dit is geen " +
+        "vaste belofte, maar een praktische indicatie.",
+    },
+  },
+  {
+    id: "salderen",
+    value: "01-01-2027",
+    title: "Salderen stopt",
+    text: "Vanaf 2027 verandert de rol van teruglevering. Eigen verbruik en slim opslaan worden belangrijker.",
+    detail: "Nederlandse regels · terugleverkosten · netbelasting",
+    panel: {
+      title: "Wat verandert er met salderen?",
+      text:
+        "Vanaf 1 januari 2027 stopt de salderingsregeling. Daardoor wordt het " +
+        "belangrijker om meer eigen zonnestroom direct te gebruiken of " +
+        "tijdelijk op te slaan. Een thuisbatterij kan daarbij helpen, " +
+        "afhankelijk van uw situatie.",
+    },
+  },
+];
+
+function TrustCards() {
+  const [activeId, setActiveId] = useState(null);
+  const activeCard = HERO_TRUST_CARDS.find((c) => c.id === activeId);
+
+  return (
+    <div className="trust-strip">
+      <div className="trust-cards">
+        {HERO_TRUST_CARDS.map((card) => {
+          const isActive = card.id === activeId;
+          return (
+            <button
+              key={card.id}
+              type="button"
+              className={`trust-card${isActive ? " active" : ""}`}
+              aria-expanded={isActive}
+              aria-controls="trust-panel"
+              onClick={() => setActiveId(isActive ? null : card.id)}
+            >
+              <span className="trust-title">{card.title}</span>
+              <b className="trust-value">{card.value}</b>
+              <span className="trust-text">{card.text}</span>
+              <span className="trust-detail">{card.detail}</span>
+              <span className="trust-chev" aria-hidden="true">▾</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {activeCard && (
+        <div className="trust-panel" id="trust-panel" role="region" aria-label={activeCard.panel.title}>
+          <h2>{activeCard.panel.title}</h2>
+          <p>{activeCard.panel.text}</p>
+          <Link to="/calculator" className="cta-button cta-button-sm">
+            Bereken uw thuisbatterij
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Home() {
   const [tag, setTag] = useState(null);
 
@@ -74,11 +166,7 @@ export default function Home() {
           <Link to="/calculator" className="cta-button">
             Bereken uw thuisbatterij
           </Link>
-          <div className="meta-strip">
-            <div className="stat"><b>kWh</b><span className="mono">opslag uitgelegd</span></div>
-            <div className="stat"><b>€/dag</b><span className="mono">besparing berekend</span></div>
-            <div className="stat"><b>NL</b><span className="mono">salderen &amp; regels</span></div>
-          </div>
+          <TrustCards />
           <div className="hero-battery" aria-hidden="true">
             <div className="charge" />
           </div>
