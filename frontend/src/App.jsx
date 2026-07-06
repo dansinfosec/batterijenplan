@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
 import Header from "./components/Header.jsx";
@@ -25,11 +25,22 @@ function AnalyticsTracker() {
 }
 
 export default function App() {
-  // Statische first-paint shell uit index.html opruimen zodra React de echte
-  // UI rendert. useLayoutEffect draait vóór de paint van de eerste commit,
-  // zodat shell en React-hero nooit tegelijk zichtbaar zijn.
-  useLayoutEffect(() => {
-    document.getElementById("static-home-shell")?.remove();
+  // Statische first-paint shell uit index.html opruimen NA de eerste paint.
+  // Bewust geen useLayoutEffect: die draait vóór de paint, waardoor de shell
+  // verwijderd kon worden zonder ooit als FCP te tellen. Dubbele
+  // requestAnimationFrame garandeert minstens één paint-gelegenheid vóór
+  // verwijdering; de vertraging is hooguit een paar frames.
+  useEffect(() => {
+    const shell = document.getElementById("static-home-shell");
+    if (!shell) return;
+
+    if (typeof window.requestAnimationFrame === "function") {
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => shell.remove());
+      });
+    } else {
+      setTimeout(() => shell.remove(), 0);
+    }
   }, []);
 
   return (
