@@ -281,6 +281,10 @@ img { max-width: 100%; display: block; }
   background: var(--paper); border: 1px solid var(--ink); border-radius: 3px;
   padding: 2px 7px;
 }
+/* Subtiele "+X" indicator voor verborgen extra tags */
+.post-card .tags .tags-more {
+  border-style: dashed; color: var(--ink-60);
+}
 /* laadbalk onderaan = leestijd-indicator */
 .post-card .gauge {
   border-top: 2px solid var(--line); padding: 12px 22px 14px;
@@ -693,6 +697,10 @@ img { max-width: 100%; display: block; }
   .post-card h2 { font-size: 19px; }
   .tagbar { padding-top: 22px; }
   .tagbar button { padding: 8px 14px; } /* tap-target */
+  /* Mobiel: max 6 tags naast "Alles" (kind 1) — geen tag-muur */
+  .tagbar button:nth-child(n+8) { display: none; }
+  /* Blogkaart: max 3 tags op mobiel; extra tags (en de +X) verbergen */
+  .post-card .tags span:nth-child(n+4) { display: none; }
 
   /* CTA-blokken (blog): knoppen gestapeld, volle breedte */
   .cta-block { padding: 18px 16px; margin: 28px 0; }

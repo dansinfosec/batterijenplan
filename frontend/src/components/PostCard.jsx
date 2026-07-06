@@ -30,7 +30,10 @@ export default function PostCard({ post }) {
         {post.excerpt && <p>{post.excerpt}</p>}
         {post.tags?.length > 0 && (
           <div className="tags">
-            {post.tags.map((t) => <span key={t}>{t}</span>)}
+            {post.tags.slice(0, 5).map((t) => <span key={t}>{t}</span>)}
+            {post.tags.length > 5 && (
+              <span className="tags-more">+{post.tags.length - 5}</span>
+            )}
           </div>
         )}
       </div>
