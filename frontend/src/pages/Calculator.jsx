@@ -140,6 +140,17 @@ export default function Calculator() {
 
   const showLeadForm = Boolean(result || directAdvice);
 
+  // CTA in hulpkaart/resultaat: naar het bestaande leadformulier scrollen
+  // als dat al zichtbaar is, anders de bestaande modal tonen.
+  const openAdvice = () => {
+    const el = document.getElementById("advies");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      setModalOpen(true);
+    }
+  };
+
   return (
     <article className="container post-detail">
       <p className="mono kicker">Calculator · batterijcapaciteit · advies</p>
@@ -148,10 +159,20 @@ export default function Calculator() {
         Thuisbatterij <span className="accent">Calculator</span>
       </h1>
 
-      <p className="sub" style={{ marginTop: 12, marginBottom: 36 }}>
+      <p className="sub" style={{ marginTop: 12, marginBottom: 28 }}>
         Bereken welke thuisbatterij past bij uw stroomverbruik, teruglevering
         en energiedoel.
       </p>
+
+      <div className="calc-layout">
+      <div className="calc-main">
+
+      {/* Educatieve indicatoren — geen harde beloftes */}
+      <div className="calc-mini-strip">
+        <div><b>10–20 kWh</b><span>Vaak geschikt voor woningen</span></div>
+        <div><b>250 dagen</b><span>Zonopwek als rekenbasis</span></div>
+        <div><b>Gratis check</b><span>Laat uw uitkomst controleren</span></div>
+      </div>
 
       <form className="calc-form" onSubmit={submit}>
         <label>
@@ -176,6 +197,9 @@ export default function Calculator() {
             onChange={update("yearly_usage")}
             required
           />
+          <span className="field-help">
+            Bijvoorbeeld: 3500 kWh voor een gemiddeld huishouden.
+          </span>
         </label>
 
         <fieldset className="goal-choice">
@@ -194,8 +218,10 @@ export default function Calculator() {
             <span className="goal-title">Zelfconsumptie</span>
 
             <span className="goal-text">
-              Ik wil vooral mijn eigen zonnestroom opslaan en later zelf gebruiken.
+              Gebruik meer van uw eigen zonnestroom en lever minder terug aan het net.
             </span>
+
+            <span className="goal-check" aria-hidden="true">✓</span>
           </label>
 
           <label className={`goal-card ${form.goal === "trading" ? "active" : ""}`}>
@@ -208,12 +234,14 @@ export default function Calculator() {
               required
             />
 
-            <span className="goal-title">Handel / Dynamisch contract</span>
+            <span className="goal-title">Handel / dynamisch contract</span>
 
             <span className="goal-text">
-              Ik wil de batterij ook gebruiken voor slimme sturing op dynamische
+              Gebruik batterijopslag voor slimme sturing op dynamische
               energieprijzen.
             </span>
+
+            <span className="goal-check" aria-hidden="true">✓</span>
           </label>
         </fieldset>
 
@@ -228,6 +256,9 @@ export default function Calculator() {
             onChange={update("exported_energy")}
             required
           />
+          <span className="field-help">
+            Bijvoorbeeld: 2500–5000 kWh bij veel zonnepanelen.
+          </span>
         </label>
 
         <button type="submit" disabled={loading}>
@@ -239,6 +270,8 @@ export default function Calculator() {
 
       {result && (
         <div className="calc-result">
+          <span className="mono calc-result-label">Uw batterijadvies</span>
+
           <p>
             Op basis van <strong>{result.goal_label}</strong> adviseren wij een
             batterijcapaciteit van:
@@ -252,6 +285,11 @@ export default function Calculator() {
             Mogelijk passend systeem: <strong>{result.product_advice}</strong>
           </p>
 
+          <p className="calc-result-explain">
+            Deze range is gebaseerd op uw verbruik, teruglevering en gekozen
+            doel — een eerste indicatie, geen definitief ontwerp.
+          </p>
+
           <div className="calc-stats mono">
             <span>Gem. teruglevering/dag: {result.daily_export} kWh</span>
             <span>Gem. verbruik/dag: {result.daily_usage} kWh</span>
@@ -262,6 +300,10 @@ export default function Calculator() {
             nauwkeurig advies kijken we ook naar zonnepanelen, netaansluiting,
             omvormervermogen, energiecontract en toekomstig verbruik.
           </div>
+
+          <button type="button" className="cta-button cta-button-sm calc-result-cta" onClick={openAdvice}>
+            Laat mijn berekening controleren
+          </button>
         </div>
       )}
 
@@ -276,6 +318,29 @@ export default function Calculator() {
           />
         </div>
       )}
+
+      </div>
+
+      <aside className="calc-help">
+        <h2>Zo werkt de berekening</h2>
+
+        <ol className="calc-help-steps">
+          <li>Vul uw jaarlijkse stroomverbruik in</li>
+          <li>Vul in hoeveel stroom u teruglevert</li>
+          <li>Kies uw doel: eigen verbruik of dynamische handel</li>
+          <li>Ontvang direct een batterijadvies</li>
+        </ol>
+
+        <p className="calc-help-note">
+          De uitkomst is een eerste indicatie. Een specialist kan uw situatie
+          gratis controleren.
+        </p>
+
+        <button type="button" className="cta-button cta-button-sm" onClick={openAdvice}>
+          Gratis advies aanvragen
+        </button>
+      </aside>
+      </div>
 
       <LeadModal open={modalOpen} onClose={closeModal}>
         <LeadCaptureForm

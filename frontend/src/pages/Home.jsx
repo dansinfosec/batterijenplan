@@ -57,10 +57,9 @@ const HERO_TRUST_CARDS = [
   },
 ];
 
-function TrustCards() {
-  const [activeId, setActiveId] = useState(null);
-  const activeCard = HERO_TRUST_CARDS.find((c) => c.id === activeId);
-
+// Alleen de kaartenrij; het uitlegpaneel staat los onder de hero-grid zodat
+// het de twee kolommen (content links, batterij rechts) niet verdringt.
+function TrustCards({ activeId, onToggle }) {
   return (
     <div className="trust-strip">
       <div className="trust-cards">
@@ -73,7 +72,7 @@ function TrustCards() {
               className={`trust-card${isActive ? " active" : ""}`}
               aria-expanded={isActive}
               aria-controls="trust-panel"
-              onClick={() => setActiveId(isActive ? null : card.id)}
+              onClick={() => onToggle(card.id)}
             >
               <span className="trust-title">{card.title}</span>
               <b className="trust-value">{card.value}</b>
@@ -84,22 +83,14 @@ function TrustCards() {
           );
         })}
       </div>
-
-      {activeCard && (
-        <div className="trust-panel" id="trust-panel" role="region" aria-label={activeCard.panel.title}>
-          <h2>{activeCard.panel.title}</h2>
-          <p>{activeCard.panel.text}</p>
-          <Link to="/calculator" className="cta-button cta-button-sm">
-            Bereken uw thuisbatterij
-          </Link>
-        </div>
-      )}
     </div>
   );
 }
 
 export default function Home() {
   const [tag, setTag] = useState(null);
+  const [activeTrustId, setActiveTrustId] = useState(null);
+  const activeTrustCard = HERO_TRUST_CARDS.find((c) => c.id === activeTrustId);
 
   // Perf: de bloglijst/tags staan onder de vouw. De API-calls starten pas
   // wanneer de blogsectie in de buurt van de viewport komt (600px marge),
@@ -152,24 +143,49 @@ export default function Home() {
   return (
     <>
       <section className="hero">
-        <div className="container" style={{ position: "relative" }}>
-          <p className="mono" style={{ color: "var(--volt-dk)", marginBottom: 16 }}>
-            Kennisbank · thuisbatterijen · dynamische contracten
-          </p>
-          <h1>
-            Sla je <span className="accent">energie</span> slim op
-          </h1>
-          <p className="sub">
-            Onafhankelijke uitleg over thuisbatterijen, zonnepanelen en
-            dynamische energiecontracten. Geen verkooppraat, wel getallen.
-          </p>
-          <Link to="/calculator" className="cta-button">
-            Bereken uw thuisbatterij
-          </Link>
-          <TrustCards />
-          <div className="hero-battery" aria-hidden="true">
-            <div className="charge" />
+        <div className="container">
+          <div className="hero-grid">
+            <div className="hero-content">
+              <p className="mono" style={{ color: "var(--volt-dk)", marginBottom: 16 }}>
+                Kennisbank · thuisbatterijen · dynamische contracten
+              </p>
+              <h1>
+                Sla je <span className="accent">energie</span> slim op
+              </h1>
+              <p className="sub">
+                Onafhankelijke uitleg over thuisbatterijen, zonnepanelen en
+                dynamische energiecontracten. Geen verkooppraat, wel getallen.
+              </p>
+              <Link to="/calculator" className="cta-button">
+                Bereken uw thuisbatterij
+              </Link>
+              <TrustCards
+                activeId={activeTrustId}
+                onToggle={(id) => setActiveTrustId(activeTrustId === id ? null : id)}
+              />
+            </div>
+
+            <div className="hero-visual" aria-hidden="true">
+              <div className="hero-battery">
+                <div className="charge" />
+              </div>
+            </div>
           </div>
+
+          {activeTrustCard && (
+            <div
+              className="trust-panel"
+              id="trust-panel"
+              role="region"
+              aria-label={activeTrustCard.panel.title}
+            >
+              <h2>{activeTrustCard.panel.title}</h2>
+              <p>{activeTrustCard.panel.text}</p>
+              <Link to="/calculator" className="cta-button cta-button-sm">
+                Bereken uw thuisbatterij
+              </Link>
+            </div>
+          )}
         </div>
       </section>
 

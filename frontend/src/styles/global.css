@@ -88,6 +88,19 @@ img { max-width: 100%; display: block; }
   position: relative;
   overflow: hidden;
 }
+/* Twee kolommen op desktop: content links, batterij-illustratie rechts.
+   Onder 960px is er maar één kolom en blijft de batterij verborgen. */
+.hero-grid { display: grid; gap: 32px; }
+.hero-content { min-width: 0; }
+.hero-visual { display: none; }
+@media (min-width: 960px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr) 300px;
+    column-gap: 56px;
+    align-items: center;
+  }
+  .hero-visual { display: flex; align-items: center; justify-content: center; }
+}
 .hero h1 {
   font-family: var(--font-display);
   font-weight: 900;
@@ -115,13 +128,11 @@ img { max-width: 100%; display: block; }
 .cta-button:active { transform: translate(4px, 4px); box-shadow: 1px 1px 0 var(--ink); }
 
 /* ── Trust cards in hero (adviescijfers, klikbaar met uitlegpaneel) ── */
-.trust-strip { margin-top: 40px; position: relative; z-index: 1; }
+/* De kaarten blijven binnen .hero-content (linkerkolom); de batterij heeft
+   zijn eigen kolom, dus overlap is uitgesloten. */
+.trust-strip { margin-top: 40px; }
 .trust-cards {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
-}
-@media (min-width: 960px) {
-  /* Ruimte laten voor de decoratieve batterij rechts */
-  .trust-cards { max-width: 780px; }
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px;
 }
 .trust-card {
   position: relative; overflow: hidden;
@@ -158,7 +169,7 @@ img { max-width: 100%; display: block; }
 }
 .trust-value {
   font-family: var(--font-display); font-weight: 900;
-  font-size: 26px; line-height: 1.05; letter-spacing: -0.02em;
+  font-size: 22px; line-height: 1.05; letter-spacing: -0.02em;
 }
 .trust-text { font-size: 13px; color: var(--ink-60); }
 .trust-detail {
@@ -174,12 +185,13 @@ img { max-width: 100%; display: block; }
 }
 .trust-card.active .trust-chev { transform: rotate(180deg); }
 
+/* Uitlegpaneel: eigen sectie onder de hero-grid, volle containerbreedte */
 .trust-panel {
-  margin-top: 14px;
+  margin-top: 32px;
   background: #FFFFFF;
   border: 2px solid var(--ink); border-left: 8px solid var(--volt);
   border-radius: 10px;
-  padding: 18px 20px;
+  padding: 20px 22px;
   box-shadow: 3px 3px 0 var(--ink);
   animation: trust-in 0.25s ease;
 }
@@ -190,13 +202,14 @@ img { max-width: 100%; display: block; }
 .trust-panel p { font-size: 15px; color: var(--ink-60); max-width: 68ch; }
 .trust-panel .cta-button { margin-top: 16px; }
 
-/* Grote decoratieve batterij rechts, laadt op bij page load */
+/* Grote decoratieve batterij rechts, laadt op bij page load.
+   Staat nu ín de rechterkolom van de hero-grid i.p.v. absoluut gepositioneerd,
+   zodat hij nooit over de trust cards heen valt. */
 .hero-battery {
-  position: absolute; right: -30px; top: 50%; transform: translateY(-50%) rotate(-8deg);
-  width: 320px; height: 150px;
+  position: relative; transform: rotate(-8deg);
+  width: 270px; height: 130px;
   border: 4px solid var(--ink); border-radius: 12px;
   background: var(--paper);
-  display: none;
 }
 .hero-battery::after {
   content: ""; position: absolute; right: -18px; top: 45px;
@@ -211,7 +224,6 @@ img { max-width: 100%; display: block; }
   animation: chargeUp 1.8s cubic-bezier(.2,.7,.3,1) forwards;
 }
 @keyframes chargeUp { from { transform: scaleX(0.05); } to { transform: scaleX(0.82); } }
-@media (min-width: 960px) { .hero-battery { display: block; } }
 
 /* ── Tag filter ── */
 .tagbar {
@@ -348,11 +360,70 @@ img { max-width: 100%; display: block; }
 .comment-form button:hover { transform: translate(1px, 1px); box-shadow: 2px 2px 0 var(--ink); }
 
 /* ── Calculator ── */
-.calc-form { margin-top: 8px; display: grid; gap: 18px; max-width: 480px; }
+/* Twee kolommen op desktop: formulier links, hulpkaart rechts.
+   Op mobiel stapelt alles; de hulpkaart komt dan onderaan. */
+.calc-layout { display: grid; gap: 28px; align-items: start; }
+@media (min-width: 960px) {
+  .calc-layout { grid-template-columns: minmax(0, 1fr) 340px; }
+  .calc-help { position: sticky; top: 84px; }
+}
+.calc-main { min-width: 0; }
+
+/* Educatieve mini-indicatoren boven het formulier */
+.calc-mini-strip { display: flex; flex-wrap: wrap; gap: 12px 28px; margin-bottom: 22px; }
+.calc-mini-strip div { border-left: 3px solid var(--volt); padding-left: 12px; }
+.calc-mini-strip b {
+  display: block; font-family: var(--font-mono); font-size: 15px; line-height: 1.4;
+}
+.calc-mini-strip span {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--ink-60);
+}
+
+/* Hulpkaart rechts */
+.calc-help {
+  background: #fff; border: 2px solid var(--ink); border-radius: 10px;
+  padding: 24px 22px; box-shadow: 5px 5px 0 var(--volt);
+}
+.calc-help h2 {
+  font-family: var(--font-display); font-weight: 800; font-size: 20px;
+  margin-bottom: 14px;
+}
+.calc-help-steps { list-style: none; counter-reset: stap; display: grid; gap: 10px; }
+.calc-help-steps li {
+  counter-increment: stap;
+  display: flex; gap: 10px; align-items: baseline;
+  font-size: 15px; line-height: 1.5;
+}
+.calc-help-steps li::before {
+  content: counter(stap);
+  flex: 0 0 auto;
+  width: 24px; height: 24px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--volt); border: 2px solid var(--ink); border-radius: 6px;
+  font-family: var(--font-display); font-weight: 900; font-size: 13px;
+  transform: translateY(3px);
+}
+.calc-help-note {
+  margin-top: 14px; padding-top: 12px;
+  border-top: 1px solid rgba(18, 19, 15, 0.12);
+  font-size: 13px; color: var(--ink-60);
+}
+.calc-help .cta-button { margin-top: 14px; width: 100%; text-align: center; }
+
+.calc-form {
+  margin-top: 8px; display: grid; gap: 20px; max-width: 480px;
+  background: #fff; border: 2px solid var(--ink); border-radius: 10px;
+  padding: 24px 22px;
+}
 .calc-form label {
   display: grid; gap: 6px;
   font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em;
   text-transform: uppercase; color: var(--ink-60);
+}
+.field-help {
+  font-family: var(--font-body); font-size: 13px; line-height: 1.5;
+  letter-spacing: normal; text-transform: none; color: var(--ink-60);
 }
 .calc-form select, .calc-form input {
   font: 16px/1.4 var(--font-body); padding: 10px 14px; border: 2px solid var(--line);
@@ -377,9 +448,17 @@ img { max-width: 100%; display: block; }
 }
 
 .calc-result {
-  margin-top: 40px; border: 2px solid var(--line); border-radius: 10px;
+  margin-top: 40px; border: 3px solid var(--line); border-radius: 10px;
   background: #fff; padding: 28px 26px; position: relative; max-width: 560px;
+  box-shadow: 6px 6px 0 var(--volt);
 }
+.calc-result-label {
+  display: inline-block; margin-bottom: 12px; padding: 4px 10px;
+  background: var(--volt); border: 2px solid var(--ink); border-radius: 6px;
+  color: var(--ink);
+}
+.calc-result-explain { font-size: 14px; color: var(--ink-60); margin-top: 4px; }
+.calc-result-cta { margin-top: 20px; cursor: pointer; }
 .calc-result::before {
   content: ""; position: absolute; top: -8px; left: 24px;
   width: 34px; height: 8px; background: var(--ink); border-radius: 4px 4px 0 0;
@@ -623,9 +702,13 @@ img { max-width: 100%; display: block; }
   .cta-block-actions .cta-text-link { text-align: center; padding: 4px 0; }
 
   /* Calculator: formulier als schone mobiele landing */
-  .calc-form { gap: 16px; }
+  .calc-layout { gap: 22px; }
+  .calc-mini-strip { gap: 10px 20px; margin-bottom: 16px; }
+  .calc-form { gap: 16px; padding: 18px 14px; }
   .calc-form button { justify-self: stretch; width: 100%; padding: 14px 20px; min-height: 48px; }
-  .calc-result { padding: 20px 16px; margin-top: 32px; }
+  .calc-help { padding: 18px 16px; }
+  .calc-result { padding: 20px 16px; margin-top: 28px; }
+  .calc-result-cta { width: 100%; display: block; text-align: center; }
   .calc-stats { gap: 10px 20px; margin: 14px 0; }
 
   /* Lead capture: krachtig maar niet krap */
@@ -860,6 +943,13 @@ body,
 .goal-card.active {
   background: var(--volt);
   box-shadow: 4px 4px 0 var(--ink);
+  transform: translateY(-1px);
+}
+
+/* Toetsenbordfocus zichtbaar op de hele kaart (radio zelf is verborgen) */
+.goal-card:focus-within {
+  outline: 3px solid var(--volt-dk);
+  outline-offset: 2px;
 }
 
 .goal-card input {
@@ -867,6 +957,16 @@ body,
   opacity: 0;
   pointer-events: none;
 }
+
+/* Vinkje rechtsboven: actieve staat niet alleen via kleur */
+.goal-check {
+  position: absolute; top: 10px; right: 12px;
+  width: 22px; height: 22px;
+  display: none; align-items: center; justify-content: center;
+  background: var(--ink); color: var(--volt);
+  border-radius: 50%; font-size: 13px; font-weight: 700;
+}
+.goal-card.active .goal-check { display: inline-flex; }
 
 .goal-title {
   font-family: var(--font-display);
