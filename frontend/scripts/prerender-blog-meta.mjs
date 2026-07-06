@@ -160,6 +160,33 @@ function replaceMetaBlock(html, metaHtml) {
   return html.slice(0, s) + metaHtml + html.slice(e + META_END.length);
 }
 
+// ALLEEN voor de homepage: de Vite CSS-bundle niet-render-blocking maken,
+// zodat de statische shell direct kan schilderen (FCP/LCP) zonder te wachten
+// op /assets/index-*.css. Veilig omdat de shell een dekkende fixed overlay is
+// én omdat de shell pas ná window load + 300ms wordt verwijderd — een
+// pending CSS-preload stelt het load-event uit, dus React is altijd gestyled
+// vóórdat de overlay verdwijnt. Andere routes houden gewoon render-blocking
+// CSS (daar is geen overlay die FOUC afdekt).
+function asyncifyMainCss(html) {
+  const re = /<link rel="stylesheet"([^>]*)href="(\/assets\/[^"]+\.css)"([^>]*)>/;
+  const m = html.match(re);
+  if (!m) {
+    console.warn(
+      "Waarschuwing: Vite CSS-link niet gevonden in homepage-HTML; CSS blijft render-blocking.",
+    );
+    return html;
+  }
+  const href = m[2];
+  // crossorigin behouden zodat de preload dezelfde request-mode gebruikt
+  // (anders wordt de CSS dubbel gedownload).
+  const co = /\bcrossorigin\b/.test(m[0]) ? " crossorigin" : "";
+  const replacement =
+    `<link rel="preload" as="style"${co} href="${href}" ` +
+    `onload="this.onload=null;this.rel='stylesheet'">` +
+    `<noscript><link rel="stylesheet"${co} href="${href}"></noscript>`;
+  return html.replace(re, replacement);
+}
+
 // Injecteert de SEO-tekst ín het lege #root, zodat React hem bij mount vervangt.
 function injectSeoBody(html, bodyHtml) {
   const marker = '<div id="root"></div>';
@@ -183,6 +210,8 @@ async function generateStaticPages(template) {
     html = injectSeoBody(html, page.body);
 
     if (page.slug === "") {
+      // Alleen de homepage krijgt async CSS; zie asyncifyMainCss.
+      html = asyncifyMainCss(html);
       await writeFile(path.join(distDir, "index.html"), html, "utf8");
     } else {
       const dir = path.join(distDir, page.slug);
