@@ -314,12 +314,14 @@ img { max-width: 100%; display: block; }
   padding: 12px 0; margin-bottom: 36px;
 }
 /* Alleen de cover op blogpost-pagina's (homepage-kaarten gebruiken
-   .post-card .cover): vaste 16:9-verhouding zodat de afbeelding ruimte
-   reserveert vóór het laden — geen CLS door een "unsized image". */
+   .post-card .cover): volledige afbeelding tonen, dus géén object-fit:cover
+   en geen geforceerde hoogte — covers bevatten tekst die niet mag wegvallen.
+   CLS-bescherming komt van de width/height-attributen op de <img> zelf:
+   daaruit leidt de browser de placeholder-verhouding af vóór het laden. */
 article.post-detail > img.cover {
   width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
   display: block;
   border: 2px solid var(--line); border-radius: 10px; margin-bottom: 36px;
   background: var(--paper);
