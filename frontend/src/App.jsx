@@ -25,22 +25,42 @@ function AnalyticsTracker() {
 }
 
 export default function App() {
-  // Statische first-paint shell uit index.html opruimen NA de eerste paint.
-  // Bewust geen useLayoutEffect: die draait vóór de paint, waardoor de shell
-  // verwijderd kon worden zonder ooit als FCP te tellen. Dubbele
-  // requestAnimationFrame garandeert minstens één paint-gelegenheid vóór
-  // verwijdering; de vertraging is hooguit een paar frames.
+  // Statische first-paint shell uit index.html opruimen, maar pas als hij
+  // gegarandeerd in gecomposite frames heeft gestaan. Dubbele rAF bleek te
+  // vroeg: op mobiel mount React vóór het eerste frame, waardoor de shell
+  // nooit werd geschilderd en niet als FCP/LCP telde. Nu verwijderen op het
+  // laatste van: (a) window load + 300ms, (b) React mount + 800ms. De shell
+  // is een fixed overlay, dus verwijderen geeft geen layout shift; hij mag
+  // dus kort over de React-hero heen blijven staan.
   useEffect(() => {
     const shell = document.getElementById("static-home-shell");
     if (!shell) return;
 
-    if (typeof window.requestAnimationFrame === "function") {
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(() => shell.remove());
-      });
+    let waiting = 2; // beide voorwaarden (load+300ms én mount+800ms) afwachten
+    const timers = [];
+
+    const conditionMet = () => {
+      waiting -= 1;
+      if (waiting <= 0) shell.remove();
+    };
+
+    // (b) React gemount + 800ms
+    timers.push(setTimeout(conditionMet, 800));
+
+    // (a) window load + 300ms
+    const onLoad = () => {
+      timers.push(setTimeout(conditionMet, 300));
+    };
+    if (document.readyState === "complete") {
+      onLoad();
     } else {
-      setTimeout(() => shell.remove(), 0);
+      window.addEventListener("load", onLoad, { once: true });
     }
+
+    return () => {
+      timers.forEach(clearTimeout);
+      window.removeEventListener("load", onLoad);
+    };
   }, []);
 
   return (
