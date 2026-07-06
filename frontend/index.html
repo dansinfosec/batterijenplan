@@ -36,7 +36,10 @@
     <style>
       /* Overlay bóven de React-app (geen document flow): verwijderen van de
          shell verschuift de pagina eronder niet — dat hield CLS op ~0.77. */
-      #static-home-shell{position:fixed;inset:0;z-index:9999;overflow:hidden;background:#F7F6F2;color:#12130F;line-height:1.7;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+      /* Alleen directe systeemfonts: de shell-H1 (LCP) mag nooit wachten op
+         Google Fonts of op variabelen uit de CSS-bundle. */
+      #static-home-shell,#static-home-shell *{font-family:Arial,Helvetica,sans-serif}
+      #static-home-shell{position:fixed;inset:0;z-index:9999;overflow:hidden;background:#F7F6F2;color:#12130F;line-height:1.7;-webkit-font-smoothing:antialiased}
       #static-home-shell .shs-w{max-width:1080px;margin:0 auto;padding:0 20px}
       #static-home-shell .shs-header{border-bottom:2px solid #12130F}
       #static-home-shell .shs-brand{display:flex;align-items:center;height:64px;font-weight:900;font-size:20px;letter-spacing:-.02em}
@@ -47,8 +50,8 @@
       #static-home-shell .shs-cta{display:block;margin-top:26px;padding:15px 20px;text-align:center;font-weight:900;font-size:16px;text-transform:uppercase;letter-spacing:.04em;text-decoration:none;color:#12130F;background:#FFD100;border:3px solid #12130F;border-radius:8px;box-shadow:5px 5px 0 #12130F}
       #static-home-shell .shs-stats{margin-top:28px;display:flex;flex-wrap:wrap;gap:16px 24px}
       #static-home-shell .shs-stats div{border-left:3px solid #FFD100;padding-left:12px}
-      #static-home-shell .shs-stats b{display:block;font-size:20px;font-family:ui-monospace,Menlo,Consolas,monospace}
-      #static-home-shell .shs-stats span{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-family:ui-monospace,Menlo,Consolas,monospace}
+      #static-home-shell .shs-stats b{display:block;font-size:20px}
+      #static-home-shell .shs-stats span{font-size:12px;letter-spacing:.08em;text-transform:uppercase}
       @media(min-width:641px){
         #static-home-shell .shs-hero{padding:64px 0}
         #static-home-shell h1{font-size:clamp(40px,7vw,84px)}
