@@ -313,7 +313,17 @@ img { max-width: 100%; display: block; }
   border-top: 2px solid var(--line); border-bottom: 2px solid var(--line);
   padding: 12px 0; margin-bottom: 36px;
 }
-.post-detail .cover { border: 2px solid var(--line); border-radius: 10px; margin-bottom: 36px; }
+/* Alleen de cover op blogpost-pagina's (homepage-kaarten gebruiken
+   .post-card .cover): vaste 16:9-verhouding zodat de afbeelding ruimte
+   reserveert vóór het laden — geen CLS door een "unsized image". */
+article.post-detail > img.cover {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+  border: 2px solid var(--line); border-radius: 10px; margin-bottom: 36px;
+  background: var(--paper);
+}
 .prose { overflow-wrap: break-word; } /* lange woorden/URLs mogen niet overflowen */
 .prose h2 { font-family: var(--font-display); font-weight: 800; font-size: 26px; margin: 40px 0 12px; }
 .prose h3 { font-family: var(--font-display); font-weight: 700; font-size: 20px; margin: 32px 0 10px; }
@@ -684,7 +694,7 @@ img { max-width: 100%; display: block; }
     line-height: 1.08; margin: 10px 0 16px;
   }
   .post-detail .byline { gap: 6px 16px; padding: 10px 0; margin-bottom: 28px; }
-  .post-detail .cover { margin-bottom: 28px; }
+  article.post-detail > img.cover { margin-bottom: 28px; }
   .prose h2 { font-size: 22px; margin: 32px 0 10px; }
   .prose h3 { font-size: 18px; margin: 26px 0 8px; }
   .prose table { display: block; overflow-x: auto; } /* brede tabellen scrollen i.p.v. overflowen */

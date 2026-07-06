@@ -15,3 +15,17 @@ export function optimizedImageUrl(url, width = 800) {
     `/image/upload/f_auto,q_auto,w_${width},c_limit/`,
   );
 }
+
+// srcset-string met meerdere Cloudinary-breedtes voor de responsive cover op
+// blogpost-pagina's. Geeft undefined voor niet-Cloudinary URL's, zodat React
+// het srcset-attribuut dan gewoon weglaat.
+export function coverSrcSet(url, widths = [480, 768, 960, 1200]) {
+  if (
+    !url ||
+    !url.includes("res.cloudinary.com") ||
+    !url.includes("/image/upload/")
+  ) {
+    return undefined;
+  }
+  return widths.map((w) => `${optimizedImageUrl(url, w)} ${w}w`).join(", ");
+}
