@@ -115,4 +115,11 @@ export function trackLeadSubmit(source = "calculator_advies") {
     event_category: "lead",
     event_label: source,
   });
+
+  // Google Ads verwacht exact deze eventnaam voor de conversie-tag
+  // (zie het event-snippet in Google Ads). Geen event_callback nodig:
+  // er is geen navigatie na het versturen van het formulier.
+  window.gtag("event", "conversion_event_signup", {
+    event_timeout: 2000,
+  });
 }
