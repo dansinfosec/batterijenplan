@@ -29,11 +29,14 @@ export default function App() {
   // gegarandeerd in gecomposite frames heeft gestaan. Dubbele rAF bleek te
   // vroeg: op mobiel mount React vóór het eerste frame, waardoor de shell
   // nooit werd geschilderd en niet als FCP/LCP telde. Nu verwijderen op het
-  // laatste van: (a) window load + 300ms, (b) React mount + 800ms. De shell
-  // is een fixed overlay, dus verwijderen geeft geen layout shift; hij mag
-  // dus kort over de React-hero heen blijven staan.
+  // laatste van: (a) window load + 300ms, (b) React mount + 800ms. Geldt voor
+  // zowel de homepage-shell als de blogpost-shell. Beide zijn fixed overlays,
+  // dus verwijderen geeft geen layout shift; ze mogen kort over de React-UI
+  // heen blijven staan.
   useEffect(() => {
-    const shell = document.getElementById("static-home-shell");
+    const shell =
+      document.getElementById("static-home-shell") ||
+      document.getElementById("static-post-shell");
     if (!shell) return;
 
     let waiting = 2; // beide voorwaarden (load+300ms én mount+800ms) afwachten

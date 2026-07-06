@@ -313,7 +313,11 @@ img { max-width: 100%; display: block; }
   border-top: 2px solid var(--line); border-bottom: 2px solid var(--line);
   padding: 12px 0; margin-bottom: 36px;
 }
-.post-detail .cover { border: 2px solid var(--line); border-radius: 10px; margin-bottom: 36px; }
+.post-detail .cover {
+  display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover;
+  border: 2px solid var(--line); border-radius: 10px; margin-bottom: 36px;
+  background: var(--paper);
+}
 .prose { overflow-wrap: break-word; } /* lange woorden/URLs mogen niet overflowen */
 .prose h2 { font-family: var(--font-display); font-weight: 800; font-size: 26px; margin: 40px 0 12px; }
 .prose h3 { font-family: var(--font-display); font-weight: 700; font-size: 20px; margin: 32px 0 10px; }

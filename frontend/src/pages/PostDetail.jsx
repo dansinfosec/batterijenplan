@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch.js";
 import { fetchPost, fetchComments, postComment } from "../api.js";
 import { setPageMeta, setJsonLd, blogPostingSchema, DEFAULT_DESCRIPTION } from "../seo.js";
-import { optimizedImageUrl } from "../images.js";
+import { optimizedImageUrl, coverSrcSet } from "../images.js";
 
 function ReadProgress() {
   const [w, setW] = useState(0);
@@ -51,7 +51,43 @@ function CalculatorCta() {
 }
 
 function Comments({ slug }) {
-  const { data, loading } = useFetch(() => fetchComments(slug), [slug]);
+  // Perf: de reacties staan onderaan de post. We halen ze pas op wanneer de
+  // sectie in de buurt van de viewport komt, zodat de comments-API niet in de
+  // initiële LCP-dependencychain zit.
+  const sectionRef = useRef(null);
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    if ("IntersectionObserver" in window && sectionRef.current) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            observer.disconnect();
+            setReady(true);
+          }
+        },
+        { rootMargin: "600px" },
+      );
+      observer.observe(sectionRef.current);
+      return () => observer.disconnect();
+    }
+
+    // Fallback zonder IntersectionObserver: 3s na window load.
+    let timer;
+    const startLater = () => {
+      timer = setTimeout(() => setReady(true), 3000);
+    };
+    if (document.readyState === "complete") {
+      startLater();
+    } else {
+      window.addEventListener("load", startLater, { once: true });
+    }
+    return () => {
+      window.removeEventListener("load", startLater);
+      clearTimeout(timer);
+    };
+  }, []);
+
+  const { data, loading } = useFetch(() => fetchComments(slug), [slug], ready);
 
   const [form, setForm] = useState({
     name: "",
@@ -105,10 +141,10 @@ function Comments({ slug }) {
   };
 
   return (
-    <section className="comments">
+    <section className="comments" ref={sectionRef}>
       <h2>Reacties</h2>
 
-      {loading && <p className="mono">laden…</p>}
+      {ready && loading && <p className="mono">laden…</p>}
 
       {items.map((c) => (
         <div className="comment" key={c.id}>
@@ -228,7 +264,12 @@ export default function PostDetail() {
         <img
           className="cover"
           src={optimizedImageUrl(post.cover_image_url, 1200)}
+          srcSet={coverSrcSet(post.cover_image_url)}
+          sizes="(max-width: 720px) 100vw, 960px"
+          width="1200"
+          height="675"
           alt=""
+          fetchPriority="high"
           decoding="async"
           onError={(e) => {
             // Geen kapot-plaatje-icoon tonen; verberg de afbeelding gewoon.
