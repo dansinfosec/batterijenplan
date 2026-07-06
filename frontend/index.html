@@ -34,7 +34,9 @@
     <!-- Perf: kritieke CSS voor de statische homepage-shell hieronder.
          Alleen systeemfonts, geen afbeeldingen; React ruimt de shell op. -->
     <style>
-      #static-home-shell{background:#F7F6F2;color:#12130F;line-height:1.7;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+      /* Overlay bóven de React-app (geen document flow): verwijderen van de
+         shell verschuift de pagina eronder niet — dat hield CLS op ~0.77. */
+      #static-home-shell{position:fixed;inset:0;z-index:9999;overflow:hidden;background:#F7F6F2;color:#12130F;line-height:1.7;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
       #static-home-shell .shs-w{max-width:1080px;margin:0 auto;padding:0 20px}
       #static-home-shell .shs-header{border-bottom:2px solid #12130F}
       #static-home-shell .shs-brand{display:flex;align-items:center;height:64px;font-weight:900;font-size:20px;letter-spacing:-.02em}
