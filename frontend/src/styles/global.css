@@ -313,6 +313,22 @@ img { max-width: 100%; display: block; }
   border-top: 2px solid var(--line); border-bottom: 2px solid var(--line);
   padding: 12px 0; margin-bottom: 36px;
 }
+/* ── PostDetail laad-skeleton ─────────────────────────────────────────
+   Alleen voor de blogpost-pagina: reserveert tijdens het laden ruwweg
+   dezelfde verticale ruimte als het geladen artikel (incl. 16:9-cover),
+   zodat de footer niet omhoog/omlaag springt (CLS). Geen animaties.
+   Raakt homepage of post-cards niet. */
+.post-detail-skeleton .sk { background: #ECEAE3; border-radius: 6px; }
+.post-detail-skeleton .sk-kicker { width: 40%; max-width: 280px; height: 14px; }
+.post-detail-skeleton .sk-title { margin-top: 14px; height: clamp(34px, 5vw, 52px); width: 92%; }
+.post-detail-skeleton .sk-title-2 { width: 55%; margin-top: 10px; }
+.post-detail-skeleton .sk-byline { margin: 22px 0 36px; height: 46px; width: 100%; border-radius: 0; }
+.post-detail-skeleton .sk-ctaline { height: 18px; width: 70%; max-width: 460px; margin-bottom: 24px; }
+.post-detail-skeleton .sk-cover { width: 100%; aspect-ratio: 16 / 9; border-radius: 10px; margin-bottom: 36px; }
+.post-detail-skeleton .sk-block { height: 170px; border-radius: 10px; margin: 28px 0; }
+.post-detail-skeleton .sk-line { height: 16px; margin: 14px 0; }
+.post-detail-skeleton .sk-line-short { width: 62%; }
+
 /* Alleen de cover op blogpost-pagina's (homepage-kaarten gebruiken
    .post-card .cover): volledige afbeelding tonen, dus géén object-fit:cover
    en geen geforceerde hoogte — covers bevatten tekst die niet mag wegvallen.

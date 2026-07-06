@@ -182,10 +182,33 @@ export default function PostDetail() {
   }, [post]);
 
   if (loading) {
+    // Skeleton dat ruwweg dezelfde ruimte inneemt als een geladen artikel
+    // (titel, byline, 16:9-cover, CTA-blok, tekstregels), zodat content en
+    // footer niet verspringen zodra de post binnenkomt — dat drukte CLS.
+    // Bewust simpel: geen animaties, geen dependencies.
     return (
-      <div className="state mono">
-        <span className="blink">▮▮▮</span> laden…
-      </div>
+      <article
+        className="container post-detail post-detail-skeleton"
+        aria-busy="true"
+        aria-label="Artikel wordt geladen"
+      >
+        <div className="sk sk-kicker" />
+        <div className="sk sk-title" />
+        <div className="sk sk-title sk-title-2" />
+        <div className="sk sk-byline" />
+        <div className="sk sk-ctaline" />
+        <div className="sk sk-cover" />
+        <div className="sk sk-block" />
+        <div className="sk sk-line" />
+        <div className="sk sk-line" />
+        <div className="sk sk-line sk-line-short" />
+        <div className="sk sk-line" />
+        <div className="sk sk-line" />
+        <div className="sk sk-line sk-line-short" />
+        <div className="sk sk-line" />
+        <div className="sk sk-line" />
+        <div className="sk sk-block" />
+      </article>
     );
   }
 
