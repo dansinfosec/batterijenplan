@@ -100,9 +100,16 @@
                                 <hr>
 
                                 <p>
-                                    Gemiddelde dagelijkse teruglevering:
+                                    Gemiddelde teruglevering per zonnige dag:
                                     <strong>{{ result.daily_export }} kWh</strong>
                                 </p>
+
+                                {% if result.note %}
+                                <div class="alert alert-info mt-3">
+                                    <strong>Beperkt overschot:</strong>
+                                    {{ result.note }}
+                                </div>
+                                {% endif %}
 
                                 <p>
                                     Gemiddeld dagelijks stroomverbruik:

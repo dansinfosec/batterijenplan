@@ -291,9 +291,30 @@ export default function Calculator() {
           </p>
 
           <div className="calc-stats mono">
-            <span>Gem. teruglevering/dag: {result.daily_export} kWh</span>
+            <span>Gem. teruglevering per zonnige dag: {result.daily_export} kWh</span>
             <span>Gem. verbruik/dag: {result.daily_usage} kWh</span>
           </div>
+
+          {result.note && (
+            <div className="calc-note">
+              <strong>Beperkt overschot:</strong> {result.note}
+            </div>
+          )}
+
+          <div className="calc-note">
+            De basis van dit advies is uw teruggeleverde stroom verdeeld over
+            ongeveer 250 zonnige dagen. Bij hoog eigen verbruik rekenen wij met
+            een beperkte extra marge. Zo voorkomen we dat een hoge jaarafname
+            automatisch leidt tot een te grote batterij.
+          </div>
+
+          {result.goal_label !== "zelfconsumptie" && (
+            <div className="calc-note">
+              Bij dynamische handel kijken we niet alleen naar stroomverbruik,
+              maar vooral naar beschikbare opslagruimte uit teruglevering,
+              netaansluiting en omvormervermogen.
+            </div>
+          )}
 
           <div className="calc-note">
             <strong>Let op:</strong> deze berekening is indicatief. Voor een
