@@ -13,6 +13,10 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const SITE_URL = "https://batterijenplan.nl";
+// Blogposts gebruiken de www-variant voor canonical/og:url: de site leeft op
+// www en scrapers (m.n. WhatsApp) volgen anders eerst een redirect en vallen
+// soms terug op homepage-metadata.
+const POST_URL_BASE = "https://www.batterijenplan.nl";
 const SITE_NAME = "Batterijenplan.nl";
 const API_URL = process.env.PRERENDER_API_URL || "https://api.batterijenplan.nl/api/posts/";
 const DEFAULT_DESCRIPTION =
@@ -257,12 +261,37 @@ async function fetchAllPosts() {
   return posts;
 }
 
+// WhatsApp-vriendelijke social image: expliciet JPG (géén f_auto — WhatsApp
+// gaat vaak mis op content-negotiation/WebP), vast 1200x630, gepad in plaats
+// van gecropt zodat tekst op de cover niet wegvalt, met de site-achtergrond
+// als padding-kleur.
+function socialImageUrl(url) {
+  if (
+    !url ||
+    !url.includes("res.cloudinary.com") ||
+    !url.includes("/image/upload/")
+  ) {
+    return url || null;
+  }
+  let out = url.replace(
+    "/image/upload/",
+    "/image/upload/f_jpg,q_auto,w_1200,h_630,c_pad,b_rgb:F7F6F2/",
+  );
+  // Cloudinary public ids zonder extensie: .jpg toevoegen zodat scrapers
+  // het bestandstype ook aan de URL kunnen zien.
+  if (!/\.(jpe?g|png|webp|gif)$/i.test(out)) out += ".jpg";
+  return out;
+}
+
 function postMetaBlock(post) {
-  const url = `${SITE_URL}/post/${post.slug}`;
+  const url = `${POST_URL_BASE}/post/${post.slug}`;
   const title = `${post.title} — Batterijenplan`;
-  const description = post.meta_description || post.excerpt || DEFAULT_DESCRIPTION;
+  // Altijd post-specifiek: excerpt eerst, dan de (uit de body afgeleide)
+  // meta_description. Nooit terugvallen op de homepage-beschrijving.
+  const description = post.excerpt || post.meta_description || post.title;
 
   const image = post.cover_image_url || null;
+  const socialImage = socialImageUrl(image);
 
   const schema = {
     "@context": "https://schema.org",
@@ -290,15 +319,19 @@ function postMetaBlock(post) {
     `<meta property="og:type" content="article" />`,
     `<meta property="og:url" content="${u}" />`,
     `<meta property="og:site_name" content="${SITE_NAME}" />`,
-    `<meta name="twitter:card" content="summary" />`,
+    `<meta name="twitter:card" content="summary_large_image" />`,
     `<meta name="twitter:title" content="${t}" />`,
     `<meta name="twitter:description" content="${d}" />`,
   ];
 
-  if (image) {
-    const i = escapeHtml(image);
+  if (socialImage) {
+    const i = escapeHtml(socialImage);
     tags.push(
       `<meta property="og:image" content="${i}" />`,
+      `<meta property="og:image:secure_url" content="${i}" />`,
+      `<meta property="og:image:width" content="1200" />`,
+      `<meta property="og:image:height" content="630" />`,
+      `<meta property="og:image:type" content="image/jpeg" />`,
       `<meta name="twitter:image" content="${i}" />`,
     );
   }
