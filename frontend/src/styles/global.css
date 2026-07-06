@@ -367,8 +367,23 @@ article.post-detail > img.cover {
 }
 .prose pre code { background: none; color: inherit; padding: 0; }
 .prose table { border-collapse: collapse; margin: 24px 0; width: 100%; }
-.prose th, .prose td { border: 1.5px solid var(--ink); padding: 8px 12px; text-align: left; }
+.prose th, .prose td { border: 1.5px solid var(--ink); padding: 8px 12px; text-align: left; vertical-align: top; }
 .prose th { background: var(--volt); font-family: var(--font-mono); font-size: 13px; text-transform: uppercase; }
+
+/* Scroll-wrapper om blogpost-tabellen (PostDetail wrapt <table> in deze div):
+   brede tabellen scrollen zijwaarts binnen de container i.p.v. de pagina te
+   verbreden. min-width voorkomt dat kolommen op mobiel worden platgedrukt. */
+.post-detail .post-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 24px 0;
+}
+.post-detail .post-table-scroll table {
+  min-width: 640px;
+  width: 100%;
+  margin: 0; /* marge zit op de wrapper */
+}
 
 /* leesvoortgang bovenin, als laadbalk */
 .read-progress {
@@ -721,7 +736,6 @@ article.post-detail > img.cover {
   article.post-detail > img.cover { margin-bottom: 28px; }
   .prose h2 { font-size: 22px; margin: 32px 0 10px; }
   .prose h3 { font-size: 18px; margin: 26px 0 8px; }
-  .prose table { display: block; overflow-x: auto; } /* brede tabellen scrollen i.p.v. overflowen */
   .comments { margin-top: 48px; }
 
   /* Post-kaarten: batterijcel blijft, iets compacter */
@@ -833,12 +847,8 @@ body,
   height: auto;
 }
 
-/* Brede tabellen scrollbaar maken */
-.prose table {
-  display: block;
-  width: 100%;
-  overflow-x: auto;
-}
+/* Brede tabellen scrollen via .post-table-scroll (zie PostDetail); de oude
+   display:block-hack op de tabel zelf is vervangen — die brak de kolombreedtes. */
 
 /* CTA blokken in blogpost moeten binnen de mobiele gutter blijven */
 .cta-block {

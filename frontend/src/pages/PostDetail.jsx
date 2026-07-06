@@ -5,6 +5,16 @@ import { fetchPost, fetchComments, postComment } from "../api.js";
 import { setPageMeta, setJsonLd, blogPostingSchema, DEFAULT_DESCRIPTION } from "../seo.js";
 import { optimizedImageUrl, coverSrcSet } from "../images.js";
 
+// Wrapt tabellen uit de (server-side gerenderde) markdown-body in een
+// scroll-container, zodat brede vergelijkingstabellen op mobiel zijwaarts
+// scrollen in plaats van de pagina te verbreden.
+function wrapTables(html) {
+  if (!html) return html;
+  return html
+    .replaceAll("<table>", '<div class="post-table-scroll"><table>')
+    .replaceAll("</table>", "</table></div>");
+}
+
 function ReadProgress() {
   const [w, setW] = useState(0);
 
@@ -269,7 +279,7 @@ export default function PostDetail() {
 
       <div
         className="prose"
-        dangerouslySetInnerHTML={{ __html: post.body_html }}
+        dangerouslySetInnerHTML={{ __html: wrapTables(post.body_html) }}
       />
 
       <CalculatorCta />
