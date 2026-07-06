@@ -328,6 +328,12 @@ img { max-width: 100%; display: block; }
 .post-detail-skeleton .sk-block { height: 170px; border-radius: 10px; margin: 28px 0; }
 .post-detail-skeleton .sk-line { height: 16px; margin: 14px 0; }
 .post-detail-skeleton .sk-line-short { width: 62%; }
+/* Desktop: extra hoogte reserveren zodat de footer tijdens het laden ruim
+   onder de eerste viewport blijft en niet zichtbaar verschuift zodra het
+   echte artikel de skeleton vervangt. Mobiel (CLS al 0) blijft ongemoeid. */
+@media (min-width: 900px) {
+  .post-detail-skeleton { min-height: 1800px; }
+}
 
 /* Alleen de cover op blogpost-pagina's (homepage-kaarten gebruiken
    .post-card .cover): volledige afbeelding tonen, dus géén object-fit:cover
