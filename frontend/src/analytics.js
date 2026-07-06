@@ -36,11 +36,10 @@ function setupGtag() {
   flushPendingEvents();
 }
 
-// Perf: gtag.js (groot, ~175 KB+) mag niet meedoen in het FCP/LCP-venster.
-// We laden pas bij de eerste échte gebruikersinteractie, of anders 8 seconden
-// na window load. Geen requestIdleCallback: die vuurde vaak al tijdens de
-// initial load.
-const GTAG_LOAD_AFTER_LOAD_MS = 8000;
+// Perf: gtag.js (~175 KB) mag niet meedoen in het FCP/LCP-venster.
+// We laden pas bij de eerste échte gebruikersinteractie, of anders
+// 5 seconden na window load. Geen requestIdleCallback meer: die vuurde
+// vaak al tijdens de initial load.
 const INTERACTION_EVENTS = ["pointerdown", "keydown", "touchstart", "scroll"];
 
 export function initAnalytics() {
@@ -63,7 +62,7 @@ export function initAnalytics() {
   };
 
   const onLoad = () => {
-    loadTimer = setTimeout(start, GTAG_LOAD_AFTER_LOAD_MS);
+    loadTimer = setTimeout(start, 5000);
   };
 
   // a) eerste gebruikersinteractie…
@@ -71,7 +70,7 @@ export function initAnalytics() {
     window.addEventListener(evt, start, { passive: true });
   }
 
-  // b) …of window load + 8s, wat het eerst komt.
+  // b) …of window load + 5s, wat het eerst komt.
   if (document.readyState === "complete") {
     onLoad();
   } else {
