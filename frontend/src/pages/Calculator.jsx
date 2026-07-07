@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { postCalculator } from "../api.js";
 import LeadCaptureForm, { useLeadCapture } from "../components/LeadCaptureForm.jsx";
@@ -64,6 +64,7 @@ export default function Calculator() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const resultRef = useRef(null);
 
   const leadState = useLeadCapture();
 
@@ -88,6 +89,18 @@ export default function Calculator() {
 
     return () => clearTimeout(timer);
   }, [directAdvice]);
+
+  // Na een geslaagde berekening naar het resultaat scrollen — vooral op
+  // mobiel blijft de gebruiker anders bij de knop hangen. result is bij
+  // page-load null, dus dit springt nooit bij het openen van de pagina.
+  useEffect(() => {
+    if (result && resultRef.current) {
+      resultRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [result]);
 
   // Na elk nieuw resultaat: popup na 4 seconden.
   // Niet tonen als er al een aanvraag is verstuurd.
@@ -152,7 +165,7 @@ export default function Calculator() {
   };
 
   return (
-    <article className="container post-detail">
+    <article className="container post-detail calc-page">
       <p className="mono kicker">Calculator · batterijcapaciteit · advies</p>
 
       <h1>
@@ -269,7 +282,7 @@ export default function Calculator() {
       {error && <div className="calc-error mono">{error}</div>}
 
       {result && (
-        <div className="calc-result">
+        <div className="calc-result" ref={resultRef}>
           <span className="mono calc-result-label">Uw batterijadvies</span>
 
           <p className="calc-result-goal">

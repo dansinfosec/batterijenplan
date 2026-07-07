@@ -415,10 +415,26 @@ article.post-detail > img.cover {
 /* ── Calculator ── */
 /* Twee kolommen op desktop: formulier links, hulpkaart rechts.
    Op mobiel stapelt alles; de hulpkaart komt dan onderaan. */
+/* Calculator-pagina: niet de smalle blog-leeskolom (760px) van .post-detail,
+   maar een echte desktop-container. Dubbele klasse voor specificiteit boven
+   de .post-detail breedte-regels verderop (incl. de mobile gutter-fix). */
+.post-detail.calc-page {
+  width: min(1120px, calc(100% - 32px));
+  max-width: 1120px;
+}
+
 .calc-layout { display: grid; gap: 28px; align-items: start; }
 @media (min-width: 960px) {
-  .calc-layout { grid-template-columns: minmax(0, 1fr) 340px; }
-  .calc-help { position: sticky; top: 84px; }
+  .calc-layout { grid-template-columns: minmax(0, 680px) 340px; gap: 32px; }
+  .calc-help { position: sticky; top: 96px; }
+  /* Linkerkolom: kaarten vullen de volle kolombreedte (mobiel/tablet
+     behouden hun bestaande maten via de algemene regels). */
+  .calc-page .calc-form,
+  .calc-page .calc-error,
+  .calc-page .calc-result,
+  .calc-page .lead-form {
+    max-width: 100%;
+  }
 }
 .calc-main { min-width: 0; }
 
@@ -504,6 +520,8 @@ article.post-detail > img.cover {
   margin-top: 40px; border: 3px solid var(--line); border-radius: 10px;
   background: #fff; padding: 28px 26px; position: relative; max-width: 560px;
   box-shadow: 6px 6px 0 var(--volt);
+  /* Ruimte voor de sticky header bij scrollIntoView na een berekening */
+  scroll-margin-top: 90px;
 }
 .calc-result-label {
   display: inline-block; margin-bottom: 12px; padding: 4px 10px;
