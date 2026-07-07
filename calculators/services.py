@@ -1,65 +1,109 @@
 SOLAR_DAYS_PER_YEAR = 250
 DAYS_PER_YEAR = 365
 
+# Handel/dynamisch contract: ± 30% extra opslagruimte bovenop de basis.
+TRADING_MULTIPLIER = 1.3
+
 
 class BatteryAdviceError(Exception):
     """Raised when the input combination doesn't make sense for an advice."""
 
 
 # Kernregel van het advies:
-#   Teruggeleverde stroom bepaalt de basis.
-#   Eigen verbruik bepaalt alleen de marge.
-# De batterij slaat zonnestroom-overschot op; een hoge jaarafname mag dus
-# nooit rechtstreeks de capaciteit opschalen (dat gaf onrealistische adviezen
-# zoals 88 kWh bij 2.920 kWh teruglevering).
+#   basis = jaarlijkse teruglevering / 250 zonnige dagen
+#   zelfconsumptie: advies = basis
+#   handel/dynamisch: advies = basis × 1,3
+# Batterijgrootte wordt NOOIT rechtstreeks uit het jaarverbruik berekend;
+# hoog verbruik mag niet automatisch een enorm systeem opleveren.
 
-# Beschikbare systemen voor de match "Mogelijk passend systeem".
-RESIDENTIAL_SYSTEMS = [
-    (5, "5 kWh systeem"),
-    (10, "10 kWh systeem"),
-    (15, "15 kWh systeem"),
-    (20, "20 kWh systeem"),
-    (30, "30 kWh systeem"),
-    (40, "40 kWh systeem"),
-]
-LARGE_SYSTEMS = [
-    (63, "63 kWh systeem"),
-    (88, "88 kWh systeem"),
-    (100, "100 kWh zakelijk systeem"),
-    (150, "150 kWh zakelijk systeem"),
-    (250, "250 kWh+ zakelijk systeem"),
-]
-
-# Plafonds (bovenkant advies) voor particulier, per teruglevering-band.
-# NB: de band 1.000–3.000 staat op 20 kWh: de formule komt binnen die band
-# nooit hoger uit dan ~19,7 kWh en het referentievoorbeeld (2.920 kWh export
-# → 15,0–19,2 kWh, systeem 20 kWh) moet mogelijk blijven.
-RESIDENTIAL_CAPS = [
-    (1000, 5),
-    (3000, 20),
-    (6000, 25),
-    (10000, 40),
+# ── Productcatalogus ──────────────────────────────────────────────────────
+# (naam, capaciteit kWh, prijs €, omvormer-notitie of None)
+RESIDENTIAL_CATALOG = [
+    ("Dyness S3 Tower T7", 7.10, 6872.80, None),
+    ("Dyness S3 Tower T10", 10.15, 7453.60, None),
+    ("Dyness S3 Tower T14", 14.20, 8034.40, None),
+    ("Dyness S3 Tower T17", 17.75, 8615.20, None),
+    ("Dyness S3 Tower T21", 21.30, 9231.09, None),
+    ("Dyness S3 Tower T28", 28.40, 12026.19, None),
+    ("Dyness S3 Tower T35", 34.50, 12705.00, None),
+    ("Dyness S3 Tower T42", 42.00, 13878.70, None),
+    ("Dyness S3 Tower T53", 53.00, 16637.50, None),
+    ("Dyness S3 Tower T63", 63.00, 18960.70, None),
+    ("Dyness S3 Tower T85", 85.00, 25857.70, None),
+    ("Dyness S3 Tower T88", 88.00, 27672.70, None),
+    ("Dyness S3 Tower T106", 106.00, 34811.70, None),
 ]
 
+BUSINESS_CATALOG = [
+    ("Dyness S3 Tower T7", 7.10, 5680, None),
+    ("Dyness S3 Tower T10", 10.15, 6160, None),
+    ("Dyness S3 Tower T14", 14.20, 6640, None),
+    ("Dyness S3 Tower T17", 17.75, 7120, None),
+    ("Dyness S3 Tower T21", 21.30, 7629, None),
+    ("Dyness S3 Tower T28", 28.40, 9939, None),
+    ("Dyness S3 Tower T35", 34.50, 10500, None),
+    ("Dyness S3 Tower T42", 42.00, 11470, None),
+    ("Dyness S3 Tower T53", 53.00, 13750, None),
+    ("Dyness S3 Tower T63", 63.00, 15670, None),
+    ("Dyness S3 Tower T85", 85.00, 21370, None),
+    ("Dyness S3 Tower T88", 88.00, 22870, None),
+    ("Dyness S3 Tower T106", 106.00, 28770, None),
+    ("Dyness DH100F", 107.00, 39400, "50 kW"),
+    ("BOLT-215kWh", 215.00, 63567, None),
+    ("Dyness DH200Y", 232.00, 64259, "100 kW"),
+    ("BOLT-430kWh 2x Cabinet", 430.00, 125940, "200 kW"),
+    ("BOLT-645kWh 3x Cabinet", 645.00, 166327, "300 kW"),
+    ("BOLT-1075kWh 5x Cabinet", 1075.00, 264921, "500 kW"),
+]
+
+# ── Nederlandse teksten ───────────────────────────────────────────────────
 LIMITED_EXPORT_NOTE = (
     "Uw teruglevering is beperkt: er is weinig zonnestroom-overschot om op "
     "te slaan. Wij adviseren daarom bewust een klein systeem."
 )
+SELF_CONSUMPTION_EXPLANATION = (
+    "Bij zelfconsumptie baseren wij het advies op de hoeveelheid "
+    "teruggeleverde zonnestroom die u op een zonnige dag kunt opslaan."
+)
+TRADING_EXPLANATION = (
+    "Bij handel en dynamische sturing rekenen wij ongeveer 30% extra "
+    "opslagruimte bovenop uw gemiddelde teruglevering per zonnige dag."
+)
+BUSINESS_NOTE = (
+    "Zakelijke batterijadviezen zijn indicatief. Voor grotere systemen "
+    "controleren wij altijd netaansluiting, omvormervermogen, piekverbruik "
+    "en EMS-strategie."
+)
+INVERTER_NOTE = (
+    "Het omvormervermogen wordt afgestemd op uw netaansluiting en kan "
+    "indien nodig softwarematig worden begrensd."
+)
 
 
-def _product_advice_for(average_capacity, customer_type, exported_energy):
-    # 63 kWh en groter alleen bij zakelijk gebruik of zeer hoge teruglevering.
-    allow_large = customer_type == "business" or exported_energy > 10000
-    options = RESIDENTIAL_SYSTEMS + (LARGE_SYSTEMS if allow_large else [])
+def _format_number_nl(value):
+    """21.3 → '21,3'; 42.0 → '42'; 17.75 → '17,75' (NL-decimaalkomma)."""
+    text = f"{value:g}"
+    return text.replace(".", ",")
 
-    # Kleinste systeem dat (met 5% tolerantie) de gemiddelde capaciteit dekt.
-    for size, label in options:
-        if average_capacity <= size * 1.05:
-            return label
 
-    if allow_large:
-        return "Maatwerk batterijopslag systeem"
-    return options[-1][1]
+def _format_price_nl(amount):
+    """9231.09 → '9.231,09' (NL-notatie: punt als duizendtal, komma decimaal)."""
+    text = f"{amount:,.2f}"  # 9,231.09
+    return text.replace(",", "\x00").replace(".", ",").replace("\x00", ".")
+
+
+def _match_product(recommended_capacity, customer_type):
+    """Kies het product dat het dichtst bij de geadviseerde capaciteit ligt.
+
+    Valt er één of meer systemen binnen de adviesrange (±10%), dan is het
+    dichtstbijzijnde daarvan automatisch ook het dichtstbijzijnde totaal.
+    Nooit blind het eerstvolgende grotere systeem kiezen: zo krijgt een lage
+    teruglevering nooit een veel te groot systeem geadviseerd.
+    """
+    catalog = BUSINESS_CATALOG if customer_type == "business" else RESIDENTIAL_CATALOG
+
+    # Dichtstbij; bij gelijke afstand wint het kleinere (goedkopere) systeem.
+    return min(catalog, key=lambda p: (abs(p[1] - recommended_capacity), p[1]))
 
 
 def calculate_battery_advice(customer_type, yearly_usage, goal, exported_energy):
@@ -89,52 +133,39 @@ def calculate_battery_advice(customer_type, yearly_usage, goal, exported_energy)
     # Zakelijk: geen harde bovengrens op verbruik of teruglevering
 
     # Basis: teruggeleverde stroom verdeeld over ± 250 zonnige dagen.
-    daily_solar_surplus = exported_energy / SOLAR_DAYS_PER_YEAR
+    basis = exported_energy / SOLAR_DAYS_PER_YEAR
     daily_usage = yearly_usage / DAYS_PER_YEAR
-
-    # Eigen verbruik geeft alleen een beperkte extra marge (max +30%),
-    # nooit een vermenigvuldiging van de batterij.
-    usage_multiplier = 1.0
-    if daily_solar_surplus > 0 and daily_usage > daily_solar_surplus * 2:
-        usage_multiplier = 1.2
-    if daily_solar_surplus > 0 and daily_usage > daily_solar_surplus * 3.5:
-        usage_multiplier = 1.3
-
-    advised_capacity = daily_solar_surplus * usage_multiplier
 
     if goal == "self_consumption":
         goal_label = "zelfconsumptie"
+        explanation = SELF_CONSUMPTION_EXPLANATION
+        recommended_capacity = basis
     else:
         goal_label = "handel / dynamisch energiecontract"
-        # Dynamische handel: kleine extra marge, geen enorme systemen.
-        advised_capacity *= 1.1
+        explanation = TRADING_EXPLANATION
+        recommended_capacity = basis * TRADING_MULTIPLIER
 
-    lower_range = advised_capacity * 0.9
-    upper_range = advised_capacity * 1.15
+    lower_range = recommended_capacity * 0.9
+    upper_range = recommended_capacity * 1.1
 
-    # Guardrails particulier: bij lage teruglevering geen grote systemen.
-    # Boven 40 kWh alleen zakelijk of teruglevering > 10.000 kWh/jaar
-    # (particulier > 10.000 is hierboven al afgevangen).
-    if customer_type != "business":
-        cap = 40
-        for threshold, band_cap in RESIDENTIAL_CAPS:
-            if exported_energy < threshold:
-                cap = band_cap
-                break
-        upper_range = min(upper_range, cap)
-        lower_range = min(lower_range, upper_range)
+    name, capacity, price, inverter = _match_product(recommended_capacity, customer_type)
 
-    average_capacity = (lower_range + upper_range) / 2
+    extra_notes = []
+    if customer_type == "business":
+        extra_notes.append(BUSINESS_NOTE)
+    if inverter:
+        extra_notes.append(INVERTER_NOTE)
 
     result = {
         "goal_label": goal_label,
-        "daily_export": round(daily_solar_surplus, 1),
+        "daily_export": round(basis, 1),
         "daily_usage": round(daily_usage, 1),
         "lower_range": round(lower_range, 1),
         "upper_range": round(upper_range, 1),
-        "product_advice": _product_advice_for(
-            average_capacity, customer_type, exported_energy
-        ),
+        "product_advice": f"{name} — {_format_number_nl(capacity)} kWh",
+        "product_price": f"vanaf € {_format_price_nl(price)} eenmalige kosten",
+        "explanation": explanation,
+        "extra_notes": extra_notes,
     }
 
     # Weinig overschot om op te slaan: leg dat uit bij het resultaat.

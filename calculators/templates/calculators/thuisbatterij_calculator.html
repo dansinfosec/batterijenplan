@@ -95,7 +95,19 @@
                                 <p>
                                     Mogelijk passend systeem:
                                     <strong>{{ result.product_advice }}</strong>
+                                    {% if result.product_price %}
+                                    <br>
+                                    <span class="text-muted">{{ result.product_price }}</span>
+                                    {% endif %}
                                 </p>
+
+                                {% if result.explanation %}
+                                <p class="text-muted">{{ result.explanation }}</p>
+                                {% endif %}
+
+                                {% for extra_note in result.extra_notes %}
+                                <div class="alert alert-info mt-3">{{ extra_note }}</div>
+                                {% endfor %}
 
                                 <hr>
 

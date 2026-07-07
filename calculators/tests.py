@@ -14,8 +14,8 @@ class ThuisbatterijCalculatorTests(TestCase):
 
     def test_self_consumption_calculation(self):
         # Basis = teruglevering / 250 zonnige dagen: 5000/250 = 20 kWh.
-        # Verbruik (10/dag) is laag t.o.v. overschot → geen extra marge.
-        # Range: 20*0.9 = 18.0 en 20*1.15 = 23.0 → systeem 20 kWh.
+        # Zelfconsumptie: advies = basis → range 18.0–22.0.
+        # Dichtstbijzijnde systeem: Dyness S3 Tower T21 (21,3 kWh).
         response = self.client.post(
             reverse("thuisbatterij_calculator"),
             {
@@ -28,12 +28,15 @@ class ThuisbatterijCalculatorTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "18.0")
-        self.assertContains(response, "23.0")
-        self.assertContains(response, "20 kWh systeem")
+        self.assertContains(response, "22.0")
+        self.assertContains(response, "Dyness S3 Tower T21")
+        self.assertContains(response, "21,3 kWh")
 
     def test_high_usage_low_export_stays_small(self):
         # Regressietest voor het 88 kWh-probleem: hoog verbruik mag de
         # batterij niet opblazen; teruglevering bepaalt de basis.
+        # Basis 2920/250 = 11,68 → handel ×1,3 = 15,18 → range 13.7–16.7.
+        # Dichtstbijzijnde systeem: T14 (14,2 kWh).
         response = self.client.post(
             reverse("thuisbatterij_calculator"),
             {
@@ -45,11 +48,11 @@ class ThuisbatterijCalculatorTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "15.0")
-        self.assertContains(response, "19.2")
-        self.assertContains(response, "20 kWh systeem")
-        self.assertNotContains(response, "88 kWh systeem")
-        self.assertNotContains(response, "63 kWh systeem")
+        self.assertContains(response, "13.7")
+        self.assertContains(response, "16.7")
+        self.assertContains(response, "Dyness S3 Tower T14")
+        self.assertNotContains(response, "T88")
+        self.assertNotContains(response, "T106")
 
     def test_negative_exported_energy_shows_error(self):
         response = self.client.post(
