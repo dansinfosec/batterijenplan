@@ -80,18 +80,19 @@ export default function Calculator() {
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const resultRef = useRef(null);
+  const sunnyDayRef = useRef(null);
+  const prevNeedsSunnyDay = useRef(false);
 
   const leadState = useLeadCapture();
 
-  // Alleen bij handel/dynamisch én jaarverbruik >= 2x de jaarlijkse
-  // teruglevering: jaargemiddelden kunnen dan een veel hogere piek-
-  // teruglevering op zonnige dagen verhullen. Spiegelt
+  // Bij jaarverbruik >= 2x de jaarlijkse teruglevering (ongeacht doel):
+  // jaargemiddelden kunnen dan een veel hogere piek-teruglevering op
+  // zonnige dagen verhullen. Spiegelt
   // calculators.services.sunny_day_question_required(); de server
   // herberekent deze conditie zelf en negeert het antwoord anders.
   const yearlyUsageNum = parseFloat(form.yearly_usage);
   const exportedEnergyNum = parseFloat(form.exported_energy);
   const needsSunnyDayQuestion =
-    form.goal === "trading" &&
     !Number.isNaN(yearlyUsageNum) &&
     !Number.isNaN(exportedEnergyNum) &&
     yearlyUsageNum >= 2 * exportedEnergyNum;
@@ -131,6 +132,17 @@ export default function Calculator() {
 
     return () => clearTimeout(timer);
   }, [directAdvice]);
+
+  // Zodra de zonnige-dag-vraag vereist wórdt (overgang false → true), rustig
+  // naar het vraagblok scrollen zodat de gebruiker hem niet mist. Bewust
+  // alleen op de overgang: niet opnieuw scrollen bij elke toetsaanslag, en
+  // nooit bij page-load (dan is de conditie al vanaf het begin false).
+  useEffect(() => {
+    if (needsSunnyDayQuestion && !prevNeedsSunnyDay.current) {
+      sunnyDayRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    prevNeedsSunnyDay.current = needsSunnyDayQuestion;
+  }, [needsSunnyDayQuestion]);
 
   // Na een geslaagde, volledige berekening naar het resultaat scrollen —
   // vooral op mobiel blijft de gebruiker anders bij de knop hangen. Bewust
@@ -336,23 +348,24 @@ export default function Calculator() {
         </label>
 
         {needsSunnyDayQuestion && (
-          <div className="calc-sunny-warning">
-            <strong>
-              Uw stroomverbruik is veel hoger dan uw jaarlijkse teruglevering.
+          <div className="calc-sunny-warning" ref={sunnyDayRef}>
+            <span className="calc-sunny-chip">Belangrijk voor een nauwkeurig advies</span>
+            <strong className="calc-sunny-title">
+              Controleer uw teruglevering op een goede zonnige dag
             </strong>
             <p>
-              Uw batterijadvies kan te laag uitvallen, omdat jaargemiddelden
-              geen rekening houden met wat er op een zonnige dag gebeurt.
-              Bekijk voor een nauwkeuriger advies uw omvormer-app of de app
-              van uw energieleverancier en kijk hoeveel kWh u op een goede
-              zonnige dag daadwerkelijk teruglevert aan het net. Gebruik niet
-              uw totale zonne-opwek, maar het bedrag dat u daadwerkelijk
-              teruglevert aan het elektriciteitsnet.
+              Uw jaarlijkse stroomverbruik is veel hoger dan uw jaarlijkse
+              teruglevering. Daardoor kan een berekening op basis van
+              jaargemiddelden uw batterijadvies onderschatten. Kijk daarom in
+              de app van uw energieleverancier, slimme meter of omvormer
+              hoeveel kWh u op een goede zonnige dag daadwerkelijk teruglevert
+              aan het elektriciteitsnet. Vul niet uw totale zonne-opwek in,
+              maar alleen de stroom die u teruglevert aan het net.
             </p>
 
             <label className="calc-sunny-question">
-              Hoeveel kWh levert u gemiddeld terug aan het net op een goede
-              zonnige dag?
+              Hoeveel kWh levert u op een goede zonnige dag maximaal terug aan
+              het net?
               <select
                 value={form.sunny_day_export}
                 onChange={update("sunny_day_export")}

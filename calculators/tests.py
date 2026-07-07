@@ -102,10 +102,10 @@ class ThuisbatterijCalculatorTests(TestCase):
         self.assertContains(response, "22.9")
         self.assertNotContains(response, "verhoogd op basis van")
 
-    def test_sunny_day_export_overrides_low_recommendation(self):
-        # 20000 verbruik / 4000 teruglevering / handel triggert de vraag.
-        # Antwoord "40-50 kWh" -> 45 * 1.2 = 54, veel hoger dan het
-        # jaargemiddelde-advies (~21 kWh) -> groter systeem.
+    def test_sunny_day_export_overrides_low_recommendation_trading(self):
+        # 20000 verbruik / 4000 teruglevering triggert de vraag (>= 2x).
+        # Basis 16, handel-advies 20.8. Antwoord "40-50 kWh" -> 45 kWh:
+        # 45 > basis en > 20.8, dus advies = 45 -> range 40.5-49.5, T42.
         response = self.client.post(
             reverse("thuisbatterij_calculator"),
             {
@@ -118,14 +118,14 @@ class ThuisbatterijCalculatorTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "48.6")
-        self.assertContains(response, "59.4")
-        self.assertContains(response, "Dyness S3 Tower T53")
+        self.assertContains(response, "40.5")
+        self.assertContains(response, "49.5")
+        self.assertContains(response, "Dyness S3 Tower T42")
         self.assertContains(response, "verhoogd op basis van")
 
-    def test_sunny_day_export_not_used_when_self_consumption(self):
-        # Zelfde ratio als hierboven, maar doel is zelfconsumptie -> geen
-        # trigger, ook al is sunny_day_export ingevuld.
+    def test_sunny_day_export_overrides_low_recommendation_self_consumption(self):
+        # De correctie geldt ook voor zelfconsumptie: basis 16, advies 16.
+        # Antwoord "40-50 kWh" -> 45 kWh > 16 -> advies = 45.
         response = self.client.post(
             reverse("thuisbatterij_calculator"),
             {
@@ -133,9 +133,52 @@ class ThuisbatterijCalculatorTests(TestCase):
                 "goal": "self_consumption",
                 "yearly_usage": "20000",
                 "exported_energy": "4000",
+                "sunny_day_export": "40_50",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "40.5")
+        self.assertContains(response, "49.5")
+        self.assertContains(response, "Dyness S3 Tower T42")
+        self.assertContains(response, "verhoogd op basis van")
+
+    def test_sunny_day_export_below_average_keeps_calculation(self):
+        # Antwoord lager dan of gelijk aan het jaargemiddelde per zonnige dag
+        # (basis 4000/250 = 16; "10-20 kWh" -> 15 <= 16): niets veranderen.
+        response = self.client.post(
+            reverse("thuisbatterij_calculator"),
+            {
+                "customer_type": "residential",
+                "goal": "trading",
+                "yearly_usage": "20000",
+                "exported_energy": "4000",
+                "sunny_day_export": "10_20",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "18.7")
+        self.assertContains(response, "22.9")
+        self.assertNotContains(response, "verhoogd op basis van")
+
+    def test_sunny_day_export_over_50_maps_to_60(self):
+        # Voorbeeld uit de spec: export 1999.9 -> basis 8.0; het oude advies
+        # bleef ~10.4 kWh hangen. "Meer dan 50 kWh" -> 60 kWh, dus het advies
+        # moet minimaal 60 worden -> range 54.0-66.0, T63.
+        response = self.client.post(
+            reverse("thuisbatterij_calculator"),
+            {
+                "customer_type": "residential",
+                "goal": "trading",
+                "yearly_usage": "20000",
+                "exported_energy": "1999.9",
                 "sunny_day_export": "over_50",
             },
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, "verhoogd op basis van")
+        self.assertContains(response, "54.0")
+        self.assertContains(response, "66.0")
+        self.assertContains(response, "Dyness S3 Tower T63")
+        self.assertContains(response, "verhoogd op basis van")

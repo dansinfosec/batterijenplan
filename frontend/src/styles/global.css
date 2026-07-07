@@ -495,22 +495,32 @@ article.post-detail > img.cover {
   letter-spacing: normal; text-transform: none; color: var(--ink-60);
 }
 
-/* Extra vraag bij handel/dynamisch + hoog verbruik t.o.v. lage teruglevering:
-   opvallend maar niet alarmerend (gele accent, geen rood/foutkleur). */
+/* Extra vraag bij hoog verbruik t.o.v. lage teruglevering (beide doelen):
+   duidelijk opvallend maar niet alarmerend — gele accenten, geen rood. */
 .calc-sunny-warning {
-  background: var(--paper); border: 2px solid var(--ink); border-left: 6px solid var(--volt);
-  border-radius: 8px; padding: 16px 18px;
+  background: var(--paper); border: 2px solid var(--ink); border-left: 8px solid var(--volt);
+  border-radius: 8px; padding: 18px;
+  box-shadow: 4px 4px 0 var(--volt);
   display: grid; gap: 10px;
+  scroll-margin-top: 90px; /* ruimte voor de sticky header bij scrollIntoView */
 }
-.calc-sunny-warning strong {
-  font-family: var(--font-display); font-weight: 800; font-size: 15px;
+.calc-sunny-chip {
+  justify-self: start;
+  padding: 3px 10px;
+  background: var(--volt); border: 2px solid var(--ink); border-radius: 6px;
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink);
+}
+.calc-sunny-title {
+  font-family: var(--font-display); font-weight: 900; font-size: 17px;
+  line-height: 1.25;
   text-transform: none; letter-spacing: normal; color: var(--ink);
 }
 .calc-sunny-warning p {
-  font-family: var(--font-body); font-size: 13px; line-height: 1.5;
+  font-family: var(--font-body); font-size: 13px; line-height: 1.55;
   text-transform: none; letter-spacing: normal; color: var(--ink-60);
 }
-.calc-sunny-question { gap: 6px; }
+.calc-sunny-question { gap: 6px; font-weight: 700; }
 .calc-form select, .calc-form input {
   font: 16px/1.4 var(--font-body); padding: 10px 14px; border: 2px solid var(--line);
   border-radius: 6px; background: #fff; color: var(--ink);
