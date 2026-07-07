@@ -9,6 +9,20 @@ const CUSTOMER_TYPES = [
   { value: "business", label: "Zakelijk" },
 ];
 
+// Zelfde keuzes als calculators.services.SUNNY_DAY_EXPORT_CHOICES (backend
+// bepaalt de bijbehorende kWh-waarde; de trigger wordt server-side sowieso
+// herberekend, dit is puur om de vraag te tonen/verbergen).
+const SUNNY_DAY_EXPORT_OPTIONS = [
+  { value: "", label: "Maak een keuze" },
+  { value: "under_10", label: "Minder dan 10 kWh" },
+  { value: "10_20", label: "10–20 kWh" },
+  { value: "20_30", label: "20–30 kWh" },
+  { value: "30_40", label: "30–40 kWh" },
+  { value: "40_50", label: "40–50 kWh" },
+  { value: "over_50", label: "Meer dan 50 kWh" },
+  { value: "unknown", label: "Ik weet het niet" },
+];
+
 const MODAL_DELAY_MS = 4000;
 
 function LeadModal({ open, onClose, children }) {
@@ -57,6 +71,7 @@ export default function Calculator() {
     yearly_usage: "",
     goal: "trading",
     exported_energy: "",
+    sunny_day_export: "",
   });
 
   const [result, setResult] = useState(null);
@@ -118,6 +133,19 @@ export default function Calculator() {
     setForm({ ...form, [field]: e.target.value });
   };
 
+  // Alleen bij handel/dynamisch én jaarverbruik >= 2x de jaarlijkse
+  // teruglevering: jaargemiddelden kunnen dan een veel hogere piek-
+  // teruglevering op zonnige dagen verhullen. Spiegelt
+  // calculators.services.sunny_day_question_required(); de server
+  // herberekent deze conditie zelf en negeert het antwoord anders.
+  const yearlyUsageNum = parseFloat(form.yearly_usage);
+  const exportedEnergyNum = parseFloat(form.exported_energy);
+  const needsSunnyDayQuestion =
+    form.goal === "trading" &&
+    !Number.isNaN(yearlyUsageNum) &&
+    !Number.isNaN(exportedEnergyNum) &&
+    yearlyUsageNum >= 2 * exportedEnergyNum;
+
   const submit = async (e) => {
     e.preventDefault();
 
@@ -137,6 +165,12 @@ export default function Calculator() {
       goal: form.goal,
       exported_energy: parseFloat(form.exported_energy),
     };
+
+    // Alleen meesturen als de vraag daadwerkelijk zichtbaar was en
+    // beantwoord; anders blijft de bestaande berekening ongewijzigd.
+    if (needsSunnyDayQuestion && form.sunny_day_export) {
+      payload.sunny_day_export = form.sunny_day_export;
+    }
 
     try {
       const data = await postCalculator(payload);
@@ -273,6 +307,38 @@ export default function Calculator() {
             Bijvoorbeeld: 2500–5000 kWh bij veel zonnepanelen.
           </span>
         </label>
+
+        {needsSunnyDayQuestion && (
+          <div className="calc-sunny-warning">
+            <strong>
+              Uw stroomverbruik is veel hoger dan uw jaarlijkse teruglevering.
+            </strong>
+            <p>
+              Uw batterijadvies kan te laag uitvallen, omdat jaargemiddelden
+              geen rekening houden met wat er op een zonnige dag gebeurt.
+              Bekijk voor een nauwkeuriger advies uw omvormer-app of de app
+              van uw energieleverancier en kijk hoeveel kWh u op een goede
+              zonnige dag daadwerkelijk teruglevert aan het net. Gebruik niet
+              uw totale zonne-opwek, maar het bedrag dat u daadwerkelijk
+              teruglevert aan het elektriciteitsnet.
+            </p>
+
+            <label className="calc-sunny-question">
+              Hoeveel kWh levert u gemiddeld terug aan het net op een goede
+              zonnige dag?
+              <select
+                value={form.sunny_day_export}
+                onChange={update("sunny_day_export")}
+              >
+                {SUNNY_DAY_EXPORT_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+        )}
 
         <button type="submit" disabled={loading}>
           {loading ? "Bezig…" : "Bereken batterijcapaciteit"}

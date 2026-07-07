@@ -67,3 +67,75 @@ class ThuisbatterijCalculatorTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Teruglevering kan niet negatief zijn.")
+
+    def test_sunny_day_question_ignored_without_trigger(self):
+        # Verbruik is niet >= 2x teruglevering -> geen trigger, sunny_day_export
+        # (ook al aanwezig) mag de uitkomst niet beïnvloeden.
+        response = self.client.post(
+            reverse("thuisbatterij_calculator"),
+            {
+                "customer_type": "residential",
+                "goal": "trading",
+                "yearly_usage": "8000",
+                "exported_energy": "5000",
+                "sunny_day_export": "over_50",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "verhoogd op basis van")
+
+    def test_sunny_day_export_unknown_keeps_existing_calculation(self):
+        response = self.client.post(
+            reverse("thuisbatterij_calculator"),
+            {
+                "customer_type": "residential",
+                "goal": "trading",
+                "yearly_usage": "20000",
+                "exported_energy": "4000",
+                "sunny_day_export": "unknown",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "18.7")
+        self.assertContains(response, "22.9")
+        self.assertNotContains(response, "verhoogd op basis van")
+
+    def test_sunny_day_export_overrides_low_recommendation(self):
+        # 20000 verbruik / 4000 teruglevering / handel triggert de vraag.
+        # Antwoord "40-50 kWh" -> 45 * 1.2 = 54, veel hoger dan het
+        # jaargemiddelde-advies (~21 kWh) -> groter systeem.
+        response = self.client.post(
+            reverse("thuisbatterij_calculator"),
+            {
+                "customer_type": "residential",
+                "goal": "trading",
+                "yearly_usage": "20000",
+                "exported_energy": "4000",
+                "sunny_day_export": "40_50",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "48.6")
+        self.assertContains(response, "59.4")
+        self.assertContains(response, "Dyness S3 Tower T53")
+        self.assertContains(response, "verhoogd op basis van")
+
+    def test_sunny_day_export_not_used_when_self_consumption(self):
+        # Zelfde ratio als hierboven, maar doel is zelfconsumptie -> geen
+        # trigger, ook al is sunny_day_export ingevuld.
+        response = self.client.post(
+            reverse("thuisbatterij_calculator"),
+            {
+                "customer_type": "residential",
+                "goal": "self_consumption",
+                "yearly_usage": "20000",
+                "exported_energy": "4000",
+                "sunny_day_export": "over_50",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "verhoogd op basis van")

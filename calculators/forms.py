@@ -1,5 +1,7 @@
 from django import forms
 
+from .services import SUNNY_DAY_EXPORT_CHOICES
+
 
 class BatteryCalculatorForm(forms.Form):
 
@@ -53,6 +55,20 @@ class BatteryCalculatorForm(forms.Form):
                 "class": "form-control",
                 "placeholder": "Bijvoorbeeld 5000",
                 "step": "0.1",
+            }
+        ),
+    )
+
+    # Alleen getoond/relevant bij handel + hoog verbruik t.o.v. lage
+    # teruglevering (zie services.sunny_day_question_required). Optioneel:
+    # de service herberekent de trigger zelf en negeert dit veld anders.
+    sunny_day_export = forms.ChoiceField(
+        choices=[("", "Maak een keuze")] + SUNNY_DAY_EXPORT_CHOICES,
+        label=None,  # label komt uit services.SUNNY_DAY_QUESTION_LABEL in de template
+        required=False,
+        widget=forms.Select(
+            attrs={
+                "class": "form-select",
             }
         ),
     )

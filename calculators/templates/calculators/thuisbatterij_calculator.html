@@ -64,10 +64,60 @@
         {{ form.exported_energy }}
     </div>
 
+    <div id="sunny-day-block" class="mb-4" hidden>
+        <div class="alert alert-warning">
+            <strong>Uw stroomverbruik is veel hoger dan uw jaarlijkse teruglevering.</strong>
+            <p class="mb-0 mt-2">
+                Uw batterijadvies kan te laag uitvallen, omdat jaargemiddelden geen
+                rekening houden met wat er op een zonnige dag gebeurt. Bekijk voor een
+                nauwkeuriger advies uw omvormer-app of de app van uw energieleverancier
+                en kijk hoeveel kWh u op een goede zonnige dag daadwerkelijk teruglevert
+                aan het net. Gebruik niet uw totale zonne-opwek, maar het bedrag dat u
+                daadwerkelijk teruglevert aan het elektriciteitsnet.
+            </p>
+        </div>
+
+        <label for="{{ form.sunny_day_export.id_for_label }}" class="form-label">
+            Hoeveel kWh levert u gemiddeld terug aan het net op een goede zonnige dag?
+        </label>
+        {{ form.sunny_day_export }}
+    </div>
+
     <button type="submit" class="btn btn-success btn-lg">
         Bereken batterijcapaciteit
     </button>
 </form>
+
+<script>
+    // Toont de "zonnige dag"-vraag alleen bij handel/dynamisch én wanneer het
+    // jaarverbruik >= 2x de jaarlijkse teruglevering is — dezelfde trigger als
+    // calculators.services.sunny_day_question_required(). Puur presentatie:
+    // de server herberekent deze conditie zelf en negeert het veld anders.
+    (function () {
+        var goalField = document.getElementById("{{ form.goal.id_for_label }}");
+        var usageField = document.getElementById("{{ form.yearly_usage.id_for_label }}");
+        var exportField = document.getElementById("{{ form.exported_energy.id_for_label }}");
+        var block = document.getElementById("sunny-day-block");
+        if (!goalField || !usageField || !exportField || !block) return;
+
+        function toggle() {
+            var usage = parseFloat(usageField.value);
+            var exported = parseFloat(exportField.value);
+            var required =
+                goalField.value === "trading" &&
+                !isNaN(usage) &&
+                !isNaN(exported) &&
+                usage >= 2 * exported;
+            block.hidden = !required;
+        }
+
+        [goalField, usageField, exportField].forEach(function (el) {
+            el.addEventListener("input", toggle);
+            el.addEventListener("change", toggle);
+        });
+        toggle();
+    })();
+</script>
 
                     {% if error %}
                         <div class="alert alert-danger mt-4">

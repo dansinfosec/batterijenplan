@@ -494,6 +494,23 @@ article.post-detail > img.cover {
   font-family: var(--font-body); font-size: 13px; line-height: 1.5;
   letter-spacing: normal; text-transform: none; color: var(--ink-60);
 }
+
+/* Extra vraag bij handel/dynamisch + hoog verbruik t.o.v. lage teruglevering:
+   opvallend maar niet alarmerend (gele accent, geen rood/foutkleur). */
+.calc-sunny-warning {
+  background: var(--paper); border: 2px solid var(--ink); border-left: 6px solid var(--volt);
+  border-radius: 8px; padding: 16px 18px;
+  display: grid; gap: 10px;
+}
+.calc-sunny-warning strong {
+  font-family: var(--font-display); font-weight: 800; font-size: 15px;
+  text-transform: none; letter-spacing: normal; color: var(--ink);
+}
+.calc-sunny-warning p {
+  font-family: var(--font-body); font-size: 13px; line-height: 1.5;
+  text-transform: none; letter-spacing: normal; color: var(--ink-60);
+}
+.calc-sunny-question { gap: 6px; }
 .calc-form select, .calc-form input {
   font: 16px/1.4 var(--font-body); padding: 10px 14px; border: 2px solid var(--line);
   border-radius: 6px; background: #fff; color: var(--ink);

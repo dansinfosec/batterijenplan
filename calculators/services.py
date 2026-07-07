@@ -79,6 +79,68 @@ INVERTER_NOTE = (
     "indien nodig softwarematig worden begrensd."
 )
 
+# ── Aanvullende vraag: teruglevering op een zonnige dag ────────────────────
+# Jaargemiddelden verbergen dagpieken. Bij een groot PV-systeem en hoog eigen
+# verbruik kan de werkelijke teruglevering op een zonnige dag veel hoger
+# liggen dan het jaargemiddelde doet vermoeden — relevant voor handel/
+# dynamische sturing, waar juist die piekwaarde de opslagbehoefte bepaalt.
+SUNNY_DAY_TRIGGER_GOAL = "trading"
+SUNNY_DAY_TRIGGER_RATIO = 2  # jaarverbruik >= 2x jaarlijkse teruglevering
+SUNNY_DAY_EXPORT_MULTIPLIER = 1.2
+
+SUNNY_DAY_EXPORT_CHOICES = [
+    ("under_10", "Minder dan 10 kWh"),
+    ("10_20", "10–20 kWh"),
+    ("20_30", "20–30 kWh"),
+    ("30_40", "30–40 kWh"),
+    ("40_50", "40–50 kWh"),
+    ("over_50", "Meer dan 50 kWh"),
+    ("unknown", "Ik weet het niet"),
+]
+# Representatieve kWh-waarde per gekozen bandbreedte (middelpunt; "unknown"
+# heeft bewust geen waarde, dat houdt de bestaande berekening ongewijzigd).
+SUNNY_DAY_EXPORT_VALUES = {
+    "under_10": 5,
+    "10_20": 15,
+    "20_30": 25,
+    "30_40": 35,
+    "40_50": 45,
+    "over_50": 60,
+}
+
+SUNNY_DAY_WARNING_TITLE = (
+    "Uw stroomverbruik is veel hoger dan uw jaarlijkse teruglevering."
+)
+SUNNY_DAY_WARNING_BODY = (
+    "Uw batterijadvies kan te laag uitvallen, omdat jaargemiddelden geen "
+    "rekening houden met wat er op een zonnige dag gebeurt. Bekijk voor een "
+    "nauwkeuriger advies uw omvormer-app of de app van uw energieleverancier "
+    "en kijk hoeveel kWh u op een goede zonnige dag daadwerkelijk teruglevert "
+    "aan het net. Gebruik niet uw totale zonne-opwek, maar het bedrag dat u "
+    "daadwerkelijk teruglevert aan het elektriciteitsnet."
+)
+SUNNY_DAY_QUESTION_LABEL = (
+    "Hoeveel kWh levert u gemiddeld terug aan het net op een goede zonnige dag?"
+)
+SUNNY_DAY_OVERRIDE_NOTE = (
+    "Dit advies is verhoogd op basis van uw opgegeven teruglevering op een "
+    "zonnige dag: bij handel/dynamische sturing is die piekwaarde een "
+    "betrouwbaardere leidraad dan het jaargemiddelde."
+)
+
+
+def sunny_day_question_required(goal, yearly_usage, exported_energy):
+    """True als de aanvullende 'zonnige dag'-vraag getoond moet worden.
+
+    Alleen relevant bij handel/dynamisch én wanneer het jaarverbruik de
+    jaarlijkse teruglevering ver overstijgt: dan kan een jaargemiddelde een
+    veel hogere piek-teruglevering op zonnige dagen verhullen.
+    """
+    return (
+        goal == SUNNY_DAY_TRIGGER_GOAL
+        and yearly_usage >= SUNNY_DAY_TRIGGER_RATIO * exported_energy
+    )
+
 
 def _format_number_nl(value):
     """21.3 → '21,3'; 42.0 → '42'; 17.75 → '17,75' (NL-decimaalkomma)."""
@@ -106,7 +168,9 @@ def _match_product(recommended_capacity, customer_type):
     return min(catalog, key=lambda p: (abs(p[1] - recommended_capacity), p[1]))
 
 
-def calculate_battery_advice(customer_type, yearly_usage, goal, exported_energy):
+def calculate_battery_advice(
+    customer_type, yearly_usage, goal, exported_energy, sunny_day_export=None
+):
     """Core thuisbatterij-advies berekening, gedeeld door de Django-view en de API."""
 
     # Particulier: extreem hoog verbruik afvangen
@@ -145,12 +209,29 @@ def calculate_battery_advice(customer_type, yearly_usage, goal, exported_energy)
         explanation = TRADING_EXPLANATION
         recommended_capacity = basis * TRADING_MULTIPLIER
 
+    # Veiligheidscheck voor handel/dynamisch bij hoog verbruik t.o.v. lage
+    # jaarlijkse teruglevering: als de klant een piek-teruglevering op een
+    # zonnige dag heeft opgegeven, gebruiken we het hoogste van de twee
+    # adviezen. De trigger wordt hier onafhankelijk herberekend (nooit
+    # blind een client-waarde vertrouwen); overige scenario's blijven exact
+    # zoals ze waren.
+    sunny_day_override_applied = False
+    if sunny_day_question_required(goal, yearly_usage, exported_energy):
+        sunny_day_value = SUNNY_DAY_EXPORT_VALUES.get(sunny_day_export)
+        if sunny_day_value is not None:
+            dynamic_recommendation = sunny_day_value * SUNNY_DAY_EXPORT_MULTIPLIER
+            if dynamic_recommendation > recommended_capacity:
+                recommended_capacity = dynamic_recommendation
+                sunny_day_override_applied = True
+
     lower_range = recommended_capacity * 0.9
     upper_range = recommended_capacity * 1.1
 
     name, capacity, price, inverter = _match_product(recommended_capacity, customer_type)
 
     extra_notes = []
+    if sunny_day_override_applied:
+        extra_notes.append(SUNNY_DAY_OVERRIDE_NOTE)
     if customer_type == "business":
         extra_notes.append(BUSINESS_NOTE)
     if inverter:
@@ -181,6 +262,7 @@ def calculate_battery_advice(customer_type, yearly_usage, goal, exported_energy)
         "product_price": price_line,
         "explanation": explanation,
         "extra_notes": extra_notes,
+        "sunny_day_override_applied": sunny_day_override_applied,
     }
 
     # Weinig overschot om op te slaan: leg dat uit bij het resultaat.
