@@ -83,6 +83,33 @@ export default function Calculator() {
 
   const leadState = useLeadCapture();
 
+  // Alleen bij handel/dynamisch én jaarverbruik >= 2x de jaarlijkse
+  // teruglevering: jaargemiddelden kunnen dan een veel hogere piek-
+  // teruglevering op zonnige dagen verhullen. Spiegelt
+  // calculators.services.sunny_day_question_required(); de server
+  // herberekent deze conditie zelf en negeert het antwoord anders.
+  const yearlyUsageNum = parseFloat(form.yearly_usage);
+  const exportedEnergyNum = parseFloat(form.exported_energy);
+  const needsSunnyDayQuestion =
+    form.goal === "trading" &&
+    !Number.isNaN(yearlyUsageNum) &&
+    !Number.isNaN(exportedEnergyNum) &&
+    yearlyUsageNum >= 2 * exportedEnergyNum;
+
+  // "Voltooid" is méér dan "we hebben een result": als de zonnige-dag-vraag
+  // nu vereist is, telt een eerder resultaat alleen als voltooid wanneer het
+  // berekend is mét het antwoord dat op dit moment geselecteerd staat. Zo
+  // niet (vraag net verschenen, of antwoord gewijzigd zonder opnieuw te
+  // rekenen), dan is het resultaat verouderd: geen scroll, geen popup, geen
+  // leadformulier op basis van een niet-passende berekening.
+  // Voor alle scenario's zonder de vraag is dit exact gelijk aan
+  // Boolean(result) — bestaand gedrag blijft dus ongewijzigd.
+  const lastSunnyDayAnswer = lastInputs?.sunny_day_export || "";
+  const isCalculationComplete =
+    Boolean(result) &&
+    (!needsSunnyDayQuestion ||
+      (Boolean(form.sunny_day_export) && form.sunny_day_export === lastSunnyDayAnswer));
+
   useEffect(() => {
     setPageMeta({
       title: "Thuisbatterij Calculator — Batterijenplan",
@@ -105,52 +132,52 @@ export default function Calculator() {
     return () => clearTimeout(timer);
   }, [directAdvice]);
 
-  // Na een geslaagde berekening naar het resultaat scrollen — vooral op
-  // mobiel blijft de gebruiker anders bij de knop hangen. result is bij
-  // page-load null, dus dit springt nooit bij het openen van de pagina.
+  // Na een geslaagde, volledige berekening naar het resultaat scrollen —
+  // vooral op mobiel blijft de gebruiker anders bij de knop hangen. Bewust
+  // pas bij isCalculationComplete (niet alleen "result bestaat"): zo lang de
+  // zonnige-dag-vraag zichtbaar is maar nog niet (opnieuw) beantwoord en
+  // verstuurd, mag er niet naar een verouderd resultaat gesprongen worden.
+  // Bij page-load is result null, dus dit springt nooit bij het openen.
   useEffect(() => {
-    if (result && resultRef.current) {
+    if (isCalculationComplete && resultRef.current) {
       resultRef.current.scrollIntoView({
         behavior: "smooth",
         block: "start",
       });
     }
-  }, [result]);
+  }, [result, isCalculationComplete]);
 
-  // Na elk nieuw resultaat: popup na 4 seconden.
-  // Niet tonen als er al een aanvraag is verstuurd.
+  // Na elke volledige berekening: popup na 4 seconden.
+  // Niet tonen als er al een aanvraag is verstuurd, en niet zolang het
+  // resultaat verouderd is (zie isCalculationComplete) — anders kan de popup
+  // alsnog opengaan terwijl de gebruiker de zonnige-dag-vraag aan het
+  // beantwoorden is voor een nieuwe berekening.
   useEffect(() => {
-    if (!result || leadState.sent) return;
+    if (!isCalculationComplete || leadState.sent) return;
 
     const timer = setTimeout(() => {
       setModalOpen(true);
     }, MODAL_DELAY_MS);
 
     return () => clearTimeout(timer);
-  }, [result, leadState.sent]);
+  }, [result, isCalculationComplete, leadState.sent]);
 
   const update = (field) => (e) => {
     setForm({ ...form, [field]: e.target.value });
   };
-
-  // Alleen bij handel/dynamisch én jaarverbruik >= 2x de jaarlijkse
-  // teruglevering: jaargemiddelden kunnen dan een veel hogere piek-
-  // teruglevering op zonnige dagen verhullen. Spiegelt
-  // calculators.services.sunny_day_question_required(); de server
-  // herberekent deze conditie zelf en negeert het antwoord anders.
-  const yearlyUsageNum = parseFloat(form.yearly_usage);
-  const exportedEnergyNum = parseFloat(form.exported_energy);
-  const needsSunnyDayQuestion =
-    form.goal === "trading" &&
-    !Number.isNaN(yearlyUsageNum) &&
-    !Number.isNaN(exportedEnergyNum) &&
-    yearlyUsageNum >= 2 * exportedEnergyNum;
 
   const submit = async (e) => {
     e.preventDefault();
 
     if (!form.goal) {
       setError("Kies eerst uw doel: zelfconsumptie of handel met een dynamisch contract.");
+      return;
+    }
+
+    // Extra vangnet naast de native `required` op het select-veld: als de
+    // vraag zichtbaar is, mag er nooit gerekend worden zonder antwoord
+    // (ook niet via een programmatische/omzeilde submit).
+    if (needsSunnyDayQuestion && !form.sunny_day_export) {
       return;
     }
 
@@ -185,7 +212,7 @@ export default function Calculator() {
 
   const closeModal = () => setModalOpen(false);
 
-  const showLeadForm = Boolean(result || directAdvice);
+  const showLeadForm = Boolean(isCalculationComplete || directAdvice);
 
   // CTA in hulpkaart/resultaat: naar het bestaande leadformulier scrollen
   // als dat al zichtbaar is, anders de bestaande modal tonen.
@@ -329,6 +356,7 @@ export default function Calculator() {
               <select
                 value={form.sunny_day_export}
                 onChange={update("sunny_day_export")}
+                required
               >
                 {SUNNY_DAY_EXPORT_OPTIONS.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -347,7 +375,7 @@ export default function Calculator() {
 
       {error && <div className="calc-error mono">{error}</div>}
 
-      {result && (
+      {isCalculationComplete && (
         <div className="calc-result" ref={resultRef}>
           <span className="mono calc-result-label">Uw batterijadvies</span>
 
@@ -429,9 +457,9 @@ export default function Calculator() {
         <div id="advies">
           <LeadCaptureForm
             state={leadState}
-            calculatorInputs={result ? lastInputs : null}
-            calculatorResult={result || null}
-            source={directAdvice && !result ? "blog_cta_direct_advice" : "react_calculator"}
+            calculatorInputs={isCalculationComplete ? lastInputs : null}
+            calculatorResult={isCalculationComplete ? result : null}
+            source={directAdvice && !isCalculationComplete ? "blog_cta_direct_advice" : "react_calculator"}
             variant="inline"
           />
         </div>
@@ -463,8 +491,8 @@ export default function Calculator() {
       <LeadModal open={modalOpen} onClose={closeModal}>
         <LeadCaptureForm
           state={leadState}
-          calculatorInputs={lastInputs}
-          calculatorResult={result}
+          calculatorInputs={isCalculationComplete ? lastInputs : null}
+          calculatorResult={isCalculationComplete ? result : null}
           source="react_calculator_modal"
           variant="modal"
           onDismiss={closeModal}

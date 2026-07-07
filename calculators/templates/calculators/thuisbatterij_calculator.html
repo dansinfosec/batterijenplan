@@ -98,6 +98,7 @@
         var usageField = document.getElementById("{{ form.yearly_usage.id_for_label }}");
         var exportField = document.getElementById("{{ form.exported_energy.id_for_label }}");
         var block = document.getElementById("sunny-day-block");
+        var sunnyDaySelect = document.getElementById("{{ form.sunny_day_export.id_for_label }}");
         if (!goalField || !usageField || !exportField || !block) return;
 
         function toggle() {
@@ -109,6 +110,10 @@
                 !isNaN(exported) &&
                 usage >= 2 * exported;
             block.hidden = !required;
+            // Zolang de vraag zichtbaar is, blokkeert de browser (native
+            // required-validatie) een berekening zonder gekozen antwoord —
+            // de gebruiker kan altijd "Ik weet het niet" kiezen.
+            if (sunnyDaySelect) sunnyDaySelect.required = required;
         }
 
         [goalField, usageField, exportField].forEach(function (el) {
