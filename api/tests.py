@@ -5,6 +5,8 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
+from blog.models import Post
+
 
 def make_post(title, tags=(), days_ago=0, status="published", author=None):
     post = Post.objects.create(
@@ -17,9 +19,6 @@ def make_post(title, tags=(), days_ago=0, status="published", author=None):
     if tags:
         post.tags.add(*tags)
     return post
-
-
-from blog.models import Post  # noqa: E402  (na make_post zodat de helper leesbaar bovenaan staat)
 
 
 class RelatedPostsTests(TestCase):
@@ -103,10 +102,9 @@ class RelatedPostsTests(TestCase):
 
     def test_related_post_card_data_shape(self):
         current = make_post("Huidige post", tags=["thuisbatterij"], author=self.author)
-        make_post(
-            "Gerelateerd artikel", tags=["thuisbatterij"], author=self.author,
-        ).excerpt = "Korte samenvatting."
-        related_post = Post.objects.exclude(pk=current.pk).first()
+        related_post = make_post(
+            "Gerelateerd artikel", tags=["thuisbatterij"], author=self.author
+        )
         related_post.excerpt = "Korte samenvatting."
         related_post.save()
 

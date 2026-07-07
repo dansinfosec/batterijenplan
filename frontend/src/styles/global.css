@@ -391,6 +391,47 @@ article.post-detail > img.cover {
   background: var(--volt); z-index: 9; width: 0;
 }
 
+/* ── Gerelateerde artikelen ── */
+.related-posts { margin-top: 48px; padding-top: 32px; border-top: 2px solid var(--line); }
+.related-posts h2 {
+  font-family: var(--font-display); font-weight: 800; font-size: 24px; margin-bottom: 20px;
+}
+.related-posts-grid {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px;
+}
+.related-post-card {
+  display: flex; flex-direction: column; gap: 8px;
+  background: #fff; border: 2px solid var(--line); border-radius: 10px;
+  padding: 18px 18px 16px; text-decoration: none; color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.related-post-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 5px 5px 0 var(--volt);
+}
+.related-post-tag {
+  align-self: flex-start;
+  background: var(--paper); border: 1px solid var(--ink); border-radius: 3px;
+  padding: 2px 8px; color: var(--volt-dk);
+}
+.related-post-card h3 {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: 17px; line-height: 1.25; letter-spacing: -0.01em;
+}
+.related-post-card p {
+  font-size: 14px; color: var(--ink-60); line-height: 1.5;
+  /* Meerregelige ellips: volledige tekst blijft in de HTML voor SEO,
+     alleen visueel afgekapt. */
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.related-post-link {
+  margin-top: auto; padding-top: 8px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--volt-dk);
+}
+.related-post-card:hover .related-post-link { color: var(--ink); }
+
 /* ── Reacties ── */
 .comments { margin-top: 64px; border-top: 2px solid var(--line); padding-top: 32px; }
 .comments h2 { font-family: var(--font-display); font-weight: 800; font-size: 24px; margin-bottom: 20px; }
@@ -876,6 +917,8 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
   .prose h2 { font-size: 22px; margin: 32px 0 10px; }
   .prose h3 { font-size: 18px; margin: 26px 0 8px; }
   .comments { margin-top: 48px; }
+  .related-posts { margin-top: 36px; padding-top: 24px; }
+  .related-posts-grid { grid-template-columns: 1fr; gap: 14px; }
 
   /* Post-kaarten: batterijcel blijft, iets compacter */
   .post-grid { gap: 20px; padding: 28px 0 56px; }

@@ -4,6 +4,7 @@ import useFetch from "../hooks/useFetch.js";
 import { fetchPost, fetchComments, postComment } from "../api.js";
 import { setPageMeta, setJsonLd, blogPostingSchema, DEFAULT_DESCRIPTION } from "../seo.js";
 import { optimizedImageUrl, coverSrcSet } from "../images.js";
+import RelatedPosts from "../components/RelatedPosts.jsx";
 
 // Wrapt tabellen uit de (server-side gerenderde) markdown-body in een
 // scroll-container, zodat brede vergelijkingstabellen op mobiel zijwaarts
@@ -281,6 +282,8 @@ export default function PostDetail() {
         className="prose"
         dangerouslySetInnerHTML={{ __html: wrapTables(post.body_html) }}
       />
+
+      <RelatedPosts posts={post.related_posts} />
 
       <CalculatorCta />
 
