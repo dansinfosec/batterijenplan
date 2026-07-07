@@ -272,33 +272,52 @@ export default function Calculator() {
         <div className="calc-result">
           <span className="mono calc-result-label">Uw batterijadvies</span>
 
-          <p>
-            Op basis van <strong>{result.goal_label}</strong> adviseren wij een
-            batterijcapaciteit van:
+          <p className="calc-result-goal">
+            Advies voor <strong>{result.goal_label}</strong>
           </p>
 
-          <h2>
-            {result.lower_range} – {result.upper_range} kWh
-          </h2>
+          <div className="calc-result-grid">
+            <div className="calc-card calc-card-primary">
+              <span className="calc-card-label">Geadviseerde capaciteit</span>
+              <b className="calc-card-value">
+                {result.lower_range} – {result.upper_range} kWh
+              </b>
+              <span className="calc-card-help">
+                Indicatieve range op basis van uw invoer
+              </span>
+              <span className="calc-card-rangenote">
+                Deze range is gebaseerd op uw verbruik, teruglevering en
+                gekozen doel — een eerste indicatie, geen definitief ontwerp.
+              </span>
+            </div>
 
-          <p>
-            Mogelijk passend systeem: <strong>{result.product_advice}</strong>
-            {result.product_price && (
-              <>
-                <br />
-                <span className="calc-result-explain">{result.product_price}</span>
-              </>
-            )}
-          </p>
+            <div className="calc-card calc-card-product">
+              <span className="calc-card-label">Passend systeem</span>
+              <b className="calc-card-product-name">
+                {result.product_name || result.product_advice}
+              </b>
+              {result.product_capacity && (
+                <span className="calc-card-product-cap mono">
+                  {result.product_capacity}
+                </span>
+              )}
+              {result.product_price && (
+                <span className="calc-card-product-price">
+                  {result.product_price}
+                </span>
+              )}
+            </div>
+          </div>
 
-          <p className="calc-result-explain">
-            Deze range is gebaseerd op uw verbruik, teruglevering en gekozen
-            doel — een eerste indicatie, geen definitief ontwerp.
-          </p>
-
-          <div className="calc-stats mono">
-            <span>Gem. teruglevering per zonnige dag: {result.daily_export} kWh</span>
-            <span>Gem. verbruik/dag: {result.daily_usage} kWh</span>
+          <div className="calc-metrics">
+            <div className="calc-card calc-card-metric">
+              <span className="calc-card-label">Teruglevering per zonnige dag</span>
+              <b>{result.daily_export} kWh</b>
+            </div>
+            <div className="calc-card calc-card-metric">
+              <span className="calc-card-label">Gem. verbruik per dag</span>
+              <b>{result.daily_usage} kWh</b>
+            </div>
           </div>
 
           {result.note && (
@@ -308,7 +327,7 @@ export default function Calculator() {
           )}
 
           {result.explanation && (
-            <div className="calc-note">{result.explanation}</div>
+            <div className="calc-card calc-card-explain">{result.explanation}</div>
           )}
 
           {result.extra_notes?.map((noteText) => (

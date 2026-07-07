@@ -156,14 +156,29 @@ def calculate_battery_advice(customer_type, yearly_usage, goal, exported_energy)
     if inverter:
         extra_notes.append(INVERTER_NOTE)
 
+    # Prijsregel: particulier incl. btw, zakelijk excl. btw; beide inclusief
+    # installatie door een InstallQ-gecertificeerd bedrijf.
+    if customer_type == "business":
+        price_line = (
+            f"vanaf € {_format_price_nl(price)} excl. btw en inclusief "
+            "installatie door een InstallQ-gecertificeerd bedrijf"
+        )
+    else:
+        price_line = (
+            f"vanaf € {_format_price_nl(price)} inclusief btw en installatie "
+            "door een InstallQ-gecertificeerd bedrijf"
+        )
+
     result = {
         "goal_label": goal_label,
         "daily_export": round(basis, 1),
         "daily_usage": round(daily_usage, 1),
         "lower_range": round(lower_range, 1),
         "upper_range": round(upper_range, 1),
+        "product_name": name,
+        "product_capacity": f"{_format_number_nl(capacity)} kWh",
         "product_advice": f"{name} — {_format_number_nl(capacity)} kWh",
-        "product_price": f"vanaf € {_format_price_nl(price)} eenmalige kosten",
+        "product_price": price_line,
         "explanation": explanation,
         "extra_notes": extra_notes,
     }

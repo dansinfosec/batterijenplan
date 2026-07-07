@@ -512,6 +512,65 @@ article.post-detail > img.cover {
 }
 .calc-result-explain { font-size: 14px; color: var(--ink-60); margin-top: 4px; }
 .calc-result-cta { margin-top: 20px; cursor: pointer; }
+
+/* ── Resultaat als scanbare informatiekaarten ─────────────────────────
+   Mobiel eerst: gestapelde kaarten; desktop een 2-koloms grid voor
+   capaciteit + passend systeem. Batterijenplan-stijl: paper-achtergrond,
+   inkt-randen, gele accenten, geen gradients of animaties. */
+.calc-result-goal { margin: 0 0 16px; font-size: 15px; color: var(--ink-60); }
+.calc-result-goal strong { color: var(--ink); }
+
+.calc-result-grid { display: grid; gap: 12px; }
+@media (min-width: 720px) {
+  .calc-result-grid { grid-template-columns: 1.2fr 1fr; align-items: stretch; }
+}
+
+.calc-card {
+  background: var(--paper);
+  border: 2px solid var(--ink); border-radius: 10px;
+  padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.calc-card-label {
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-60);
+}
+
+/* Hoofdkaart: geadviseerde capaciteit is de visuele focus */
+.calc-card-primary { border-top: 6px solid var(--volt); }
+.calc-card-value {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(26px, 6vw, 34px); line-height: 1.05; color: var(--copper);
+}
+.calc-card-help {
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-60);
+}
+.calc-card-rangenote { font-size: 13px; color: var(--ink-60); }
+
+/* Passend systeem: gele accentrand, productnaam prominent */
+.calc-card-product { border-left: 6px solid var(--volt); }
+.calc-card-product-name {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: 20px; line-height: 1.2;
+}
+.calc-card-product-cap { font-size: 13px; }
+.calc-card-product-price { font-size: 13px; color: var(--ink-60); }
+
+/* Kleine metric-kaarten (invoerwaarden) */
+.calc-metrics {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;
+}
+.calc-card-metric b { font-family: var(--font-mono); font-size: 18px; }
+@media (max-width: 420px) {
+  .calc-metrics { grid-template-columns: 1fr; }
+}
+
+/* Uitleg (zelfconsumptie/handel) als gemarkeerde notitiekaart */
+.calc-card-explain {
+  margin-top: 12px; border-left: 8px solid var(--volt);
+  font-size: 14px; color: var(--ink-60);
+}
 .calc-result::before {
   content: ""; position: absolute; top: -8px; left: 24px;
   width: 34px; height: 8px; background: var(--ink); border-radius: 4px 4px 0 0;
