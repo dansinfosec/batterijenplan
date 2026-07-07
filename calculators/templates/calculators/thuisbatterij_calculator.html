@@ -15,6 +15,56 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
     >
+
+    <style>
+        /* Batterijenplan-merkstijl bovenop Bootstrap: paper/ink/volt, ronde
+           velden met duidelijke focus- en foutstatus. Geen nieuwe
+           dependency — puur CSS binnen deze pagina. */
+        :root {
+            --bp-paper: #F7F6F2;
+            --bp-ink: #12130F;
+            --bp-ink-60: #4C4D46;
+            --bp-volt: #FFD100;
+            --bp-volt-dk: #8A6D00;
+            --bp-copper: #B4592E;
+        }
+        body { background: var(--bp-paper) !important; color: var(--bp-ink); }
+        .card { border-radius: 14px !important; }
+        .form-label { font-weight: 600; color: var(--bp-ink); }
+        .field-required { color: var(--bp-copper); margin-left: 2px; }
+        .field-input {
+            min-height: 52px;
+            border: 2px solid var(--bp-ink) !important;
+            border-radius: 10px !important;
+            box-shadow: 0 1px 2px rgba(18, 19, 15, 0.08) !important;
+            transition: border-color 0.12s ease, box-shadow 0.12s ease;
+        }
+        .field-input:focus {
+            border-color: var(--bp-volt-dk) !important;
+            box-shadow: 0 0 0 4px rgba(255, 209, 0, 0.35) !important;
+        }
+        .form-validated .field-input:invalid {
+            border-color: var(--bp-copper) !important;
+        }
+        .form-validated .field-input:invalid:focus {
+            box-shadow: 0 0 0 4px rgba(180, 89, 46, 0.22) !important;
+        }
+        .field-error-text {
+            display: none;
+            margin-top: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--bp-copper);
+        }
+        .form-validated .field-input:invalid + .field-error-text { display: block; }
+        .btn-success {
+            background: var(--bp-volt) !important; border-color: var(--bp-ink) !important;
+            color: var(--bp-ink) !important; font-weight: 700;
+            border-width: 2px !important; border-radius: 10px !important;
+            box-shadow: 3px 3px 0 var(--bp-ink);
+        }
+        .btn-success:hover { box-shadow: 2px 2px 0 var(--bp-ink); transform: translate(1px, 1px); }
+    </style>
 </head>
 
 <body class="bg-light">
@@ -33,35 +83,45 @@
                         jaarlijkse stroomverbruik, teruglevering en energiedoel.
                     </p>
 
-                    <form method="post" autocomplete="off">
+                    <form method="post" autocomplete="off" id="calc-form">
     {% csrf_token %}
 
     <div class="mb-3">
         <label for="{{ form.customer_type.id_for_label }}" class="form-label">
-            {{ form.customer_type.label }}
+            {{ form.customer_type.label }} <span class="field-required">*</span>
         </label>
         {{ form.customer_type }}
     </div>
 
     <div class="mb-3">
         <label for="{{ form.yearly_usage.id_for_label }}" class="form-label">
-            {{ form.yearly_usage.label }}
+            {{ form.yearly_usage.label }} <span class="field-required">*</span>
         </label>
         {{ form.yearly_usage }}
+        {% if form.yearly_usage.errors %}
+            <span class="field-error-text" style="display: block;">{{ form.yearly_usage.errors.0 }}</span>
+        {% else %}
+            <span class="field-error-text">Vul uw jaarverbruik in.</span>
+        {% endif %}
     </div>
 
     <div class="mb-3">
         <label for="{{ form.goal.id_for_label }}" class="form-label">
-            {{ form.goal.label }}
+            {{ form.goal.label }} <span class="field-required">*</span>
         </label>
         {{ form.goal }}
     </div>
 
     <div class="mb-4">
         <label for="{{ form.exported_energy.id_for_label }}" class="form-label">
-            {{ form.exported_energy.label }}
+            {{ form.exported_energy.label }} <span class="field-required">*</span>
         </label>
         {{ form.exported_energy }}
+        {% if form.exported_energy.errors %}
+            <span class="field-error-text" style="display: block;">{{ form.exported_energy.errors.0 }}</span>
+        {% else %}
+            <span class="field-error-text">Vul uw jaarlijkse teruglevering in.</span>
+        {% endif %}
     </div>
 
     <div id="sunny-day-block" class="mb-4" hidden>
@@ -80,55 +140,145 @@
 
         <label for="{{ form.sunny_day_export.id_for_label }}" class="form-label">
             Hoeveel kWh levert u op een goede zonnige dag maximaal terug aan het net?
+            <span class="field-required">*</span>
         </label>
         {{ form.sunny_day_export }}
+        {% if form.sunny_day_export.errors %}
+            <span class="field-error-text" style="display: block;">{{ form.sunny_day_export.errors.0 }}</span>
+        {% else %}
+            <span class="field-error-text">Selecteer een optie.</span>
+        {% endif %}
     </div>
 
-    <button type="submit" class="btn btn-success btn-lg">
+    <button type="submit" class="btn btn-success btn-lg field-submit-button">
         Bereken batterijcapaciteit
     </button>
 </form>
 
 <script>
-    // Toont de "zonnige dag"-vraag wanneer het jaarverbruik >= 2x de
-    // jaarlijkse teruglevering is (ongeacht doel) — dezelfde trigger als
+    // De "zonnige dag"-vraag wordt pas bij een klik op Bereken "ontdekt"
+    // (niet live tijdens het typen: half ingetypte getallen triggerden hem
+    // voorheen). Trigger = jaarverbruik >= 2x jaarlijkse teruglevering,
+    // ongeacht doel — dezelfde conditie als
     // calculators.services.sunny_day_question_required(). Puur presentatie:
-    // de server herberekent deze conditie zelf en negeert het veld anders.
+    // de server herberekent dit zelf en negeert het veld anders.
     (function () {
+        var form = document.querySelector("form[method=post]");
+        var customerTypeField = document.getElementById("{{ form.customer_type.id_for_label }}");
         var usageField = document.getElementById("{{ form.yearly_usage.id_for_label }}");
         var exportField = document.getElementById("{{ form.exported_energy.id_for_label }}");
         var block = document.getElementById("sunny-day-block");
         var sunnyDaySelect = document.getElementById("{{ form.sunny_day_export.id_for_label }}");
-        if (!usageField || !exportField || !block) return;
+        if (!form || !customerTypeField || !usageField || !exportField || !block || !sunnyDaySelect) return;
 
-        var initialized = false;
+        // Particulier en zakelijk hebben elk hun eigen bandbreedtes (zie
+        // calculators.services.RESIDENTIAL_/BUSINESS_SUNNY_DAY_EXPORT_CHOICES).
+        // Het select-veld rendert altijd de volledige unie; hier tonen we
+        // alleen de opties die bij het huidige customer_type horen.
+        var RESIDENTIAL_KEYS = ["under_10", "10_20", "20_30", "30_40", "40_50", "over_50"];
+        var BUSINESS_KEYS = ["under_50", "50_100", "100_150", "150_250", "250_400", "400_640", "over_640"];
 
-        function toggle() {
-            var usage = parseFloat(usageField.value);
-            var exported = parseFloat(exportField.value);
-            var required =
-                !isNaN(usage) &&
-                !isNaN(exported) &&
-                usage >= 2 * exported;
-            var wasHidden = block.hidden;
-            block.hidden = !required;
-            // Zolang de vraag zichtbaar is, blokkeert de browser (native
-            // required-validatie) een berekening zonder gekozen antwoord —
-            // de gebruiker kan altijd "Ik weet het niet" kiezen.
-            if (sunnyDaySelect) sunnyDaySelect.required = required;
-            // Rustig naar het vraagblok scrollen zodra het verschijnt
-            // (niet bij de initiële weergave van de pagina).
-            if (initialized && required && wasHidden) {
-                block.scrollIntoView({ behavior: "smooth", block: "center" });
-            }
+        function applySunnyDayOptionsForCustomerType() {
+            var isBusiness = customerTypeField.value === "business";
+            var hideKeys = isBusiness ? RESIDENTIAL_KEYS : BUSINESS_KEYS;
+            var showKeys = isBusiness ? BUSINESS_KEYS : RESIDENTIAL_KEYS;
+            hideKeys.forEach(function (key) {
+                var opt = sunnyDaySelect.querySelector('option[value="' + key + '"]');
+                if (opt) opt.hidden = true;
+            });
+            showKeys.forEach(function (key) {
+                var opt = sunnyDaySelect.querySelector('option[value="' + key + '"]');
+                if (opt) opt.hidden = false;
+            });
         }
 
-        [usageField, exportField].forEach(function (el) {
-            el.addEventListener("input", toggle);
-            el.addEventListener("change", toggle);
+        customerTypeField.addEventListener("change", function () {
+            applySunnyDayOptionsForCustomerType();
+            // Een eerder gekozen waarde uit de andere lijst is niet meer
+            // geldig voor het nieuwe customer_type — resetten.
+            sunnyDaySelect.value = "";
         });
-        toggle();
-        initialized = true;
+        applySunnyDayOptionsForCustomerType();
+
+        function conditionMet() {
+            var usage = parseFloat(usageField.value);
+            var exported = parseFloat(exportField.value);
+            return !isNaN(usage) && !isNaN(exported) && usage >= 2 * exported;
+        }
+
+        form.addEventListener("submit", function (e) {
+            if (conditionMet()) {
+                block.hidden = false;
+                sunnyDaySelect.required = true;
+                if (!sunnyDaySelect.value) {
+                    // Nog geen antwoord: (nog) niet rekenen, eerst de vraag
+                    // tonen en er rustig naartoe scrollen. Bij de volgende
+                    // klik blokkeert de native required-validatie een leeg
+                    // antwoord vanzelf; "Ik weet het niet" is geldig.
+                    e.preventDefault();
+                    block.scrollIntoView({ behavior: "smooth", block: "center" });
+                }
+            } else {
+                block.hidden = true;
+                sunnyDaySelect.required = false;
+            }
+        });
+
+        // Alleen verbergen (nooit tonen) als de invoer de conditie niet
+        // meer raakt — tonen gebeurt uitsluitend via de Bereken-klik.
+        function maybeHide() {
+            if (!conditionMet()) {
+                block.hidden = true;
+                sunnyDaySelect.required = false;
+            }
+        }
+        [usageField, exportField].forEach(function (el) {
+            el.addEventListener("input", maybeHide);
+            el.addEventListener("change", maybeHide);
+        });
+    })();
+</script>
+
+<script>
+    // Vriendelijke, Nederlandse invulmeldingen i.p.v. de technische
+    // standaardteksten van de browser, en rode randen/foutregels pas na
+    // een verzendpoging (.form-validated) — verandert niets aan de
+    // validatielogica zelf (required/type blijven ongewijzigd).
+    (function () {
+        var form = document.getElementById("calc-form");
+        if (!form) return;
+
+        var messages = {
+            "{{ form.yearly_usage.id_for_label }}": "Vul uw jaarverbruik in.",
+            "{{ form.exported_energy.id_for_label }}": "Vul uw jaarlijkse teruglevering in.",
+            "{{ form.sunny_day_export.id_for_label }}": "Selecteer een optie."
+        };
+
+        Object.keys(messages).forEach(function (id) {
+            var field = document.getElementById(id);
+            if (!field) return;
+            var message = messages[id];
+            field.addEventListener("invalid", function () {
+                field.setCustomValidity(message);
+            });
+            field.addEventListener("input", function () {
+                field.setCustomValidity("");
+            });
+            field.addEventListener("change", function () {
+                field.setCustomValidity("");
+            });
+        });
+
+        // "invalid" bubbelt niet, maar wordt tijdens de capture-fase wél
+        // doorgegeven aan voorouders — zo weten we of een verzendpoging
+        // faalde, zonder de eigenlijke validatie te wijzigen.
+        form.addEventListener(
+            "invalid",
+            function () {
+                form.classList.add("form-validated");
+            },
+            true
+        );
     })();
 </script>
 

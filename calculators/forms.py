@@ -20,7 +20,7 @@ class BatteryCalculatorForm(forms.Form):
         label="Type klant",
         widget=forms.Select(
             attrs={
-                "class": "form-select",
+                "class": "form-select field-input",
             }
         ),
     )
@@ -28,10 +28,15 @@ class BatteryCalculatorForm(forms.Form):
     yearly_usage = forms.FloatField(
         min_value=0.1,
         label="Jaarlijks stroomverbruik (kWh)",
+        error_messages={
+            "required": "Vul uw jaarverbruik in.",
+            "invalid": "Vul uw jaarverbruik in.",
+            "min_value": "Jaarverbruik kan niet negatief zijn.",
+        },
         widget=forms.NumberInput(
             attrs={
-                "class": "form-control",
-                "placeholder": "Bijvoorbeeld 3500",
+                "class": "form-control field-input",
+                "placeholder": "Bijvoorbeeld: 4500",
                 "step": "0.1",
             }
         ),
@@ -42,7 +47,7 @@ class BatteryCalculatorForm(forms.Form):
         label="Doel van de batterij",
         widget=forms.Select(
             attrs={
-                "class": "form-select",
+                "class": "form-select field-input",
             }
         ),
     )
@@ -50,10 +55,15 @@ class BatteryCalculatorForm(forms.Form):
     exported_energy = forms.FloatField(
         min_value=0,
         label="Jaarlijkse teruglevering (kWh)",
+        error_messages={
+            "required": "Vul uw jaarlijkse teruglevering in.",
+            "invalid": "Vul uw jaarlijkse teruglevering in.",
+            "min_value": "Teruglevering kan niet negatief zijn.",
+        },
         widget=forms.NumberInput(
             attrs={
-                "class": "form-control",
-                "placeholder": "Bijvoorbeeld 5000",
+                "class": "form-control field-input",
+                "placeholder": "Bijvoorbeeld: 2500",
                 "step": "0.1",
             }
         ),
@@ -66,9 +76,10 @@ class BatteryCalculatorForm(forms.Form):
         choices=[("", "Maak een keuze")] + SUNNY_DAY_EXPORT_CHOICES,
         label=None,  # label komt uit services.SUNNY_DAY_QUESTION_LABEL in de template
         required=False,
+        error_messages={"invalid_choice": "Selecteer een optie."},
         widget=forms.Select(
             attrs={
-                "class": "form-select",
+                "class": "form-select field-input",
             }
         ),
     )

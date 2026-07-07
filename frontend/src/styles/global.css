@@ -412,6 +412,67 @@ article.post-detail > img.cover {
 }
 .comment-form button:hover { transform: translate(1px, 1px); box-shadow: 2px 2px 0 var(--ink); }
 
+/* ═══════════════════════════════════════════════════════════════
+   FORMULIER-PRIMITIEVEN — gedeeld door calculator- en leadformulier
+   (en het Django-formulier via zijn eigen equivalente stijl). Eén stijl
+   voor invoervelden/selects, foutstatus en verzendknoppen zodat elk
+   publiek formulier hetzelfde premium Batterijenplan-uiterlijk deelt.
+   De omliggende kaarten (.calc-form, .lead-form, .calc-help,
+   .calc-result) behouden bewust hun eigen randdikte/schaduw voor
+   visuele hiërarchie, maar spreken dezelfde paper/ink/volt-taal.
+   ═══════════════════════════════════════════════════════════════ */
+.field-required { color: var(--copper); margin-left: 2px; }
+
+.field-input {
+  display: block; width: 100%;
+  min-height: 52px;
+  padding: 13px 16px;
+  font: 16px/1.4 var(--font-body); /* 16px voorkomt iOS-zoom bij focus */
+  color: var(--ink); background: #fff;
+  border: 2px solid var(--line); border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(18, 19, 15, 0.08);
+  text-transform: none; letter-spacing: normal;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
+.field-input::placeholder { color: var(--ink-60); opacity: 0.75; }
+.field-input:hover { border-color: var(--ink); }
+.field-input:focus {
+  outline: none;
+  border-color: var(--volt-dk);
+  box-shadow: 0 0 0 4px rgba(255, 209, 0, 0.35);
+}
+
+/* Foutstatus: pas rood zodra een verzendpoging is gedaan
+   (.form-validated op de <form>) — een net geopend formulier staat dus
+   niet meteen vol rode randen. */
+.form-validated .field-input:invalid {
+  border-color: var(--copper);
+}
+.form-validated .field-input:invalid:focus {
+  box-shadow: 0 0 0 4px rgba(180, 89, 46, 0.22);
+}
+.field-error-text {
+  display: none;
+  margin-top: 6px;
+  font-family: var(--font-body); font-size: 13px; font-weight: 600;
+  color: var(--copper);
+  text-transform: none; letter-spacing: normal;
+}
+.form-validated .field-input:invalid + .field-error-text { display: block; }
+
+.field-submit-button {
+  cursor: pointer;
+  font-family: var(--font-display); font-weight: 800; font-size: 15px;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  background: var(--volt); color: var(--ink);
+  border: 2px solid var(--ink); border-radius: 8px; padding: 13px 28px;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.field-submit-button:hover { transform: translate(1px, 1px); box-shadow: 2px 2px 0 var(--ink); }
+.field-submit-button:disabled { opacity: 0.6; cursor: wait; transform: none; box-shadow: 3px 3px 0 var(--ink); }
+
 /* ── Calculator ── */
 /* Twee kolommen op desktop: formulier links, hulpkaart rechts.
    Op mobiel stapelt alles; de hulpkaart komt dan onderaan. */
@@ -521,22 +582,10 @@ article.post-detail > img.cover {
   text-transform: none; letter-spacing: normal; color: var(--ink-60);
 }
 .calc-sunny-question { gap: 6px; font-weight: 700; }
-.calc-form select, .calc-form input {
-  font: 16px/1.4 var(--font-body); padding: 10px 14px; border: 2px solid var(--line);
-  border-radius: 6px; background: #fff; color: var(--ink);
-  text-transform: none; letter-spacing: normal;
-  width: 100%; min-height: 48px; /* comfortabel tap-target, 16px voorkomt iOS-zoom */
-}
-.calc-form button {
-  justify-self: start; cursor: pointer;
-  font-family: var(--font-display); font-weight: 800; font-size: 15px;
-  text-transform: uppercase; letter-spacing: 0.04em;
-  background: var(--volt); color: var(--ink);
-  border: 2px solid var(--ink); border-radius: 6px; padding: 12px 26px;
-  box-shadow: 3px 3px 0 var(--ink);
-}
-.calc-form button:hover { transform: translate(1px, 1px); box-shadow: 2px 2px 0 var(--ink); }
-.calc-form button:disabled { opacity: 0.6; cursor: wait; transform: none; box-shadow: 3px 3px 0 var(--ink); }
+/* Invoervelden/select en verzendknop komen nu uit de gedeelde
+   .field-input / .field-submit-button primitieven hierboven; hier alleen
+   nog de layout-specifieke uitlijning binnen de grid-vormgegeven kaart. */
+.calc-form .field-submit-button { justify-self: start; }
 
 .calc-error {
   margin-top: 24px; color: var(--copper); border-left: 4px solid var(--copper);
@@ -652,15 +701,10 @@ article.post-detail > img.cover {
   font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em;
   text-transform: uppercase; color: var(--ink-60);
 }
-.lead-form input:not([type="checkbox"]), .lead-form textarea {
-  font: 16px/1.4 var(--font-body); padding: 10px 14px;
-  border: 2px solid var(--ink); border-radius: 6px;
-  background: #fff; color: var(--ink);
-  text-transform: none; letter-spacing: normal;
-  width: 100%; min-height: 48px; /* comfortabel tap-target, 16px voorkomt iOS-zoom */
-}
+/* Invoervelden/textarea komen uit de gedeelde .field-input primitief
+   hierboven; hier alleen nog de veldspecifieke uitzonderingen. */
 .lead-message { margin-top: 14px; }
-.lead-message textarea { min-height: 90px; resize: vertical; }
+.lead-message textarea.field-input { min-height: 90px; }
 .lead-website { position: absolute !important; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .lead-consent {
   margin-top: 18px; display: flex !important; gap: 10px; align-items: flex-start;
@@ -669,16 +713,7 @@ article.post-detail > img.cover {
   color: var(--ink) !important; cursor: pointer;
 }
 .lead-consent input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--volt); flex-shrink: 0; }
-.lead-form button {
-  margin-top: 20px; cursor: pointer;
-  font-family: var(--font-display); font-weight: 800; font-size: 15px;
-  text-transform: uppercase; letter-spacing: 0.04em;
-  background: var(--volt); color: var(--ink);
-  border: 2px solid var(--ink); border-radius: 6px; padding: 12px 26px;
-  box-shadow: 3px 3px 0 var(--ink);
-}
-.lead-form button:hover { transform: translate(1px, 1px); box-shadow: 2px 2px 0 var(--ink); }
-.lead-form button:disabled { opacity: 0.6; cursor: wait; transform: none; box-shadow: 3px 3px 0 var(--ink); }
+.lead-form .field-submit-button { margin-top: 20px; }
 .lead-form .calc-error { margin-top: 16px; }
 .lead-form-success h2 { color: var(--volt-dk); }
 .lead-form-success p { margin: 0; color: var(--ink-60); }
@@ -865,7 +900,7 @@ article.post-detail > img.cover {
   .calc-layout { gap: 22px; }
   .calc-mini-strip { gap: 10px 20px; margin-bottom: 16px; }
   .calc-form { gap: 16px; padding: 18px 14px; }
-  .calc-form button { justify-self: stretch; width: 100%; padding: 14px 20px; min-height: 48px; }
+  .calc-form .field-submit-button { justify-self: stretch; width: 100%; padding: 14px 20px; min-height: 48px; }
   .calc-help { padding: 18px 16px; }
   .calc-result { padding: 20px 16px; margin-top: 28px; }
   .calc-result-cta { width: 100%; display: block; text-align: center; }
@@ -873,7 +908,7 @@ article.post-detail > img.cover {
 
   /* Lead capture: krachtig maar niet krap */
   .lead-form { padding: 20px 16px; margin-top: 32px; }
-  .lead-form button:not(.lead-modal-dismiss) { width: 100%; padding: 14px 20px; min-height: 48px; }
+  .lead-form .field-submit-button { width: 100%; padding: 14px 20px; min-height: 48px; }
 
   /* Footer */
   .site-footer { padding: 22px 0; }
@@ -1024,8 +1059,8 @@ body,
 
   .cta-block-actions .cta-button-sm,
   .cta-button,
-  .calc-form button,
-  .lead-form button:not(.lead-modal-dismiss) {
+  .calc-form .field-submit-button,
+  .lead-form .field-submit-button {
     width: 100%;
     display: block;
     text-align: center;

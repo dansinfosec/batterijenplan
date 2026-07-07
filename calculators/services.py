@@ -87,7 +87,8 @@ INVERTER_NOTE = (
 # opslaan wat één sterke zonnige dag oplevert.
 SUNNY_DAY_TRIGGER_RATIO = 2  # jaarverbruik >= 2x jaarlijkse teruglevering
 
-SUNNY_DAY_EXPORT_CHOICES = [
+# Particulier: bandbreedtes passend bij een woninginstallatie.
+RESIDENTIAL_SUNNY_DAY_EXPORT_CHOICES = [
     ("under_10", "Minder dan 10 kWh"),
     ("10_20", "10–20 kWh"),
     ("20_30", "20–30 kWh"),
@@ -96,15 +97,44 @@ SUNNY_DAY_EXPORT_CHOICES = [
     ("over_50", "Meer dan 50 kWh"),
     ("unknown", "Ik weet het niet"),
 ]
+# Zakelijk: veel grotere bandbreedtes (tot 640+ kWh), passend bij
+# zakelijke/utility-schaal systemen.
+BUSINESS_SUNNY_DAY_EXPORT_CHOICES = [
+    ("under_50", "Minder dan 50 kWh"),
+    ("50_100", "50–100 kWh"),
+    ("100_150", "100–150 kWh"),
+    ("150_250", "150–250 kWh"),
+    ("250_400", "250–400 kWh"),
+    ("400_640", "400–640 kWh"),
+    ("over_640", "Meer dan 640 kWh"),
+    ("unknown", "Ik weet het niet"),
+]
+# Unie van beide lijsten (dedupliceerd op "unknown") voor formulier-/
+# serializer-validatie: welke lijst daadwerkelijk getóónd wordt, bepaalt de
+# frontend op basis van customer_type.
+SUNNY_DAY_EXPORT_CHOICES = (
+    RESIDENTIAL_SUNNY_DAY_EXPORT_CHOICES + BUSINESS_SUNNY_DAY_EXPORT_CHOICES[:-1]
+)
 # Representatieve kWh-waarde per gekozen bandbreedte (middelpunt; "unknown"
 # heeft bewust geen waarde, dat houdt de bestaande berekening ongewijzigd).
+# Sleutels van beide lijsten zijn uniek, dus één gedeelde lookup volstaat —
+# de rekenlogica hoeft niet te weten uit welke lijst een keuze afkomstig is.
 SUNNY_DAY_EXPORT_VALUES = {
+    # particulier
     "under_10": 5,
     "10_20": 15,
     "20_30": 25,
     "30_40": 35,
     "40_50": 45,
     "over_50": 60,
+    # zakelijk
+    "under_50": 25,
+    "50_100": 75,
+    "100_150": 125,
+    "150_250": 200,
+    "250_400": 325,
+    "400_640": 520,
+    "over_640": 640,
 }
 
 SUNNY_DAY_WARNING_TITLE = (
@@ -210,21 +240,25 @@ def calculate_battery_advice(
     # Veiligheidscheck bij hoog verbruik t.o.v. lage jaarlijkse teruglevering
     # (beide doelen): heeft de klant een piek-teruglevering op een goede
     # zonnige dag opgegeven die boven het jaargemiddelde (basis) ligt, dan
-    # moet de batterij minimaal die dagopbrengst kunnen opslaan:
-    # advies = max(huidig advies, zonnige-dag-teruglevering). Geen extra
-    # vermenigvuldiging. De trigger wordt hier onafhankelijk herberekend
-    # (nooit blind een client-waarde vertrouwen); "unknown"/geen antwoord
-    # laat de bestaande berekening ongewijzigd.
+    # moet de batterij minimaal die dagopbrengst kunnen opslaan. Handel/
+    # dynamisch houdt daarbij de projectbrede 30%-marge (TRADING_MULTIPLIER),
+    # net als in de basisberekening:
+    #   zelfconsumptie: zonnige-dag-advies = geselecteerde waarde
+    #   handel:         zonnige-dag-advies = geselecteerde waarde × 1,3
+    #   advies = max(huidig advies, zonnige-dag-advies)
+    # De trigger wordt hier onafhankelijk herberekend (nooit blind een
+    # client-waarde vertrouwen); "unknown"/geen antwoord laat de bestaande
+    # berekening ongewijzigd.
     sunny_day_override_applied = False
     if sunny_day_question_required(yearly_usage, exported_energy):
         selected_sunny_day_export = SUNNY_DAY_EXPORT_VALUES.get(sunny_day_export)
-        if (
-            selected_sunny_day_export is not None
-            and selected_sunny_day_export > basis
-            and selected_sunny_day_export > recommended_capacity
-        ):
-            recommended_capacity = selected_sunny_day_export
-            sunny_day_override_applied = True
+        if selected_sunny_day_export is not None and selected_sunny_day_export > basis:
+            sunny_day_recommendation = selected_sunny_day_export
+            if goal != "self_consumption":
+                sunny_day_recommendation *= TRADING_MULTIPLIER
+            if sunny_day_recommendation > recommended_capacity:
+                recommended_capacity = sunny_day_recommendation
+                sunny_day_override_applied = True
 
     lower_range = recommended_capacity * 0.9
     upper_range = recommended_capacity * 1.1

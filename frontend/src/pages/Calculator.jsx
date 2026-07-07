@@ -3,16 +3,18 @@ import { useSearchParams } from "react-router-dom";
 import { postCalculator } from "../api.js";
 import LeadCaptureForm, { useLeadCapture } from "../components/LeadCaptureForm.jsx";
 import { setPageMeta, setJsonLd, ORGANIZATION_SCHEMA } from "../seo.js";
+import { friendlyValidity, withValidityClear } from "../formValidation.js";
 
 const CUSTOMER_TYPES = [
   { value: "residential", label: "Particulier" },
   { value: "business", label: "Zakelijk" },
 ];
 
-// Zelfde keuzes als calculators.services.SUNNY_DAY_EXPORT_CHOICES (backend
-// bepaalt de bijbehorende kWh-waarde; de trigger wordt server-side sowieso
-// herberekend, dit is puur om de vraag te tonen/verbergen).
-const SUNNY_DAY_EXPORT_OPTIONS = [
+// Zelfde keuzes als calculators.services.RESIDENTIAL_/BUSINESS_SUNNY_DAY_
+// EXPORT_CHOICES (backend bepaalt de bijbehorende kWh-waarde; de trigger
+// wordt server-side sowieso herberekend, dit is puur om de juiste lijst te
+// tonen op basis van customer_type).
+const SUNNY_DAY_EXPORT_OPTIONS_RESIDENTIAL = [
   { value: "", label: "Maak een keuze" },
   { value: "under_10", label: "Minder dan 10 kWh" },
   { value: "10_20", label: "10–20 kWh" },
@@ -20,6 +22,18 @@ const SUNNY_DAY_EXPORT_OPTIONS = [
   { value: "30_40", label: "30–40 kWh" },
   { value: "40_50", label: "40–50 kWh" },
   { value: "over_50", label: "Meer dan 50 kWh" },
+  { value: "unknown", label: "Ik weet het niet" },
+];
+
+const SUNNY_DAY_EXPORT_OPTIONS_BUSINESS = [
+  { value: "", label: "Maak een keuze" },
+  { value: "under_50", label: "Minder dan 50 kWh" },
+  { value: "50_100", label: "50–100 kWh" },
+  { value: "100_150", label: "100–150 kWh" },
+  { value: "150_250", label: "150–250 kWh" },
+  { value: "250_400", label: "250–400 kWh" },
+  { value: "400_640", label: "400–640 kWh" },
+  { value: "over_640", label: "Meer dan 640 kWh" },
   { value: "unknown", label: "Ik weet het niet" },
 ];
 
@@ -79,9 +93,15 @@ export default function Calculator() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  // De zonnige-dag-vraag verschijnt pas na een klik op "Bereken" (niet live
+  // tijdens het typen — half ingetypte getallen triggerden hem voorheen).
+  const [sunnyDayPrompted, setSunnyDayPrompted] = useState(false);
+  // Puur voor de weergave van foutstatussen: pas rode randen/tekst tonen
+  // zodra een verzendpoging is gedaan, niet meteen bij het openen van de
+  // pagina. Verandert niets aan de native validatie zelf.
+  const [validated, setValidated] = useState(false);
   const resultRef = useRef(null);
   const sunnyDayRef = useRef(null);
-  const prevNeedsSunnyDay = useRef(false);
 
   const leadState = useLeadCapture();
 
@@ -96,6 +116,10 @@ export default function Calculator() {
     !Number.isNaN(yearlyUsageNum) &&
     !Number.isNaN(exportedEnergyNum) &&
     yearlyUsageNum >= 2 * exportedEnergyNum;
+
+  // Zichtbaar pas nadat een Bereken-klik de vraag "ontdekt" heeft; verdwijnt
+  // vanzelf weer als de invoer de conditie niet meer raakt.
+  const showSunnyDayQuestion = sunnyDayPrompted && needsSunnyDayQuestion;
 
   // "Voltooid" is méér dan "we hebben een result": als de zonnige-dag-vraag
   // nu vereist is, telt een eerder resultaat alleen als voltooid wanneer het
@@ -133,17 +157,6 @@ export default function Calculator() {
     return () => clearTimeout(timer);
   }, [directAdvice]);
 
-  // Zodra de zonnige-dag-vraag vereist wórdt (overgang false → true), rustig
-  // naar het vraagblok scrollen zodat de gebruiker hem niet mist. Bewust
-  // alleen op de overgang: niet opnieuw scrollen bij elke toetsaanslag, en
-  // nooit bij page-load (dan is de conditie al vanaf het begin false).
-  useEffect(() => {
-    if (needsSunnyDayQuestion && !prevNeedsSunnyDay.current) {
-      sunnyDayRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-    prevNeedsSunnyDay.current = needsSunnyDayQuestion;
-  }, [needsSunnyDayQuestion]);
-
   // Na een geslaagde, volledige berekening naar het resultaat scrollen —
   // vooral op mobiel blijft de gebruiker anders bij de knop hangen. Bewust
   // pas bij isCalculationComplete (niet alleen "result bestaat"): zo lang de
@@ -175,8 +188,21 @@ export default function Calculator() {
   }, [result, isCalculationComplete, leadState.sent]);
 
   const update = (field) => (e) => {
-    setForm({ ...form, [field]: e.target.value });
+    const value = e.target.value;
+    if (field === "customer_type") {
+      // Particulier en zakelijk hebben elk hun eigen bandbreedtes voor de
+      // zonnige-dag-vraag; een eerder gekozen waarde uit de andere lijst is
+      // dan niet meer geldig, dus die resetten we mee.
+      setForm({ ...form, customer_type: value, sunny_day_export: "" });
+    } else {
+      setForm({ ...form, [field]: value });
+    }
   };
+
+  const sunnyDayExportOptions =
+    form.customer_type === "business"
+      ? SUNNY_DAY_EXPORT_OPTIONS_BUSINESS
+      : SUNNY_DAY_EXPORT_OPTIONS_RESIDENTIAL;
 
   const submit = async (e) => {
     e.preventDefault();
@@ -186,10 +212,19 @@ export default function Calculator() {
       return;
     }
 
-    // Extra vangnet naast de native `required` op het select-veld: als de
-    // vraag zichtbaar is, mag er nooit gerekend worden zonder antwoord
-    // (ook niet via een programmatische/omzeilde submit).
+    // De zonnige-dag-vraag wordt pas bij de Bereken-klik "ontdekt": is de
+    // conditie geraakt en is er nog geen antwoord, dan (nog) niet rekenen —
+    // eerst het vraagblok tonen en er rustig naartoe scrollen. Bij de
+    // volgende klik blokkeert de native `required` op het select-veld een
+    // leeg antwoord vanzelf; "Ik weet het niet" is een geldig antwoord.
     if (needsSunnyDayQuestion && !form.sunny_day_export) {
+      setError(null);
+      setSunnyDayPrompted(true);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          sunnyDayRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+      });
       return;
     }
 
@@ -260,10 +295,18 @@ export default function Calculator() {
         <div><b>Gratis check</b><span>Laat uw uitkomst controleren</span></div>
       </div>
 
-      <form className="calc-form" onSubmit={submit}>
+      <form
+        className={`calc-form${validated ? " form-validated" : ""}`}
+        onSubmit={submit}
+        onInvalidCapture={() => setValidated(true)}
+      >
         <label>
-          Type klant
-          <select value={form.customer_type} onChange={update("customer_type")}>
+          Type klant <span className="field-required">*</span>
+          <select
+            className="field-input"
+            value={form.customer_type}
+            onChange={update("customer_type")}
+          >
             {CUSTOMER_TYPES.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -273,23 +316,26 @@ export default function Calculator() {
         </label>
 
         <label>
-          Jaarlijks stroomverbruik (kWh)
+          Jaarlijks stroomverbruik (kWh) <span className="field-required">*</span>
           <input
+            className="field-input"
             type="number"
             step="0.1"
             min="0.1"
-            placeholder="Bijvoorbeeld 3500"
+            placeholder="Bijvoorbeeld: 4500"
             value={form.yearly_usage}
-            onChange={update("yearly_usage")}
+            onChange={withValidityClear(update("yearly_usage"))}
+            onInvalid={friendlyValidity("Vul uw jaarverbruik in.")}
             required
           />
+          <span className="field-error-text">Vul uw jaarverbruik in.</span>
           <span className="field-help">
-            Bijvoorbeeld: 3500 kWh voor een gemiddeld huishouden.
+            Bijvoorbeeld: 4500 kWh voor een gemiddeld huishouden.
           </span>
         </label>
 
         <fieldset className="goal-choice">
-          <legend>Doel van de batterij</legend>
+          <legend>Doel van de batterij <span className="field-required">*</span></legend>
 
           <label className={`goal-card ${form.goal === "self_consumption" ? "active" : ""}`}>
             <input
@@ -332,22 +378,25 @@ export default function Calculator() {
         </fieldset>
 
         <label>
-          Jaarlijkse teruglevering (kWh)
+          Jaarlijkse teruglevering (kWh) <span className="field-required">*</span>
           <input
+            className="field-input"
             type="number"
             step="0.1"
             min="0"
-            placeholder="Bijvoorbeeld 5000"
+            placeholder="Bijvoorbeeld: 2500"
             value={form.exported_energy}
-            onChange={update("exported_energy")}
+            onChange={withValidityClear(update("exported_energy"))}
+            onInvalid={friendlyValidity("Vul uw jaarlijkse teruglevering in.")}
             required
           />
+          <span className="field-error-text">Vul uw jaarlijkse teruglevering in.</span>
           <span className="field-help">
             Bijvoorbeeld: 2500–5000 kWh bij veel zonnepanelen.
           </span>
         </label>
 
-        {needsSunnyDayQuestion && (
+        {showSunnyDayQuestion && (
           <div className="calc-sunny-warning" ref={sunnyDayRef}>
             <span className="calc-sunny-chip">Belangrijk voor een nauwkeurig advies</span>
             <strong className="calc-sunny-title">
@@ -365,23 +414,26 @@ export default function Calculator() {
 
             <label className="calc-sunny-question">
               Hoeveel kWh levert u op een goede zonnige dag maximaal terug aan
-              het net?
+              het net? <span className="field-required">*</span>
               <select
+                className="field-input"
                 value={form.sunny_day_export}
-                onChange={update("sunny_day_export")}
+                onChange={withValidityClear(update("sunny_day_export"))}
+                onInvalid={friendlyValidity("Selecteer een optie.")}
                 required
               >
-                {SUNNY_DAY_EXPORT_OPTIONS.map((option) => (
+                {sunnyDayExportOptions.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
                 ))}
               </select>
+              <span className="field-error-text">Selecteer een optie.</span>
             </label>
           </div>
         )}
 
-        <button type="submit" disabled={loading}>
+        <button type="submit" className="field-submit-button" disabled={loading}>
           {loading ? "Bezig…" : "Bereken batterijcapaciteit"}
         </button>
       </form>

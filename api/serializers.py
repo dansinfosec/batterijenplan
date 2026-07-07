@@ -1,8 +1,11 @@
+from django.db.models import Count, Q
 from django.utils.html import strip_tags
 from django.utils.text import Truncator
 from rest_framework import serializers
 from blog.models import Post, Comment
 import markdown
+
+RELATED_POSTS_COUNT = 3
 
 
 class PostListSerializer(serializers.ModelSerializer):
@@ -51,12 +54,36 @@ class PostListSerializer(serializers.ModelSerializer):
 
 class PostDetailSerializer(PostListSerializer):
     body_html = serializers.SerializerMethodField()
+    related_posts = serializers.SerializerMethodField()
 
     class Meta(PostListSerializer.Meta):
-        fields = PostListSerializer.Meta.fields + ["body_html"]
+        fields = PostListSerializer.Meta.fields + ["body_html", "related_posts"]
 
     def get_body_html(self, obj):
         return markdown.markdown(obj.body, extensions=["fenced_code", "tables", "nl2br"])
+
+    def get_related_posts(self, obj):
+        """3 gerelateerde artikelen: voorkeur voor overlappende tags, aangevuld
+        met de meest recente gepubliceerde posts als er te weinig tag-matches
+        zijn. Eén query: sorteren op aantal gedeelde tags, dan op datum."""
+        tag_names = list(obj.tags.names())
+        qs = (
+            Post.objects.filter(status="published")
+            .exclude(pk=obj.pk)
+            .prefetch_related("tags")
+        )
+
+        if tag_names:
+            qs = qs.annotate(
+                shared_tags=Count(
+                    "tags", filter=Q(tags__name__in=tag_names), distinct=True
+                )
+            ).order_by("-shared_tags", "-published_at", "-created_at")
+        else:
+            qs = qs.order_by("-published_at", "-created_at")
+
+        related = qs[:RELATED_POSTS_COUNT]
+        return PostListSerializer(related, many=True, context=self.context).data
 
 
 class CommentSerializer(serializers.ModelSerializer):

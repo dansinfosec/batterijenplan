@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { postLead } from "../api.js";
 import { trackLeadSubmit } from "../analytics.js";
+import { friendlyValidity, withValidityClear } from "../formValidation.js";
 
 const EMPTY_LEAD = {
   name: "",
@@ -20,6 +21,10 @@ export function useLeadCapture() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState(null);
+  // Puur voor de weergave van foutstatussen (rode randen/tekst pas na een
+  // verzendpoging); gedeeld tussen de modal- en inline-variant, net als de
+  // rest van deze state. Verandert niets aan de validatielogica zelf.
+  const [validated, setValidated] = useState(false);
 
   const update = (field) => (e) =>
     setLead((prev) => ({
@@ -58,7 +63,7 @@ export function useLeadCapture() {
     }
   };
 
-  return { lead, update, submit, sent, sending, error };
+  return { lead, update, submit, sent, sending, error, validated, setValidated };
 }
 
 const COPY = {
@@ -84,7 +89,7 @@ export default function LeadCaptureForm({
   variant = "inline",
   onDismiss,
 }) {
-  const { lead, update, submit, sent, sending, error } = state;
+  const { lead, update, submit, sent, sending, error, validated, setValidated } = state;
   const copy = COPY[variant] ?? COPY.inline;
 
   if (sent) {
@@ -102,32 +107,72 @@ export default function LeadCaptureForm({
   };
 
   return (
-    <form className={`lead-form lead-form--${variant}`} onSubmit={onSubmit}>
+    <form
+      className={`lead-form lead-form--${variant}${validated ? " form-validated" : ""}`}
+      onSubmit={onSubmit}
+      onInvalidCapture={() => setValidated(true)}
+    >
       <h2>{copy.title}</h2>
       <p>{copy.text}</p>
 
       <div className="lead-fields">
         <label>
-          Naam *
-          <input value={lead.name} onChange={update("name")} required autoComplete="name" />
+          Naam <span className="field-required">*</span>
+          <input
+            className="field-input"
+            placeholder="Uw naam"
+            value={lead.name}
+            onChange={withValidityClear(update("name"))}
+            onInvalid={friendlyValidity("Vul uw naam in.")}
+            required
+            autoComplete="name"
+          />
+          <span className="field-error-text">Vul uw naam in.</span>
         </label>
         <label>
-          Telefoonnummer *
-          <input type="tel" value={lead.phone} onChange={update("phone")} required autoComplete="tel" />
+          Telefoonnummer <span className="field-required">*</span>
+          <input
+            className="field-input"
+            type="tel"
+            placeholder="06 12345678"
+            value={lead.phone}
+            onChange={withValidityClear(update("phone"))}
+            onInvalid={friendlyValidity("Vul uw telefoonnummer in.")}
+            required
+            autoComplete="tel"
+          />
+          <span className="field-error-text">Vul uw telefoonnummer in.</span>
         </label>
         <label>
-          E-mail *
-          <input type="email" value={lead.email} onChange={update("email")} required autoComplete="email" />
+          E-mail <span className="field-required">*</span>
+          <input
+            className="field-input"
+            type="email"
+            placeholder="uw@email.nl"
+            value={lead.email}
+            onChange={withValidityClear(update("email"))}
+            onInvalid={friendlyValidity("Vul een geldig e-mailadres in.")}
+            required
+            autoComplete="email"
+          />
+          <span className="field-error-text">Vul een geldig e-mailadres in.</span>
         </label>
         <label>
           Postcode
-          <input value={lead.postcode} onChange={update("postcode")} autoComplete="postal-code" />
+          <input
+            className="field-input"
+            placeholder="1234 AB"
+            value={lead.postcode}
+            onChange={update("postcode")}
+            autoComplete="postal-code"
+          />
         </label>
       </div>
 
       <label className="lead-message">
         Bericht
         <textarea
+          className="field-input"
           value={lead.message} onChange={update("message")}
           placeholder="Bijvoorbeeld: ik heb 12 zonnepanelen en een dynamisch contract."
         />
@@ -157,7 +202,7 @@ export default function LeadCaptureForm({
 
       {error && <div className="calc-error mono">{error}</div>}
 
-      <button type="submit" disabled={sending}>
+      <button type="submit" className="field-submit-button" disabled={sending}>
         {sending ? "Bezig…" : copy.button}
       </button>
 

@@ -105,7 +105,7 @@ class ThuisbatterijCalculatorTests(TestCase):
     def test_sunny_day_export_overrides_low_recommendation_trading(self):
         # 20000 verbruik / 4000 teruglevering triggert de vraag (>= 2x).
         # Basis 16, handel-advies 20.8. Antwoord "40-50 kWh" -> 45 kWh:
-        # 45 > basis en > 20.8, dus advies = 45 -> range 40.5-49.5, T42.
+        # handel houdt de 30%-marge -> 45 * 1.3 = 58.5 -> range 52.6-64.4, T63.
         response = self.client.post(
             reverse("thuisbatterij_calculator"),
             {
@@ -118,9 +118,9 @@ class ThuisbatterijCalculatorTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "40.5")
-        self.assertContains(response, "49.5")
-        self.assertContains(response, "Dyness S3 Tower T42")
+        self.assertContains(response, "52.6")
+        self.assertContains(response, "64.4")
+        self.assertContains(response, "Dyness S3 Tower T63")
         self.assertContains(response, "verhoogd op basis van")
 
     def test_sunny_day_export_overrides_low_recommendation_self_consumption(self):
@@ -162,17 +162,16 @@ class ThuisbatterijCalculatorTests(TestCase):
         self.assertContains(response, "22.9")
         self.assertNotContains(response, "verhoogd op basis van")
 
-    def test_sunny_day_export_over_50_maps_to_60(self):
-        # Voorbeeld uit de spec: export 1999.9 -> basis 8.0; het oude advies
-        # bleef ~10.4 kWh hangen. "Meer dan 50 kWh" -> 60 kWh, dus het advies
-        # moet minimaal 60 worden -> range 54.0-66.0, T63.
+    def test_sunny_day_export_over_50_maps_to_60_self_consumption(self):
+        # "Meer dan 50 kWh" -> 60 kWh. Zelfconsumptie: advies minimaal 60
+        # -> range 54.0-66.0, T63.
         response = self.client.post(
             reverse("thuisbatterij_calculator"),
             {
                 "customer_type": "residential",
-                "goal": "trading",
+                "goal": "self_consumption",
                 "yearly_usage": "20000",
-                "exported_energy": "1999.9",
+                "exported_energy": "2000",
                 "sunny_day_export": "over_50",
             },
         )
@@ -182,3 +181,101 @@ class ThuisbatterijCalculatorTests(TestCase):
         self.assertContains(response, "66.0")
         self.assertContains(response, "Dyness S3 Tower T63")
         self.assertContains(response, "verhoogd op basis van")
+
+    def test_sunny_day_export_over_50_maps_to_60_trading(self):
+        # "Meer dan 50 kWh" -> 60 kWh. Handel houdt de 30%-marge:
+        # 60 * 1.3 = 78 -> advies minimaal 78 -> range 70.2-85.8, T85.
+        response = self.client.post(
+            reverse("thuisbatterij_calculator"),
+            {
+                "customer_type": "residential",
+                "goal": "trading",
+                "yearly_usage": "20000",
+                "exported_energy": "2000",
+                "sunny_day_export": "over_50",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "70.2")
+        self.assertContains(response, "85.8")
+        self.assertContains(response, "Dyness S3 Tower T85")
+        self.assertContains(response, "verhoogd op basis van")
+
+    def test_sunny_day_export_business_options_override_trading(self):
+        # Zakelijke bandbreedtes gaan veel hoger (tot 640+ kWh). 200000
+        # verbruik / 20000 teruglevering triggert de vraag; "400-640 kWh"
+        # -> 520 kWh, handel houdt de 30%-marge: 520 * 1.3 = 676
+        # -> range 608.4-743.6, BOLT-645kWh 3x Cabinet.
+        response = self.client.post(
+            reverse("thuisbatterij_calculator"),
+            {
+                "customer_type": "business",
+                "goal": "trading",
+                "yearly_usage": "200000",
+                "exported_energy": "20000",
+                "sunny_day_export": "400_640",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "608.4")
+        self.assertContains(response, "743.6")
+        self.assertContains(response, "BOLT-645kWh 3x Cabinet")
+        self.assertContains(response, "verhoogd op basis van")
+
+    def test_sunny_day_export_business_over_640_maps_to_640_self_consumption(self):
+        # "Meer dan 640 kWh" -> 640 kWh. Zelfconsumptie: advies minimaal 640
+        # -> range 576.0-704.0, BOLT-645kWh 3x Cabinet.
+        response = self.client.post(
+            reverse("thuisbatterij_calculator"),
+            {
+                "customer_type": "business",
+                "goal": "self_consumption",
+                "yearly_usage": "200000",
+                "exported_energy": "20000",
+                "sunny_day_export": "over_640",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "576.0")
+        self.assertContains(response, "704.0")
+        self.assertContains(response, "BOLT-645kWh 3x Cabinet")
+        self.assertContains(response, "verhoogd op basis van")
+
+    def test_sunny_day_export_business_below_average_keeps_calculation(self):
+        # "Minder dan 50 kWh" -> 25 kWh, ruim onder het jaargemiddelde
+        # (basis 20000/250 = 80): berekening blijft ongewijzigd.
+        response = self.client.post(
+            reverse("thuisbatterij_calculator"),
+            {
+                "customer_type": "business",
+                "goal": "trading",
+                "yearly_usage": "200000",
+                "exported_energy": "20000",
+                "sunny_day_export": "under_50",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "93.6")
+        self.assertContains(response, "114.4")
+        self.assertNotContains(response, "verhoogd op basis van")
+
+    def test_sunny_day_export_business_unknown_keeps_existing_calculation(self):
+        response = self.client.post(
+            reverse("thuisbatterij_calculator"),
+            {
+                "customer_type": "business",
+                "goal": "trading",
+                "yearly_usage": "200000",
+                "exported_energy": "20000",
+                "sunny_day_export": "unknown",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "93.6")
+        self.assertContains(response, "114.4")
+        self.assertNotContains(response, "verhoogd op basis van")
