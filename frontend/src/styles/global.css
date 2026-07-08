@@ -591,6 +591,43 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
 }
 .calc-help .cta-button { margin-top: 14px; width: 100%; text-align: center; }
 
+/* De hulpkaart wordt twee keer gerenderd (Calculator.jsx): mobiel/tablet
+   compact bóven het formulier, desktop sticky rechts. Precies één zichtbaar;
+   het omslagpunt (960px) is gelijk aan dat van .calc-layout. */
+.calc-help-mobile { margin-bottom: 22px; }
+.calc-help-desktop { display: none; }
+@media (min-width: 960px) {
+  .calc-help-desktop { display: block; }
+  .calc-help-mobile { display: none; }
+}
+
+/* Compacte voordelen-checklist vlak boven het formulier */
+.calc-benefits { list-style: none; display: grid; gap: 8px; margin-bottom: 6px; }
+.calc-benefits li {
+  display: flex; gap: 10px; align-items: baseline;
+  font-size: 14px; line-height: 1.5;
+}
+.calc-benefits li::before {
+  content: "✓";
+  flex: 0 0 auto;
+  width: 20px; height: 20px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--volt); border: 2px solid var(--ink); border-radius: 6px;
+  font-family: var(--font-display); font-weight: 900; font-size: 12px;
+  transform: translateY(3px);
+}
+
+/* Gerelateerde artikelen onder de volledige calculator-layout: 1 kolom op
+   mobiel (zelfde als blog), 2 op tablet, 4 op desktop (er zijn 4 kaarten). */
+.calc-related { margin-top: 44px; }
+.calc-page .related-posts-grid { grid-template-columns: 1fr; }
+@media (min-width: 641px) {
+  .calc-page .related-posts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 960px) {
+  .calc-page .related-posts-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
 .calc-form {
   margin-top: 8px; display: grid; gap: 20px; max-width: 480px;
   background: #fff; border: 2px solid var(--ink); border-radius: 10px;

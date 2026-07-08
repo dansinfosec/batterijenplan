@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { postCalculator } from "../api.js";
 import LeadCaptureForm, { useLeadCapture } from "../components/LeadCaptureForm.jsx";
 import { setPageMeta, setJsonLd, ORGANIZATION_SCHEMA } from "../seo.js";
@@ -38,6 +38,59 @@ const SUNNY_DAY_EXPORT_OPTIONS_BUSINESS = [
 ];
 
 const MODAL_DELAY_MS = 4000;
+
+// Statische interne links naar bestaande blogposts (slugs staan ook in de
+// sitemap). Bewust niet uit de API: de calculator-landing mag hier niet
+// trager van worden.
+const RELATED_ARTICLES = [
+  {
+    slug: "thuisbatterij-vergelijken",
+    title: "Thuisbatterij vergelijken",
+    text: "Waar u op let bij capaciteit, omvormer, EMS en installatie — zonder verkooppraat.",
+  },
+  {
+    slug: "thuisbatterij-installatie",
+    title: "Thuisbatterij installatie",
+    text: "Wat er komt kijken bij het installeren van een thuisbatterij in uw woning.",
+  },
+  {
+    slug: "stroom-opslaan-zonnepanelen",
+    title: "Stroom opslaan met zonnepanelen",
+    text: "Waarom zelf opslaan slimmer wordt nu de salderingsregeling verdwijnt.",
+  },
+  {
+    slug: "terugverdientijd-thuisbatterij-handel-of-zelfconsumptie",
+    title: "Terugverdientijd thuisbatterij",
+    text: "Handel of zelfconsumptie: wat uw batterij oplevert en wanneer hij is terugverdiend.",
+  },
+];
+
+// Hulpkaart "Zo werkt de berekening". Twee keer gerenderd: op mobiel als
+// compacte kaart bóven het formulier, op desktop als sticky kaart rechts.
+// CSS (calc-help-mobile/-desktop) toont er altijd precies één.
+function CalcHelpCard({ onAdvice, className }) {
+  return (
+    <aside className={`calc-help ${className}`}>
+      <h2>Zo werkt de berekening</h2>
+
+      <ol className="calc-help-steps">
+        <li>Vul uw jaarlijkse stroomverbruik in</li>
+        <li>Vul uw jaarlijkse teruglevering in</li>
+        <li>Kies zelfconsumptie of handel/dynamisch</li>
+        <li>Ontvang direct een eerste batterijadvies</li>
+      </ol>
+
+      <p className="calc-help-note">
+        De uitkomst is een eerste indicatie. Een specialist kan uw situatie
+        gratis controleren.
+      </p>
+
+      <button type="button" className="cta-button cta-button-sm" onClick={onAdvice}>
+        Gratis advies aanvragen
+      </button>
+    </aside>
+  );
+}
 
 function LeadModal({ open, onClose, children }) {
   useEffect(() => {
@@ -281,8 +334,9 @@ export default function Calculator() {
       </h1>
 
       <p className="sub" style={{ marginTop: 12, marginBottom: 28 }}>
-        Bereken welke thuisbatterij past bij uw stroomverbruik, teruglevering
-        en energiedoel.
+        Met de gratis thuisbatterij calculator krijgt u direct een eerste
+        indicatie van de batterijcapaciteit die past bij uw stroomverbruik,
+        teruglevering en energiedoel.
       </p>
 
       <div className="calc-layout">
@@ -294,6 +348,16 @@ export default function Calculator() {
         <div><b>250 dagen</b><span>Zonopwek als rekenbasis</span></div>
         <div><b>Gratis check</b><span>Laat uw uitkomst controleren</span></div>
       </div>
+
+      {/* Mobiel: hulpkaart bóven het formulier (desktop-variant staat rechts) */}
+      <CalcHelpCard onAdvice={openAdvice} className="calc-help-mobile" />
+
+      {/* Compacte voordelen vlak boven het formulier */}
+      <ul className="calc-benefits">
+        <li>Gebaseerd op teruglevering per zonnige dag</li>
+        <li>Keuze tussen zelfconsumptie en dynamische handel</li>
+        <li>Gratis controle door een specialist</li>
+      </ul>
 
       <form
         className={`calc-form${validated ? " form-validated" : ""}`}
@@ -532,26 +596,40 @@ export default function Calculator() {
 
       </div>
 
-      <aside className="calc-help">
-        <h2>Zo werkt de berekening</h2>
-
-        <ol className="calc-help-steps">
-          <li>Vul uw jaarlijkse stroomverbruik in</li>
-          <li>Vul in hoeveel stroom u teruglevert</li>
-          <li>Kies uw doel: eigen verbruik of dynamische handel</li>
-          <li>Ontvang direct een batterijadvies</li>
-        </ol>
-
-        <p className="calc-help-note">
-          De uitkomst is een eerste indicatie. Een specialist kan uw situatie
-          gratis controleren.
-        </p>
-
-        <button type="button" className="cta-button cta-button-sm" onClick={openAdvice}>
-          Gratis advies aanvragen
-        </button>
-      </aside>
+      <CalcHelpCard onAdvice={openAdvice} className="calc-help-desktop" />
       </div>
+
+      {/* Afsluitende CTA onder het calculatorgedeelte */}
+      <section className="cta-block calc-final-cta">
+        <h2>Wilt u zeker weten welke batterij past?</h2>
+        <p>
+          Laat uw uitkomst gratis controleren. We kijken naar uw zonnepanelen,
+          teruglevering, netaansluiting, omvormervermogen en energiecontract.
+        </p>
+        <div className="cta-block-actions">
+          <button type="button" className="cta-button cta-button-sm" onClick={openAdvice}>
+            Gratis advies aanvragen
+          </button>
+        </div>
+      </section>
+
+      {/* Statische interne links naar verdiepende artikelen */}
+      <section className="related-posts calc-related">
+        <h2>Meer weten over thuisbatterijen?</h2>
+        <div className="related-posts-grid">
+          {RELATED_ARTICLES.map((article) => (
+            <Link
+              key={article.slug}
+              to={`/post/${article.slug}`}
+              className="related-post-card"
+            >
+              <h3>{article.title}</h3>
+              <p>{article.text}</p>
+              <span className="related-post-link">Lees meer →</span>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       <LeadModal open={modalOpen} onClose={closeModal}>
         <LeadCaptureForm
