@@ -4,10 +4,15 @@
 
 const SITE_NAME = "Batterijenplan.nl";
 
-export const SITE_URL = "https://batterijenplan.nl";
-export const DEFAULT_TITLE = "Batterijenplan.nl — Thuisbatterij Calculator & Advies";
+// www is de canonieke variant (zie ook prerender-blog-meta.mjs): scrapers
+// (o.a. WhatsApp) lieten eerder de non-www-variant soms terugvallen op
+// verouderde metadata na een redirect. Alle canonicals/og:url site-breed
+// consistent op www houden.
+export const SITE_URL = "https://www.batterijenplan.nl";
+export const DEFAULT_TITLE = "Thuisbatterij Vergelijken & Berekenen | Batterijenplan.nl";
 export const DEFAULT_DESCRIPTION =
-  "Bereken welke thuisbatterij past bij uw verbruik, zonnepanelen en energiedoel. Ontvang direct een eerste indicatie en laat uw berekening gratis controleren.";
+  "Thuisbatterij vergelijken en berekenen? Onafhankelijk advies over batterijopslag, EMS en dynamische energiecontracten. Bereken gratis uw batterijcapaciteit.";
+export const DEFAULT_IMAGE = `${SITE_URL}/og-home.png`;
 
 function setMetaTag(attr, key, content) {
   let el = document.head.querySelector(`meta[${attr}="${key}"]`);
@@ -54,18 +59,28 @@ export function setPageMeta({
   setMetaTag("property", "og:type", type);
   setMetaTag("property", "og:url", url);
   setMetaTag("property", "og:site_name", SITE_NAME);
-  setMetaTag("name", "twitter:card", "summary");
+  setMetaTag("property", "og:locale", "nl_NL");
   setMetaTag("name", "twitter:title", title);
   setMetaTag("name", "twitter:description", description);
   setCanonical(url);
 
   // Alleen zetten als er echt een afbeelding is; anders opruimen zodat er
-  // geen verouderde og:image van een vorige pagina blijft hangen.
+  // geen verouderde og:image van een vorige pagina blijft hangen. Met
+  // afbeelding: summary_large_image (grote kaart op LinkedIn/X/WhatsApp).
+  // Zonder: summary (geen kaart met verouderde/lege afbeelding).
   if (image) {
     setMetaTag("property", "og:image", image);
+    setMetaTag("property", "og:image:width", "1200");
+    setMetaTag("property", "og:image:height", "630");
+    setMetaTag("property", "og:image:type", "image/png");
+    setMetaTag("name", "twitter:card", "summary_large_image");
     setMetaTag("name", "twitter:image", image);
   } else {
     removeMetaTag("property", "og:image");
+    removeMetaTag("property", "og:image:width");
+    removeMetaTag("property", "og:image:height");
+    removeMetaTag("property", "og:image:type");
+    setMetaTag("name", "twitter:card", "summary");
     removeMetaTag("name", "twitter:image");
   }
 }
@@ -86,6 +101,8 @@ export function setJsonLd(schemas = []) {
   }
 }
 
+// Adresgegevens komen overeen met de openbare contactpagina (/contact) —
+// geen verzonnen data, alleen structurering van wat al gepubliceerd is.
 export const ORGANIZATION_SCHEMA = {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -93,6 +110,21 @@ export const ORGANIZATION_SCHEMA = {
   url: SITE_URL,
   logo: `${SITE_URL}/favicon.ico`,
   areaServed: "Nederland",
+  email: "info@batterijenplan.nl",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "De Waal 18D",
+    postalCode: "5684 PH",
+    addressLocality: "Best",
+    addressCountry: "NL",
+  },
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "customer service",
+    email: "info@batterijenplan.nl",
+    areaServed: "NL",
+    availableLanguage: "Dutch",
+  },
 };
 
 export const WEBSITE_SCHEMA = {
@@ -100,6 +132,8 @@ export const WEBSITE_SCHEMA = {
   "@type": "WebSite",
   name: SITE_NAME,
   url: SITE_URL,
+  description: DEFAULT_DESCRIPTION,
+  inLanguage: "nl-NL",
 };
 
 export function blogPostingSchema(post) {

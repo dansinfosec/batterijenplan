@@ -12,15 +12,17 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const SITE_URL = "https://batterijenplan.nl";
-// Blogposts gebruiken de www-variant voor canonical/og:url: de site leeft op
-// www en scrapers (m.n. WhatsApp) volgen anders eerst een redirect en vallen
-// soms terug op homepage-metadata.
-const POST_URL_BASE = "https://www.batterijenplan.nl";
+// www is de canonieke variant, site-breed (homepage, statische pagina's,
+// sitemap én blogposts): scrapers (m.n. WhatsApp) volgen anders eerst een
+// redirect en vallen soms terug op verouderde/homepage-metadata. Voorheen
+// gebruikten blogposts al www (POST_URL_BASE) terwijl de sitemap en de
+// overige statische pagina's nog non-www gebruikten — dat was inconsistent;
+// nu overal dezelfde constante.
+const SITE_URL = "https://www.batterijenplan.nl";
 const SITE_NAME = "Batterijenplan.nl";
 const API_URL = process.env.PRERENDER_API_URL || "https://api.batterijenplan.nl/api/posts/";
 const DEFAULT_DESCRIPTION =
-  "Bereken welke thuisbatterij past bij uw verbruik, zonnepanelen en energiedoel. Ontvang direct een eerste indicatie en laat uw berekening gratis controleren.";
+  "Thuisbatterij vergelijken en berekenen? Onafhankelijk advies over batterijopslag, EMS en dynamische energiecontracten. Bereken gratis uw batterijcapaciteit.";
 
 const META_START = "<!-- seo:meta:start";
 const META_END = "<!-- seo:meta:end -->";
@@ -62,11 +64,13 @@ function seoWrap(inner) {
 }
 
 const HOMEPAGE_BODY = seoWrap(`        <h1>Thuisbatterij calculator en onafhankelijk batterijadvies</h1>
-        <p>Batterijenplan.nl helpt Nederlandse huiseigenaren met heldere, onafhankelijke informatie over thuisbatterijen en het slim opslaan van zonnestroom. Steeds meer huishoudens met zonnepanelen willen hun opgewekte stroom niet langer goedkoop terugleveren aan het net, maar zelf gebruiken op het moment dat het uitkomt. Een thuisbatterij maakt dat mogelijk.</p>
+        <p>Batterijenplan.nl helpt Nederlandse huiseigenaren met heldere, onafhankelijke informatie over thuisbatterijen, batterijopslag en energieopslag. Steeds meer huishoudens met zonnepanelen willen hun opgewekte stroom niet langer goedkoop terugleveren aan het net, maar zelf gebruiken op het moment dat het uitkomt. Een thuisbatterij maakt dat mogelijk.</p>
         <h2>Zonnestroom opslaan en minder terugleveren</h2>
         <p>Met een thuisbatterij slaat u overdag opgewekte zonne-energie op om die 's avonds te gebruiken. Zo verhoogt u uw eigen verbruik, levert u minder terug aan het net en bent u beter voorbereid op het einde van de salderingsregeling. Wij leggen in begrijpelijke taal uit hoe dat werkt, zonder verkooppraat en met echte getallen.</p>
-        <h2>Capaciteit, omvormer, EMS en installatie vergelijken</h2>
+        <h2>Thuisbatterij vergelijken: capaciteit, omvormer, EMS en installatie</h2>
         <p>Een goede keuze draait om meer dan alleen de prijs. Wij helpen u de batterijcapaciteit, de omvormer, het energiemanagementsysteem (EMS) en de installatie te vergelijken, zodat het systeem past bij uw verbruik, uw zonnepanelen en uw energiedoel. Zo voorkomt u een batterij die te groot, te klein of niet geschikt is voor uw situatie.</p>
+        <h2>Batterijopslag bij een dynamisch energiecontract</h2>
+        <p>Heeft u een dynamisch energiecontract? Dan kan een thuisbatterij ook worden ingezet om slim te sturen op wisselende stroomprijzen: opladen wanneer stroom goedkoop is, gebruiken of terugleveren wanneer de prijs hoog staat. Zo haalt u meer waarde uit uw batterijopslag dan met alleen zelfconsumptie.</p>
         <h2>Gratis thuisbatterij calculator en adviesaanvraag</h2>
         <p>Met onze gratis thuisbatterij calculator berekent u op basis van uw jaarlijkse stroomverbruik en teruglevering welke batterijcapaciteit bij u past. Het resultaat is een eerste indicatie. Wilt u meer zekerheid? Vraag dan gratis een controle aan bij een specialist, die uw berekening en situatie persoonlijk bekijkt.</p>
         <p><a href="/calculator">Bereken uw thuisbatterij</a> of <a href="/contact">neem contact met ons op</a> voor advies.</p>`);
@@ -284,7 +288,7 @@ function socialImageUrl(url) {
 }
 
 function postMetaBlock(post) {
-  const url = `${POST_URL_BASE}/post/${post.slug}`;
+  const url = `${SITE_URL}/post/${post.slug}`;
   const title = `${post.title} — Batterijenplan`;
   // Altijd post-specifiek: excerpt eerst, dan de (uit de body afgeleide)
   // meta_description. Nooit terugvallen op de homepage-beschrijving.

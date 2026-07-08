@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="container">
         <span className="mono">Batterijenplan.nl — kennis over energieopslag</span>
         <span className="mono">
-          <a href="https://www.batterijenplan.nl">batterijenplan.nl</a>
+          <Link to="/">batterijenplan.nl</Link>
         </span>
       </div>
 

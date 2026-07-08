@@ -9,7 +9,7 @@ export default function Header() {
           Batterijenplan<span style={{ color: "var(--volt-dk)" }}>/blog</span>
         </Link>
         <nav className="nav">
-          <a href="https://www.batterijenplan.nl">Home</a>
+          <Link to="/">Home</Link>
           <Link to="/">Artikelen</Link>
           <Link to="/calculator">Calculator</Link>
         </nav>

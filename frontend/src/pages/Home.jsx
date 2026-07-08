@@ -4,7 +4,13 @@ import useFetch from "../hooks/useFetch.js";
 import { fetchPosts, fetchTags } from "../api.js";
 import PostCard from "../components/PostCard.jsx";
 import TagBar from "../components/TagBar.jsx";
-import { setPageMeta, setJsonLd, ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "../seo.js";
+import {
+  setPageMeta,
+  setJsonLd,
+  ORGANIZATION_SCHEMA,
+  WEBSITE_SCHEMA,
+  DEFAULT_IMAGE,
+} from "../seo.js";
 
 // Trust-/adviescijfers in de hero — bewust hardcoded, geen admin/API/CMS.
 // Bewust geen garanties: alles is "doorgerekend" of "inzichtelijk gemaakt",
@@ -134,7 +140,7 @@ export default function Home() {
 
   useEffect(() => {
     // Defaults uit seo.js: titel + omschrijving van de site.
-    setPageMeta({ path: "/" });
+    setPageMeta({ path: "/", image: DEFAULT_IMAGE });
     setJsonLd([ORGANIZATION_SCHEMA, WEBSITE_SCHEMA]);
   }, []);
 
@@ -150,7 +156,8 @@ export default function Home() {
                 Kennisbank · thuisbatterijen · dynamische contracten
               </p>
               <h1>
-                Sla je <span className="accent">energie</span> slim op
+                Sla je energie slim op met een{" "}
+                <span className="accent">thuisbatterij</span>
               </h1>
               <p className="sub">
                 Onafhankelijke uitleg over thuisbatterijen, zonnepanelen en
@@ -159,6 +166,10 @@ export default function Home() {
               <Link to="/calculator" className="cta-button">
                 Bereken uw thuisbatterij
               </Link>
+              <p className="cta-inline mono" style={{ marginTop: 16 }}>
+                Liever persoonlijk contact?{" "}
+                <Link to="/contact">Vraag gratis advies aan.</Link>
+              </p>
               <TrustCards
                 activeId={activeTrustId}
                 onToggle={(id) => setActiveTrustId(activeTrustId === id ? null : id)}
@@ -190,6 +201,14 @@ export default function Home() {
       </section>
 
       <div className="container" ref={blogSectionRef}>
+        <div className="blog-intro">
+          <h2>Laatste artikelen over thuisbatterijen en energieopslag</h2>
+          <p>
+            Praktische kennis over batterijopslag, EMS en dynamische
+            energiecontracten — zonder verkooppraat, wel getallen.
+          </p>
+        </div>
+
         <TagBar tags={tags.data} active={tag} onSelect={setTag} />
 
         {posts.loading && (

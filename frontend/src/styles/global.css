@@ -225,6 +225,15 @@ img { max-width: 100%; display: block; }
 }
 @keyframes chargeUp { from { transform: scaleX(0.05); } to { transform: scaleX(0.82); } }
 
+/* ── Bloglijst-intro (H2 boven de artikelenlijst, SEO-hiërarchie) ── */
+.blog-intro { padding-top: 32px; }
+.blog-intro h2 {
+  font-family: var(--font-display); font-weight: 800; font-size: 24px;
+}
+.blog-intro p {
+  margin-top: 8px; max-width: 60ch; font-size: 15px; color: var(--ink-60);
+}
+
 /* ── Tag filter ── */
 .tagbar {
   display: flex; gap: 8px; flex-wrap: wrap;
