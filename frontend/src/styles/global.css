@@ -549,72 +549,88 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
 }
 .calc-main { min-width: 0; }
 
-/* Educatieve mini-indicatoren boven het formulier */
-.calc-mini-strip { display: flex; flex-wrap: wrap; gap: 12px 28px; margin-bottom: 22px; }
+/* Korte intro onder de H1: strak, gefocust subtitel-niveau (geen muur tekst) */
+.calc-intro {
+  margin-top: 12px; margin-bottom: 26px; max-width: 54ch;
+  font-size: 17px; line-height: 1.6; color: var(--ink-60);
+}
+
+/* Educatieve mini-indicatoren boven het formulier: kleine trust-stats */
+.calc-mini-strip { display: flex; flex-wrap: wrap; gap: 12px 26px; margin-bottom: 20px; }
 .calc-mini-strip div { border-left: 3px solid var(--volt); padding-left: 12px; }
 .calc-mini-strip b {
-  display: block; font-family: var(--font-mono); font-size: 15px; line-height: 1.4;
+  display: block; font-family: var(--font-mono); font-size: 14px; line-height: 1.4;
 }
 .calc-mini-strip span {
   font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em;
   text-transform: uppercase; color: var(--ink-60);
 }
 
-/* Hulpkaart rechts */
+/* Hulpkaart: compacte, premium "zo werkt het"-kaart die het formulier
+   ondersteunt (desktop rechts sticky, mobiel boven het formulier). De titel
+   krijgt een eigen kop-lijn zodat de kaart in één oogopslag scanbaar is. */
 .calc-help {
-  background: #fff; border: 2px solid var(--ink); border-radius: 10px;
-  padding: 24px 22px; box-shadow: 5px 5px 0 var(--volt);
+  background: #fff; border: 2px solid var(--ink); border-radius: 12px;
+  padding: 22px 20px; box-shadow: 4px 4px 0 var(--volt);
 }
 .calc-help h2 {
-  font-family: var(--font-display); font-weight: 800; font-size: 20px;
-  margin-bottom: 14px;
+  font-family: var(--font-display); font-weight: 800; font-size: 18px;
+  letter-spacing: -0.01em;
+  margin-bottom: 16px; padding-bottom: 12px;
+  border-bottom: 2px solid var(--line);
 }
-.calc-help-steps { list-style: none; counter-reset: stap; display: grid; gap: 10px; }
+.calc-help-steps { list-style: none; counter-reset: stap; display: grid; gap: 11px; }
 .calc-help-steps li {
   counter-increment: stap;
-  display: flex; gap: 10px; align-items: baseline;
-  font-size: 15px; line-height: 1.5;
+  display: flex; gap: 11px; align-items: center;
+  font-size: 14.5px; line-height: 1.35;
 }
 .calc-help-steps li::before {
   content: counter(stap);
   flex: 0 0 auto;
-  width: 24px; height: 24px;
+  width: 22px; height: 22px;
   display: inline-flex; align-items: center; justify-content: center;
   background: var(--volt); border: 2px solid var(--ink); border-radius: 6px;
-  font-family: var(--font-display); font-weight: 900; font-size: 13px;
-  transform: translateY(3px);
+  font-family: var(--font-display); font-weight: 900; font-size: 12px;
 }
 .calc-help-note {
-  margin-top: 14px; padding-top: 12px;
+  margin-top: 16px; padding-top: 14px;
   border-top: 1px solid rgba(18, 19, 15, 0.12);
-  font-size: 13px; color: var(--ink-60);
+  font-size: 13px; line-height: 1.5; color: var(--ink-60);
 }
-.calc-help .cta-button { margin-top: 14px; width: 100%; text-align: center; }
+/* Richtinggevende CTA: zet de bezoeker in het formulier (scrollt ernaartoe). */
+.calc-help .cta-button {
+  margin-top: 16px; width: 100%;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+}
+.calc-help-cta-arrow { font-weight: 900; }
 
 /* De hulpkaart wordt twee keer gerenderd (Calculator.jsx): mobiel/tablet
    compact bóven het formulier, desktop sticky rechts. Precies één zichtbaar;
    het omslagpunt (960px) is gelijk aan dat van .calc-layout. */
-.calc-help-mobile { margin-bottom: 22px; }
+.calc-help-mobile { margin-bottom: 18px; }
 .calc-help-desktop { display: none; }
 @media (min-width: 960px) {
   .calc-help-desktop { display: block; }
   .calc-help-mobile { display: none; }
 }
 
-/* Compacte voordelen-checklist vlak boven het formulier */
-.calc-benefits { list-style: none; display: grid; gap: 8px; margin-bottom: 6px; }
+/* Voordelen-checklist: lichte reassurance onder de hulpkaart. Ronde ✓-badges
+   zodat ze visueel verschillen van de genummerde (vierkante) stappen in de
+   kaart — duidelijke hiërarchie, geen tweede contentsectie. */
+.calc-benefits { list-style: none; display: grid; gap: 10px; margin: 4px 0 18px; }
 .calc-benefits li {
-  display: flex; gap: 10px; align-items: baseline;
-  font-size: 14px; line-height: 1.5;
+  display: flex; gap: 11px; align-items: center;
+  font-size: 14px; line-height: 1.4; color: var(--ink);
 }
 .calc-benefits li::before {
   content: "✓";
   flex: 0 0 auto;
-  width: 20px; height: 20px;
+  width: 21px; height: 21px;
   display: inline-flex; align-items: center; justify-content: center;
-  background: var(--volt); border: 2px solid var(--ink); border-radius: 6px;
-  font-family: var(--font-display); font-weight: 900; font-size: 12px;
-  transform: translateY(3px);
+  background: var(--volt); color: var(--ink);
+  border: 2px solid var(--ink); border-radius: 50%;
+  font-family: var(--font-display); font-weight: 900; font-size: 11px;
 }
 
 /* Gerelateerde artikelen onder de volledige calculator-layout: 1 kolom op

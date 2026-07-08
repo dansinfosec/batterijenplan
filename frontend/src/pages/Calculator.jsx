@@ -83,8 +83,9 @@ function CalcHelpCard({ onStart, className }) {
         bij uw situatie.
       </p>
 
-      <button type="button" className="cta-button cta-button-sm" onClick={onStart}>
+      <button type="button" className="cta-button cta-button-sm calc-help-cta" onClick={onStart}>
         Start de berekening
+        <span aria-hidden="true" className="calc-help-cta-arrow">→</span>
       </button>
     </aside>
   );
@@ -338,9 +339,8 @@ export default function Calculator() {
         Thuisbatterij <span className="accent">Calculator</span>
       </h1>
 
-      <p className="sub" style={{ marginTop: 12, marginBottom: 28 }}>
-        Met de gratis thuisbatterij calculator krijgt u direct een eerste
-        indicatie van de batterijcapaciteit die past bij uw stroomverbruik,
+      <p className="sub calc-intro">
+        Bereken gratis welke batterijcapaciteit past bij uw stroomverbruik,
         teruglevering en energiedoel.
       </p>
 
