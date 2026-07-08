@@ -41,52 +41,50 @@ const MODAL_DELAY_MS = 4000;
 
 // Statische interne links naar bestaande blogposts (slugs staan ook in de
 // sitemap). Bewust niet uit de API: de calculator-landing mag hier niet
-// trager van worden.
+// trager van worden. Slugs geverifieerd tegen de gepubliceerde posts —
+// de vergelijking Dyness/Enphase staat live op "enphase-vs-dyness".
 const RELATED_ARTICLES = [
   {
-    slug: "thuisbatterij-vergelijken",
-    title: "Thuisbatterij vergelijken",
-    text: "Waar u op let bij capaciteit, omvormer, EMS en installatie — zonder verkooppraat.",
+    slug: "enphase-vs-dyness",
+    title: "Dyness vs Enphase: welke batterij past beter?",
+    text: "Vergelijk opslagcapaciteit, uitbreidbaarheid, omvormers en slimme sturing.",
   },
   {
-    slug: "thuisbatterij-installatie",
-    title: "Thuisbatterij installatie",
-    text: "Wat er komt kijken bij het installeren van een thuisbatterij in uw woning.",
+    slug: "groene-vrienden-vs-zonneplan-vs-tibber",
+    title: "Groene Vrienden vs Zonneplan vs Tibber",
+    text: "Ontdek het verschil tussen installatie, energiecontract, batterijaansturing en advies.",
   },
   {
-    slug: "stroom-opslaan-zonnepanelen",
-    title: "Stroom opslaan met zonnepanelen",
-    text: "Waarom zelf opslaan slimmer wordt nu de salderingsregeling verdwijnt.",
-  },
-  {
-    slug: "terugverdientijd-thuisbatterij-handel-of-zelfconsumptie",
-    title: "Terugverdientijd thuisbatterij",
-    text: "Handel of zelfconsumptie: wat uw batterij oplevert en wanneer hij is terugverdiend.",
+    slug: "ems-systeem-thuisbatterij-controle-over-stroom",
+    title: "EMS systeem voor uw thuisbatterij",
+    text: "Lees hoe slimme EMS-sturing helpt bij eigen verbruik, dynamische prijzen en energieopslag.",
   },
 ];
 
 // Hulpkaart "Zo werkt de berekening". Twee keer gerenderd: op mobiel als
 // compacte kaart bóven het formulier, op desktop als sticky kaart rechts.
-// CSS (calc-help-mobile/-desktop) toont er altijd precies één.
-function CalcHelpCard({ onAdvice, className }) {
+// CSS (calc-help-mobile/-desktop) toont er altijd precies één. De CTA start
+// de berekening (scrollt naar het formulier), niet het leadformulier — dat
+// is bewust de rol van de afsluitende CTA onderaan.
+function CalcHelpCard({ onStart, className }) {
   return (
     <aside className={`calc-help ${className}`}>
       <h2>Zo werkt de berekening</h2>
 
       <ol className="calc-help-steps">
-        <li>Vul uw jaarlijkse stroomverbruik in</li>
-        <li>Vul uw jaarlijkse teruglevering in</li>
-        <li>Kies zelfconsumptie of handel/dynamisch</li>
-        <li>Ontvang direct een eerste batterijadvies</li>
+        <li>Vul uw stroomverbruik in</li>
+        <li>Vul uw teruglevering in</li>
+        <li>Kies zelfconsumptie of handel</li>
+        <li>Ontvang direct uw batterijadvies</li>
       </ol>
 
       <p className="calc-help-note">
-        De uitkomst is een eerste indicatie. Een specialist kan uw situatie
-        gratis controleren.
+        Binnen één minuut ziet u welke batterijcapaciteit waarschijnlijk past
+        bij uw situatie.
       </p>
 
-      <button type="button" className="cta-button cta-button-sm" onClick={onAdvice}>
-        Gratis advies aanvragen
+      <button type="button" className="cta-button cta-button-sm" onClick={onStart}>
+        Start de berekening
       </button>
     </aside>
   );
@@ -155,6 +153,7 @@ export default function Calculator() {
   const [validated, setValidated] = useState(false);
   const resultRef = useRef(null);
   const sunnyDayRef = useRef(null);
+  const formRef = useRef(null);
 
   const leadState = useLeadCapture();
 
@@ -314,8 +313,14 @@ export default function Calculator() {
 
   const showLeadForm = Boolean(isCalculationComplete || directAdvice);
 
-  // CTA in hulpkaart/resultaat: naar het bestaande leadformulier scrollen
-  // als dat al zichtbaar is, anders de bestaande modal tonen.
+  // Hulpkaart-CTA: de berekening starten door naar het formulier te scrollen
+  // (geen leadformulier — dat is de rol van de afsluitende CTA onderaan).
+  const startCalculation = () => {
+    formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  // Afsluitende/resultaat-CTA: naar het bestaande leadformulier scrollen als
+  // dat al zichtbaar is, anders de bestaande modal tonen.
   const openAdvice = () => {
     const el = document.getElementById("advies");
     if (el) {
@@ -350,7 +355,7 @@ export default function Calculator() {
       </div>
 
       {/* Mobiel: hulpkaart bóven het formulier (desktop-variant staat rechts) */}
-      <CalcHelpCard onAdvice={openAdvice} className="calc-help-mobile" />
+      <CalcHelpCard onStart={startCalculation} className="calc-help-mobile" />
 
       {/* Compacte voordelen vlak boven het formulier */}
       <ul className="calc-benefits">
@@ -360,6 +365,7 @@ export default function Calculator() {
       </ul>
 
       <form
+        ref={formRef}
         className={`calc-form${validated ? " form-validated" : ""}`}
         onSubmit={submit}
         onInvalidCapture={() => setValidated(true)}
@@ -596,26 +602,17 @@ export default function Calculator() {
 
       </div>
 
-      <CalcHelpCard onAdvice={openAdvice} className="calc-help-desktop" />
+      <CalcHelpCard onStart={startCalculation} className="calc-help-desktop" />
       </div>
 
-      {/* Afsluitende CTA onder het calculatorgedeelte */}
-      <section className="cta-block calc-final-cta">
-        <h2>Wilt u zeker weten welke batterij past?</h2>
-        <p>
-          Laat uw uitkomst gratis controleren. We kijken naar uw zonnepanelen,
-          teruglevering, netaansluiting, omvormervermogen en energiecontract.
-        </p>
-        <div className="cta-block-actions">
-          <button type="button" className="cta-button cta-button-sm" onClick={openAdvice}>
-            Gratis advies aanvragen
-          </button>
-        </div>
-      </section>
-
-      {/* Statische interne links naar verdiepende artikelen */}
+      {/* Statische interne links naar verdiepende artikelen (secundaire
+          navigatie) — géén API-fetch, dus geen invloed op de laadtijd. */}
       <section className="related-posts calc-related">
         <h2>Meer weten over thuisbatterijen?</h2>
+        <p className="calc-related-intro">
+          Lees verder over batterijmerken, slimme sturing en het verschil
+          tussen aanbieders.
+        </p>
         <div className="related-posts-grid">
           {RELATED_ARTICLES.map((article) => (
             <Link
@@ -628,6 +625,27 @@ export default function Calculator() {
               <span className="related-post-link">Lees meer →</span>
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* Afsluitende conversie-CTA onder de artikelen: gratis controle van de
+          berekening (bestaand leadgedrag via openAdvice). */}
+      <section className="cta-block calc-final-cta">
+        <h2>Wilt u zeker weten welke batterij past?</h2>
+        <p>
+          Laat uw uitkomst gratis controleren. We kijken naar uw zonnepanelen,
+          teruglevering, netaansluiting, omvormervermogen, EMS-sturing en
+          energiecontract.
+        </p>
+        <ul className="calc-final-cta-trust">
+          <li>Gratis controle</li>
+          <li>Geen verplichting</li>
+          <li>Advies op basis van uw woning</li>
+        </ul>
+        <div className="cta-block-actions">
+          <button type="button" className="cta-button cta-button-sm" onClick={openAdvice}>
+            Gratis advies aanvragen
+          </button>
         </div>
       </section>
 

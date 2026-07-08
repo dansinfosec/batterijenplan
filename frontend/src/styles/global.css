@@ -618,15 +618,41 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
 }
 
 /* Gerelateerde artikelen onder de volledige calculator-layout: 1 kolom op
-   mobiel (zelfde als blog), 2 op tablet, 4 op desktop (er zijn 4 kaarten). */
+   mobiel (gestapeld), 3 kolommen vanaf tablet/desktop (er zijn 3 kaarten). */
 .calc-related { margin-top: 44px; }
+.calc-related h2 { margin-bottom: 8px; }
+.calc-related-intro {
+  margin: 0 0 20px; max-width: 60ch;
+  font-size: 15px; color: var(--ink-60);
+}
 .calc-page .related-posts-grid { grid-template-columns: 1fr; }
-@media (min-width: 641px) {
-  .calc-page .related-posts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 720px) {
+  .calc-page .related-posts-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
-@media (min-width: 960px) {
-  .calc-page .related-posts-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+/* "Start de berekening" scrollt naar het formulier: marge zodat het niet
+   onder de sticky header (64px) verdwijnt. */
+.calc-form { scroll-margin-top: 80px; }
+
+/* Afsluitende conversie-CTA: iets premiumer dan een gewoon .cta-block —
+   diepere volt-schaduw, sterkere kop/knop, met een trust-rij. Blijft
+   Batterijenplan-stijl: off-white, zwarte rand, gele accenten, geen
+   gradients/animaties. Padding erft van .cta-block (al responsive). De
+   .calc-page-prefix tilt de specificiteit boven de latere .cta-block-regels. */
+.calc-page .calc-final-cta { margin-top: 44px; box-shadow: 8px 8px 0 var(--volt); }
+.calc-page .calc-final-cta h2 { font-size: clamp(21px, 3vw, 27px); }
+.calc-final-cta-trust {
+  list-style: none; display: flex; flex-wrap: wrap; gap: 8px 22px;
+  margin: 0 0 20px;
 }
+.calc-final-cta-trust li {
+  display: flex; align-items: baseline; gap: 8px;
+  font-family: var(--font-mono); font-size: 13px; color: var(--ink);
+}
+.calc-final-cta-trust li::before {
+  content: "✓"; color: var(--volt-dk); font-weight: 900;
+}
+.calc-page .calc-final-cta .cta-button-sm { font-size: 16px; padding: 14px 28px; }
 
 .calc-form {
   margin-top: 8px; display: grid; gap: 20px; max-width: 480px;
