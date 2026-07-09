@@ -109,7 +109,7 @@ img { max-width: 100%; display: block; }
   line-height: 0.98;
   letter-spacing: -0.03em;
   text-transform: uppercase;
-  max-width: 12ch;
+  max-width: none;
 }
 .hero h1 .accent { color: var(--copper); }
 .hero p.sub {
