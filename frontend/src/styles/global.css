@@ -613,29 +613,55 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
 /* De hulpkaart wordt twee keer gerenderd (Calculator.jsx): mobiel/tablet
    compact bóven het formulier, desktop sticky rechts. Precies één zichtbaar;
    het omslagpunt (960px) is gelijk aan dat van .calc-layout. */
-.calc-help-mobile { margin-bottom: 18px; }
+.calc-help-mobile { margin-bottom: 14px; }
 .calc-help-desktop { display: none; }
 @media (min-width: 960px) {
   .calc-help-desktop { display: block; }
   .calc-help-mobile { display: none; }
 }
 
-/* Voordelen-checklist: lichte reassurance onder de hulpkaart. Ronde ✓-badges
-   zodat ze visueel verschillen van de genummerde (vierkante) stappen in de
-   kaart — duidelijke hiërarchie, geen tweede contentsectie. */
-.calc-benefits { list-style: none; display: grid; gap: 10px; margin: 4px 0 18px; }
-.calc-benefits li {
-  display: flex; gap: 11px; align-items: center;
-  font-size: 14px; line-height: 1.4; color: var(--ink);
+/* Mobiele hulpkaart-cue i.p.v. een grote CTA-knop (het formulier staat er al
+   direct onder): bescheiden, tapbaar (scrollt naar het formulier), geen groot
+   geel primair vlak. */
+.calc-help-cue {
+  display: block; width: 100%; text-align: left; cursor: pointer;
+  margin-top: 14px; padding: 11px 14px;
+  background: var(--paper); color: var(--ink);
+  border: 2px solid var(--ink); border-radius: 8px;
 }
-.calc-benefits li::before {
+.calc-help-cue-title {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-display); font-weight: 800; font-size: 14px;
+}
+.calc-help-cue-arrow { color: var(--volt-dk); font-weight: 900; }
+.calc-help-cue-sub {
+  display: block; margin-top: 3px;
+  font-size: 12.5px; line-height: 1.4; color: var(--ink-60);
+}
+
+/* "Wat heeft u nodig?" — compacte checklist die vertelt wat het formulier
+   hieronder vraagt (vervangt de vage voordelen). Gele ✓-badges, klein. */
+.calc-needs { margin: 0 0 14px; }
+.calc-needs-title {
+  font-family: var(--font-display); font-weight: 800; font-size: 14px;
+  letter-spacing: -0.01em; margin-bottom: 10px;
+}
+.calc-needs-list { list-style: none; display: grid; gap: 8px; }
+.calc-needs-list li {
+  display: flex; gap: 10px; align-items: center;
+  font-size: 14px; line-height: 1.35; font-weight: 600; color: var(--ink);
+}
+.calc-needs-list li::before {
   content: "✓";
   flex: 0 0 auto;
-  width: 21px; height: 21px;
+  width: 20px; height: 20px;
   display: inline-flex; align-items: center; justify-content: center;
   background: var(--volt); color: var(--ink);
   border: 2px solid var(--ink); border-radius: 50%;
   font-family: var(--font-display); font-weight: 900; font-size: 11px;
+}
+.calc-needs-help {
+  margin-top: 10px; font-size: 13px; line-height: 1.5; color: var(--ink-60);
 }
 
 /* Gerelateerde artikelen onder de volledige calculator-layout: 1 kolom op

@@ -1,125 +1,40 @@
-const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
+// GTM is de single source of truth voor GA4 én Google Ads. Deze module laadt
+// zelf geen gtag.js/gtm.js meer (de container wordt uitgesteld geladen via het
+// snippet in index.html); ze stuurt alleen events naar window.dataLayer. Wat er
+// met die events gebeurt (GA4-tags, Google Ads-conversies) wordt volledig in
+// Google Tag Manager geconfigureerd.
 
-let initialized = false;
-let scheduled = false;
-
-// Events die binnenkomen vóórdat gtag klaar is; worden na init doorgestuurd.
-const pendingEvents = [];
-
-function flushPendingEvents() {
-  for (const [name, params] of pendingEvents.splice(0)) {
-    window.gtag("event", name, params);
-  }
-}
-
-// Laadt gtag.js en zet de config. Idempotent: het script wordt maximaal
-// één keer ingevoegd.
-function setupGtag() {
-  if (!GA_MEASUREMENT_ID || initialized) return;
-
-  const script = document.createElement("script");
-  script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-  document.head.appendChild(script);
-
+function dataLayerPush(payload) {
+  // dataLayer wordt al in index.html geïnitialiseerd; defensief voor het geval
+  // een event vóór dat snippet of in een testomgeving binnenkomt.
   window.dataLayer = window.dataLayer || [];
-  window.gtag = function gtag() {
-    window.dataLayer.push(arguments);
-  };
-
-  window.gtag("js", new Date());
-  window.gtag("config", GA_MEASUREMENT_ID, {
-    send_page_view: false,
-  });
-
-  initialized = true;
-  flushPendingEvents();
+  window.dataLayer.push(payload);
 }
 
-// Perf: gtag.js (~175 KB) mag niet meedoen in het FCP/LCP-venster.
-// We laden pas bij de eerste échte gebruikersinteractie, of anders
-// 5 seconden na window load. Geen requestIdleCallback meer: die vuurde
-// vaak al tijdens de initial load.
-const INTERACTION_EVENTS = ["pointerdown", "keydown", "touchstart", "scroll"];
-
-export function initAnalytics() {
-  if (!GA_MEASUREMENT_ID || initialized || scheduled) return;
-  scheduled = true;
-
-  let loadTimer = null;
-
-  const cleanup = () => {
-    for (const evt of INTERACTION_EVENTS) {
-      window.removeEventListener(evt, start);
-    }
-    window.removeEventListener("load", onLoad);
-    if (loadTimer !== null) clearTimeout(loadTimer);
-  };
-
-  const start = () => {
-    cleanup();
-    setupGtag();
-  };
-
-  const onLoad = () => {
-    loadTimer = setTimeout(start, 5000);
-  };
-
-  // a) eerste gebruikersinteractie…
-  for (const evt of INTERACTION_EVENTS) {
-    window.addEventListener(evt, start, { passive: true });
-  }
-
-  // b) …of window load + 5s, wat het eerst komt.
-  if (document.readyState === "complete") {
-    onLoad();
-  } else {
-    window.addEventListener("load", onLoad, { once: true });
-  }
-}
-
+// Eén page_view per SPA-navigatie (inclusief de eerste). Belangrijk tegen
+// dubbeltellingen: de GA4-configuratietag mag géén automatische page_view
+// sturen en "Page changes based on browser history events" moet in Enhanced
+// Measurement uit staan — deze push is de enige bron van page_views.
 export function trackPageView(path) {
-  if (!GA_MEASUREMENT_ID) return;
-
-  // Parameters nú vastleggen (titel/URL kloppen op dit moment), later versturen.
-  const params = {
+  dataLayerPush({
+    event: "page_view",
     page_path: path,
     page_location: window.location.href,
     page_title: document.title,
-  };
-
-  if (!initialized) {
-    pendingEvents.push(["page_view", params]);
-    return;
-  }
-
-  window.gtag("event", "page_view", params);
+  });
 }
 
+// Lead/conversie: één semantisch event. In GTM hangen zowel de GA4-event-tag
+// als de Google Ads-conversietag aan de custom-event trigger "generate_lead".
 export function trackLeadSubmit(source = "calculator_advies") {
-  if (!GA_MEASUREMENT_ID) return;
+  // Conversies mogen niet verloren gaan als de container nog niet uitgesteld is
+  // geladen. Een formulierinzending is zelf al een interactie (die het laden
+  // triggert), maar we forceren het laden voor de zekerheid; het event wordt
+  // hoe dan ook in de dataLayer gebufferd en verwerkt zodra gtm.js er is.
+  if (typeof window.__gtmLoad === "function") window.__gtmLoad();
 
-  // Conversies mogen nooit wachten op het uitgestelde laden: eerst gtag
-  // opzetten, daarna direct versturen. De gtag-stub queuet in de dataLayer
-  // totdat gtag.js geladen is, dus de events komen gegarandeerd aan.
-  if (!initialized) {
-    setupGtag();
-  }
-
-  window.gtag("event", "generate_lead", {
-    event_category: "lead",
-    event_label: source,
-  });
-
-  window.gtag("event", "ads_conversion_signup", {
-    event_category: "lead",
-    event_label: source,
-  });
-
-  // Google Ads verwacht exact deze eventnaam voor de conversie-tag
-  // (zie het event-snippet in Google Ads). Geen event_callback nodig:
-  // er is geen navigatie na het versturen van het formulier.
-  window.gtag("event", "conversion_event_signup", {
-    event_timeout: 2000,
+  dataLayerPush({
+    event: "generate_lead",
+    lead_source: source,
   });
 }

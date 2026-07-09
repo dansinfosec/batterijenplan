@@ -8,15 +8,13 @@ import PostDetail from "./pages/PostDetail.jsx";
 import Calculator from "./pages/Calculator.jsx";
 import Privacy from "./pages/Privacy.jsx";
 import Contact from "./pages/Contact.jsx";
-import { initAnalytics, trackPageView } from "./analytics.js";
+import { trackPageView } from "./analytics.js";
 
 function AnalyticsTracker() {
   const location = useLocation();
 
-  useEffect(() => {
-    initAnalytics();
-  }, []);
-
+  // Eén page_view per route (incl. de eerste). De GTM-container wordt via het
+  // snippet in index.html geladen; hier alleen de dataLayer-push per navigatie.
   useEffect(() => {
     trackPageView(location.pathname + location.search);
   }, [location]);

@@ -71,7 +71,8 @@ const RELATED_ARTICLES = [
 // CSS (calc-help-mobile/-desktop) toont er altijd precies één. De CTA start
 // de berekening (scrollt naar het formulier), niet het leadformulier — dat
 // is bewust de rol van de afsluitende CTA onderaan.
-function CalcHelpCard({ onStart, className }) {
+function CalcHelpCard({ onStart, className, variant }) {
+  const isMobile = variant === "mobile";
   return (
     <aside className={`calc-help ${className}`}>
       <h2>Zo werkt de berekening</h2>
@@ -83,15 +84,34 @@ function CalcHelpCard({ onStart, className }) {
         <li>Ontvang direct uw batterijadvies</li>
       </ol>
 
-      <p className="calc-help-note">
-        Binnen één minuut ziet u welke batterijcapaciteit waarschijnlijk past
-        bij uw situatie.
-      </p>
-
-      <button type="button" className="cta-button cta-button-sm calc-help-cta" onClick={onStart}>
-        Start de berekening
-        <span aria-hidden="true" className="calc-help-cta-arrow">→</span>
-      </button>
+      {isMobile ? (
+        // Mobiel: het formulier staat er direct onder, dus geen grote primaire
+        // CTA-knop maar een bescheiden richtingaanwijzer (scrollt wel).
+        <button type="button" className="calc-help-cue" onClick={onStart}>
+          <span className="calc-help-cue-title">
+            Vul uw gegevens hieronder in
+            <span aria-hidden="true" className="calc-help-cue-arrow">↓</span>
+          </span>
+          <span className="calc-help-cue-sub">
+            U krijgt direct een eerste batterijadvies.
+          </span>
+        </button>
+      ) : (
+        <>
+          <p className="calc-help-note">
+            Binnen één minuut ziet u welke batterijcapaciteit waarschijnlijk
+            past bij uw situatie.
+          </p>
+          <button
+            type="button"
+            className="cta-button cta-button-sm calc-help-cta"
+            onClick={onStart}
+          >
+            Ga naar de calculator
+            <span aria-hidden="true" className="calc-help-cta-arrow">→</span>
+          </button>
+        </>
+      )}
     </aside>
   );
 }
@@ -362,14 +382,22 @@ export default function Calculator() {
       </div>
 
       {/* Mobiel: hulpkaart bóven het formulier (desktop-variant staat rechts) */}
-      <CalcHelpCard onStart={startCalculation} className="calc-help-mobile" />
+      <CalcHelpCard onStart={startCalculation} variant="mobile" className="calc-help-mobile" />
 
-      {/* Compacte voordelen vlak boven het formulier */}
-      <ul className="calc-benefits">
-        <li>Gebaseerd op teruglevering per zonnige dag</li>
-        <li>Keuze tussen zelfconsumptie en dynamische handel</li>
-        <li>Gratis controle door een specialist</li>
-      </ul>
+      {/* "Wat heeft u nodig?" — vertelt de gebruiker precies wat het formulier
+          hieronder vraagt; verbindt visueel met het formulier. */}
+      <div className="calc-needs">
+        <p className="calc-needs-title">Wat heeft u nodig?</p>
+        <ul className="calc-needs-list">
+          <li>Jaarlijks stroomverbruik</li>
+          <li>Jaarlijkse teruglevering</li>
+          <li>Uw doel: eigen verbruik of dynamische handel</li>
+        </ul>
+        <p className="calc-needs-help">
+          Deze gegevens vindt u meestal terug in uw energieleverancier-app of
+          jaarafrekening.
+        </p>
+      </div>
 
       <form
         ref={formRef}
@@ -609,7 +637,7 @@ export default function Calculator() {
 
       </div>
 
-      <CalcHelpCard onStart={startCalculation} className="calc-help-desktop" />
+      <CalcHelpCard onStart={startCalculation} variant="desktop" className="calc-help-desktop" />
       </div>
 
       {/* Lead-CTA — resultgedreven: verschijnt alleen ná een voltooide
