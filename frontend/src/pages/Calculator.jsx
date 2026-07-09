@@ -59,6 +59,11 @@ const RELATED_ARTICLES = [
     title: "Stroom opslaan met zonnepanelen",
     text: "Waarom zelf opslaan slimmer wordt nu de salderingsregeling verdwijnt.",
   },
+  {
+    slug: "dynamisch-energiecontract-thuisbatterij",
+    title: "Dynamisch energiecontract met thuisbatterij",
+    text: "Lees hoe dynamische stroomprijzen, EMS-sturing en een thuisbatterij samenwerken.",
+  },
 ];
 
 // Hulpkaart "Zo werkt de berekening". Twee keer gerenderd: op mobiel als
@@ -680,66 +685,47 @@ export default function Calculator() {
           </Link>
           .
         </p>
-
-        <h2>Laat uw berekening controleren</h2>
-        <p>
-          De uitkomst van de thuisbatterij calculator is een eerste indicatie.
-          Voor een definitief advies kijkt een specialist gratis naar uw
-          zonnepanelen, teruglevering, netaansluiting, omvormervermogen en
-          energiecontract.{" "}
-          <button type="button" className="cta-text-link" onClick={openAdvice}>
-            Plan gratis batterijadvies
-          </button>{" "}
-          en weet zeker welke batterij écht bij uw woning past.
-        </p>
       </section>
 
-      {/* FAQ — semantische HTML (h2/h3/p), geen accordion-JS. */}
+      {/* FAQ — compact via native <details>/<summary>, geen accordion-JS. */}
       <section className="calc-faq">
         <h2>Veelgestelde vragen over de thuisbatterij calculator</h2>
-        <div className="calc-faq-grid">
-          <div className="calc-faq-item">
-            <h3>Hoe bereken ik welke thuisbatterij ik nodig heb?</h3>
+        <div className="calc-faq-list">
+          <details className="calc-faq-item">
+            <summary>Hoe bereken ik welke thuisbatterij ik nodig heb?</summary>
             <p>
-              Vul uw jaarlijkse stroomverbruik en teruglevering in de
-              thuisbatterij calculator in. Op basis daarvan berekent de tool een
-              passende capaciteitsrange in kWh. Voor een exacte match laat u de
-              uitkomst gratis controleren door een specialist.
+              Vul uw jaarlijkse stroomverbruik en teruglevering in. De calculator
+              berekent dan een passende capaciteitsrange in kWh voor uw situatie.
             </p>
-          </div>
-          <div className="calc-faq-item">
-            <h3>Hoeveel kWh thuisbatterij heb ik nodig?</h3>
+          </details>
+          <details className="calc-faq-item">
+            <summary>Hoeveel kWh thuisbatterij heb ik nodig?</summary>
             <p>
-              Voor veel huishoudens ligt een passende thuisbatterij tussen de 10
-              en 20 kWh, afhankelijk van uw verbruik, teruglevering en doel. De
-              calculator geeft u een indicatie die op uw eigen situatie is
-              afgestemd.
+              Voor veel huishoudens ligt dat tussen de 10 en 20 kWh, afhankelijk
+              van uw verbruik, teruglevering en doel.
             </p>
-          </div>
-          <div className="calc-faq-item">
-            <h3>Is deze thuisbatterij calculator gratis?</h3>
+          </details>
+          <details className="calc-faq-item">
+            <summary>Is deze thuisbatterij calculator gratis?</summary>
             <p>
-              Ja. De thuisbatterij calculator is volledig gratis en
-              vrijblijvend. U ontvangt direct een eerste indicatie, zonder
-              verplichting.
+              Ja, volledig gratis en vrijblijvend. U ontvangt direct een eerste
+              indicatie, zonder verplichting.
             </p>
-          </div>
-          <div className="calc-faq-item">
-            <h3>Werkt de calculator ook met zonnepanelen?</h3>
+          </details>
+          <details className="calc-faq-item">
+            <summary>Werkt de calculator ook met zonnepanelen?</summary>
             <p>
-              Ja. Juist met zonnepanelen is de calculator nuttig: uw
-              teruglevering bepaalt hoeveel zonnestroom u kunt opslaan in plaats
-              van terug te leveren aan het net.
+              Ja. Juist met zonnepanelen is de calculator nuttig: uw teruglevering
+              bepaalt hoeveel zonnestroom u kunt opslaan.
             </p>
-          </div>
-          <div className="calc-faq-item">
-            <h3>Kan ik ook dynamische handel berekenen?</h3>
+          </details>
+          <details className="calc-faq-item">
+            <summary>Kan ik ook dynamische handel berekenen?</summary>
             <p>
-              Ja. U kiest bij het doel voor “handel / dynamisch contract”. De
-              calculator houdt dan rekening met sturen op dynamische
-              stroomprijzen in plaats van alleen zelfconsumptie.
+              Ja. Kies bij het doel voor “handel / dynamisch contract”, dan rekent
+              de calculator met sturen op dynamische stroomprijzen.
             </p>
-          </div>
+          </details>
         </div>
       </section>
 
