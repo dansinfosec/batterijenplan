@@ -1006,7 +1006,13 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
 }
 .lead-privacy a { color: var(--volt-dk); }
 @media (max-width: 640px) {
-  .lead-fields { grid-template-columns: 1fr; }
+  .lead-fields { grid-template-columns: 1fr;
+  .hero h1 {
+    max-width: none;
+    font-size: clamp(28px, 9vw, 42px);
+    line-height: 1;
+    overflow-wrap: anywhere; }
+
 }
 
 /* ── Lead modal ── */
@@ -1203,7 +1209,7 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
 
 /* ── Mobile ≤480px: kleine telefoons, typografie verder terug ── */
 @media (max-width: 480px) {
-  .hero h1 { font-size: clamp(30px, 11vw, 40px); }
+  .hero h1 { font-size: clamp(26px, 8.5vw, 36px); }
   .post-detail h1 { font-size: clamp(23px, 8vw, 30px); }
   .calc-result h2 { font-size: 26px; }
   .lead-form h2, .cta-block h2 { font-size: 19px; }
