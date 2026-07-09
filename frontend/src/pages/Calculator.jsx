@@ -605,8 +605,32 @@ export default function Calculator() {
       <CalcHelpCard onStart={startCalculation} className="calc-help-desktop" />
       </div>
 
+      {/* Afsluitende conversie-CTA — dé conversie-actie, bewust bóven de
+          artikelen zodat ads-/conversieverkeer niet eerst naar de blog wordt
+          gestuurd. Gratis controle van de berekening (bestaand leadgedrag via
+          openAdvice: scrollt naar het inline leadformulier of opent de modal). */}
+      <section className="cta-block calc-final-cta">
+        <h2>Laat uw batterijadvies gratis controleren</h2>
+        <p>
+          Wij controleren uw uitkomst op basis van uw zonnepanelen,
+          teruglevering, netaansluiting, omvormervermogen, EMS-sturing en
+          energiecontract.
+        </p>
+        <ul className="calc-final-cta-trust">
+          <li>Gratis controle</li>
+          <li>Geen verplichting</li>
+          <li>Advies op basis van uw woning</li>
+        </ul>
+        <div className="cta-block-actions">
+          <button type="button" className="cta-button cta-button-sm" onClick={openAdvice}>
+            Plan gratis batterijadvies
+          </button>
+        </div>
+      </section>
+
       {/* Statische interne links naar verdiepende artikelen (secundaire
-          navigatie) — géén API-fetch, dus geen invloed op de laadtijd. */}
+          navigatie, ónder de conversie-CTA) — géén API-fetch, dus geen
+          invloed op de laadtijd. */}
       <section className="related-posts calc-related">
         <h2>Meer weten over thuisbatterijen?</h2>
         <p className="calc-related-intro">
@@ -625,27 +649,6 @@ export default function Calculator() {
               <span className="related-post-link">Lees meer →</span>
             </Link>
           ))}
-        </div>
-      </section>
-
-      {/* Afsluitende conversie-CTA onder de artikelen: gratis controle van de
-          berekening (bestaand leadgedrag via openAdvice). */}
-      <section className="cta-block calc-final-cta">
-        <h2>Wilt u zeker weten welke batterij past?</h2>
-        <p>
-          Laat uw uitkomst gratis controleren. We kijken naar uw zonnepanelen,
-          teruglevering, netaansluiting, omvormervermogen, EMS-sturing en
-          energiecontract.
-        </p>
-        <ul className="calc-final-cta-trust">
-          <li>Gratis controle</li>
-          <li>Geen verplichting</li>
-          <li>Advies op basis van uw woning</li>
-        </ul>
-        <div className="cta-block-actions">
-          <button type="button" className="cta-button cta-button-sm" onClick={openAdvice}>
-            Gratis advies aanvragen
-          </button>
         </div>
       </section>
 

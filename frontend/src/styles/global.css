@@ -530,22 +530,27 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
    maar een echte desktop-container. Dubbele klasse voor specificiteit boven
    de .post-detail breedte-regels verderop (incl. de mobile gutter-fix). */
 .post-detail.calc-page {
-  width: min(1120px, calc(100% - 32px));
-  max-width: 1120px;
+  width: min(1180px, calc(100% - 32px));
+  max-width: 1180px;
 }
 
 .calc-layout { display: grid; gap: 28px; align-items: start; }
 @media (min-width: 960px) {
-  .calc-layout { grid-template-columns: minmax(0, 680px) 340px; gap: 32px; }
+  /* Linkerkolom vult (1fr) i.p.v. een vaste cap: zo blijft het formulier het
+     hoofdobject én lijnt het tweekolomsblok links/rechts uit met de
+     volle-breedte CTA en artikelen eronder (geen lege gaten). */
+  .calc-layout { grid-template-columns: minmax(0, 1fr) 360px; gap: 36px; }
   .calc-help { position: sticky; top: 96px; }
   /* Linkerkolom: kaarten vullen de volle kolombreedte (mobiel/tablet
-     behouden hun bestaande maten via de algemene regels). */
+     behouden hun bestaande maten via de algemene regels). Iets meer lucht
+     in het formulier op desktop zodat het minder klein oogt. */
   .calc-page .calc-form,
   .calc-page .calc-error,
   .calc-page .calc-result,
   .calc-page .lead-form {
     max-width: 100%;
   }
+  .calc-page .calc-form { padding: 26px 26px; }
 }
 .calc-main { min-width: 0; }
 
