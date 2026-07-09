@@ -45,19 +45,19 @@ const MODAL_DELAY_MS = 4000;
 // de vergelijking Dyness/Enphase staat live op "enphase-vs-dyness".
 const RELATED_ARTICLES = [
   {
-    slug: "enphase-vs-dyness",
-    title: "Dyness vs Enphase: welke batterij past beter?",
-    text: "Vergelijk opslagcapaciteit, uitbreidbaarheid, omvormers en slimme sturing.",
+    slug: "thuisbatterij-vergelijken",
+    title: "Thuisbatterij vergelijken",
+    text: "Waar u op let bij capaciteit, omvormer, EMS en installatie — zonder verkooppraat.",
   },
   {
-    slug: "groene-vrienden-vs-zonneplan-vs-tibber",
-    title: "Groene Vrienden vs Zonneplan vs Tibber",
-    text: "Ontdek het verschil tussen installatie, energiecontract, batterijaansturing en advies.",
+    slug: "thuisbatterij-installatie",
+    title: "Thuisbatterij installatie",
+    text: "Wat er komt kijken bij het installeren van een thuisbatterij in uw woning.",
   },
   {
-    slug: "ems-systeem-thuisbatterij-controle-over-stroom",
-    title: "EMS systeem voor uw thuisbatterij",
-    text: "Lees hoe slimme EMS-sturing helpt bij eigen verbruik, dynamische prijzen en energieopslag.",
+    slug: "stroom-opslaan-zonnepanelen",
+    title: "Stroom opslaan met zonnepanelen",
+    text: "Waarom zelf opslaan slimmer wordt nu de salderingsregeling verdwijnt.",
   },
 ];
 
@@ -190,7 +190,9 @@ export default function Calculator() {
 
   useEffect(() => {
     setPageMeta({
-      title: "Thuisbatterij Calculator — Batterijenplan",
+      title: "Thuisbatterij Calculator | Bereken gratis uw batterijcapaciteit",
+      description:
+        "Gebruik de gratis thuisbatterij calculator en bereken welke batterijcapaciteit past bij uw stroomverbruik, zonnepanelen en teruglevering. Ontvang direct een eerste advies.",
       path: "/calculator",
     });
     setJsonLd([ORGANIZATION_SCHEMA]);
@@ -628,9 +630,122 @@ export default function Calculator() {
         </div>
       </section>
 
+      {/* SEO-content voor "thuisbatterij calculator" — bewust ónder de CTA,
+          zodat het formulier hoog op de pagina blijft. Statische tekst, geen
+          JS/fetch. */}
+      <section className="calc-seo">
+        <h2>Hoe werkt de thuisbatterij calculator?</h2>
+        <p>
+          De thuisbatterij calculator van Batterijenplan.nl rekent op basis van
+          uw jaarlijkse stroomverbruik en teruglevering uit welke
+          batterijcapaciteit bij uw situatie past. U vult een paar gegevens in
+          en ziet direct een indicatieve range in kWh — een eerste richtlijn,
+          geen definitief ontwerp.
+        </p>
+
+        <h2>Welke gegevens heeft u nodig?</h2>
+        <p>
+          Houd uw jaarlijkse stroomverbruik in kWh en uw jaarlijkse
+          teruglevering aan het net bij de hand. Beide vindt u op uw
+          jaarafrekening of in de app van uw energieleverancier. Daarnaast kiest
+          u uw type klant en uw doel met de batterij. Meer weten?{" "}
+          <Link to="/post/thuisbatterij-vergelijken">
+            Zo vergelijkt u thuisbatterijen
+          </Link>
+          .
+        </p>
+
+        <h2>Waarom teruglevering belangrijk is</h2>
+        <p>
+          Uw teruglevering bepaalt hoeveel zonnestroom u kunt opslaan in plaats
+          van goedkoop terug te leveren aan het net. Hoe meer u op een zonnige
+          dag teruglevert, hoe groter de batterij die u nuttig kunt inzetten.
+          Daarom weegt de calculator uw teruglevering per zonnige dag zwaarder
+          mee dan alleen het jaargemiddelde.
+        </p>
+
+        <h2>Zelfconsumptie of dynamische handel</h2>
+        <p>
+          U kiest zelf uw doel. Bij zelfconsumptie slaat u zonnestroom op om die
+          later zelf te gebruiken. Met een dynamisch energiecontract kunt u de
+          batterij ook laten sturen op wisselende stroomprijzen via{" "}
+          <Link to="/post/ems-systeem-thuisbatterij-controle-over-stroom">
+            slimme EMS-sturing
+          </Link>{" "}
+          — opladen wanneer stroom goedkoop is, gebruiken of terugleveren
+          wanneer de prijs hoog staat. Beide doelen leiden tot een andere
+          passende capaciteit en een andere{" "}
+          <Link to="/post/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie">
+            terugverdientijd
+          </Link>
+          .
+        </p>
+
+        <h2>Laat uw berekening controleren</h2>
+        <p>
+          De uitkomst van de thuisbatterij calculator is een eerste indicatie.
+          Voor een definitief advies kijkt een specialist gratis naar uw
+          zonnepanelen, teruglevering, netaansluiting, omvormervermogen en
+          energiecontract.{" "}
+          <button type="button" className="cta-text-link" onClick={openAdvice}>
+            Plan gratis batterijadvies
+          </button>{" "}
+          en weet zeker welke batterij écht bij uw woning past.
+        </p>
+      </section>
+
+      {/* FAQ — semantische HTML (h2/h3/p), geen accordion-JS. */}
+      <section className="calc-faq">
+        <h2>Veelgestelde vragen over de thuisbatterij calculator</h2>
+        <div className="calc-faq-grid">
+          <div className="calc-faq-item">
+            <h3>Hoe bereken ik welke thuisbatterij ik nodig heb?</h3>
+            <p>
+              Vul uw jaarlijkse stroomverbruik en teruglevering in de
+              thuisbatterij calculator in. Op basis daarvan berekent de tool een
+              passende capaciteitsrange in kWh. Voor een exacte match laat u de
+              uitkomst gratis controleren door een specialist.
+            </p>
+          </div>
+          <div className="calc-faq-item">
+            <h3>Hoeveel kWh thuisbatterij heb ik nodig?</h3>
+            <p>
+              Voor veel huishoudens ligt een passende thuisbatterij tussen de 10
+              en 20 kWh, afhankelijk van uw verbruik, teruglevering en doel. De
+              calculator geeft u een indicatie die op uw eigen situatie is
+              afgestemd.
+            </p>
+          </div>
+          <div className="calc-faq-item">
+            <h3>Is deze thuisbatterij calculator gratis?</h3>
+            <p>
+              Ja. De thuisbatterij calculator is volledig gratis en
+              vrijblijvend. U ontvangt direct een eerste indicatie, zonder
+              verplichting.
+            </p>
+          </div>
+          <div className="calc-faq-item">
+            <h3>Werkt de calculator ook met zonnepanelen?</h3>
+            <p>
+              Ja. Juist met zonnepanelen is de calculator nuttig: uw
+              teruglevering bepaalt hoeveel zonnestroom u kunt opslaan in plaats
+              van terug te leveren aan het net.
+            </p>
+          </div>
+          <div className="calc-faq-item">
+            <h3>Kan ik ook dynamische handel berekenen?</h3>
+            <p>
+              Ja. U kiest bij het doel voor “handel / dynamisch contract”. De
+              calculator houdt dan rekening met sturen op dynamische
+              stroomprijzen in plaats van alleen zelfconsumptie.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Statische interne links naar verdiepende artikelen (secundaire
-          navigatie, ónder de conversie-CTA) — géén API-fetch, dus geen
-          invloed op de laadtijd. */}
+          navigatie, ónder de conversie-CTA en SEO-content) — géén API-fetch,
+          dus geen invloed op de laadtijd. */}
       <section className="related-posts calc-related">
         <h2>Meer weten over thuisbatterijen?</h2>
         <p className="calc-related-intro">

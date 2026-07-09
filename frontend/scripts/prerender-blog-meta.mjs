@@ -118,9 +118,9 @@ const STATIC_PAGES = [
   { slug: "", keepMeta: true, keepHomeShell: true, body: HOMEPAGE_BODY },
   {
     slug: "calculator",
-    title: "Thuisbatterij Calculator — Batterijenplan.nl",
+    title: "Thuisbatterij Calculator | Bereken gratis uw batterijcapaciteit",
     description:
-      "Gratis thuisbatterij calculator: bereken op basis van uw stroomverbruik en teruglevering welke batterijcapaciteit bij u past. Laat de uitkomst gratis controleren.",
+      "Gebruik de gratis thuisbatterij calculator en bereken welke batterijcapaciteit past bij uw stroomverbruik, zonnepanelen en teruglevering. Ontvang direct een eerste advies.",
     body: CALCULATOR_BODY,
   },
   {
