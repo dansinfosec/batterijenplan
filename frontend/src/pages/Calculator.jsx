@@ -160,7 +160,7 @@ export default function Calculator() {
   const [form, setForm] = useState({
     customer_type: "residential",
     yearly_usage: "",
-    goal: "trading",
+    goal: "self_consumption",
     exported_energy: "",
     sunny_day_export: "",
   });
@@ -170,9 +170,13 @@ export default function Calculator() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  // De zonnige-dag-vraag verschijnt pas na een klik op "Bereken" (niet live
-  // tijdens het typen — half ingetypte getallen triggerden hem voorheen).
+  // De zonnige-dag-vraag verschijnt zodra beide getallen zijn ingevuld én
+  // verlaten (blur) — niet live tijdens het typen (half ingetypte getallen
+  // triggerden hem voorheen). sunnyDayPrompted blijft als vangnet: een
+  // Bereken-klik toont hem alsnog als de velden nog niet geblurd waren.
   const [sunnyDayPrompted, setSunnyDayPrompted] = useState(false);
+  const [usageTouched, setUsageTouched] = useState(false);
+  const [exportTouched, setExportTouched] = useState(false);
   // Puur voor de weergave van foutstatussen: pas rode randen/tekst tonen
   // zodra een verzendpoging is gedaan, niet meteen bij het openen van de
   // pagina. Verandert niets aan de native validatie zelf.
@@ -195,9 +199,11 @@ export default function Calculator() {
     !Number.isNaN(exportedEnergyNum) &&
     yearlyUsageNum >= 2 * exportedEnergyNum;
 
-  // Zichtbaar pas nadat een Bereken-klik de vraag "ontdekt" heeft; verdwijnt
-  // vanzelf weer als de invoer de conditie niet meer raakt.
-  const showSunnyDayQuestion = sunnyDayPrompted && needsSunnyDayQuestion;
+  // Zichtbaar zodra de conditie geraakt wordt én beide velden zijn geblurd
+  // (of na een Bereken-klik als vangnet); verdwijnt vanzelf weer als de invoer
+  // de conditie niet meer raakt. Zo hoeft de gebruiker maar één keer te klikken.
+  const showSunnyDayQuestion =
+    needsSunnyDayQuestion && (sunnyDayPrompted || (usageTouched && exportTouched));
 
   // "Voltooid" is méér dan "we hebben een result": als de zonnige-dag-vraag
   // nu vereist is, telt een eerder resultaat alleen als voltooid wanneer het
@@ -405,8 +411,10 @@ export default function Calculator() {
         onSubmit={submit}
         onInvalidCapture={() => setValidated(true)}
       >
+        <p className="calc-form-start">Start hier uw berekening</p>
+
         <label>
-          Type klant <span className="field-required">*</span>
+          <span className="field-label">Type klant <span className="field-required">*</span></span>
           <select
             className="field-input"
             value={form.customer_type}
@@ -421,84 +429,41 @@ export default function Calculator() {
         </label>
 
         <label>
-          Jaarlijks stroomverbruik (kWh) <span className="field-required">*</span>
+          <span className="field-label">Jaarlijks stroomverbruik (kWh) <span className="field-required">*</span></span>
           <input
             className="field-input"
             type="number"
             step="0.1"
             min="0.1"
-            placeholder="Bijvoorbeeld: 4500"
+            placeholder="4500"
             value={form.yearly_usage}
             onChange={withValidityClear(update("yearly_usage"))}
+            onBlur={() => setUsageTouched(true)}
             onInvalid={friendlyValidity("Vul uw jaarverbruik in.")}
             required
           />
           <span className="field-error-text">Vul uw jaarverbruik in.</span>
-          <span className="field-help">
-            Bijvoorbeeld: 4500 kWh voor een gemiddeld huishouden.
-          </span>
+          <span className="field-help">Gemiddeld huishouden: ±4500 kWh per jaar.</span>
+          <span className="field-help">Weet u het niet precies? Een schatting is voldoende.</span>
         </label>
 
-        <fieldset className="goal-choice">
-          <legend>Doel van de batterij <span className="field-required">*</span></legend>
-
-          <label className={`goal-card ${form.goal === "self_consumption" ? "active" : ""}`}>
-            <input
-              type="radio"
-              name="goal"
-              value="self_consumption"
-              checked={form.goal === "self_consumption"}
-              onChange={update("goal")}
-              required
-            />
-
-            <span className="goal-title">Zelfconsumptie</span>
-
-            <span className="goal-text">
-              Gebruik meer van uw eigen zonnestroom en lever minder terug aan het net.
-            </span>
-
-            <span className="goal-check" aria-hidden="true">✓</span>
-          </label>
-
-          <label className={`goal-card ${form.goal === "trading" ? "active" : ""}`}>
-            <input
-              type="radio"
-              name="goal"
-              value="trading"
-              checked={form.goal === "trading"}
-              onChange={update("goal")}
-              required
-            />
-
-            <span className="goal-title">Handel / dynamisch contract</span>
-
-            <span className="goal-text">
-              Gebruik batterijopslag voor slimme sturing op dynamische
-              energieprijzen.
-            </span>
-
-            <span className="goal-check" aria-hidden="true">✓</span>
-          </label>
-        </fieldset>
-
         <label>
-          Jaarlijkse teruglevering (kWh) <span className="field-required">*</span>
+          <span className="field-label">Jaarlijkse teruglevering (kWh) <span className="field-required">*</span></span>
           <input
             className="field-input"
             type="number"
             step="0.1"
             min="0"
-            placeholder="Bijvoorbeeld: 2500"
+            placeholder="2500"
             value={form.exported_energy}
             onChange={withValidityClear(update("exported_energy"))}
+            onBlur={() => setExportTouched(true)}
             onInvalid={friendlyValidity("Vul uw jaarlijkse teruglevering in.")}
             required
           />
           <span className="field-error-text">Vul uw jaarlijkse teruglevering in.</span>
-          <span className="field-help">
-            Bijvoorbeeld: 2500–5000 kWh bij veel zonnepanelen.
-          </span>
+          <span className="field-help">Veel zonnepanelen: ±2500–5000 kWh per jaar.</span>
+          <span className="field-help">Weet u het niet precies? Een schatting is voldoende.</span>
         </label>
 
         {showSunnyDayQuestion && (
@@ -518,8 +483,10 @@ export default function Calculator() {
             </p>
 
             <label className="calc-sunny-question">
-              Hoeveel kWh levert u op een goede zonnige dag maximaal terug aan
-              het net? <span className="field-required">*</span>
+              <span className="field-label">
+                Hoeveel kWh levert u op een goede zonnige dag maximaal terug aan
+                het net? <span className="field-required">*</span>
+              </span>
               <select
                 className="field-input"
                 value={form.sunny_day_export}
@@ -538,9 +505,59 @@ export default function Calculator() {
           </div>
         )}
 
-        <button type="submit" className="field-submit-button" disabled={loading}>
-          {loading ? "Bezig…" : "Bereken batterijcapaciteit"}
-        </button>
+        <fieldset className="goal-choice">
+          <legend>Doel van de batterij <span className="field-required">*</span></legend>
+
+          <label className={`goal-card ${form.goal === "self_consumption" ? "active" : ""}`}>
+            <input
+              type="radio"
+              name="goal"
+              value="self_consumption"
+              checked={form.goal === "self_consumption"}
+              onChange={update("goal")}
+              required
+            />
+
+            <span className="goal-title">Zelfconsumptie</span>
+
+            <span className="goal-text">
+              Gebruik zoveel mogelijk van uw eigen zonnestroom, verminder
+              teruglevering en voorkom onnodige terugleverkosten.
+            </span>
+
+            <span className="goal-check" aria-hidden="true">✓</span>
+          </label>
+
+          <label className={`goal-card ${form.goal === "trading" ? "active" : ""}`}>
+            <input
+              type="radio"
+              name="goal"
+              value="trading"
+              checked={form.goal === "trading"}
+              onChange={update("goal")}
+              required
+            />
+
+            <span className="goal-title">Handel / Dynamisch contract</span>
+
+            <span className="goal-text">
+              Verdien geld met uw thuisbatterij door automatisch slim te laden en
+              ontladen bij wisselende stroomprijzen. Dit kan zorgen voor een
+              snellere terugverdientijd.
+            </span>
+
+            <span className="goal-check" aria-hidden="true">✓</span>
+          </label>
+        </fieldset>
+
+        <div className="calc-submit">
+          <button type="submit" className="field-submit-button" disabled={loading}>
+            {loading ? "Bezig…" : "Bereken mijn batterijadvies"}
+          </button>
+          <p className="calc-submit-note">
+            ✓ Gratis advies • ✓ Direct resultaat • ✓ Geen e-mailadres nodig
+          </p>
+        </div>
       </form>
 
       {error && <div className="calc-error mono">{error}</div>}
