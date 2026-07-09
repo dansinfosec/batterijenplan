@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch.js";
 import { fetchPost, fetchComments, postComment } from "../api.js";
-import { setPageMeta, setJsonLd, blogPostingSchema, DEFAULT_DESCRIPTION } from "../seo.js";
+import { setPageMeta, setJsonLd, blogPostingSchema, postSeoTitle, DEFAULT_DESCRIPTION } from "../seo.js";
 import { optimizedImageUrl, coverSrcSet } from "../images.js";
 import RelatedPosts from "../components/RelatedPosts.jsx";
 
@@ -180,7 +180,9 @@ export default function PostDetail() {
   useEffect(() => {
     if (post) {
       setPageMeta({
-        title: `${post.title} — Batterijenplan`,
+        // Korte SEO-titel voor <title>/og:title/twitter:title; de zichtbare
+        // H1 hieronder blijft de volledige post.title.
+        title: postSeoTitle(post),
         description: post.meta_description || post.excerpt || DEFAULT_DESCRIPTION,
         type: "article",
         path: `/post/${post.slug}`,

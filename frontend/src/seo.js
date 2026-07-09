@@ -155,3 +155,30 @@ export function blogPostingSchema(post) {
 
   return schema;
 }
+
+// Korte <title>/og:title voor posts waarvan de volle titel + "— Batterijenplan"
+// te lang werd (SEO-audit: "<title> tag too long"). Deze titels bevatten zélf
+// al de merknaam ("| Batterijenplan"), dus géén extra brandingsuffix.
+// De zichtbare H1 blijft altijd post.title. Zelfde map als in
+// scripts/prerender-blog-meta.mjs (klein, bewust geen gedeeld systeem).
+export const POST_SEO_TITLES = {
+  "dynamisch-energiecontract-thuisbatterij": "Dynamisch contract + thuisbatterij | Batterijenplan",
+  "elektrische-auto-ems-systeem": "EV slim laden met EMS | Batterijenplan",
+  "ems-systeem-thuisbatterij-controle-over-stroom": "EMS voor thuisbatterijen | Batterijenplan",
+  "enphase-vs-dyness": "Enphase vs Dyness | Batterijenplan",
+  "groene-vrienden-vs-zonneplan-vs-tibber": "Groene Vrienden vs Zonneplan | Batterijenplan",
+  "terugverdientijd-thuisbatterij-handel-of-zelfconsumptie": "Terugverdientijd thuisbatterij | Batterijenplan",
+  "thuisbatterij-installatie": "Thuisbatterij installatie | Batterijenplan",
+  "thuisbatterij-vergelijken": "Thuisbatterij vergelijken | Batterijenplan",
+};
+
+// SEO-titel voor een post: backend-veld (indien ooit toegevoegd) > korte map >
+// standaard "{titel} — Batterijenplan".
+export function postSeoTitle(post) {
+  return (
+    post.seo_title ||
+    post.meta_title ||
+    POST_SEO_TITLES[post.slug] ||
+    `${post.title} — Batterijenplan`
+  );
+}
