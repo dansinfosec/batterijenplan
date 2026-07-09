@@ -88,7 +88,15 @@ const CALCULATOR_BODY = seoWrap(`        <h1>Gratis thuisbatterij calculator</h1
         <p><a href="/contact">Vraag gratis advies aan</a> als u uw berekening wilt laten controleren.</p>`);
 
 const CONTACT_BODY = seoWrap(`        <h1>Contact met Batterijenplan.nl</h1>
-        <p>Heeft u een vraag over thuisbatterijen, batterijopslag of de thuisbatterij calculator? Neem gerust contact op met Batterijenplan.nl. Wij helpen Nederlandse huiseigenaren met onafhankelijke informatie en advies over het opslaan van zonnestroom.</p>
+        <p>Heeft u een vraag over thuisbatterijen, batterijopslag of de thuisbatterij calculator? Neem gerust contact op met Batterijenplan.nl. Wij helpen Nederlandse huiseigenaren met onafhankelijke informatie en advies over het opslaan van zonnestroom, zonder verkooppraat en met echte getallen.</p>
+        <h2>Waarmee helpt Batterijenplan?</h2>
+        <p>Wij leggen in begrijpelijke taal uit hoe een thuisbatterij werkt, welke capaciteit bij uw situatie past en wat opslag u kan opleveren. Of u nu vooral meer eigen zonnestroom wilt gebruiken of uw batterij wilt inzetten bij een dynamisch energiecontract: wij denken met u mee over de keuze die past bij uw woning en verbruik.</p>
+        <h2>Gratis en vrijblijvend batterijadvies</h2>
+        <p>Uw adviesaanvraag is gratis en vrijblijvend. Een specialist kijkt naar uw persoonlijke situatie en helpt u de uitkomst van de calculator te vertalen naar een concreet, passend advies. U zit nergens aan vast en beslist zelf of en wanneer u een vervolgstap zet.</p>
+        <h2>Ondersteuning bij de calculator</h2>
+        <p>Komt u er met de gratis thuisbatterij calculator niet helemaal uit, of twijfelt u over de gegevens die u invult? Wij helpen u graag op weg. Vertel ons uw jaarlijkse stroomverbruik en teruglevering, dan lichten wij de uitkomst toe en leggen we uit waarop de geadviseerde batterijcapaciteit is gebaseerd.</p>
+        <h2>Wat wij voor u controleren</h2>
+        <p>Voor een definitief advies kijken wij verder dan alleen de calculator. Wij beoordelen uw zonnepanelen, uw teruglevering aan het net, uw netaansluiting, het omvormervermogen, de mogelijkheden voor slimme EMS-sturing en uw energiecontract. Zo weet u zeker welke thuisbatterij technisch én financieel het beste bij uw woning past.</p>
         <h2>Contactgegevens</h2>
         <p>
           Batterijenplan.nl<br />
@@ -100,17 +108,22 @@ const CONTACT_BODY = seoWrap(`        <h1>Contact met Batterijenplan.nl</h1>
           E-mail: <a href="mailto:info@batterijenplan.nl">info@batterijenplan.nl</a><br />
           WhatsApp: <a href="https://wa.me/31641880307">+31 6 41 88 03 07</a>
         </p>
-        <p>Wij beantwoorden vragen over onder andere de keuze van een thuisbatterij, de benodigde capaciteit, de omvormer, batterijsturing en de installatie. Ook als u alleen wilt sparren over uw situatie of over de uitkomst van de calculator, denken wij graag met u mee.</p>
-        <p>Ons servicegebied is heel Nederland. Bezoek aan ons kantoor is uitsluitend op afspraak mogelijk. Stuur ons een bericht of app ons, dan nemen wij zo snel mogelijk contact met u op.</p>`);
+        <p>Ons servicegebied is heel Nederland. Bezoek aan ons kantoor is uitsluitend op afspraak mogelijk. Stuur ons een bericht of app ons, dan nemen wij zo snel mogelijk contact met u op — meestal binnen één werkdag.</p>`);
 
 const PRIVACY_BODY = seoWrap(`        <h1>Privacyverklaring Batterijenplan.nl</h1>
-        <p>Batterijenplan.nl gaat zorgvuldig om met uw persoonsgegevens. Hieronder leest u kort welke gegevens wij verzamelen en waarvoor wij ze gebruiken.</p>
+        <p>Batterijenplan.nl gaat zorgvuldig om met uw persoonsgegevens. Hieronder leest u welke gegevens wij verzamelen, waarvoor wij ze gebruiken en hoe u ze kunt laten aanpassen of verwijderen.</p>
         <h2>Welke gegevens verzamelen wij?</h2>
-        <p>Wij verwerken de gegevens die u zelf invult in het contactformulier en de adviesaanvraag, zoals uw naam, telefoonnummer, e-mailadres en optioneel uw postcode en bericht. Daarnaast bewaren wij de gegevens die u in de thuisbatterij calculator invult, zoals uw verbruik en teruglevering, zodat een specialist uw situatie kan beoordelen.</p>
+        <p>Wij verwerken de gegevens die u zelf invult in het contactformulier en de adviesaanvraag, zoals uw naam, telefoonnummer, e-mailadres en optioneel uw postcode en bericht. Wij gebruiken deze gegevens uitsluitend om uw vraag of aanvraag te beantwoorden.</p>
+        <h2>Gegevens uit de calculator</h2>
+        <p>Als u de thuisbatterij calculator gebruikt, bewaren wij de gegevens die u invult, zoals uw jaarlijkse stroomverbruik, uw teruglevering en uw gekozen doel. Zo kan een specialist uw berekening controleren en u een passend advies geven. Zolang u geen contactgegevens achterlaat, zijn deze gegevens niet tot u herleidbaar.</p>
+        <h2>Contactaanvragen</h2>
+        <p>Wanneer u een adviesaanvraag of contactverzoek indient, bewaren wij uw bericht en contactgegevens zodat wij u kunnen helpen en, indien nodig, kunnen terugkoppelen. Wij bewaren deze gegevens niet langer dan nodig is voor het doel waarvoor u ze heeft achtergelaten.</p>
         <h2>Analytics en conversiemeting</h2>
-        <p>Wij gebruiken analyse- en conversiemeting om onze website te verbeteren en te zien hoe bezoekers de calculator en de adviesaanvraag gebruiken. Deze gegevens verwerken wij zo veel mogelijk geanonimiseerd.</p>
-        <h2>Uw gegevens blijven van u</h2>
-        <p>Wij verkopen uw persoonsgegevens niet aan derden en gebruiken ze uitsluitend om uw aanvraag af te handelen. Heeft u vragen over uw gegevens of wilt u ze laten inzien of verwijderen? Neem dan contact met ons op via info@batterijenplan.nl.</p>`);
+        <p>Wij gebruiken analyse- en conversiemeting om onze website te verbeteren en te zien hoe bezoekers de calculator en de adviesaanvraag gebruiken. Deze gegevens verwerken wij zo veel mogelijk geanonimiseerd en gebruiken wij alleen op geaggregeerd niveau.</p>
+        <h2>Delen met derden</h2>
+        <p>Wij verkopen uw persoonsgegevens niet aan derden. Gegevens worden uitsluitend gedeeld met een specialist wanneer dat nodig is om uw adviesaanvraag af te handelen, en alleen met uw medeweten.</p>
+        <h2>Uw gegevens inzien of verwijderen</h2>
+        <p>U heeft het recht om uw gegevens in te zien, te laten corrigeren of te laten verwijderen. Stuur hiervoor een e-mail naar <a href="mailto:info@batterijenplan.nl">info@batterijenplan.nl</a>, dan verwerken wij uw verzoek zo snel mogelijk.</p>`);
 
 // Route-specifieke SEO-pagina's. slug "" = dist/index.html (homepage houdt
 // zijn bestaande meta + performance-shell; alleen body wordt geïnjecteerd).
@@ -196,13 +209,15 @@ function asyncifyMainCss(html) {
 }
 
 // Injecteert de SEO-tekst ín het lege #root, zodat React hem bij mount vervangt.
+// Vervangingsfunctie (i.p.v. string) zodat "$"-reeksen in dynamische body-HTML
+// (bijv. $ in codeblokken/tekst) niet als replace-patronen worden opgevat.
 function injectSeoBody(html, bodyHtml) {
   const marker = '<div id="root"></div>';
   if (!html.includes(marker)) {
     console.warn("Waarschuwing: leeg #root niet gevonden; SEO-body niet geïnjecteerd.");
     return html;
   }
-  return html.replace(marker, `<div id="root">\n${bodyHtml}\n    </div>`);
+  return html.replace(marker, () => `<div id="root">\n${bodyHtml}\n    </div>`);
 }
 
 async function generateStaticPages(template) {
@@ -285,6 +300,97 @@ function socialImageUrl(url) {
   // het bestandstype ook aan de URL kunnen zien.
   if (!/\.(jpe?g|png|webp|gif)$/i.test(out)) out += ".jpg";
   return out;
+}
+
+// ── Statische artikel-fallback in #root ──────────────────────────────────
+// Crawlers en no-JS-tools zien de volledige artikeltekst vóór hydratie; React
+// vervangt dit blok bij mount (createRoot().render() leegt #root), dus geen
+// dubbele zichtbare content. Normale document-flow, geen overlay/shell.
+
+const NL_MONTHS = [
+  "januari", "februari", "maart", "april", "mei", "juni",
+  "juli", "augustus", "september", "oktober", "november", "december",
+];
+
+// Vaste Nederlandse datum, zonder afhankelijkheid van ICU/locale in Node.
+function formatDateNl(iso) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  return `${d.getDate()} ${NL_MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+// Zelfde tabel-wrap als PostDetail.jsx: brede tabellen scrollen zijwaarts i.p.v.
+// de pagina te verbreden — voorkomt horizontale overflow in de fallback.
+function wrapTables(html) {
+  if (!html) return html;
+  return html
+    .replaceAll("<table>", '<div class="post-table-scroll"><table>')
+    .replaceAll("</table>", "</table></div>");
+}
+
+// Zelfde Cloudinary-transform als images.js optimizedImageUrl(1200): de React-
+// cover gebruikt exact deze URL als src, dus de browser hergebruikt de cache.
+function coverImageUrl(url, width = 1200) {
+  if (!url || !url.includes("res.cloudinary.com") || !url.includes("/image/upload/")) {
+    return url;
+  }
+  return url.replace("/image/upload/", `/image/upload/f_auto,q_auto,w_${width},c_limit/`);
+}
+
+// CTA-blok naar de calculator (zelfde klassen als CalculatorCta in PostDetail.jsx).
+const POST_CTA_BLOCK = `<aside class="cta-block">
+          <h2>Bereken welke thuisbatterij bij uw woning past</h2>
+          <p>Gebruik de gratis thuisbatterij calculator en ontvang direct een eerste indicatie op basis van uw verbruik en teruglevering.</p>
+          <div class="cta-block-actions">
+            <a class="cta-button cta-button-sm" href="/calculator">Start de calculator</a>
+            <a class="cta-text-link" href="/calculator?advies=1#advies">Of vraag gratis advies aan</a>
+          </div>
+        </aside>`;
+
+// Bouwt de statische artikel-HTML voor in #root. Tekstvelden worden ge-escaped;
+// body_html is vertrouwde, server-side (markdown→HTML) CMS-content en wordt —
+// net als in PostDetail.jsx (dangerouslySetInnerHTML) — als HTML ingevoegd.
+function postBodyFallback(post) {
+  const kicker = Array.isArray(post.tags) ? post.tags.join(" · ") : "";
+  const bylineParts = [
+    post.author,
+    formatDateNl(post.published_at),
+    post.reading_minutes ? `${post.reading_minutes} min leestijd` : "",
+  ].filter(Boolean);
+  const byline = bylineParts
+    .map((s) => `<span>${escapeHtml(String(s))}</span>`)
+    .join("\n            ");
+
+  const cover = post.cover_image_url
+    ? `<img class="cover" src="${escapeHtml(coverImageUrl(post.cover_image_url, 1200))}" width="1200" height="675" alt="" />`
+    : "";
+  const excerpt = post.excerpt
+    ? `<p>${escapeHtml(post.excerpt)}</p>`
+    : "";
+  const body = wrapTables(post.body_html || "");
+
+  return `<article class="container post-detail">
+        <p class="mono kicker">${escapeHtml(kicker)}</p>
+        <h1>${escapeHtml(post.title)}</h1>
+        <div class="byline mono">
+            ${byline}
+        </div>
+        <p class="cta-inline mono">Niet zeker welke batterijcapaciteit u nodig heeft? <a href="/calculator">Bereken het gratis.</a></p>
+        ${excerpt}
+        ${cover}
+        ${POST_CTA_BLOCK}
+        <div class="prose">${body}</div>
+        ${POST_CTA_BLOCK}
+      </article>`;
+}
+
+// Detail-endpoint bevat body_html (de lijst niet); per post apart ophalen.
+async function fetchPostDetail(slug) {
+  const base = API_URL.endsWith("/") ? API_URL : `${API_URL}/`;
+  const res = await fetch(`${base}${slug}/`);
+  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+  return res.json();
 }
 
 function postMetaBlock(post) {
@@ -396,11 +502,27 @@ async function main() {
       continue;
     }
 
-    const html = stripHomeShell(
+    // Detail ophalen voor body_html (zit niet in de lijst-serializer). Faalt de
+    // call, dan valt deze post terug op meta-only HTML (oud gedrag) i.p.v. de
+    // hele build te breken.
+    let detail = post;
+    try {
+      detail = await fetchPostDetail(post.slug);
+    } catch (err) {
+      console.warn(`Body niet opgehaald voor "${post.slug}" (${err.message}); alleen meta.`);
+    }
+
+    let html = stripHomeShell(
       template.slice(0, startIdx) +
-        postMetaBlock(post) +
+        postMetaBlock(detail) +
         template.slice(endIdx + META_END.length),
     );
+
+    // Volledige artikeltekst statisch ín #root, zodat crawlers/no-JS-tools de
+    // body zien vóór JS. React vervangt dit bij mount (geen dubbele content).
+    if (detail.body_html) {
+      html = injectSeoBody(html, postBodyFallback(detail));
+    }
 
     const dir = path.join(distDir, "post", post.slug);
     await mkdir(dir, { recursive: true });
