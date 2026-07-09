@@ -612,79 +612,92 @@ export default function Calculator() {
       <CalcHelpCard onStart={startCalculation} className="calc-help-desktop" />
       </div>
 
-      {/* Afsluitende conversie-CTA — dé conversie-actie, bewust bóven de
-          artikelen zodat ads-/conversieverkeer niet eerst naar de blog wordt
-          gestuurd. Gratis controle van de berekening (bestaand leadgedrag via
-          openAdvice: scrollt naar het inline leadformulier of opent de modal). */}
-      <section className="cta-block calc-final-cta">
-        <h2>Laat uw batterijadvies gratis controleren</h2>
-        <p>
-          Wij controleren uw uitkomst op basis van uw zonnepanelen,
-          teruglevering, netaansluiting, omvormervermogen, EMS-sturing en
-          energiecontract.
+      {/* Lead-CTA — resultgedreven: verschijnt alleen ná een voltooide
+          berekening (nooit onder een lege calculator). Bestaand leadgedrag via
+          openAdvice: scrollt naar het inline leadformulier of opent de modal. */}
+      {isCalculationComplete && (
+        <section className="cta-block calc-final-cta">
+          <h2>Laat uw batterijadvies gratis controleren</h2>
+          <p>
+            Na uw berekening controleren wij gratis of de gekozen capaciteit past
+            bij uw zonnepanelen, teruglevering, netaansluiting, omvormervermogen,
+            EMS-sturing en energiecontract.
+          </p>
+          <ul className="calc-final-cta-trust">
+            <li>Gratis controle</li>
+            <li>Geen verplichting</li>
+            <li>Advies op basis van uw woning</li>
+          </ul>
+          <div className="cta-block-actions">
+            <button type="button" className="cta-button cta-button-sm" onClick={openAdvice}>
+              Plan gratis batterijadvies
+            </button>
+          </div>
+        </section>
+      )}
+
+      {/* Ondersteunende info — scanbare kaarten i.p.v. een tekstblok, zodat
+          de pagina als conversie-calculator voelt (niet als SEO-artikel). */}
+      <section className="calc-info">
+        <h2>Hoe berekenen wij uw thuisbatterij?</h2>
+        <p className="calc-info-intro">
+          De calculator geeft een eerste indicatie op basis van uw verbruik,
+          teruglevering en energiedoel. Daarna kan een specialist de uitkomst
+          controleren.
         </p>
-        <ul className="calc-final-cta-trust">
-          <li>Gratis controle</li>
-          <li>Geen verplichting</li>
-          <li>Advies op basis van uw woning</li>
-        </ul>
-        <div className="cta-block-actions">
-          <button type="button" className="cta-button cta-button-sm" onClick={openAdvice}>
-            Plan gratis batterijadvies
-          </button>
+        <div className="calc-info-grid">
+          <div className="calc-info-card">
+            <h3>Teruglevering per zonnige dag</h3>
+            <p>
+              Wij kijken niet alleen naar uw jaarverbruik, maar vooral naar
+              hoeveel stroom u jaarlijks teruglevert. Dat delen wij over ongeveer
+              250 zonnige dagen.
+            </p>
+          </div>
+          <div className="calc-info-card">
+            <h3>Zelfconsumptie of dynamische handel</h3>
+            <p>
+              Bij zelfconsumptie ligt de focus op meer eigen zonnestroom
+              gebruiken. Bij dynamische handel rekenen wij extra opslagruimte
+              voor slimme laad- en ontlaadmomenten.
+            </p>
+          </div>
+          <div className="calc-info-card">
+            <h3>Controle door een specialist</h3>
+            <p>
+              Voor een definitief advies controleren wij ook uw zonnepanelen,
+              netaansluiting, omvormervermogen, EMS-sturing en energiecontract.
+            </p>
+          </div>
+          <div className="calc-info-card">
+            <h3>Passend systeem</h3>
+            <p>
+              De uitkomst wordt gekoppeld aan een passende batterijcapaciteit,
+              zodat u geen onnodig te klein of te groot systeem kiest.
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* SEO-content voor "thuisbatterij calculator" — bewust ónder de CTA,
-          zodat het formulier hoog op de pagina blijft. Statische tekst, geen
-          JS/fetch. */}
-      <section className="calc-seo">
-        <h2>Hoe werkt de thuisbatterij calculator?</h2>
-        <p>
-          De thuisbatterij calculator van Batterijenplan.nl rekent op basis van
-          uw jaarlijkse stroomverbruik en teruglevering uit welke
-          batterijcapaciteit bij uw situatie past. U vult een paar gegevens in
-          en ziet direct een indicatieve range in kWh — een eerste richtlijn,
-          geen definitief ontwerp.
-        </p>
-
-        <h2>Welke gegevens heeft u nodig?</h2>
-        <p>
-          Houd uw jaarlijkse stroomverbruik in kWh en uw jaarlijkse
-          teruglevering aan het net bij de hand. Beide vindt u op uw
-          jaarafrekening of in de app van uw energieleverancier. Daarnaast kiest
-          u uw type klant en uw doel met de batterij. Meer weten?{" "}
-          <Link to="/post/thuisbatterij-vergelijken">
-            Zo vergelijkt u thuisbatterijen
-          </Link>
-          .
-        </p>
-
-        <h2>Waarom teruglevering belangrijk is</h2>
-        <p>
-          Uw teruglevering bepaalt hoeveel zonnestroom u kunt opslaan in plaats
-          van goedkoop terug te leveren aan het net. Hoe meer u op een zonnige
-          dag teruglevert, hoe groter de batterij die u nuttig kunt inzetten.
-          Daarom weegt de calculator uw teruglevering per zonnige dag zwaarder
-          mee dan alleen het jaargemiddelde.
-        </p>
-
-        <h2>Zelfconsumptie of dynamische handel</h2>
-        <p>
-          U kiest zelf uw doel. Bij zelfconsumptie slaat u zonnestroom op om die
-          later zelf te gebruiken. Met een dynamisch energiecontract kunt u de
-          batterij ook laten sturen op wisselende stroomprijzen via{" "}
-          <Link to="/post/ems-systeem-thuisbatterij-controle-over-stroom">
-            slimme EMS-sturing
-          </Link>{" "}
-          — opladen wanneer stroom goedkoop is, gebruiken of terugleveren
-          wanneer de prijs hoog staat. Beide doelen leiden tot een andere
-          passende capaciteit en een andere{" "}
-          <Link to="/post/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie">
-            terugverdientijd
-          </Link>
-          .
-        </p>
+      {/* Conversie-strip die terugleidt naar het formulier (scrollt, geen
+          lead-modal). Bewust ná de info, vóór de FAQ/artikelen. */}
+      <section className="calc-recalc">
+        <div className="calc-recalc-inner">
+          <div className="calc-recalc-text">
+            <h2>Bereken direct welke batterij past</h2>
+            <p>
+              Vul uw verbruik en teruglevering in en ontvang direct een eerste
+              indicatie van de juiste batterijcapaciteit.
+            </p>
+          </div>
+          <button
+            type="button"
+            className="cta-button cta-button-sm calc-recalc-btn"
+            onClick={startCalculation}
+          >
+            Bereken mijn batterijcapaciteit
+          </button>
+        </div>
       </section>
 
       {/* FAQ — compact via native <details>/<summary>, geen accordion-JS. */}
