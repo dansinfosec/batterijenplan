@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { OPEN_COOKIE_SETTINGS_EVENT } from "./CookieConsent.jsx";
 
 export default function Footer() {
   return (
@@ -29,6 +30,15 @@ export default function Footer() {
         <span>Bezoek alleen op afspraak</span>
         <span>
           <Link to="/contact">Contact</Link>
+        </span>
+        <span>
+          <button
+            type="button"
+            className="footer-link-btn"
+            onClick={() => window.dispatchEvent(new Event(OPEN_COOKIE_SETTINGS_EVENT))}
+          >
+            Cookie-instellingen
+          </button>
         </span>
       </div>
     </footer>

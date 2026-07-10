@@ -105,11 +105,15 @@ img { max-width: 100%; display: block; }
   font-family: var(--font-display);
   font-weight: 900;
   font-stretch: 115%;
-  font-size: clamp(40px, 6vw, 76px);
+  /* Kleiner max-formaat + em-gebaseerde max-width: het langste woord
+     ("THUISBATTERIJ" ≈ 9,5em) past hierdoor altijd binnen de kolom, op elke
+     schermbreedte — geen horizontale afkapping meer. */
+  font-size: clamp(32px, 5vw, 62px);
   line-height: 0.98;
   letter-spacing: -0.03em;
   text-transform: uppercase;
-  max-width: 13ch;
+  max-width: 11em;
+  overflow-wrap: break-word; /* vangnet: breek een woord i.p.v. het te klippen */
 }
 .hero h1 .accent { color: var(--copper); }
 .hero p.sub {
@@ -1140,8 +1144,8 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
   /* Hero / homepage */
   .hero { padding: 44px 0 48px; }
   .hero h1 {
-    max-width: none;
-    font-size: clamp(28px, 9vw, 42px);
+    max-width: 100%;
+    font-size: clamp(28px, 8vw, 44px);
     line-height: 1;
     overflow-wrap: anywhere;
   }
@@ -1210,7 +1214,7 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
 
 /* ── Mobile ≤480px: kleine telefoons, typografie verder terug ── */
 @media (max-width: 480px) {
-  .hero h1 { font-size: clamp(26px, 8.5vw, 36px); }
+  .hero h1 { font-size: clamp(24px, 8vw, 36px); }
   .post-detail h1 { font-size: clamp(23px, 8vw, 30px); }
   .calc-result h2 { font-size: 26px; }
   .lead-form h2, .cta-block h2 { font-size: 19px; }
@@ -1485,4 +1489,110 @@ body,
   .goal-text {
     font-size: 14px;
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   COOKIE-TOESTEMMING — banner + voorkeurenscherm (Batterijenplan-stijl:
+   off-white, zwarte randen, geel accent, vette koppen). Volledig responsive.
+   ═══════════════════════════════════════════════════════════════ */
+/* Footer-link "Cookie-instellingen" als tekstknop (past bij de mono-links). */
+.footer-link-btn {
+  background: none; border: 0; padding: 0; margin: 0; cursor: pointer;
+  font: inherit; color: inherit; letter-spacing: inherit; text-transform: inherit;
+}
+.footer-link-btn:hover { color: var(--volt-dk); }
+
+.cookie-banner {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000;
+  background: var(--paper); border-top: 2px solid var(--ink);
+  box-shadow: 0 -6px 24px rgba(18, 19, 15, 0.14);
+}
+.cookie-banner-inner {
+  max-width: 1080px; margin: 0 auto; padding: 16px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px 28px; flex-wrap: wrap;
+}
+.cookie-banner-text { flex: 1 1 320px; min-width: 0; }
+.cookie-banner-title {
+  display: block; font-family: var(--font-display); font-weight: 800;
+  font-size: 15px; margin-bottom: 4px;
+}
+.cookie-banner-text p { margin: 0; font-size: 13.5px; line-height: 1.5; color: var(--ink-60); }
+.cookie-banner-text a,
+.cookie-modal a { color: var(--volt-dk); text-decoration: underline; text-underline-offset: 2px; }
+
+.cookie-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.cookie-btn {
+  cursor: pointer; font-family: var(--font-display); font-weight: 800;
+  font-size: 13px; letter-spacing: 0.02em;
+  border: 2px solid var(--ink); border-radius: 8px; padding: 11px 16px;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+}
+.cookie-btn-primary { background: var(--volt); color: var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.cookie-btn-primary:hover { transform: translate(1px, 1px); box-shadow: 2px 2px 0 var(--ink); }
+.cookie-btn-secondary { background: #fff; color: var(--ink); }
+.cookie-btn-secondary:hover { background: var(--paper); }
+.cookie-btn-text {
+  border: 0; background: none; box-shadow: none; padding: 8px 6px;
+  color: var(--ink); text-decoration: underline; text-underline-offset: 3px;
+}
+.cookie-btn-text:hover { color: var(--volt-dk); }
+
+.cookie-modal-backdrop {
+  position: fixed; inset: 0; z-index: 1001;
+  background: rgba(18, 19, 15, 0.5);
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.cookie-modal {
+  width: 100%; max-width: 460px; max-height: calc(100vh - 40px); overflow-y: auto;
+  background: var(--paper); border: 2px solid var(--ink); border-radius: 12px;
+  box-shadow: 6px 6px 0 var(--volt); padding: 24px 22px;
+}
+.cookie-modal-title { font-family: var(--font-display); font-weight: 900; font-size: 22px; }
+.cookie-modal-intro { margin: 6px 0 18px; font-size: 14px; line-height: 1.5; color: var(--ink-60); }
+
+.cookie-option {
+  background: #fff; border: 2px solid var(--line); border-radius: 10px;
+  padding: 14px 16px; margin-bottom: 12px;
+}
+.cookie-option-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  cursor: pointer;
+}
+.cookie-option-title { font-family: var(--font-display); font-weight: 800; font-size: 15px; }
+.cookie-option-note { margin: 8px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--ink-60); }
+
+/* Toggle-schakelaar (checkbox eronder verborgen maar bedienbaar/toegankelijk). */
+.cookie-switch { position: relative; flex: 0 0 auto; width: 46px; height: 26px; }
+.cookie-switch input {
+  position: absolute; inset: 0; width: 100%; height: 100%; margin: 0;
+  opacity: 0; cursor: pointer;
+}
+.cookie-switch input:disabled { cursor: default; }
+.cookie-switch-track {
+  display: block; width: 46px; height: 26px; border-radius: 999px;
+  border: 2px solid var(--ink); background: #fff;
+  position: relative; transition: background 0.12s ease;
+}
+.cookie-switch-track::after {
+  content: ""; position: absolute; top: 2px; left: 2px;
+  width: 18px; height: 18px; border-radius: 50%; background: var(--ink);
+  transition: transform 0.12s ease;
+}
+.cookie-switch.on .cookie-switch-track { background: var(--volt); }
+.cookie-switch.on .cookie-switch-track::after { transform: translateX(20px); }
+.cookie-switch.locked { opacity: 0.55; }
+.cookie-switch input:focus-visible + .cookie-switch-track {
+  outline: 3px solid var(--volt); outline-offset: 2px;
+}
+
+.cookie-modal-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+.cookie-modal-actions .cookie-btn { flex: 1 1 auto; text-align: center; }
+
+@media (max-width: 640px) {
+  .cookie-banner-inner { padding: 14px 16px; }
+  .cookie-actions { width: 100%; }
+  .cookie-actions .cookie-btn-primary,
+  .cookie-actions .cookie-btn-secondary { flex: 1 1 100%; text-align: center; }
+  .cookie-btn-text { width: 100%; }
 }

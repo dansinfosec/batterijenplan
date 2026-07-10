@@ -3,42 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Google Tag Manager — single source of truth voor GA4 + Google Ads.
-         dataLayer staat meteen klaar zodat events die vóór het laden van de
-         container binnenkomen (bv. de eerste page_view) worden gebufferd. De
-         gtm.js-request valt bewust buiten het FCP/LCP-venster: pas bij de
-         eerste interactie of window load + 5s (dezelfde perf-strategie die
-         voorheen voor gtag.js gold). Container-ID hieronder aanpasbaar. -->
+    <!-- Google Tag Manager — TOESTEMMINGSGESTUURD. De dataLayer staat meteen
+         klaar zodat onze eigen events (page_view, generate_lead) gebufferd
+         worden, maar gtm.js wordt PAS geladen als de bezoeker toestemming geeft
+         voor statistieken of marketing. Dat gebeurt via window.__gtmLoad(),
+         aangeroepen door src/consent.js. Zonder toestemming laadt GTM nooit,
+         dus GA4 / Google Ads / Meta Pixel kunnen niet vuren. -->
     <script>
       (function (w, d) {
         w.dataLayer = w.dataLayer || [];
         var id = "GTM-M99LXDK2";
-        if (id.indexOf("GTM-") !== 0) return; // geen (geldige) ID gezet
         var started = false;
-        var evts = ["pointerdown", "keydown", "touchstart", "scroll"];
-        var timer = null;
-        function teardown() {
-          for (var i = 0; i < evts.length; i++) w.removeEventListener(evts[i], loadGTM);
-          w.removeEventListener("load", onLoad);
-          if (timer) clearTimeout(timer);
-        }
-        function loadGTM() {
-          if (started) return;
+        // Laadt de GTM-container. Idempotent en alleen aan te roepen door de
+        // consent-laag (src/consent.js) nadat er toestemming is gegeven.
+        w.__gtmLoad = function () {
+          if (started || id.indexOf("GTM-") !== 0) return;
           started = true;
-          teardown();
           w.dataLayer.push({ "gtm.start": Date.now(), event: "gtm.js" });
           var s = d.createElement("script");
           s.async = true;
           s.src = "https://www.googletagmanager.com/gtm.js?id=" + id;
           d.head.appendChild(s);
-        }
-        // Laat een conversie (lead) de container desnoods direct laden.
-        w.__gtmLoad = loadGTM;
-        function onLoad() { timer = setTimeout(loadGTM, 5000); }
-        for (var i = 0; i < evts.length; i++)
-          w.addEventListener(evts[i], loadGTM, { passive: true });
-        if (d.readyState === "complete") onLoad();
-        else w.addEventListener("load", onLoad, { once: true });
+        };
       })(window, document);
     </script>
     <!-- End Google Tag Manager -->
@@ -117,9 +103,9 @@
     </style>
   </head>
   <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M99LXDK2" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+    <!-- Bewust GEEN GTM <noscript>-iframe: die zou de container zonder
+         toestemming laden (no-JS-bezoekers kunnen niet toestemmen). GTM wordt
+         uitsluitend na toestemming via JavaScript geladen (zie <head>). -->
     <!-- home-shell:start (scripts/prerender-blog-meta.mjs verwijdert dit blok
          uit de gegenereerde blogpost-HTML) -->
     <!-- Statische homepage-shell: geeft mobiel direct een first paint van de

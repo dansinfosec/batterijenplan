@@ -27,12 +27,11 @@ export function trackPageView(path) {
 // Lead/conversie: één semantisch event. In GTM hangen zowel de GA4-event-tag
 // als de Google Ads-conversietag aan de custom-event trigger "generate_lead".
 export function trackLeadSubmit(source = "calculator_advies") {
-  // Conversies mogen niet verloren gaan als de container nog niet uitgesteld is
-  // geladen. Een formulierinzending is zelf al een interactie (die het laden
-  // triggert), maar we forceren het laden voor de zekerheid; het event wordt
-  // hoe dan ook in de dataLayer gebufferd en verwerkt zodra gtm.js er is.
-  if (typeof window.__gtmLoad === "function") window.__gtmLoad();
-
+  // GTM wordt uitsluitend via toestemming geladen (zie consent.js); we forceren
+  // het laden hier NIET (dat zou de toestemming omzeilen). Het event wordt in de
+  // dataLayer gebufferd en pas door GTM verwerkt zodra die na toestemming laadt.
+  // De lead zelf gaat los naar de backend (postLead) — dat is functioneel en
+  // staat los van deze marketing/statistiek-tracking.
   dataLayerPush({
     event: "generate_lead",
     lead_source: source,
