@@ -18,7 +18,8 @@ class PostListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ["id", "title", "slug", "author", "cover_image",
-                  "cover_image_url", "excerpt",
+                  "cover_image_url", "cover_alt", "excerpt",
+                  "seo_title", "seo_description",
                   "meta_description", "tags", "reading_minutes",
                   "published_at", "updated_at", "created_at"]
 
@@ -45,7 +46,10 @@ class PostListSerializer(serializers.ModelSerializer):
         return url
 
     def get_meta_description(self, obj):
-        # Excerpt is leidend; anders een korte platte-tekst versie van de body.
+        # Voorkeursvolgorde: expliciete SEO-description > excerpt > korte
+        # platte-tekst versie van de body.
+        if obj.seo_description and obj.seo_description.strip():
+            return obj.seo_description.strip()
         if obj.excerpt and obj.excerpt.strip():
             return obj.excerpt.strip()
         text = " ".join(strip_tags(markdown.markdown(obj.body)).split())

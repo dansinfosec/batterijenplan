@@ -183,7 +183,10 @@ export default function PostDetail() {
         // Korte SEO-titel voor <title>/og:title/twitter:title; de zichtbare
         // H1 hieronder blijft de volledige post.title.
         title: postSeoTitle(post),
-        description: post.meta_description || post.excerpt || DEFAULT_DESCRIPTION,
+        // Voorkeur: backend seo_description > (uit body afgeleide)
+        // meta_description > excerpt > site-default.
+        description:
+          post.seo_description || post.meta_description || post.excerpt || DEFAULT_DESCRIPTION,
         type: "article",
         path: `/post/${post.slug}`,
         image: post.cover_image_url,
@@ -268,7 +271,7 @@ export default function PostDetail() {
           sizes="(max-width: 720px) 100vw, 960px"
           width="1200"
           height="675"
-          alt=""
+          alt={post.cover_alt || post.title}
           fetchPriority="high"
           decoding="async"
           onError={(e) => {

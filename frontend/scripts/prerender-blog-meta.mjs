@@ -362,8 +362,9 @@ function postBodyFallback(post) {
     .map((s) => `<span>${escapeHtml(String(s))}</span>`)
     .join("\n            ");
 
+  const coverAlt = post.cover_alt || post.title || "";
   const cover = post.cover_image_url
-    ? `<img class="cover" src="${escapeHtml(coverImageUrl(post.cover_image_url, 1200))}" width="1200" height="675" alt="" />`
+    ? `<img class="cover" src="${escapeHtml(coverImageUrl(post.cover_image_url, 1200))}" width="1200" height="675" alt="${escapeHtml(coverAlt)}" />`
     : "";
   const excerpt = post.excerpt
     ? `<p>${escapeHtml(post.excerpt)}</p>`
@@ -422,9 +423,11 @@ function seoTitle(post) {
 function postMetaBlock(post) {
   const url = `${SITE_URL}/post/${post.slug}`;
   const title = seoTitle(post);
-  // Altijd post-specifiek: excerpt eerst, dan de (uit de body afgeleide)
-  // meta_description. Nooit terugvallen op de homepage-beschrijving.
-  const description = post.excerpt || post.meta_description || post.title;
+  // Altijd post-specifiek (nooit terugvallen op de homepage-beschrijving).
+  // Voorkeur: expliciete backend seo_description > (uit de body afgeleide)
+  // meta_description > excerpt > titel.
+  const description =
+    post.seo_description || post.meta_description || post.excerpt || post.title;
 
   const image = post.cover_image_url || null;
   const socialImage = socialImageUrl(image);
