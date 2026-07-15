@@ -1,5 +1,10 @@
 import { Link } from "react-router-dom";
 import { OPEN_COOKIE_SETTINGS_EVENT } from "./CookieConsent.jsx";
+import {
+  BUSINESS_PHONE_DISPLAY,
+  BUSINESS_PHONE_TEL,
+  BUSINESS_WHATSAPP_URL,
+} from "../constants.js";
 
 export default function Footer() {
   return (
@@ -17,13 +22,12 @@ export default function Footer() {
           <a href="mailto:info@batterijenplan.nl">info@batterijenplan.nl</a>
         </span>
         <span>
+          Telefoon: <a href={BUSINESS_PHONE_TEL}>{BUSINESS_PHONE_DISPLAY}</a>
+        </span>
+        <span>
           WhatsApp:{" "}
-          <a
-            href="https://wa.me/31641880307"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            +31 6 41 88 03 07
+          <a href={BUSINESS_WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+            {BUSINESS_PHONE_DISPLAY}
           </a>
         </span>
         <span>Servicegebied: Nederland</span>

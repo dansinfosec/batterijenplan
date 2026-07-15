@@ -1,6 +1,11 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { setPageMeta, setJsonLd, ORGANIZATION_SCHEMA } from "../seo.js";
+import {
+  BUSINESS_PHONE_DISPLAY,
+  BUSINESS_PHONE_TEL,
+  BUSINESS_WHATSAPP_URL,
+} from "../constants.js";
 
 export default function Contact() {
   useEffect(() => {
@@ -39,13 +44,16 @@ export default function Contact() {
           E-mail:{" "}
           <a href="mailto:info@batterijenplan.nl">info@batterijenplan.nl</a>
           <br />
+          Telefoon:{" "}
+          <a href={BUSINESS_PHONE_TEL}>{BUSINESS_PHONE_DISPLAY}</a>
+          <br />
           WhatsApp:{" "}
           <a
-            href="https://wa.me/31641880307"
+            href={BUSINESS_WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
           >
-            +31 6 41 88 03 07
+            {BUSINESS_PHONE_DISPLAY}
           </a>
         </p>
         <p>
@@ -71,7 +79,7 @@ export default function Contact() {
           </a>
 
           <a
-            href="https://wa.me/31641880307"
+            href={BUSINESS_WHATSAPP_URL}
             className="cta-button cta-button-sm"
             target="_blank"
             rel="noopener noreferrer"

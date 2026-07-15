@@ -121,6 +121,7 @@ export const ORGANIZATION_SCHEMA = {
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "customer service",
+    telephone: "+31850605738",
     email: "info@batterijenplan.nl",
     areaServed: "NL",
     availableLanguage: "Dutch",

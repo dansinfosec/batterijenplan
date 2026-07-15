@@ -106,7 +106,8 @@ const CONTACT_BODY = seoWrap(`        <h1>Contact met Batterijenplan.nl</h1>
         </p>
         <p>
           E-mail: <a href="mailto:info@batterijenplan.nl">info@batterijenplan.nl</a><br />
-          WhatsApp: <a href="https://wa.me/31641880307">+31 6 41 88 03 07</a>
+          Telefoon: <a href="tel:+31850605738">085 060 5738</a><br />
+          WhatsApp: <a href="https://wa.me/31850605738">085 060 5738</a>
         </p>
         <p>Ons servicegebied is heel Nederland. Bezoek aan ons kantoor is uitsluitend op afspraak mogelijk. Stuur ons een bericht of app ons, dan nemen wij zo snel mogelijk contact met u op — meestal binnen één werkdag.</p>`);
 
