@@ -398,6 +398,75 @@ article.post-detail > img.cover {
   margin: 0; /* marge zit op de wrapper */
 }
 
+/* ── Artikel-grafieken (CSS-only) ─────────────────────────────────
+   Inline <svg> overleeft de markdown-pipeline niet (Python-Markdown ziet
+   svg niet als blokelement en nl2br injecteert <br> ín de svg, waardoor de
+   browser de grafiek niet rendert). Blog-grafieken zijn daarom pure
+   HTML/CSS-blokken met deze klassen. Div-blokken passeren de pipeline wel. */
+.chart-block {
+  background: var(--paper);
+  border: 2px solid var(--line);
+  padding: 20px;
+  margin: 28px 0;
+}
+.chart-block .chart-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+  margin: 0 0 4px;
+}
+.chart-block .chart-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-60);
+  margin: 0 0 16px;
+}
+.chart-block .chart-row {
+  display: grid;
+  grid-template-columns: minmax(110px, 190px) 1fr;
+  gap: 10px;
+  align-items: center;
+  margin: 8px 0;
+}
+.chart-block .chart-label {
+  font-size: 14px;
+  line-height: 1.35;
+}
+.chart-block .chart-track { min-width: 0; }
+.chart-block .chart-bar {
+  background: var(--volt);
+  border: 1.5px solid var(--line);
+  padding: 3px 8px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  white-space: nowrap;
+  min-width: -moz-fit-content;
+  min-width: fit-content;
+}
+.chart-block .chart-bar--ink { background: var(--ink); color: var(--paper); }
+.chart-block .chart-bar--copper { background: var(--copper); color: var(--paper); }
+.chart-block .chart-bar--outline { background: transparent; }
+.chart-block .chart-note {
+  font-size: 13px;
+  color: var(--ink-60);
+  margin: 14px 0 0;
+}
+.chart-block .chart-divider {
+  border: 0;
+  border-top: 1.5px dashed var(--ink-60);
+  margin: 16px 0;
+}
+@media (max-width: 560px) {
+  .chart-block { padding: 14px; }
+  .chart-block .chart-row {
+    grid-template-columns: 1fr;
+    gap: 2px;
+    margin: 12px 0;
+  }
+}
+
 /* leesvoortgang bovenin, als laadbalk */
 .read-progress {
   position: fixed; top: 64px; left: 0; height: 5px;
