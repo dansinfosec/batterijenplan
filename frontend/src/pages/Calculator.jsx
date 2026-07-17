@@ -39,6 +39,69 @@ const SUNNY_DAY_EXPORT_OPTIONS_BUSINESS = [
 
 const MODAL_DELAY_MS = 4000;
 
+// ── Fase 1: geen-zonnepanelen-pad ──────────────────────────────────────────
+// Client-side "eerste indicatie" totdat de backend in fase 2 een eigen
+// no-solar-advies krijgt. Bewust géén aanroep van /api/calculator/: die
+// formule is op teruglevering gebaseerd en blijft ongewijzigd.
+const CONTRACT_TYPES = [
+  { value: "", label: "Maak een keuze" },
+  { value: "fixed", label: "Vast contract" },
+  { value: "variable", label: "Variabel contract" },
+  { value: "dynamic", label: "Dynamisch contract" },
+  { value: "unknown", label: "Weet ik niet" },
+];
+
+const NO_SOLAR_GOALS = [
+  { value: "lower_bill", label: "Lagere energierekening" },
+  { value: "trading", label: "Dynamische handel" },
+  { value: "future_proof", label: "Voorbereid op de toekomst" },
+  { value: "advice", label: "Ik wil vooral advies" },
+];
+
+// Zonder zonnepanelen is er geen teruglevering om op te dimensioneren; de
+// indicatie volgt uit verbruiksklassen. Hoog verbruik alléén maakt nooit een
+// enorm systeem: de banden zijn bewust begrensd op 21 kWh.
+function noSolarIndication(usage, contractType, goal) {
+  const wantsTrading = goal === "trading" || goal === "future_proof";
+
+  let range;
+  let productHint;
+  if (usage < 2500) {
+    range = "7 – 10 kWh";
+    productHint = "Dyness S3 Tower T7 of T10";
+  } else if (usage <= 5000) {
+    range = wantsTrading ? "10 – 14 kWh" : "10 – 12 kWh";
+    productHint = "Dyness S3 Tower T10 of T14";
+  } else {
+    range = wantsTrading ? "14 – 21 kWh" : "14 – 17 kWh";
+    productHint = "Dyness S3 Tower T14, T17 of T21";
+  }
+
+  const notes = [];
+  if (usage < 2500) {
+    notes.push(
+      "Bij een laag verbruik zonder zonnepanelen is de businesscase gevoeliger " +
+      "voor marktomstandigheden. Een klein instapsysteem kan passen, maar laat " +
+      "uw situatie eerst vrijblijvend controleren."
+    );
+  }
+  if (wantsTrading && (contractType === "fixed" || contractType === "variable")) {
+    notes.push(
+      "Voor dynamische handel is een dynamisch energiecontract nodig: bij een " +
+      "vaste stroomprijs valt er niets te sturen. Overstappen kan meestal " +
+      "eenvoudig."
+    );
+  }
+  if (goal === "lower_bill" && contractType === "fixed") {
+    notes.push(
+      "Zonder zonnepanelen en met een vast contract is de directe besparing " +
+      "van een batterij zeer beperkt. Vraag advies aan voordat u investeert."
+    );
+  }
+
+  return { range, productHint, notes };
+}
+
 // Statische interne links naar bestaande blogposts (slugs staan ook in de
 // sitemap). Bewust niet uit de API: de calculator-landing mag hier niet
 // trager van worden. Slugs geverifieerd tegen de gepubliceerde posts —
@@ -156,6 +219,22 @@ function LeadModal({ open, onClose, children }) {
 export default function Calculator() {
   const [searchParams] = useSearchParams();
   const directAdvice = searchParams.get("advies") === "1";
+
+  // Stap 1 van de wizard: "Heeft u zonnepanelen?" — null = nog niet gekozen.
+  // Bij ?advies=1 (deep-link vanuit blogposts) default "yes", zodat het
+  // bestaande gedrag (direct naar het leadformulier scrollen) blijft werken.
+  const [hasSolar, setHasSolar] = useState(directAdvice ? "yes" : null);
+
+  // Geen-zonnepanelen-pad: eigen compacte state, volledig gescheiden van het
+  // bestaande formulier zodat het zon-pad (incl. zonnige-dag-logica) niets
+  // merkt van deze toevoeging.
+  const [noSolarForm, setNoSolarForm] = useState({
+    yearly_usage: "",
+    contract_type: "",
+    goal: "",
+  });
+  const [noSolarResult, setNoSolarResult] = useState(null);
+  const noSolarResultRef = useRef(null);
 
   const [form, setForm] = useState({
     customer_type: "residential",
@@ -345,7 +424,65 @@ export default function Calculator() {
 
   const closeModal = () => setModalOpen(false);
 
-  const showLeadForm = Boolean(isCalculationComplete || directAdvice);
+  // Geen-zon-pad: indicatie is client-side (fase 1) — geen API-call.
+  const submitNoSolar = (e) => {
+    e.preventDefault();
+    const usage = parseFloat(noSolarForm.yearly_usage);
+    if (Number.isNaN(usage) || usage <= 0) return;
+    setModalOpen(false);
+    setNoSolarResult({
+      inputs: { has_solar: "no", ...noSolarForm, yearly_usage: usage },
+      ...noSolarIndication(usage, noSolarForm.contract_type, noSolarForm.goal),
+    });
+  };
+
+  // Na het tonen van de no-solar-indicatie: rustig naar het resultaat
+  // scrollen en (net als het zon-pad) na 4s de leadmodal aanbieden.
+  useEffect(() => {
+    if (!noSolarResult) return;
+    noSolarResultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (leadState.sent) return;
+    const timer = setTimeout(() => setModalOpen(true), MODAL_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, [noSolarResult, leadState.sent]);
+
+  // Terug naar stap 1: keuzes en resultaten van béide paden opruimen zodat
+  // er nooit een resultaat van het ene pad onder het formulier van het
+  // andere pad blijft staan.
+  const resetSolarChoice = () => {
+    setHasSolar(null);
+    setNoSolarResult(null);
+    setResult(null);
+    setLastInputs(null);
+    setError(null);
+    setModalOpen(false);
+  };
+
+  const updateNoSolar = (field) => (e) =>
+    setNoSolarForm({ ...noSolarForm, [field]: e.target.value });
+
+  // Leaddata volgt het actieve pad; het zon-pad gedraagt zich exact als
+  // voorheen. Voor no-solar gaan invoer + indicatie mee zodat het advies
+  // gecontroleerd kan worden.
+  const leadInputs =
+    hasSolar === "no"
+      ? (noSolarResult ? noSolarResult.inputs : null)
+      : (isCalculationComplete ? lastInputs : null);
+  const leadResult =
+    hasSolar === "no"
+      ? (noSolarResult
+          ? {
+              type: "no_solar_first_indication",
+              range: noSolarResult.range,
+              product_hint: noSolarResult.productHint,
+            }
+          : null)
+      : (isCalculationComplete ? result : null);
+
+  const showLeadForm =
+    hasSolar === "no"
+      ? Boolean(noSolarResult)
+      : Boolean(isCalculationComplete || directAdvice);
 
   // Hulpkaart-CTA: de berekening starten door naar het formulier te scrollen
   // (geen leadformulier — dat is de rol van de afsluitende CTA onderaan).
@@ -387,6 +524,44 @@ export default function Calculator() {
         <div><b>Gratis check</b><span>Laat uw uitkomst controleren</span></div>
       </div>
 
+      {/* ── Stap 1: heeft u zonnepanelen? ──
+          De rest van de calculator verschijnt pas na deze keuze; het eerste
+          scherm blijft zo bewust heel eenvoudig (mobile-first). */}
+      {hasSolar === null && (
+        <div className="calc-solar-choice">
+          <p className="calc-form-start">Heeft u zonnepanelen?</p>
+          <p className="calc-solar-choice-sub">
+            Met die ene vraag stellen we direct de juiste vervolgvragen — u
+            hoeft nooit gegevens in te vullen die niet op uw situatie slaan.
+          </p>
+          <div className="calc-solar-choice-buttons">
+            <button
+              type="button"
+              className="calc-solar-btn"
+              onClick={() => setHasSolar("yes")}
+            >
+              <b>Ja, ik heb zonnepanelen</b>
+              <span>Advies op basis van uw teruglevering</span>
+            </button>
+            <button
+              type="button"
+              className="calc-solar-btn"
+              onClick={() => setHasSolar("no")}
+            >
+              <b>Nee, ik heb geen zonnepanelen</b>
+              <span>Advies op basis van dynamische handel</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {hasSolar !== null && (
+        <button type="button" className="calc-solar-switch" onClick={resetSolarChoice}>
+          Zonnepanelen: <b>{hasSolar === "yes" ? "ja" : "nee"}</b> — wijzig keuze
+        </button>
+      )}
+
+      {hasSolar === "yes" && (<>
       {/* Mobiel: hulpkaart bóven het formulier (desktop-variant staat rechts) */}
       <CalcHelpCard onStart={startCalculation} variant="mobile" className="calc-help-mobile" />
 
@@ -639,13 +814,124 @@ export default function Calculator() {
           </button>
         </div>
       )}
+      </>)}
+
+      {/* ── Geen-zonnepanelen-pad (fase 1: client-side eerste indicatie) ── */}
+      {hasSolar === "no" && (<>
+      <form className="calc-form" onSubmit={submitNoSolar}>
+        <p className="calc-form-start">Uw situatie zonder zonnepanelen</p>
+
+        <label>
+          <span className="field-label">Jaarlijks stroomverbruik (kWh) <span className="field-required">*</span></span>
+          <input
+            className="field-input"
+            type="number"
+            step="0.1"
+            min="1"
+            placeholder="3500"
+            value={noSolarForm.yearly_usage}
+            onChange={withValidityClear(updateNoSolar("yearly_usage"))}
+            onInvalid={friendlyValidity("Vul uw jaarverbruik in.")}
+            required
+          />
+          <span className="field-error-text">Vul uw jaarverbruik in.</span>
+          <span className="field-help">Weet u het niet precies? Een schatting is voldoende.</span>
+        </label>
+
+        <label>
+          <span className="field-label">Type energiecontract <span className="field-required">*</span></span>
+          <select
+            className="field-input"
+            value={noSolarForm.contract_type}
+            onChange={withValidityClear(updateNoSolar("contract_type"))}
+            onInvalid={friendlyValidity("Kies uw contracttype.")}
+            required
+          >
+            {CONTRACT_TYPES.map((option) => (
+              <option key={option.value} value={option.value}>{option.label}</option>
+            ))}
+          </select>
+          <span className="field-error-text">Kies uw contracttype.</span>
+        </label>
+
+        <fieldset className="goal-choice">
+          <legend>Wat wilt u bereiken? <span className="field-required">*</span></legend>
+          {NO_SOLAR_GOALS.map((option) => (
+            <label
+              key={option.value}
+              className={`goal-card ${noSolarForm.goal === option.value ? "active" : ""}`}
+            >
+              <input
+                type="radio"
+                name="no_solar_goal"
+                value={option.value}
+                checked={noSolarForm.goal === option.value}
+                onChange={updateNoSolar("goal")}
+                required
+              />
+              <span className="goal-title">{option.label}</span>
+              <span className="goal-check" aria-hidden="true">✓</span>
+            </label>
+          ))}
+        </fieldset>
+
+        <div className="calc-submit">
+          <button type="submit" className="field-submit-button">
+            Toon mijn eerste indicatie
+          </button>
+          <p className="calc-submit-note">
+            ✓ Gratis advies • ✓ Direct resultaat • ✓ Geen e-mailadres nodig
+          </p>
+        </div>
+      </form>
+
+      {noSolarResult && (
+        <div className="calc-result" ref={noSolarResultRef}>
+          <span className="mono calc-result-label">Eerste indicatie — zonder zonnepanelen</span>
+
+          <div className="calc-result-grid">
+            <div className="calc-card calc-card-primary">
+              <span className="calc-card-label">Indicatieve capaciteit</span>
+              <b className="calc-card-value">{noSolarResult.range}</b>
+              <span className="calc-card-help">Eerste indicatie op basis van uw verbruik en doel</span>
+              <span className="calc-card-rangenote">
+                Dit is een eerste indicatie. Bij een adviesgesprek rekenen wij uw
+                situatie exact door, inclusief netaansluiting en energiecontract.
+              </span>
+            </div>
+
+            <div className="calc-card calc-card-product">
+              <span className="calc-card-label">Denk aan</span>
+              <b className="calc-card-product-name">{noSolarResult.productHint}</b>
+            </div>
+          </div>
+
+          <div className="calc-card calc-card-explain">
+            Zonder zonnepanelen slaat de batterij geen eigen zonnestroom op: de
+            zelfconsumptiewaarde is € 0. De waarde komt vooral uit dynamische
+            handel en slimme EMS-sturing — goedkoop laden bij lage of negatieve
+            stroomprijzen en ontladen tijdens dure momenten. Die opbrengst is
+            marktafhankelijk en verschilt per jaar; wij geven daarom bewust geen
+            gegarandeerde bedragen.
+          </div>
+
+          {noSolarResult.notes.map((noteText) => (
+            <div className="calc-note" key={noteText}>{noteText}</div>
+          ))}
+
+          <button type="button" className="cta-button cta-button-sm calc-result-cta" onClick={openAdvice}>
+            Laat dit advies gratis controleren
+          </button>
+        </div>
+      )}
+      </>)}
 
       {showLeadForm && (
         <div id="advies">
           <LeadCaptureForm
             state={leadState}
-            calculatorInputs={isCalculationComplete ? lastInputs : null}
-            calculatorResult={isCalculationComplete ? result : null}
+            calculatorInputs={leadInputs}
+            calculatorResult={leadResult}
             source={directAdvice && !isCalculationComplete ? "blog_cta_direct_advice" : "react_calculator"}
             variant="inline"
           />
@@ -654,13 +940,15 @@ export default function Calculator() {
 
       </div>
 
-      <CalcHelpCard onStart={startCalculation} variant="desktop" className="calc-help-desktop" />
+      {hasSolar === "yes" && (
+        <CalcHelpCard onStart={startCalculation} variant="desktop" className="calc-help-desktop" />
+      )}
       </div>
 
       {/* Lead-CTA — resultgedreven: verschijnt alleen ná een voltooide
           berekening (nooit onder een lege calculator). Bestaand leadgedrag via
           openAdvice: scrollt naar het inline leadformulier of opent de modal. */}
-      {isCalculationComplete && (
+      {(isCalculationComplete || Boolean(noSolarResult)) && (
         <section className="cta-block calc-final-cta">
           <h2>Laat uw batterijadvies gratis controleren</h2>
           <p>
@@ -814,8 +1102,8 @@ export default function Calculator() {
       <LeadModal open={modalOpen} onClose={closeModal}>
         <LeadCaptureForm
           state={leadState}
-          calculatorInputs={isCalculationComplete ? lastInputs : null}
-          calculatorResult={isCalculationComplete ? result : null}
+          calculatorInputs={leadInputs}
+          calculatorResult={leadResult}
           source="react_calculator_modal"
           variant="modal"
           onDismiss={closeModal}

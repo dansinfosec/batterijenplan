@@ -635,6 +635,62 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
 
 /* Educatieve mini-indicatoren boven het formulier: kleine trust-stats */
 .calc-mini-strip { display: flex; flex-wrap: wrap; gap: 12px 26px; margin-bottom: 20px; }
+
+/* ── Wizard stap 1: "Heeft u zonnepanelen?" ── */
+.calc-page .calc-solar-choice {
+  border: 2px solid var(--line);
+  background: var(--paper);
+  padding: 24px 20px;
+  margin-bottom: 24px;
+}
+.calc-page .calc-solar-choice-sub {
+  color: var(--ink-60);
+  font-size: 15px;
+  margin: 6px 0 18px;
+}
+.calc-page .calc-solar-choice-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.calc-page .calc-solar-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+  padding: 18px 16px;
+  border: 2px solid var(--line);
+  background: var(--paper);
+  cursor: pointer;
+  font: inherit;
+}
+.calc-page .calc-solar-btn:hover,
+.calc-page .calc-solar-btn:focus-visible {
+  background: var(--volt);
+}
+.calc-page .calc-solar-btn b {
+  font-family: var(--font-display);
+  font-size: 17px;
+}
+.calc-page .calc-solar-btn span {
+  font-size: 13.5px;
+  color: var(--ink-60);
+}
+.calc-page .calc-solar-switch {
+  display: inline-block;
+  margin-bottom: 18px;
+  padding: 6px 12px;
+  border: 1.5px solid var(--line);
+  background: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+.calc-page .calc-solar-switch:hover { background: var(--volt); }
+@media (max-width: 560px) {
+  .calc-page .calc-solar-choice-buttons { grid-template-columns: 1fr; }
+}
 .calc-mini-strip div { border-left: 3px solid var(--volt); padding-left: 12px; }
 .calc-mini-strip b {
   display: block; font-family: var(--font-mono); font-size: 14px; line-height: 1.4;
