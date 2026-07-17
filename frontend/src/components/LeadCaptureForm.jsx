@@ -88,9 +88,13 @@ export default function LeadCaptureForm({
   calculatorResult,
   variant = "inline",
   onDismiss,
+  copy: copyOverride,
 }) {
   const { lead, update, submit, sent, sending, error, validated, setValidated } = state;
-  const copy = COPY[variant] ?? COPY.inline;
+  // Padspecifieke titel/tekst/knop (advies-check, handelscase, terugverdientijd)
+  // kan door de aanroeper worden meegegeven; zonder override blijft de
+  // bestaande variant-copy exact zoals hij was.
+  const copy = copyOverride ?? COPY[variant] ?? COPY.inline;
 
   if (sent) {
     return (

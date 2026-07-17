@@ -691,6 +691,73 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
 @media (max-width: 560px) {
   .calc-page .calc-solar-choice-buttons { grid-template-columns: 1fr; }
 }
+
+/* ── Wizard-stappen (één vraag per scherm) ── */
+.calc-page .calc-step-panel {
+  border: 2px solid var(--line);
+  background: var(--paper);
+  padding: 24px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.calc-page .calc-step-panel .field-label { display: block; margin-bottom: 6px; }
+.calc-page .calc-wizard-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.calc-page .calc-progress {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-60);
+}
+.calc-page .calc-back-btn {
+  border: 1.5px solid var(--line);
+  background: var(--paper);
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+.calc-page .calc-back-btn:hover { background: var(--volt); }
+.calc-page .calc-step-nav { margin-top: 4px; }
+.calc-page .calc-choice-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.calc-page .calc-solar-btn.active { background: var(--volt); }
+.calc-page .goal-choice-wizard { border: 0; padding: 0; margin: 0; }
+.calc-page .goal-card-btn {
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+}
+.calc-page .calc-tri .field-label { margin-bottom: 8px; }
+.calc-page .calc-tri-row { display: flex; gap: 10px; }
+.calc-page .calc-opt-btn {
+  flex: 1;
+  padding: 10px 8px;
+  border: 2px solid var(--line);
+  background: var(--paper);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+.calc-page .calc-opt-btn.active { background: var(--volt); font-weight: 700; }
+.calc-page .calc-payback-q { margin-top: 24px; }
+.calc-page .calc-payback-note { margin-top: 16px; }
+@media (max-width: 560px) {
+  .calc-page .calc-choice-grid { grid-template-columns: 1fr; }
+  .calc-page .calc-step-panel { padding: 16px 14px; }
+}
 .calc-mini-strip div { border-left: 3px solid var(--volt); padding-left: 12px; }
 .calc-mini-strip b {
   display: block; font-family: var(--font-mono); font-size: 14px; line-height: 1.4;
