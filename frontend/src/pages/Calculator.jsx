@@ -343,6 +343,12 @@ export default function Calculator() {
 
   const activeResult = hasSolar === "no" ? noSolarResult : result;
 
+  // "Ja" en "Ik laat zonnepanelen plaatsen" volgen hetzelfde pad: de bestaande
+  // teruglevering-flow + backend-API. "Nee" gaat naar de eerste-indicatie
+  // zonder teruglevering. Zo hoeft de rest van de wizard maar één onderscheid
+  // te kennen: solarPath vs. het geen-zon-pad.
+  const solarPath = hasSolar === "yes" || hasSolar === "planned";
+
   useEffect(() => {
     setPageMeta({
       title: "Thuisbatterij Calculator | Bereken gratis uw batterijcapaciteit",
@@ -429,6 +435,12 @@ export default function Calculator() {
     setModalOpen(false);
   };
 
+  // Klanttype wordt nu in stap 1 gekozen (voor beide zon-antwoorden), dus
+  // gedeeld door beide paden. Reset de zonnige-dag-keuze mee: particulier en
+  // zakelijk hebben elk hun eigen bandbreedtes.
+  const chooseCustomerType = (value) =>
+    setForm({ ...form, customer_type: value, sunny_day_export: "" });
+
   const choosePath = (value) => {
     clearResults();
     setHasSolar(value);
@@ -454,7 +466,7 @@ export default function Calculator() {
   // Stappenlijst per pad (voor "Stap X van Y" en de terugknop). De zonnige-
   // dag-stap telt alleen mee wanneer de trigger daadwerkelijk geraakt is.
   const steps =
-    hasSolar === "yes"
+    solarPath
       ? ["choice", "usage", "export", ...(needsSunnyDayQuestion ? ["sunny"] : []), "goal"]
       : hasSolar === "no"
         ? ["choice", "usage", "contract", "goal"]
@@ -479,12 +491,12 @@ export default function Calculator() {
   // ── Stapvalidatie + submits ──
   const nextFromUsage = () => {
     const usage =
-      hasSolar === "yes" ? yearlyUsageNum : parseFloat(noSolarForm.yearly_usage);
+      solarPath ? yearlyUsageNum : parseFloat(noSolarForm.yearly_usage);
     if (Number.isNaN(usage) || usage <= 0) {
       setError("Vul eerst uw jaarlijkse stroomverbruik in.");
       return;
     }
-    goTo(hasSolar === "yes" ? "export" : "contract");
+    goTo(solarPath ? "export" : "contract");
   };
 
   const nextFromExport = () => {
@@ -550,7 +562,16 @@ export default function Calculator() {
     setModalOpen(false);
     setError(null);
     setNoSolarResult({
-      inputs: { has_solar: "no", ...noSolarForm, yearly_usage: usage },
+      // Zonder zonnepanelen is teruglevering 0 kWh; expliciet vastleggen zodat
+      // de leaddata dat toont. Klanttype (uit stap 1) reist mee zodat ook het
+      // geen-zon-pad particulier/zakelijk onderscheidt.
+      inputs: {
+        has_solar: "no",
+        customer_type: form.customer_type,
+        exported_energy: 0,
+        ...noSolarForm,
+        yearly_usage: usage,
+      },
       ...noSolarIndication(usage, noSolarForm.contract_type, noSolarForm.goal),
     });
   };
@@ -626,7 +647,24 @@ export default function Calculator() {
         <div><b>Gratis check</b><span>Laat uw uitkomst controleren</span></div>
       </div>
 
-      {hasSolar === "yes" && !activeResult && (
+      {/* Wat heeft u nodig? — voorbereiding, alleen op het startscherm. */}
+      {hasSolar === null && (
+        <div className="calc-needs">
+          <p className="calc-needs-title">Wat heeft u nodig?</p>
+          <ul className="calc-needs-list">
+            <li>Jaarlijks stroomverbruik</li>
+            <li>Of u zonnepanelen heeft</li>
+            <li>Jaarlijkse teruglevering, indien bekend</li>
+            <li>Uw doel: eigen verbruik of dynamische handel</li>
+          </ul>
+          <p className="calc-needs-help">
+            Deze gegevens vindt u meestal terug in uw energieleverancier-app of
+            jaarafrekening.
+          </p>
+        </div>
+      )}
+
+      {solarPath && !activeResult && (
         <CalcHelpCard onStart={scrollToWizard} variant="mobile" className="calc-help-mobile" />
       )}
 
@@ -642,22 +680,46 @@ export default function Calculator() {
         </div>
       )}
 
-      {/* ── Stap 1: heeft u zonnepanelen? ── */}
+      {/* Geen-zon-pad: teruglevering is meestal 0 kWh — dat leggen we direct uit. */}
+      {hasSolar === "no" && !activeResult && (
+        <div className="calc-note calc-nosolar-note">
+          Zonder zonnepanelen is teruglevering meestal 0 kWh. Een batterij kan
+          dan alleen interessant zijn bij specifieke situaties, zoals dynamische
+          sturing of zakelijk energiebeheer.
+        </div>
+      )}
+
+      {/* ── Stap 1: klanttype + zonnepanelen (voor beide klanttypen) ── */}
       {hasSolar === null && (
         <div className="calc-solar-choice calc-step-panel">
           <span className="mono calc-progress">Stap 1 van 4</span>
-          <p className="calc-form-start">Heeft u zonnepanelen?</p>
+
+          <p className="calc-form-start">Bent u particulier of zakelijk?</p>
+          <div className="calc-type-toggle">
+            {CUSTOMER_TYPES.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                className={`calc-type-btn ${form.customer_type === option.value ? "active" : ""}`}
+                onClick={() => chooseCustomerType(option.value)}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+
+          <p className="calc-form-start calc-solar-q">Heeft u zonnepanelen?</p>
           <p className="calc-solar-choice-sub">
-            Met die ene vraag stellen we direct de juiste vervolgvragen — u
-            hoeft nooit gegevens in te vullen die niet op uw situatie slaan.
+            Zo stellen we direct de juiste vervolgvragen — u vult nooit gegevens
+            in die niet op uw situatie slaan.
           </p>
-          <div className="calc-solar-choice-buttons">
+          <div className="calc-solar-choice-buttons calc-solar-choice-buttons--three">
             <button
               type="button"
               className="calc-solar-btn"
               onClick={() => choosePath("yes")}
             >
-              <b>Ja, ik heb zonnepanelen</b>
+              <b>Ja</b>
               <span>Advies op basis van uw teruglevering</span>
             </button>
             <button
@@ -665,8 +727,16 @@ export default function Calculator() {
               className="calc-solar-btn"
               onClick={() => choosePath("no")}
             >
-              <b>Nee, ik heb geen zonnepanelen</b>
+              <b>Nee</b>
               <span>Advies op basis van dynamische handel</span>
+            </button>
+            <button
+              type="button"
+              className="calc-solar-btn"
+              onClick={() => choosePath("planned")}
+            >
+              <b>Ik laat zonnepanelen plaatsen</b>
+              <span>We rekenen met uw verwachte teruglevering</span>
             </button>
           </div>
         </div>
@@ -676,23 +746,6 @@ export default function Calculator() {
         <div className="calc-step-panel">
           <p className="calc-form-start">Wat is uw jaarlijkse stroomverbruik?</p>
 
-          {hasSolar === "yes" && (
-            <label>
-              <span className="field-label">Type klant</span>
-              <select
-                className="field-input"
-                value={form.customer_type}
-                onChange={update("customer_type")}
-              >
-                {CUSTOMER_TYPES.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-          )}
-
           <label>
             <span className="field-label">Jaarlijks stroomverbruik (kWh) <span className="field-required">*</span></span>
             <input
@@ -700,10 +753,10 @@ export default function Calculator() {
               type="number"
               step="0.1"
               min="0.1"
-              placeholder={hasSolar === "yes" ? "4500" : "3500"}
-              value={hasSolar === "yes" ? form.yearly_usage : noSolarForm.yearly_usage}
+              placeholder={solarPath ? "4500" : "3500"}
+              value={solarPath ? form.yearly_usage : noSolarForm.yearly_usage}
               onChange={
-                hasSolar === "yes"
+                solarPath
                   ? withValidityClear(update("yearly_usage"))
                   : (e) => updateNoSolar("yearly_usage", e.target.value)
               }
@@ -721,7 +774,7 @@ export default function Calculator() {
         </div>
       )}
 
-      {hasSolar === "yes" && !activeResult && stage === "export" && (
+      {solarPath && !activeResult && stage === "export" && (
         <div className="calc-step-panel">
           <p className="calc-form-start">Hoeveel levert u jaarlijks terug aan het net?</p>
 
@@ -752,7 +805,7 @@ export default function Calculator() {
         </div>
       )}
 
-      {hasSolar === "yes" && !activeResult && stage === "sunny" && (
+      {solarPath && !activeResult && stage === "sunny" && (
         <div className="calc-step-panel">
           <div className="calc-sunny-warning">
             <span className="calc-sunny-chip">Belangrijk voor een nauwkeurig advies</span>
@@ -817,20 +870,20 @@ export default function Calculator() {
       {hasSolar !== null && !activeResult && stage === "goal" && (
         <div className="calc-step-panel">
           <p className="calc-form-start">
-            {hasSolar === "yes" ? "Wat is uw doel?" : "Wat wilt u bereiken?"}
+            {solarPath ? "Wat is uw doel?" : "Wat wilt u bereiken?"}
           </p>
 
           <div className="goal-choice goal-choice-wizard">
-            {(hasSolar === "yes" ? SOLAR_GOALS : NO_SOLAR_GOALS).map((option) => {
+            {(solarPath ? SOLAR_GOALS : NO_SOLAR_GOALS).map((option) => {
               const selected =
-                (hasSolar === "yes" ? form.goal : noSolarForm.goal) === option.value;
+                (solarPath ? form.goal : noSolarForm.goal) === option.value;
               return (
                 <button
                   key={option.value}
                   type="button"
                   className={`goal-card goal-card-btn ${selected ? "active" : ""}`}
                   onClick={() =>
-                    hasSolar === "yes"
+                    solarPath
                       ? setForm({ ...form, goal: option.value })
                       : updateNoSolar("goal", option.value)
                   }
@@ -847,12 +900,12 @@ export default function Calculator() {
             <button
               type="button"
               className="field-submit-button"
-              onClick={hasSolar === "yes" ? submitSolar : submitNoSolar}
+              onClick={solarPath ? submitSolar : submitNoSolar}
               disabled={loading}
             >
               {loading
                 ? "Bezig…"
-                : hasSolar === "yes"
+                : solarPath
                   ? "Bereken mijn batterijadvies"
                   : "Bereken mijn eerste indicatie"}
             </button>
@@ -868,7 +921,7 @@ export default function Calculator() {
       </div>
 
       {/* ── Resultaat: zon-pad (bestaande API-respons, ongewijzigd) ── */}
-      {hasSolar === "yes" && result && (
+      {solarPath && result && (
         <div className="calc-result" ref={resultRef}>
           <span className="mono calc-result-label">Uw batterijadvies</span>
 
@@ -973,6 +1026,13 @@ export default function Calculator() {
             gegarandeerde bedragen.
           </div>
 
+          {form.customer_type === "business" && (
+            <div className="calc-note">
+              Voor zakelijk energiebeheer zonder zonnepanelen kijken we vooral
+              naar piekverbruik, netaansluiting en dynamische sturing.
+            </div>
+          )}
+
           {noSolarResult.notes.map((noteText) => (
             <div className="calc-note" key={noteText}>{noteText}</div>
           ))}
@@ -1069,7 +1129,7 @@ export default function Calculator() {
             />
           </label>
 
-          {(hasSolar === "yes" ||
+          {(solarPath ||
             !noSolarForm.contract_type ||
             noSolarForm.contract_type === "unknown") && (
             <label>
@@ -1118,7 +1178,7 @@ export default function Calculator() {
 
       </div>
 
-      {hasSolar === "yes" && !activeResult && (
+      {solarPath && !activeResult && (
         <CalcHelpCard onStart={scrollToWizard} variant="desktop" className="calc-help-desktop" />
       )}
       </div>

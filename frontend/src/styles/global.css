@@ -758,6 +758,26 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
   .calc-page .calc-choice-grid { grid-template-columns: 1fr; }
   .calc-page .calc-step-panel { padding: 16px 14px; }
 }
+
+/* ── Stap 1: klanttype-toggle + drie zon-opties ── */
+.calc-page .calc-type-toggle { display: flex; gap: 12px; }
+.calc-page .calc-type-btn {
+  flex: 1;
+  padding: 14px 12px;
+  border: 2px solid var(--line);
+  background: var(--paper);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.calc-page .calc-type-btn:hover,
+.calc-page .calc-type-btn.active { background: var(--volt); }
+.calc-page .calc-solar-q { margin-top: 8px; }
+.calc-page .calc-solar-choice-buttons--three { grid-template-columns: 1fr 1fr 1fr; }
+.calc-page .calc-nosolar-note { margin: 0 0 16px; }
+@media (max-width: 620px) {
+  .calc-page .calc-solar-choice-buttons--three { grid-template-columns: 1fr; }
+}
 .calc-mini-strip div { border-left: 3px solid var(--volt); padding-left: 12px; }
 .calc-mini-strip b {
   display: block; font-family: var(--font-mono); font-size: 14px; line-height: 1.4;
