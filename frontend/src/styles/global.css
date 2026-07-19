@@ -859,8 +859,11 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
   margin: 0 0 16px;
 }
 .calc-page .calc-report-cta .cta-button { width: 100%; }
-.calc-page .calc-report-cta-sub {
-  margin: 12px 0 0;
+/* Hogere specificity dan '.calc-page .calc-report-cta p' zodat de eigen
+   marges winnen (10–12px boven, 20–24px onder, gecentreerd). */
+.calc-page .calc-report-cta p.calc-report-cta-sub {
+  margin: 12px 0 22px;
+  text-align: center;
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.06em;
@@ -871,6 +874,10 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
   font-weight: 700;
   margin: 0 0 12px;
 }
+/* Duidelijke ruimte onder het leadformulier én de succesmelding, zodat de
+   kengetallenstrip / volgende informatiesectie niet tegen de kaart plakt. */
+.calc-page #advies,
+.calc-page .lead-form-success { margin-bottom: 30px; }
 @media (max-width: 560px) {
   .calc-page .calc-locked-grid { grid-template-columns: 1fr; }
   .calc-page .calc-teaser-headline { display: block; }
@@ -1214,11 +1221,18 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
 /* Verzendknop + subtiele geruststelling eronder (CRO: minder aarzeling vóór
    de klik). De regel is bewust secundair en concurreert niet met de CTA. */
 .calc-submit { display: grid; gap: 10px; }
+/* Trustregel onder de submitknop: 12px lucht boven, gecentreerde flex-wrap zodat
+   de drie boodschappen als gehele items breken (nooit een los woord "nodig" op
+   een derde regel), en ≥16px lucht eronder. */
 .calc-submit-note {
+  margin: 12px 0 16px;
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 4px 14px;
   text-align: center;
   font-family: var(--font-mono); font-size: 12px; line-height: 1.5;
   letter-spacing: normal; text-transform: none; color: var(--ink-60);
 }
+.calc-submit-note > span { white-space: nowrap; }
 
 .calc-error {
   margin-top: 24px; color: var(--copper); border-left: 4px solid var(--copper);

@@ -343,8 +343,11 @@ export default function Calculator() {
   const leadRef = useRef(null);
   const wizardRef = useRef(null);
   // Wijst altijd naar de momenteel gerenderde stap-vraagkaart (usage/export/
-  // sunny/contract/goal); precies één daarvan is tegelijk gemount.
+  // contract/goal); precies één daarvan is tegelijk gemount.
   const stepRef = useRef(null);
+  // De conditionele zonnige-dag-vraag binnen de teruglevering-stap.
+  const sunnyRef = useRef(null);
+  const sunnyShownRef = useRef(false);
   // Voorkomt een scroll bij de eerste paginalaad (alleen bij echte overgangen).
   const didMountScroll = useRef(false);
 
@@ -436,6 +439,35 @@ export default function Calculator() {
     };
   }, [activeStepKey, directAdvice, activeResult]);
 
+  // Conditionele zonnige-dag-vraag binnen de teruglevering-stap: géén volledige
+  // step-scroll (de stap verandert niet). Scroll alleen naar de vraag als die
+  // buiten beeld valt, één keer bij verschijnen, met dezelfde header-offset.
+  const showSunnyQuestion =
+    solarPath && !activeResult && stage === "export" && needsSunnyDayQuestion;
+  useEffect(() => {
+    if (!showSunnyQuestion) {
+      sunnyShownRef.current = false;
+      return;
+    }
+    if (sunnyShownRef.current) return;
+    sunnyShownRef.current = true;
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        const el = sunnyRef.current;
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        if (r.bottom > window.innerHeight || r.top < 0) {
+          scrollToCalculatorTarget(el);
+        }
+      });
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      if (raf2) cancelAnimationFrame(raf2);
+    };
+  }, [showSunnyQuestion]);
+
   // Popup ná het resultaat, maar alleen zolang het leadformulier nog niet
   // inline is geopend: zodra de bezoeker op de CTA klikt, is het inline
   // formulier leidend en zou de popup alleen maar storen.
@@ -519,11 +551,12 @@ export default function Calculator() {
     // is gerenderd (voorkomt scrollen op een nog-niet-bestaande layout).
   };
 
-  // Stappenlijst per pad (voor "Stap X van Y" en de terugknop). De zonnige-
-  // dag-stap telt alleen mee wanneer de trigger daadwerkelijk geraakt is.
+  // Stappenlijst per pad (voor "Stap X van Y" en de terugknop). Teruglevering en
+  // de zonnige-dag-vraag vormen samen één stap ("export"); de zonnige-dag-vraag
+  // verschijnt conditioneel binnen die stapkaart. Altijd maximaal 4 stappen.
   const steps =
     solarPath
-      ? ["choice", "usage", "export", ...(needsSunnyDayQuestion ? ["sunny"] : []), "goal"]
+      ? ["choice", "usage", "export", "goal"]
       : hasSolar === "no"
         ? ["choice", "usage", "contract", "goal"]
         : ["choice"];
@@ -561,13 +594,15 @@ export default function Calculator() {
       focusFirstInvalid();
       return;
     }
-    goTo(needsSunnyDayQuestion ? "sunny" : "goal");
-  };
-
-  const nextFromSunny = () => {
-    if (!form.sunny_day_export) {
+    // De zonnige-dag-vraag staat nu in dezelfde stapkaart; is die conditie
+    // geraakt, dan moet hij eerst beantwoord zijn ("Ik weet het niet" telt mee).
+    if (needsSunnyDayQuestion && !form.sunny_day_export) {
       setError("Selecteer een optie — 'Ik weet het niet' is ook een geldig antwoord.");
-      focusFirstInvalid();
+      const sel = sunnyRef.current?.querySelector("select");
+      if (sel) {
+        scrollToCalculatorTarget(sunnyRef.current);
+        sel.focus({ preventScroll: true });
+      }
       return;
     }
     goTo("goal");
@@ -848,52 +883,46 @@ export default function Calculator() {
             <span className="field-help">Veel zonnepanelen: ±2500–5000 kWh per jaar.</span>
           </label>
 
+          {/* Conditionele zonnige-dag-vraag binnen dezelfde stapkaart: de
+              progress blijft "Stap 3 van 4". Bestaande logica/waarden/veld. */}
+          {showSunnyQuestion && (
+            <div className="calc-sunny-warning" ref={sunnyRef}>
+              <span className="calc-sunny-chip">Belangrijk voor een nauwkeurig advies</span>
+              <strong className="calc-sunny-title">
+                Controleer uw teruglevering op een goede zonnige dag
+              </strong>
+              <p>
+                Uw jaarlijkse stroomverbruik is veel hoger dan uw jaarlijkse
+                teruglevering. Daardoor kan een berekening op basis van
+                jaargemiddelden uw batterijadvies onderschatten. Kijk daarom in
+                de app van uw energieleverancier, slimme meter of omvormer
+                hoeveel kWh u op een goede zonnige dag daadwerkelijk teruglevert
+                aan het elektriciteitsnet. Vul niet uw totale zonne-opwek in,
+                maar alleen de stroom die u teruglevert aan het net.
+              </p>
+
+              <label className="calc-sunny-question">
+                <span className="field-label">
+                  Hoeveel kWh levert u op een goede zonnige dag maximaal terug aan
+                  het net? <span className="field-required">*</span>
+                </span>
+                <select
+                  className="field-input"
+                  value={form.sunny_day_export}
+                  onChange={withValidityClear(update("sunny_day_export"))}
+                >
+                  {sunnyDayExportOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          )}
+
           <div className="calc-step-nav">
             <button type="button" className="field-submit-button" onClick={nextFromExport}>
-              Volgende
-            </button>
-          </div>
-        </div>
-      )}
-
-      {solarPath && !activeResult && stage === "sunny" && (
-        <div className="calc-step-panel" ref={stepRef}>
-          <div className="calc-sunny-warning">
-            <span className="calc-sunny-chip">Belangrijk voor een nauwkeurig advies</span>
-            <strong className="calc-sunny-title">
-              Controleer uw teruglevering op een goede zonnige dag
-            </strong>
-            <p>
-              Uw jaarlijkse stroomverbruik is veel hoger dan uw jaarlijkse
-              teruglevering. Daardoor kan een berekening op basis van
-              jaargemiddelden uw batterijadvies onderschatten. Kijk daarom in
-              de app van uw energieleverancier, slimme meter of omvormer
-              hoeveel kWh u op een goede zonnige dag daadwerkelijk teruglevert
-              aan het elektriciteitsnet. Vul niet uw totale zonne-opwek in,
-              maar alleen de stroom die u teruglevert aan het net.
-            </p>
-
-            <label className="calc-sunny-question">
-              <span className="field-label">
-                Hoeveel kWh levert u op een goede zonnige dag maximaal terug aan
-                het net? <span className="field-required">*</span>
-              </span>
-              <select
-                className="field-input"
-                value={form.sunny_day_export}
-                onChange={withValidityClear(update("sunny_day_export"))}
-              >
-                {sunnyDayExportOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-
-          <div className="calc-step-nav">
-            <button type="button" className="field-submit-button" onClick={nextFromSunny}>
               Volgende
             </button>
           </div>
@@ -961,7 +990,9 @@ export default function Calculator() {
                   : "Bereken mijn eerste indicatie"}
             </button>
             <p className="calc-submit-note">
-              ✓ Gratis advies • ✓ Direct resultaat • ✓ Geen e-mailadres nodig
+              <span>✓ Gratis advies</span>
+              <span>✓ Direct resultaat</span>
+              <span>✓ Geen e-mailadres nodig</span>
             </p>
           </div>
         </div>
@@ -1045,7 +1076,7 @@ export default function Calculator() {
           <button type="button" className="cta-button cta-button-sm" onClick={unlockLead}>
             {solarPath ? "Ontvang mijn terugverdientijd" : "Laat mijn batterijcase controleren"}
           </button>
-          <p className="calc-report-cta-sub">Gratis en vrijblijvend</p>
+          <p className="calc-report-cta-sub">Gratis en vrijblijvend · Telefonisch advies</p>
         </section>
       )}
 
