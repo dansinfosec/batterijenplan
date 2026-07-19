@@ -778,6 +778,100 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
 @media (max-width: 620px) {
   .calc-page .calc-solar-choice-buttons--three { grid-template-columns: 1fr; }
 }
+
+/* ── Lead-magnet: teaser-resultaat + vergrendelde rapportkaarten + CTA ── */
+.calc-page .calc-teaser { }
+.calc-page .calc-teaser-text {
+  margin: 10px 0 18px;
+  max-width: 62ch;
+}
+.calc-page .calc-teaser-headline {
+  border: 2px solid var(--line);
+  background: var(--volt);
+  padding: 16px 18px;
+  display: inline-block;
+}
+.calc-page .calc-teaser-headline .calc-card-value {
+  display: block;
+  font-size: 1.8em;
+  line-height: 1.1;
+}
+.calc-page .calc-teaser-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+.calc-page .calc-chip {
+  border: 1.5px solid var(--line);
+  padding: 4px 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+.calc-page .calc-locked-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 20px 0;
+}
+.calc-page .calc-locked-card {
+  border: 2px solid var(--line);
+  background: var(--paper);
+  padding: 18px 16px;
+  position: relative;
+}
+.calc-page .calc-locked-card h3 {
+  font-family: var(--font-display);
+  font-size: 17px;
+  margin: 10px 0 6px;
+}
+.calc-page .calc-locked-card p {
+  font-size: 14px;
+  color: var(--ink-60);
+  margin: 0;
+}
+.calc-page .calc-lock-pill {
+  display: inline-block;
+  border: 1.5px solid var(--line);
+  background: var(--paper);
+  padding: 3px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.calc-page .calc-report-cta {
+  border: 3px solid var(--line);
+  background: var(--paper);
+  padding: 24px 20px;
+  margin: 20px 0;
+}
+.calc-page .calc-report-cta h2 {
+  font-family: var(--font-display);
+  margin: 0 0 10px;
+}
+.calc-page .calc-report-cta p {
+  max-width: 62ch;
+  margin: 0 0 16px;
+}
+.calc-page .calc-report-cta .cta-button { width: 100%; }
+.calc-page .calc-report-cta-sub {
+  margin: 12px 0 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-60);
+}
+.calc-page .calc-lead-microcopy {
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+@media (max-width: 560px) {
+  .calc-page .calc-locked-grid { grid-template-columns: 1fr; }
+  .calc-page .calc-teaser-headline { display: block; }
+}
 .calc-mini-strip div { border-left: 3px solid var(--volt); padding-left: 12px; }
 .calc-mini-strip b {
   display: block; font-family: var(--font-mono); font-size: 14px; line-height: 1.4;
