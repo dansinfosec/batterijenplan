@@ -701,6 +701,9 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
   display: flex;
   flex-direction: column;
   gap: 16px;
+  /* CSS-fallback voor de sticky header bij een eventuele native scrollIntoView;
+     de JS-scroll (scrollToCalculatorTarget) rekent de offset zelf al dynamisch. */
+  scroll-margin-top: 88px;
 }
 .calc-page .calc-step-panel .field-label { display: block; margin-bottom: 6px; }
 .calc-page .calc-wizard-bar {
@@ -780,7 +783,7 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
 }
 
 /* ── Lead-magnet: teaser-resultaat + vergrendelde rapportkaarten + CTA ── */
-.calc-page .calc-teaser { }
+.calc-page .calc-teaser { scroll-margin-top: 88px; }
 .calc-page .calc-teaser-text {
   margin: 10px 0 18px;
   max-width: 62ch;

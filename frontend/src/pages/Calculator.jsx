@@ -1,9 +1,39 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { postCalculator } from "../api.js";
 import LeadCaptureForm, { useLeadCapture } from "../components/LeadCaptureForm.jsx";
 import { setPageMeta, setJsonLd, ORGANIZATION_SCHEMA } from "../seo.js";
 import { friendlyValidity, withValidityClear } from "../formValidation.js";
+
+// ── Centrale step-scroll ──────────────────────────────────────────────────
+// Eén betrouwbare functie voor alle stapovergangen: scrollt naar de bovenkant
+// van de actieve vraagkaart, met ruimte voor de sticky header. Respecteert
+// prefers-reduced-motion. De eindpositie wordt berekend uit de werkelijke
+// layout (getBoundingClientRect), zodat een onboardingblok dat net verdween
+// de landing niet meer verschuift.
+function prefersReducedMotion() {
+  return (
+    typeof window !== "undefined" &&
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
+
+// Sticky-headerhoogte dynamisch meten (verschilt desktop/mobiel) + visuele marge.
+function calcHeaderOffset() {
+  const header = document.querySelector(".site-header");
+  const h = header ? header.getBoundingClientRect().height : 64;
+  return h + 20;
+}
+
+function scrollToCalculatorTarget(el) {
+  if (!el) return;
+  const top = el.getBoundingClientRect().top + window.scrollY - calcHeaderOffset();
+  window.scrollTo({
+    top: Math.max(0, top),
+    behavior: prefersReducedMotion() ? "auto" : "smooth",
+  });
+}
 
 const CUSTOMER_TYPES = [
   { value: "residential", label: "Particulier" },
@@ -312,6 +342,11 @@ export default function Calculator() {
   const resultRef = useRef(null);
   const leadRef = useRef(null);
   const wizardRef = useRef(null);
+  // Wijst altijd naar de momenteel gerenderde stap-vraagkaart (usage/export/
+  // sunny/contract/goal); precies één daarvan is tegelijk gemount.
+  const stepRef = useRef(null);
+  // Voorkomt een scroll bij de eerste paginalaad (alleen bij echte overgangen).
+  const didMountScroll = useRef(false);
 
   const leadState = useLeadCapture();
 
@@ -358,13 +393,48 @@ export default function Calculator() {
     return () => clearTimeout(timer);
   }, [directAdvice]);
 
-  // Na een geslaagde berekening naar het resultaat scrollen — vooral op
-  // mobiel blijft de gebruiker anders bij de knop hangen.
-  useEffect(() => {
-    if (activeResult && resultRef.current) {
-      resultRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+  // Eén identifier voor de zichtbare stap/toestand; stuurt de centrale scroll.
+  const activeStepKey = leadState.sent
+    ? "success"
+    : leadUnlocked
+      ? "lead"
+      : activeResult
+        ? "result"
+        : hasSolar === null
+          ? "choice"
+          : stage;
+
+  // ── Centrale step-scroll ──
+  // Draait ná render (useLayoutEffect) + twee requestAnimationFrames, zodat de
+  // nieuwe stap is gerenderd, een eventueel onboardingblok is verdwenen en de
+  // uiteindelijke layoutpositie bekend is. Géén vaste timeout. Scrollt nooit
+  // bij de eerste paginalaad en niet op het beginscherm ("choice"). Vervangt
+  // de vroegere losse result-/lead-scrolls, zodat er nooit dubbel gescrold wordt.
+  useLayoutEffect(() => {
+    if (!didMountScroll.current) {
+      didMountScroll.current = true;
+      return;
     }
-  }, [activeResult]);
+    if (activeStepKey === "choice") return;
+    // Blog-deeplink (?advies=1) heeft zijn eigen scroll naar #advies.
+    if (directAdvice && !activeResult) return;
+
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        let target = stepRef.current;
+        if (activeStepKey === "result") target = resultRef.current;
+        else if (activeStepKey === "lead" || activeStepKey === "success") {
+          target = leadRef.current;
+        }
+        scrollToCalculatorTarget(target);
+      });
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      if (raf2) cancelAnimationFrame(raf2);
+    };
+  }, [activeStepKey, directAdvice, activeResult]);
 
   // Popup ná het resultaat, maar alleen zolang het leadformulier nog niet
   // inline is geopend: zodra de bezoeker op de CTA klikt, is het inline
@@ -378,13 +448,6 @@ export default function Calculator() {
 
     return () => clearTimeout(timer);
   }, [activeResult, leadUnlocked, leadState.sent]);
-
-  // Na het openen van het leadformulier ernaartoe scrollen.
-  useEffect(() => {
-    if (leadUnlocked && leadRef.current) {
-      leadRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }, [leadUnlocked]);
 
   const update = (field) => (e) => {
     const value = e.target.value;
@@ -434,14 +497,26 @@ export default function Calculator() {
     setStage("usage");
   };
 
-  const scrollToWizard = () => {
-    wizardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  // Alleen voor de onboarding-CTA ("Start hieronder met stap 1 ↓"): scroll naar
+  // stap 1 op het beginscherm. De stapovergangen zelf scrollen via het centrale
+  // useLayoutEffect (na render), niet hier.
+  const scrollToWizard = () => scrollToCalculatorTarget(wizardRef.current);
+
+  // Bij een validatiefout: naar de actieve stapkaart scrollen en het eerste
+  // invoerveld focussen, zodat de foutmelding + het veld in beeld staan.
+  const focusFirstInvalid = () => {
+    const panel = stepRef.current;
+    if (!panel) return;
+    scrollToCalculatorTarget(panel);
+    const field = panel.querySelector("input, select, textarea");
+    if (field) field.focus({ preventScroll: true });
   };
 
   const goTo = (nextStage) => {
     setError(null);
     setStage(nextStage);
-    scrollToWizard();
+    // Scrollen gebeurt centraal in het useLayoutEffect zodra de nieuwe stap
+    // is gerenderd (voorkomt scrollen op een nog-niet-bestaande layout).
   };
 
   // Stappenlijst per pad (voor "Stap X van Y" en de terugknop). De zonnige-
@@ -458,7 +533,6 @@ export default function Calculator() {
     if (activeResult) {
       clearResults();
       setStage("goal");
-      scrollToWizard();
       return;
     }
     const i = steps.indexOf(stage);
@@ -475,6 +549,7 @@ export default function Calculator() {
       solarPath ? yearlyUsageNum : parseFloat(noSolarForm.yearly_usage);
     if (Number.isNaN(usage) || usage <= 0) {
       setError("Vul eerst uw jaarlijkse stroomverbruik in.");
+      focusFirstInvalid();
       return;
     }
     goTo(solarPath ? "export" : "contract");
@@ -483,6 +558,7 @@ export default function Calculator() {
   const nextFromExport = () => {
     if (Number.isNaN(exportedEnergyNum) || exportedEnergyNum < 0) {
       setError("Vul eerst uw jaarlijkse teruglevering in.");
+      focusFirstInvalid();
       return;
     }
     goTo(needsSunnyDayQuestion ? "sunny" : "goal");
@@ -491,6 +567,7 @@ export default function Calculator() {
   const nextFromSunny = () => {
     if (!form.sunny_day_export) {
       setError("Selecteer een optie — 'Ik weet het niet' is ook een geldig antwoord.");
+      focusFirstInvalid();
       return;
     }
     goTo("goal");
@@ -504,6 +581,7 @@ export default function Calculator() {
   const submitSolar = async () => {
     if (!form.goal) {
       setError("Kies eerst uw doel.");
+      focusFirstInvalid();
       return;
     }
     setLoading(true);
@@ -537,6 +615,7 @@ export default function Calculator() {
   const submitNoSolar = () => {
     if (!noSolarForm.goal) {
       setError("Kies eerst wat u wilt bereiken.");
+      focusFirstInvalid();
       return;
     }
     const usage = parseFloat(noSolarForm.yearly_usage);
@@ -634,7 +713,9 @@ export default function Calculator() {
         </div>
       )}
 
-      {solarPath && !activeResult && (
+      {/* Onboardingblok: uitsluitend op het beginscherm (vóór stap 1). Verdwijnt
+          zodra een pad is gekozen — geen pop-in boven stap 2, geen layout-shift. */}
+      {hasSolar === null && (
         <CalcHelpCard onStart={scrollToWizard} variant="mobile" className="calc-help-mobile" />
       )}
 
@@ -713,7 +794,7 @@ export default function Calculator() {
       )}
 
       {hasSolar !== null && !activeResult && stage === "usage" && (
-        <div className="calc-step-panel">
+        <div className="calc-step-panel" ref={stepRef}>
           <p className="calc-form-start">Wat is uw jaarlijkse stroomverbruik?</p>
 
           <label>
@@ -745,7 +826,7 @@ export default function Calculator() {
       )}
 
       {solarPath && !activeResult && stage === "export" && (
-        <div className="calc-step-panel">
+        <div className="calc-step-panel" ref={stepRef}>
           <p className="calc-form-start">Hoeveel levert u jaarlijks terug aan het net?</p>
 
           <label>
@@ -776,7 +857,7 @@ export default function Calculator() {
       )}
 
       {solarPath && !activeResult && stage === "sunny" && (
-        <div className="calc-step-panel">
+        <div className="calc-step-panel" ref={stepRef}>
           <div className="calc-sunny-warning">
             <span className="calc-sunny-chip">Belangrijk voor een nauwkeurig advies</span>
             <strong className="calc-sunny-title">
@@ -820,7 +901,7 @@ export default function Calculator() {
       )}
 
       {hasSolar === "no" && !activeResult && stage === "contract" && (
-        <div className="calc-step-panel">
+        <div className="calc-step-panel" ref={stepRef}>
           <p className="calc-form-start">Wat voor energiecontract heeft u?</p>
           <div className="calc-choice-grid">
             {CONTRACT_TYPES.map((option) => (
@@ -838,7 +919,7 @@ export default function Calculator() {
       )}
 
       {hasSolar !== null && !activeResult && stage === "goal" && (
-        <div className="calc-step-panel">
+        <div className="calc-step-panel" ref={stepRef}>
           <p className="calc-form-start">
             {solarPath ? "Wat is uw doel?" : "Wat wilt u bereiken?"}
           </p>
@@ -990,7 +1071,7 @@ export default function Calculator() {
 
       </div>
 
-      {solarPath && !activeResult && (
+      {hasSolar === null && (
         <CalcHelpCard onStart={scrollToWizard} variant="desktop" className="calc-help-desktop" />
       )}
       </div>
