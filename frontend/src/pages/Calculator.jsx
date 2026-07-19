@@ -309,7 +309,9 @@ export default function Calculator() {
   // blogposts) default "yes" + eerste vraag, zodat het bestaande gedrag
   // (direct naar het leadformulier scrollen) blijft werken.
   const [hasSolar, setHasSolar] = useState(directAdvice ? "yes" : null);
-  const [stage, setStage] = useState("usage");
+  // Zon-pad start direct in de gecombineerde energieprofiel-stap (verbruik +
+  // teruglevering samen); geen-zon-pad start bij het losse verbruik.
+  const [stage, setStage] = useState(directAdvice ? "energy" : "usage");
 
   // Zon-pad: identieke veldnamen als vóór de wizard — de API-payload en de
   // backend-formule blijven exact ongewijzigd.
@@ -443,7 +445,7 @@ export default function Calculator() {
   // step-scroll (de stap verandert niet). Scroll alleen naar de vraag als die
   // buiten beeld valt, één keer bij verschijnen, met dezelfde header-offset.
   const showSunnyQuestion =
-    solarPath && !activeResult && stage === "export" && needsSunnyDayQuestion;
+    solarPath && !activeResult && stage === "energy" && needsSunnyDayQuestion;
   useEffect(() => {
     if (!showSunnyQuestion) {
       sunnyShownRef.current = false;
@@ -520,7 +522,9 @@ export default function Calculator() {
   const choosePath = (value) => {
     clearResults();
     setHasSolar(value);
-    setStage("usage");
+    // Zon ("yes"/"planned") gaat naar de gecombineerde energieprofiel-stap;
+    // "nee" volgt het losse verbruik-pad.
+    setStage(value === "yes" || value === "planned" ? "energy" : "usage");
   };
 
   const resetSolarChoice = () => {
@@ -551,12 +555,13 @@ export default function Calculator() {
     // is gerenderd (voorkomt scrollen op een nog-niet-bestaande layout).
   };
 
-  // Stappenlijst per pad (voor "Stap X van Y" en de terugknop). Teruglevering en
-  // de zonnige-dag-vraag vormen samen één stap ("export"); de zonnige-dag-vraag
-  // verschijnt conditioneel binnen die stapkaart. Altijd maximaal 4 stappen.
+  // Stappenlijst per pad (voor "Stap X van Y" en de terugknop). Zon-pad:
+  // verbruik + teruglevering (+ conditionele zonnige-dag-vraag) vormen samen
+  // één "energy"-stap → maximaal 3 stappen. Geen-zon-pad houdt de bestaande
+  // 4-staps-progressie (verbruik en contract als losse stappen).
   const steps =
     solarPath
-      ? ["choice", "usage", "export", "goal"]
+      ? ["choice", "energy", "goal"]
       : hasSolar === "no"
         ? ["choice", "usage", "contract", "goal"]
         : ["choice"];
@@ -577,25 +582,34 @@ export default function Calculator() {
   };
 
   // ── Stapvalidatie + submits ──
+  // Geen-zon-pad: verbruik is een losse stap vóór het energiecontract.
   const nextFromUsage = () => {
-    const usage =
-      solarPath ? yearlyUsageNum : parseFloat(noSolarForm.yearly_usage);
+    const usage = parseFloat(noSolarForm.yearly_usage);
     if (Number.isNaN(usage) || usage <= 0) {
       setError("Vul eerst uw jaarlijkse stroomverbruik in.");
       focusFirstInvalid();
       return;
     }
-    goTo(solarPath ? "export" : "contract");
+    goTo("contract");
   };
 
-  const nextFromExport = () => {
-    if (Number.isNaN(exportedEnergyNum) || exportedEnergyNum < 0) {
-      setError("Vul eerst uw jaarlijkse teruglevering in.");
+  // Zon-pad: verbruik én teruglevering staan samen in de energieprofiel-stap.
+  // Beide hoofdvelden worden pas bij deze ene Volgende-knop gevalideerd; is de
+  // zonnige-dag-vraag getoond, dan telt die als derde verplichte veld
+  // ("Ik weet het niet" is ook een geldig antwoord).
+  const nextFromEnergy = () => {
+    if (Number.isNaN(yearlyUsageNum) || yearlyUsageNum <= 0) {
+      setError("Vul eerst uw jaarlijkse stroomverbruik in.");
       focusFirstInvalid();
       return;
     }
-    // De zonnige-dag-vraag staat nu in dezelfde stapkaart; is die conditie
-    // geraakt, dan moet hij eerst beantwoord zijn ("Ik weet het niet" telt mee).
+    if (Number.isNaN(exportedEnergyNum) || exportedEnergyNum < 0) {
+      setError("Vul ook uw jaarlijkse teruglevering in.");
+      const inputs = stepRef.current?.querySelectorAll('input[type="number"]');
+      const exportInput = inputs && inputs[1];
+      if (exportInput) exportInput.focus({ preventScroll: true });
+      return;
+    }
     if (needsSunnyDayQuestion && !form.sunny_day_export) {
       setError("Selecteer een optie — 'Ik weet het niet' is ook een geldig antwoord.");
       const sel = sunnyRef.current?.querySelector("select");
@@ -778,7 +792,10 @@ export default function Calculator() {
       {/* ── Stap 1: klanttype + zonnepanelen (voor beide klanttypen) ── */}
       {hasSolar === null && (
         <div className="calc-solar-choice calc-step-panel">
-          <span className="mono calc-progress">Stap 1 van 4</span>
+          {/* Het totaal aantal stappen hangt af van het antwoord hieronder
+              (zon = 3 stappen, geen zon = 4). Daarom hier alleen "Stap 1";
+              vanaf stap 2 toont de wizard-bar het juiste totaal. */}
+          <span className="mono calc-progress">Stap 1</span>
 
           <p className="calc-form-start">Bent u particulier of zakelijk?</p>
           <div className="calc-type-toggle">
@@ -828,7 +845,7 @@ export default function Calculator() {
         </div>
       )}
 
-      {hasSolar !== null && !activeResult && stage === "usage" && (
+      {hasSolar === "no" && !activeResult && stage === "usage" && (
         <div className="calc-step-panel" ref={stepRef}>
           <p className="calc-form-start">Wat is uw jaarlijkse stroomverbruik?</p>
 
@@ -839,13 +856,9 @@ export default function Calculator() {
               type="number"
               step="0.1"
               min="0.1"
-              placeholder={solarPath ? "4500" : "3500"}
-              value={solarPath ? form.yearly_usage : noSolarForm.yearly_usage}
-              onChange={
-                solarPath
-                  ? withValidityClear(update("yearly_usage"))
-                  : (e) => updateNoSolar("yearly_usage", e.target.value)
-              }
+              placeholder="3500"
+              value={noSolarForm.yearly_usage}
+              onChange={(e) => updateNoSolar("yearly_usage", e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); nextFromUsage(); } }}
             />
             <span className="field-help">Gemiddeld huishouden: ±4500 kWh per jaar.</span>
@@ -860,9 +873,29 @@ export default function Calculator() {
         </div>
       )}
 
-      {solarPath && !activeResult && stage === "export" && (
+      {/* ── Zon-pad: gecombineerde energieprofiel-stap (Stap 2 van 3) ──
+          Verbruik én teruglevering staan samen in één kaart; de conditionele
+          zonnige-dag-vraag verschijnt eronder binnen dezelfde kaart. Eén
+          Volgende-knop valideert beide hoofdvelden. */}
+      {solarPath && !activeResult && stage === "energy" && (
         <div className="calc-step-panel" ref={stepRef}>
-          <p className="calc-form-start">Hoeveel levert u jaarlijks terug aan het net?</p>
+          <p className="calc-form-start">Vul uw verbruik en teruglevering in</p>
+
+          <label>
+            <span className="field-label">Jaarlijks stroomverbruik (kWh) <span className="field-required">*</span></span>
+            <input
+              className="field-input"
+              type="number"
+              step="0.1"
+              min="0.1"
+              placeholder="4500"
+              value={form.yearly_usage}
+              onChange={withValidityClear(update("yearly_usage"))}
+              onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); nextFromEnergy(); } }}
+            />
+            <span className="field-help">Gemiddeld huishouden: ±4500 kWh per jaar.</span>
+            <span className="field-help">Weet u het niet precies? Een schatting is voldoende.</span>
+          </label>
 
           <label>
             <span className="field-label">Jaarlijkse teruglevering (kWh) <span className="field-required">*</span></span>
@@ -874,7 +907,7 @@ export default function Calculator() {
               placeholder="2500"
               value={form.exported_energy}
               onChange={withValidityClear(update("exported_energy"))}
-              onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); nextFromExport(); } }}
+              onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); nextFromEnergy(); } }}
             />
             <span className="field-help">
               U vindt dit meestal in de app of jaarafrekening van uw
@@ -883,8 +916,8 @@ export default function Calculator() {
             <span className="field-help">Veel zonnepanelen: ±2500–5000 kWh per jaar.</span>
           </label>
 
-          {/* Conditionele zonnige-dag-vraag binnen dezelfde stapkaart: de
-              progress blijft "Stap 3 van 4". Bestaande logica/waarden/veld. */}
+          {/* Conditionele zonnige-dag-vraag binnen dezelfde energieprofiel-stap:
+              de progress blijft "Stap 2 van 3". Bestaande logica/waarden/veld. */}
           {showSunnyQuestion && (
             <div className="calc-sunny-warning" ref={sunnyRef}>
               <span className="calc-sunny-chip">Belangrijk voor een nauwkeurig advies</span>
@@ -922,7 +955,7 @@ export default function Calculator() {
           )}
 
           <div className="calc-step-nav">
-            <button type="button" className="field-submit-button" onClick={nextFromExport}>
+            <button type="button" className="field-submit-button" onClick={nextFromEnergy}>
               Volgende
             </button>
           </div>
