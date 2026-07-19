@@ -719,7 +719,7 @@ export default function Calculator() {
         <CalcHelpCard onStart={scrollToWizard} variant="mobile" className="calc-help-mobile" />
       )}
 
-      <div ref={wizardRef}>
+      <div className="calc-wizard" ref={wizardRef}>
 
       {/* Voortgang + terugknop (niet op stap 1 en niet op het resultaat) */}
       {hasSolar !== null && !activeResult && (
