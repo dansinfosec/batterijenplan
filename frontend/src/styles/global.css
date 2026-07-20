@@ -1955,3 +1955,129 @@ body,
   .cookie-actions .cookie-btn-secondary { flex: 1 1 100%; text-align: center; }
   .cookie-btn-text { width: 100%; }
 }
+
+/* ── Stage 2: terugverdientijd-analyse ná het leadformulier ──────────────
+   Zelfde beeldtaal als de wizard: papierwit, zwarte randen, hazard-geel als
+   accent. Grote tap-targets op mobiel; geavanceerde velden ingeklapt. */
+.calc-page .stage2-wrap { margin-bottom: 30px; }
+
+.stage2-card {
+  border: 3px solid var(--ink);
+  border-radius: 10px;
+  background: var(--paper);
+  box-shadow: 5px 5px 0 var(--ink);
+  padding: 24px 22px;
+  display: grid;
+  gap: 16px;
+}
+.stage2-card h2 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 1.2;
+  margin: 0;
+}
+.stage2-kicker {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-60);
+}
+.stage2-received { color: var(--volt-dk); }
+.stage2-intro { color: var(--ink-60); max-width: 62ch; }
+
+.stage2-q { display: grid; gap: 10px; }
+.stage2-q-label { font-weight: 700; }
+.stage2-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.stage2-opt {
+  font: inherit;
+  text-align: left;
+  padding: 14px 14px;
+  border: 2px solid var(--line);
+  background: var(--paper);
+  cursor: pointer;
+}
+.stage2-opt:hover,
+.stage2-opt:focus-visible { background: var(--volt); outline: none; }
+.stage2-opt.active { background: var(--volt); font-weight: 700; }
+
+.stage2-advanced { border: 2px solid var(--line); background: var(--paper); }
+.stage2-advanced summary {
+  cursor: pointer;
+  padding: 14px 16px;
+  font-weight: 700;
+  list-style-position: inside;
+}
+.stage2-adv-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  padding: 0 16px 16px;
+}
+.stage2-adv-grid label { display: grid; gap: 6px; }
+
+.stage2-submit { display: grid; gap: 10px; }
+
+/* ── Rapportkaart na Stage 2 ── */
+.stage2-figures {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.stage2-figure {
+  border: 2px solid var(--line);
+  background: var(--paper);
+  padding: 16px 18px;
+  display: grid;
+  gap: 6px;
+}
+.stage2-figure-accent { background: var(--volt); }
+.stage2-figure-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-60);
+}
+.stage2-figure b {
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1.2;
+}
+.stage2-warmtefonds {
+  border: 2px solid var(--line);
+  border-left: 8px solid var(--volt);
+  padding: 14px 16px;
+  display: grid;
+  gap: 6px;
+}
+.stage2-warmtefonds p { font-size: 14px; color: var(--ink-60); }
+.stage2-confidence { margin: 0; }
+.stage2-chip {
+  display: inline-block;
+  padding: 4px 12px;
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.stage2-chip-hoog { background: var(--volt); }
+.stage2-chip-normaal { background: var(--paper); }
+.stage2-chip-laag { background: var(--paper); color: var(--ink-60); }
+.stage2-missing { font-size: 13px; color: var(--ink-60); }
+.stage2-followup { font-weight: 600; max-width: 62ch; }
+.stage2-disclaimer { font-size: 12px; color: var(--ink-60); max-width: 70ch; }
+
+@media (max-width: 560px) {
+  .stage2-card { padding: 18px 14px; }
+  .stage2-options { grid-template-columns: 1fr; }
+  .stage2-adv-grid { grid-template-columns: 1fr; }
+  .stage2-figures { grid-template-columns: 1fr; }
+}

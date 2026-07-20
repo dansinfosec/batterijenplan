@@ -21,6 +21,10 @@ export function useLeadCapture() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState(null);
+  // Response van postLead ({id, stage2_token}) — nodig voor de Stage 2-
+  // vervolgvragen. Blijft null bij bots (honeypot) of oudere API-responses;
+  // dan valt de UI terug op de bestaande bedankkaart.
+  const [leadMeta, setLeadMeta] = useState(null);
   // Puur voor de weergave van foutstatussen (rode randen/tekst pas na een
   // verzendpoging); gedeeld tussen de modal- en inline-variant, net als de
   // rest van deze state. Verandert niets aan de validatielogica zelf.
@@ -40,7 +44,7 @@ export function useLeadCapture() {
     }
     setSending(true);
     try {
-      await postLead({
+      const response = await postLead({
         name: lead.name,
         phone: lead.phone,
         email: lead.email,
@@ -52,6 +56,9 @@ export function useLeadCapture() {
         calculator_result: calculatorResult,
         source: "react_calculator",
       });
+      if (response && response.id && response.stage2_token) {
+        setLeadMeta({ id: response.id, stage2_token: response.stage2_token });
+      }
       setSent(true);
       trackLeadSubmit("calculator_advies");
       return true;
@@ -63,7 +70,7 @@ export function useLeadCapture() {
     }
   };
 
-  return { lead, update, submit, sent, sending, error, validated, setValidated };
+  return { lead, update, submit, sent, sending, error, validated, setValidated, leadMeta };
 }
 
 const COPY = {

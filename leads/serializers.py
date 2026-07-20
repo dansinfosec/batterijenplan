@@ -41,3 +41,41 @@ class LeadSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data.pop("website", None)
         return Lead.objects.create(**validated_data)
+
+
+# ── Stage 2: extra analysevragen ná het leadformulier ──────────────────────
+# De vier hoofdvragen zijn verplicht (elke lijst heeft een "weet ik niet"-
+# optie, dus altijd beantwoordbaar); de geavanceerde velden zijn optioneel.
+HEAT_PUMP_CHOICES = ["none", "hybrid", "all_electric", "unknown"]
+EV_CHOICES = ["no", "yes", "soon", "unknown"]
+STAGE2_CONTRACT_CHOICES = ["fixed", "variable", "dynamic", "unknown"]
+RETURN_COSTS_CHOICES = ["yes", "no", "unknown"]
+GRID_CONNECTION_CHOICES = ["1_phase", "3_phase", "unknown"]
+WARMTEFONDS_CHOICES = ["yes", "no", "maybe"]
+
+
+class LeadStage2Serializer(serializers.Serializer):
+    # Bewijs dat de inzender de lead zojuist zelf heeft aangemaakt.
+    stage2_token = serializers.UUIDField()
+
+    heat_pump = serializers.ChoiceField(choices=HEAT_PUMP_CHOICES)
+    ev = serializers.ChoiceField(choices=EV_CHOICES)
+    contract_type = serializers.ChoiceField(choices=STAGE2_CONTRACT_CHOICES)
+    return_costs = serializers.ChoiceField(choices=RETURN_COSTS_CHOICES)
+
+    # Optionele verdieping — nooit verplicht, ruime maar redelijke grenzen.
+    panel_count = serializers.IntegerField(
+        required=False, allow_null=True, min_value=1, max_value=10000
+    )
+    panel_power_wp = serializers.IntegerField(
+        required=False, allow_null=True, min_value=100, max_value=10000000
+    )
+    inverter_power = serializers.FloatField(
+        required=False, allow_null=True, min_value=0.1, max_value=10000
+    )
+    grid_connection = serializers.ChoiceField(
+        choices=GRID_CONNECTION_CHOICES, required=False, allow_blank=True
+    )
+    warmtefonds_check = serializers.ChoiceField(
+        choices=WARMTEFONDS_CHOICES, required=False, allow_blank=True
+    )
