@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { postCalculator } from "../api.js";
 import LeadCaptureForm, { useLeadCapture } from "../components/LeadCaptureForm.jsx";
+import Stage2Analysis from "../components/Stage2Analysis.jsx";
 import { setPageMeta, setJsonLd, ORGANIZATION_SCHEMA } from "../seo.js";
 import { friendlyValidity, withValidityClear } from "../formValidation.js";
 
@@ -1081,15 +1082,22 @@ export default function Calculator() {
         </div>
       )}
 
-      {/* ── Bevestiging na verzenden: rapport wordt telefonisch besproken ── */}
+      {/* ── Na verzenden: Stage 2-analysevragen (of de bestaande bedankkaart
+          als er geen lead-id/token beschikbaar is, bv. bij een honeypot). ── */}
       {activeResult && leadState.sent && (
-        <div className="lead-form lead-form-success lead-form--inline" ref={leadRef}>
-          <h2>Bedankt, uw berekening is ontvangen.</h2>
-          <p>
-            Wij nemen telefonisch contact met u op om uw persoonlijke
-            terugverdientijd, batterijadvies en eventuele Warmtefonds-
-            mogelijkheden door te nemen.
-          </p>
+        <div className="stage2-wrap" ref={leadRef}>
+          {leadState.leadMeta ? (
+            <Stage2Analysis leadMeta={leadState.leadMeta} />
+          ) : (
+            <div className="lead-form lead-form-success lead-form--inline">
+              <h2>Bedankt, uw berekening is ontvangen.</h2>
+              <p>
+                Wij nemen telefonisch contact met u op om uw persoonlijke
+                terugverdientijd, batterijadvies en eventuele Warmtefonds-
+                mogelijkheden door te nemen.
+              </p>
+            </div>
+          )}
         </div>
       )}
 

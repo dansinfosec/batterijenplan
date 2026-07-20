@@ -52,6 +52,25 @@ export async function postLead(data) {
   return json;
 }
 
+// Stage 2: extra analysevragen ná het leadformulier. Het token komt uit de
+// postLead-response en bewijst dat deze browser de lead zelf aanmaakte.
+export async function postLeadStage2(leadId, data) {
+  const res = await fetch(`${BASE}/leads/${leadId}/stage2/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  const json = await res.json().catch(() => null);
+  if (!res.ok) {
+    const first = json && Object.values(json)[0];
+    const message = Array.isArray(first)
+      ? first[0]
+      : json?.error || "Versturen mislukt. Probeer het opnieuw.";
+    throw new Error(message);
+  }
+  return json;
+}
+
 export async function postCalculator(data) {
   const res = await fetch(`${BASE}/calculator/`, {
     method: "POST",
