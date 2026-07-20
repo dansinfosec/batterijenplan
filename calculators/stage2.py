@@ -61,6 +61,36 @@ LOW_CONFIDENCE_NOTE = (
     "Voor een nauwkeurige berekening controleren wij dit telefonisch."
 )
 
+# ── Contract-scenario's ────────────────────────────────────────────────────
+# Handel op dynamische prijzen vereist een dynamisch contract. Heeft de klant
+# nu vast/variabel maar wél een handelsdoel, dan rekenen we de huidige
+# situatie conservatief (zelfconsumptie-band van het huidige contract) en
+# tonen we het dynamische scenario apart als mogelijk potentieel bij overstap.
+CONTRACT_SWITCH_NOTE = (
+    "U heeft nu geen dynamisch contract ingevuld. Daarom rekenen wij uw "
+    "huidige situatie conservatief. Bij overstap naar een dynamisch "
+    "energiecontract kan de batterij ook worden ingezet voor handel op "
+    "dynamische prijzen."
+)
+DYNAMIC_TRADING_NOTE = (
+    "Uw berekening houdt rekening met dynamische sturing: laden op goedkope "
+    "momenten en ontladen of gebruiken op dure momenten."
+)
+DYNAMIC_POTENTIAL_NOTE = (
+    "Indicatief en mogelijk, geen garantie: handel vereist een dynamisch "
+    "energiecontract en geschikte EMS-sturing; btw-teruggave is alleen "
+    "mogelijk onder voorwaarden. Wij controleren dit telefonisch."
+)
+VAT_REFUND_NOTE = (
+    "Btw-teruggave is een mogelijke fiscale teruggave bij handel met een "
+    "dynamisch contract, alleen onder voorwaarden — indicatief en geen "
+    "garantie. Wij controleren dit telefonisch."
+)
+CONTRACT_CURRENT_LABELS = {
+    "fixed": "Huidig contract (vast)",
+    "variable": "Huidig contract (variabel)",
+}
+
 # Nederlandse labels voor het missing_data-overzicht en de sales-samenvatting.
 FIELD_LABELS = {
     "contract_type": "energiecontract",
@@ -126,6 +156,28 @@ def _round_half_year(value):
     return round(value * 2) / 2
 
 
+def _benefit_range(capacity, band, factor):
+    """(jaar_min, jaar_max, maand_min, maand_max) voor één opbrengstband."""
+    band_min, band_max = band
+    yearly_min = max(_round_to_5(capacity * band_min * factor), 5)
+    yearly_max = max(_round_to_5(capacity * band_max * factor), yearly_min + 5)
+    monthly_min = max(int(yearly_min / 12), 1)
+    monthly_max = max(int(round(yearly_max / 12)), monthly_min + 1)
+    return yearly_min, yearly_max, monthly_min, monthly_max
+
+
+def _payback_range(investment_for_min, investment_for_max, yearly_min, yearly_max):
+    """Terugverdientijd-range, begrensd; de ondergrens mag met een lagere
+    (netto) investering rekenen dan de bovengrens."""
+    payback_min = _round_half_year(
+        min(max(investment_for_min / yearly_max, PAYBACK_MIN_YEARS), PAYBACK_MAX_YEARS)
+    )
+    payback_max = _round_half_year(
+        min(max(investment_for_max / yearly_min, PAYBACK_MIN_YEARS), PAYBACK_MAX_YEARS)
+    )
+    return payback_min, payback_max
+
+
 def build_stage2_report(calculator_inputs, calculator_result, answers):
     """Bouw het Stage 2-rapport uit Stage 1-data + de extra antwoorden.
 
@@ -159,9 +211,8 @@ def build_stage2_report(calculator_inputs, calculator_result, answers):
 
     _, _, investment, _ = _match_product(capacity, customer_type)
 
-    # ── Jaaropbrengst-band ──
+    # ── Jaaropbrengst-banden + contract-scenario's ──
     bands = SOLAR_BENEFIT_BANDS if solar_path else NO_SOLAR_BENEFIT_BANDS
-    band_min, band_max = bands.get(contract, bands["unknown"])
 
     factor = 1.0
     factor *= HEAT_PUMP_FACTORS.get(heat_pump, 1.0)
@@ -170,18 +221,82 @@ def build_stage2_report(calculator_inputs, calculator_result, answers):
         factor *= RETURN_COSTS_FACTOR
     factor = min(factor, MAX_TOTAL_FACTOR)
 
-    yearly_min = max(_round_to_5(capacity * band_min * factor), 5)
-    yearly_max = max(_round_to_5(capacity * band_max * factor), yearly_min + 5)
-    monthly_min = max(int(yearly_min / 12), 1)
-    monthly_max = max(int(round(yearly_max / 12)), monthly_min + 1)
+    # Handelsdoel uit Stage 1 (ui_goal kent ook "both"; fallback op goal).
+    goal = inputs.get("ui_goal") or inputs.get("goal") or ""
+    wants_trading = goal in ("trading", "both")
+    # Btw-teruggave speelt alleen particulier: zakelijke catalogusprijzen
+    # zijn al exclusief btw, daar valt niets terug te vragen in dit voorbeeld.
+    vat_eligible = customer_type == "residential"
 
-    # ── Terugverdientijd (investering / jaaropbrengst, begrensd) ──
-    payback_min = _round_half_year(
-        min(max(investment / yearly_max, PAYBACK_MIN_YEARS), PAYBACK_MAX_YEARS)
+    # Vast/variabel + handelsdoel: handel NOOIT als huidige situatie rekenen —
+    # de huidige band is die van het huidige contract (conservatief).
+    requires_dynamic_contract = contract in ("fixed", "variable") and wants_trading
+    dynamic_now = contract == "dynamic" and wants_trading
+
+    yearly_min, yearly_max, monthly_min, monthly_max = _benefit_range(
+        capacity, bands.get(contract, bands["unknown"]), factor
     )
-    payback_max = _round_half_year(
-        min(max(investment / yearly_min, PAYBACK_MIN_YEARS), PAYBACK_MAX_YEARS)
-    )
+
+    investment_gross = int(round(investment))
+    vat_refund_estimate = int(round(investment_gross * 21 / 121))
+    investment_net = investment_gross - vat_refund_estimate
+
+    # Hoofd-terugverdientijd = huidige situatie op de bruto investering.
+    # Alleen bij een dynamisch contract mét handelsdoel (particulier) mag de
+    # ondergrens rekenen met de mogelijke btw-teruggave onder voorwaarden;
+    # de bovengrens blijft altijd op bruto (teruggave is geen zekerheid).
+    if dynamic_now and vat_eligible:
+        payback_min, payback_max = _payback_range(
+            investment_net, investment_gross, yearly_min, yearly_max
+        )
+    else:
+        payback_min, payback_max = _payback_range(
+            investment_gross, investment_gross, yearly_min, yearly_max
+        )
+
+    # ── Potentieel-scenario bij overstap naar dynamisch contract ──
+    current_scenario = None
+    dynamic_potential = None
+    if requires_dynamic_contract:
+        p_yearly_min, p_yearly_max, p_monthly_min, p_monthly_max = _benefit_range(
+            capacity, bands["dynamic"], factor
+        )
+        # Netto investering (na mogelijke btw-teruggave) geldt uitsluitend
+        # voor het potentiële dynamische scenario — nooit voor de huidige
+        # vast/variabel-terugverdientijd.
+        p_investment = investment_net if vat_eligible else investment_gross
+        p_payback_min, p_payback_max = _payback_range(
+            p_investment, p_investment, p_yearly_min, p_yearly_max
+        )
+        current_scenario = {
+            "label": CONTRACT_CURRENT_LABELS.get(contract, "Huidig contract"),
+            "monthly_benefit_min": monthly_min,
+            "monthly_benefit_max": monthly_max,
+            "yearly_benefit_min": yearly_min,
+            "yearly_benefit_max": yearly_max,
+            "payback_years_min": payback_min,
+            "payback_years_max": payback_max,
+            "investment_used": investment_gross,
+            "scenario_type": "current_contract",
+        }
+        dynamic_potential = {
+            "enabled": True,
+            "monthly_benefit_min": p_monthly_min,
+            "monthly_benefit_max": p_monthly_max,
+            "yearly_benefit_min": p_yearly_min,
+            "yearly_benefit_max": p_yearly_max,
+            "extra_monthly_benefit_min": max(p_monthly_min - monthly_min, 0),
+            "extra_monthly_benefit_max": max(p_monthly_max - monthly_max, 0),
+            "extra_yearly_benefit_min": max(p_yearly_min - yearly_min, 0),
+            "extra_yearly_benefit_max": max(p_yearly_max - yearly_max, 0),
+            "payback_years_min": p_payback_min,
+            "payback_years_max": p_payback_max,
+            "investment_gross": investment_gross,
+            "vat_refund_possible": vat_eligible,
+            "vat_refund_estimate": vat_refund_estimate if vat_eligible else 0,
+            "investment_net_after_vat": p_investment,
+            "note": DYNAMIC_POTENTIAL_NOTE,
+        }
 
     # ── Ontbrekende gegevens + confidence ──
     if contract == "unknown":
@@ -270,6 +385,12 @@ def build_stage2_report(calculator_inputs, calculator_result, answers):
         f"terugverdientijd {payback_min:g}–{payback_max:g} jaar "
         f"(vertrouwen: {confidence_level})"
     )
+    if dynamic_potential:
+        summary_parts.append(
+            "Potentieel bij dynamisch contract: "
+            f"€ {dynamic_potential['monthly_benefit_min']}–"
+            f"{dynamic_potential['monthly_benefit_max']}/mnd"
+        )
 
     report = {
         "estimated_monthly_benefit_min": monthly_min,
@@ -283,7 +404,24 @@ def build_stage2_report(calculator_inputs, calculator_result, answers):
         "sales_summary": " · ".join(summary_parts),
         "disclaimer": DISCLAIMER,
         "warmtefonds": warmtefonds,
+        "requires_dynamic_contract": requires_dynamic_contract,
     }
     if confidence_level == "laag":
         report["confidence_note"] = LOW_CONFIDENCE_NOTE
+    if current_scenario:
+        report["current_contract_scenario"] = current_scenario
+    if dynamic_potential:
+        report["dynamic_contract_potential"] = dynamic_potential
+    if requires_dynamic_contract:
+        report["contract_switch_note"] = CONTRACT_SWITCH_NOTE
+    if dynamic_now:
+        report["dynamic_trading_note"] = DYNAMIC_TRADING_NOTE
+        if vat_eligible:
+            report["vat_refund"] = {
+                "possible": True,
+                "estimate": vat_refund_estimate,
+                "investment_gross": investment_gross,
+                "investment_net_after_vat": investment_net,
+                "note": VAT_REFUND_NOTE,
+            }
     return report

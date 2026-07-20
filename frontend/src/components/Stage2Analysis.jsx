@@ -67,6 +67,9 @@ const CONFIDENCE_LABELS = { laag: "Laag", normaal: "Normaal", hoog: "Hoog" };
 // 4,5 → "4,5" · 7 → "7" (NL-decimaalkomma)
 const formatYears = (value) => String(value).replace(".", ",");
 
+// 7454 → "€ 7.454" (NL-duizendtallen, hele euro's)
+const formatEuro = (value) => `€ ${Number(value).toLocaleString("nl-NL")}`;
+
 export default function Stage2Analysis({ leadMeta }) {
   const [answers, setAnswers] = useState({
     heat_pump: "",
@@ -153,9 +156,115 @@ export default function Stage2Analysis({ leadMeta }) {
           </div>
         </div>
 
+        {/* ── Vergelijkingsblok: huidig vast/variabel vs. potentieel dynamisch.
+            Alleen bij een handelsdoel zónder dynamisch contract. Alles is
+            indicatief en mogelijk — nooit als zekerheid gebracht. ── */}
+        {report.dynamic_contract_potential?.enabled && (
+          <div className="stage2-compare">
+            <h3>Wat verandert er bij een dynamisch contract?</h3>
+            <p className="stage2-compare-intro">
+              Met uw huidige contract rekenen wij conservatief. Bij overstap
+              naar een dynamisch energiecontract kan de batterij ook handelen
+              op prijsverschillen.
+            </p>
+            {report.contract_switch_note && (
+              <p className="stage2-compare-intro">{report.contract_switch_note}</p>
+            )}
+
+            <div className="stage2-compare-rows">
+              <div className="stage2-compare-row">
+                <span>{report.current_contract_scenario?.label || "Huidig contract"}</span>
+                <b>
+                  € {report.estimated_monthly_benefit_min} – €{" "}
+                  {report.estimated_monthly_benefit_max} per maand
+                </b>
+              </div>
+              <div className="stage2-compare-row">
+                <span>Dynamisch contract + handel</span>
+                <b>
+                  € {report.dynamic_contract_potential.monthly_benefit_min} – €{" "}
+                  {report.dynamic_contract_potential.monthly_benefit_max} per maand
+                </b>
+              </div>
+              <div className="stage2-compare-row stage2-compare-extra">
+                <span>Extra potentieel</span>
+                <b>
+                  +€ {report.dynamic_contract_potential.extra_monthly_benefit_min} – €{" "}
+                  {report.dynamic_contract_potential.extra_monthly_benefit_max} per maand
+                </b>
+              </div>
+            </div>
+
+            <p className="stage2-compare-payback">
+              Indicatieve terugverdientijd bij dynamisch contract:{" "}
+              {formatYears(report.dynamic_contract_potential.payback_years_min)} –{" "}
+              {formatYears(report.dynamic_contract_potential.payback_years_max)} jaar
+            </p>
+
+            {report.dynamic_contract_potential.vat_refund_possible && (
+              <>
+                <p className="stage2-confidence">
+                  <span className="stage2-chip">
+                    BTW-teruggave mogelijk onder voorwaarden
+                  </span>
+                </p>
+                <div className="stage2-invest">
+                  <span>
+                    Bruto investering:{" "}
+                    {formatEuro(report.dynamic_contract_potential.investment_gross)}
+                  </span>
+                  <span>
+                    Mogelijke btw-teruggave:{" "}
+                    {formatEuro(report.dynamic_contract_potential.vat_refund_estimate)}
+                  </span>
+                  <span>
+                    Netto investering na btw-teruggave:{" "}
+                    {formatEuro(report.dynamic_contract_potential.investment_net_after_vat)}
+                  </span>
+                </div>
+              </>
+            )}
+
+            <p className="stage2-compare-small">
+              Indicatief. Geen garantie. Wij controleren dit telefonisch op
+              basis van uw contract, teruglevering en EMS-sturing.
+            </p>
+          </div>
+        )}
+
+        {/* ── Dynamisch contract mét handelsdoel: sturing-uitleg + mogelijke
+            btw-teruggave onder voorwaarden (geen overstap-blok nodig). ── */}
+        {report.dynamic_trading_note && (
+          <p className="stage2-dynamic-note">{report.dynamic_trading_note}</p>
+        )}
+        {report.vat_refund?.possible && !report.dynamic_contract_potential?.enabled && (
+          <div className="stage2-compare">
+            <p className="stage2-confidence">
+              <span className="stage2-chip">
+                BTW-teruggave mogelijk onder voorwaarden
+              </span>
+            </p>
+            <div className="stage2-invest">
+              <span>
+                Bruto investering: {formatEuro(report.vat_refund.investment_gross)}
+              </span>
+              <span>
+                Mogelijke btw-teruggave: {formatEuro(report.vat_refund.estimate)}
+              </span>
+              <span>
+                Netto investering na btw-teruggave:{" "}
+                {formatEuro(report.vat_refund.investment_net_after_vat)}
+              </span>
+            </div>
+            <p className="stage2-compare-small">{report.vat_refund.note}</p>
+          </div>
+        )}
+
         {report.warmtefonds && (
           <div className="stage2-warmtefonds">
-            <span className="stage2-figure-label">Warmtefonds-voorbeeld</span>
+            <span className="stage2-figure-label">
+              Warmtefonds-voorbeeld (financiering / maandlast)
+            </span>
             <p>{report.warmtefonds.text}</p>
           </div>
         )}

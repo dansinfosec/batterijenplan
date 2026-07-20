@@ -2016,6 +2016,56 @@ body,
   font-size: 22px;
   line-height: 1.2;
 }
+/* ── Vergelijkingsblok: huidig contract vs. potentieel dynamisch ── */
+.stage2-compare {
+  border: 2px solid var(--line);
+  padding: 16px;
+  display: grid;
+  gap: 12px;
+  background: var(--paper);
+}
+.stage2-compare h3 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 18px;
+  line-height: 1.25;
+  margin: 0;
+}
+.stage2-compare-intro {
+  font-size: 14px;
+  color: var(--ink-60);
+  max-width: 62ch;
+}
+.stage2-compare-rows { display: grid; gap: 8px; }
+.stage2-compare-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px 16px;
+  flex-wrap: wrap;
+  border: 2px solid var(--line);
+  background: var(--paper);
+  padding: 12px 14px;
+}
+.stage2-compare-row span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-60);
+}
+.stage2-compare-extra { background: var(--volt); }
+.stage2-compare-extra span { color: var(--ink); }
+.stage2-compare-payback { font-size: 14px; font-weight: 600; }
+.stage2-invest {
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--ink-60);
+}
+.stage2-compare-small { font-size: 12px; color: var(--ink-60); }
+.stage2-dynamic-note { font-size: 14px; color: var(--ink-60); max-width: 62ch; }
+
 .stage2-warmtefonds {
   border: 2px solid var(--line);
   border-left: 8px solid var(--volt);
