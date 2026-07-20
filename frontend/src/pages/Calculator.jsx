@@ -127,15 +127,6 @@ const LEAD_COPY = {
   },
 };
 
-// De vergrendelde rapportkaarten onder het teaser-resultaat. Bewust géén
-// (nep)cijfers: alleen de titel en wat na de gratis controle volgt.
-const LOCKED_CARDS = [
-  { title: "Terugverdientijd", text: "Beschikbaar na gratis controle" },
-  { title: "Maandvoordeel", text: "Wordt berekend op basis van uw contract en teruglevering" },
-  { title: "Beste batterijconfiguratie", text: "Wij controleren capaciteit, omvormer en netaansluiting" },
-  { title: "Warmtefonds-check", text: "Wij kijken of financiering via het Warmtefonds logisch is" },
-];
-
 const GOAL_LABELS = {
   self_consumption: "Zelfconsumptie",
   trading: "Dynamische handel",
@@ -1069,19 +1060,6 @@ export default function Calculator() {
         </div>
       )}
 
-      {/* ── Vergrendelde rapportkaarten (geen nepcijfers) ── */}
-      {activeResult && (
-        <div className="calc-locked-grid">
-          {LOCKED_CARDS.map((card) => (
-            <div className="calc-locked-card" key={card.title}>
-              <span className="calc-lock-pill" aria-hidden="true">🔒 Vergrendeld</span>
-              <h3>{card.title}</h3>
-              <p>{card.text}</p>
-            </div>
-          ))}
-        </div>
-      )}
-
       {/* ── Na verzenden: Stage 2-analysevragen (of de bestaande bedankkaart
           als er geen lead-id/token beschikbaar is, bv. bij een honeypot). ── */}
       {activeResult && leadState.sent && (
@@ -1104,18 +1082,14 @@ export default function Calculator() {
       {/* ── Gated CTA: opent het leadformulier ── */}
       {activeResult && !leadState.sent && !leadUnlocked && (
         <section className="calc-report-cta">
-          <h2>
-            {solarPath
-              ? "Ontvang uw persoonlijke terugverdientijd"
-              : "Laat uw batterijcase controleren"}
-          </h2>
+          <h2>Laat uw batterijadvies gratis controleren</h2>
           <p>
-            {solarPath
-              ? "Laat uw berekening gratis controleren. Wij nemen telefonisch contact met u op om de terugverdientijd, maandelijkse opbrengst, batterijcapaciteit en eventuele Warmtefonds-mogelijkheden door te nemen."
-              : "Laat uw berekening gratis controleren. Wij nemen telefonisch contact met u op om dynamische sturing, uw energiecontract en de juiste batterijconfiguratie door te nemen."}
+            Wij controleren uw berekening telefonisch op basis van uw
+            zonnepanelen, teruglevering, energiecontract, netaansluiting,
+            omvormervermogen en EMS-sturing.
           </p>
           <button type="button" className="cta-button cta-button-sm" onClick={unlockLead}>
-            {solarPath ? "Ontvang mijn terugverdientijd" : "Laat mijn batterijcase controleren"}
+            Plan gratis batterijadvies
           </button>
           <p className="calc-report-cta-sub">Gratis en vrijblijvend · Telefonisch advies</p>
         </section>
