@@ -21,6 +21,10 @@ from .services import _match_product
 # bij een dynamisch contract valt er het meest te sturen, bij vast het minst.
 SOLAR_BENEFIT_BANDS = {
     "dynamic": (55, 95),
+    # Dynamisch contract, maar doel = eigen verbruik: slimme zelfconsumptie op
+    # dynamische prijzen — boven variabel, onder de volledige handelsband, zodat
+    # de upsell naar volledige handel reële extra ruimte houdt.
+    "dynamic_self": (45, 80),
     "variable": (40, 75),
     "fixed": (30, 60),
     "unknown": (35, 70),
@@ -30,6 +34,7 @@ SOLAR_BENEFIT_BANDS = {
 # bewust laag — dat gesprek hoort telefonisch gevoerd te worden.
 NO_SOLAR_BENEFIT_BANDS = {
     "dynamic": (45, 85),
+    "dynamic_self": (30, 65),
     "variable": (15, 45),
     "fixed": (15, 45),
     "unknown": (20, 55),
@@ -66,20 +71,25 @@ LOW_CONFIDENCE_NOTE = (
 # nu vast/variabel maar wél een handelsdoel, dan rekenen we de huidige
 # situatie conservatief (zelfconsumptie-band van het huidige contract) en
 # tonen we het dynamische scenario apart als mogelijk potentieel bij overstap.
+# Overstap nodig zolang de klant nog geen dynamisch contract heeft.
 CONTRACT_SWITCH_NOTE = (
-    "U heeft nu geen dynamisch contract ingevuld. Daarom rekenen wij uw "
-    "huidige situatie conservatief. Bij overstap naar een dynamisch "
-    "energiecontract kan de batterij ook worden ingezet voor handel op "
-    "dynamische prijzen."
+    "Voor handel op dynamische prijzen is overstappen naar een dynamisch "
+    "energiecontract nodig."
+)
+# Doel is (nog) geen handel: EMS-sturing nodig om handel te ontsluiten.
+TRADING_GOAL_NOTE = (
+    "Uw huidige keuze rekent vooral met eigen verbruik. Met EMS-sturing kan "
+    "de batterij ook worden ingezet voor handel op prijsverschillen."
+)
+# Algemene upsell-tekst in het potentieel-blok.
+DYNAMIC_UPSELL_NOTE = (
+    "Met een dynamisch energiecontract, EMS-sturing en handel op "
+    "prijsverschillen kan de batterij extra voordeel opleveren. Wij "
+    "controleren telefonisch of dit bij uw situatie past."
 )
 DYNAMIC_TRADING_NOTE = (
     "Uw berekening houdt rekening met dynamische sturing: laden op goedkope "
     "momenten en ontladen of gebruiken op dure momenten."
-)
-DYNAMIC_POTENTIAL_NOTE = (
-    "Indicatief en mogelijk, geen garantie: handel vereist een dynamisch "
-    "energiecontract en geschikte EMS-sturing; btw-teruggave is alleen "
-    "mogelijk onder voorwaarden. Wij controleren dit telefonisch."
 )
 VAT_REFUND_NOTE = (
     "Btw-teruggave is een mogelijke fiscale teruggave bij handel met een "
@@ -87,8 +97,10 @@ VAT_REFUND_NOTE = (
     "garantie. Wij controleren dit telefonisch."
 )
 CONTRACT_CURRENT_LABELS = {
-    "fixed": "Huidig contract (vast)",
-    "variable": "Huidig contract (variabel)",
+    "fixed": "Huidige situatie (vast contract)",
+    "variable": "Huidige situatie (variabel contract)",
+    "dynamic": "Huidige situatie (dynamisch, eigen verbruik)",
+    "unknown": "Huidige situatie",
 }
 
 # Nederlandse labels voor het missing_data-overzicht en de sales-samenvatting.
@@ -221,20 +233,33 @@ def build_stage2_report(calculator_inputs, calculator_result, answers):
         factor *= RETURN_COSTS_FACTOR
     factor = min(factor, MAX_TOTAL_FACTOR)
 
+    # ── Volledige dynamische-handel-setup vs. upsell ──
     # Handelsdoel uit Stage 1 (ui_goal kent ook "both"; fallback op goal).
     goal = inputs.get("ui_goal") or inputs.get("goal") or ""
-    wants_trading = goal in ("trading", "both")
+    wants_trading = goal in ("trading", "both", "handel", "dynamic_trading")
+    has_dynamic_contract = contract == "dynamic"
+    # Volledige setup = dynamisch contract én een handelsdoel; alleen dan is
+    # dynamische handel al de hoofdberekening en is er geen upsell nodig.
+    has_full_dynamic_trading_setup = has_dynamic_contract and wants_trading
+    should_show_dynamic_upsell = not has_full_dynamic_trading_setup
+    # Overstappen naar een dynamisch contract is nodig zolang de klant er nog
+    # geen heeft (en dus niet al de volledige setup draait).
+    requires_dynamic_contract = should_show_dynamic_upsell and not has_dynamic_contract
     # Btw-teruggave speelt alleen particulier: zakelijke catalogusprijzen
     # zijn al exclusief btw, daar valt niets terug te vragen in dit voorbeeld.
     vat_eligible = customer_type == "residential"
 
-    # Vast/variabel + handelsdoel: handel NOOIT als huidige situatie rekenen —
-    # de huidige band is die van het huidige contract (conservatief).
-    requires_dynamic_contract = contract in ("fixed", "variable") and wants_trading
-    dynamic_now = contract == "dynamic" and wants_trading
+    # Huidige-situatie-band: nooit de volledige handelsband tenzij de klant al
+    # de volledige setup draait. Dynamisch contract met alleen eigen-verbruik-
+    # doel krijgt de 'slimme zelfconsumptie'-band (boven variabel, onder
+    # volledige handel), zodat de upsell reële extra ruimte laat zien.
+    if has_dynamic_contract and not wants_trading:
+        current_band = bands.get("dynamic_self", bands["unknown"])
+    else:
+        current_band = bands.get(contract, bands["unknown"])
 
     yearly_min, yearly_max, monthly_min, monthly_max = _benefit_range(
-        capacity, bands.get(contract, bands["unknown"]), factor
+        capacity, current_band, factor
     )
 
     investment_gross = int(round(investment))
@@ -242,10 +267,10 @@ def build_stage2_report(calculator_inputs, calculator_result, answers):
     investment_net = investment_gross - vat_refund_estimate
 
     # Hoofd-terugverdientijd = huidige situatie op de bruto investering.
-    # Alleen bij een dynamisch contract mét handelsdoel (particulier) mag de
+    # Alleen bij de volledige dynamische-handel-setup (particulier) mag de
     # ondergrens rekenen met de mogelijke btw-teruggave onder voorwaarden;
     # de bovengrens blijft altijd op bruto (teruggave is geen zekerheid).
-    if dynamic_now and vat_eligible:
+    if has_full_dynamic_trading_setup and vat_eligible:
         payback_min, payback_max = _payback_range(
             investment_net, investment_gross, yearly_min, yearly_max
         )
@@ -254,22 +279,25 @@ def build_stage2_report(calculator_inputs, calculator_result, answers):
             investment_gross, investment_gross, yearly_min, yearly_max
         )
 
-    # ── Potentieel-scenario bij overstap naar dynamisch contract ──
+    # ── Upsell: potentieel met dynamisch contract + EMS/handel ──
+    # Toont voor iedereen behalve de volledige dynamische-handel-setup wat een
+    # dynamisch contract + EMS-sturing extra kan opleveren t.o.v. de huidige
+    # situatie. De potentieel-band is altijd de volledige handelsband.
     current_scenario = None
     dynamic_potential = None
-    if requires_dynamic_contract:
+    if should_show_dynamic_upsell:
         p_yearly_min, p_yearly_max, p_monthly_min, p_monthly_max = _benefit_range(
             capacity, bands["dynamic"], factor
         )
         # Netto investering (na mogelijke btw-teruggave) geldt uitsluitend
         # voor het potentiële dynamische scenario — nooit voor de huidige
-        # vast/variabel-terugverdientijd.
+        # terugverdientijd.
         p_investment = investment_net if vat_eligible else investment_gross
         p_payback_min, p_payback_max = _payback_range(
             p_investment, p_investment, p_yearly_min, p_yearly_max
         )
         current_scenario = {
-            "label": CONTRACT_CURRENT_LABELS.get(contract, "Huidig contract"),
+            "label": CONTRACT_CURRENT_LABELS.get(contract, "Huidige situatie"),
             "monthly_benefit_min": monthly_min,
             "monthly_benefit_max": monthly_max,
             "yearly_benefit_min": yearly_min,
@@ -295,7 +323,7 @@ def build_stage2_report(calculator_inputs, calculator_result, answers):
             "vat_refund_possible": vat_eligible,
             "vat_refund_estimate": vat_refund_estimate if vat_eligible else 0,
             "investment_net_after_vat": p_investment,
-            "note": DYNAMIC_POTENTIAL_NOTE,
+            "note": DYNAMIC_UPSELL_NOTE,
         }
 
     # ── Ontbrekende gegevens + confidence ──
@@ -412,9 +440,14 @@ def build_stage2_report(calculator_inputs, calculator_result, answers):
         report["current_contract_scenario"] = current_scenario
     if dynamic_potential:
         report["dynamic_contract_potential"] = dynamic_potential
+    # Overstap-note zolang de klant nog geen dynamisch contract heeft;
+    # doel-note zolang het doel nog geen handel is. Beide kunnen samen gelden
+    # (bv. vast contract + eigen verbruik).
     if requires_dynamic_contract:
         report["contract_switch_note"] = CONTRACT_SWITCH_NOTE
-    if dynamic_now:
+    if should_show_dynamic_upsell and not wants_trading:
+        report["trading_goal_note"] = TRADING_GOAL_NOTE
+    if has_full_dynamic_trading_setup:
         report["dynamic_trading_note"] = DYNAMIC_TRADING_NOTE
         if vat_eligible:
             report["vat_refund"] = {

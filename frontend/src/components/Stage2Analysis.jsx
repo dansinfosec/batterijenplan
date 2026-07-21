@@ -156,31 +156,35 @@ export default function Stage2Analysis({ leadMeta }) {
           </div>
         </div>
 
-        {/* ── Vergelijkingsblok: huidig vast/variabel vs. potentieel dynamisch.
-            Alleen bij een handelsdoel zónder dynamisch contract. Alles is
-            indicatief en mogelijk — nooit als zekerheid gebracht. ── */}
+        {/* ── Upsell: huidige situatie vs. potentieel met dynamisch contract
+            + EMS/handel. Verschijnt voor iedereen behalve de volledige
+            dynamische-handel-setup. Alles indicatief en mogelijk — nooit als
+            zekerheid gebracht. ── */}
         {report.dynamic_contract_potential?.enabled && (
           <div className="stage2-compare">
-            <h3>Wat verandert er bij een dynamisch contract?</h3>
+            <h3>Extra voordeel met dynamisch contract + EMS</h3>
             <p className="stage2-compare-intro">
-              Met uw huidige contract rekenen wij conservatief. Bij overstap
-              naar een dynamisch energiecontract kan de batterij ook handelen
-              op prijsverschillen.
+              U rekent nu conservatief. Met een dynamisch energiecontract,
+              EMS-sturing en handel op prijsverschillen kan er extra voordeel
+              ontstaan.
             </p>
             {report.contract_switch_note && (
               <p className="stage2-compare-intro">{report.contract_switch_note}</p>
             )}
+            {report.trading_goal_note && (
+              <p className="stage2-compare-intro">{report.trading_goal_note}</p>
+            )}
 
             <div className="stage2-compare-rows">
               <div className="stage2-compare-row">
-                <span>{report.current_contract_scenario?.label || "Huidig contract"}</span>
+                <span>Huidige situatie</span>
                 <b>
                   € {report.estimated_monthly_benefit_min} – €{" "}
                   {report.estimated_monthly_benefit_max} per maand
                 </b>
               </div>
               <div className="stage2-compare-row">
-                <span>Dynamisch contract + handel</span>
+                <span>Met dynamisch contract + EMS/handel</span>
                 <b>
                   € {report.dynamic_contract_potential.monthly_benefit_min} – €{" "}
                   {report.dynamic_contract_potential.monthly_benefit_max} per maand
@@ -201,7 +205,7 @@ export default function Stage2Analysis({ leadMeta }) {
               {formatYears(report.dynamic_contract_potential.payback_years_max)} jaar
             </p>
 
-            {report.dynamic_contract_potential.vat_refund_possible && (
+            {report.dynamic_contract_potential.vat_refund_possible ? (
               <>
                 <p className="stage2-confidence">
                   <span className="stage2-chip">
@@ -223,8 +227,19 @@ export default function Stage2Analysis({ leadMeta }) {
                   </span>
                 </div>
               </>
+            ) : (
+              // Zakelijk: catalogusprijzen zijn al exclusief btw — geen
+              // teruggave tonen, alleen deze verduidelijking.
+              <p className="stage2-compare-small">
+                Zakelijke prijzen zijn exclusief btw.
+              </p>
             )}
 
+            {report.dynamic_contract_potential.note && (
+              <p className="stage2-compare-small">
+                {report.dynamic_contract_potential.note}
+              </p>
+            )}
             <p className="stage2-compare-small">
               Indicatief. Geen garantie. Wij controleren dit telefonisch op
               basis van uw contract, teruglevering en EMS-sturing.
@@ -259,6 +274,16 @@ export default function Stage2Analysis({ leadMeta }) {
             <p className="stage2-compare-small">{report.vat_refund.note}</p>
           </div>
         )}
+
+        {/* Zakelijk + dynamisch contract: geen btw-teruggave (prijzen al
+            exclusief btw), alleen deze verduidelijking. */}
+        {report.dynamic_trading_note &&
+          !report.vat_refund &&
+          !report.dynamic_contract_potential?.enabled && (
+            <p className="stage2-compare-small">
+              Zakelijke prijzen zijn exclusief btw.
+            </p>
+          )}
 
         {report.warmtefonds && (
           <div className="stage2-warmtefonds">

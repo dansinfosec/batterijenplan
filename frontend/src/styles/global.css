@@ -783,7 +783,9 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
 }
 
 /* ── Lead-magnet: teaser-resultaat + vergrendelde rapportkaarten + CTA ── */
-.calc-page .calc-teaser { scroll-margin-top: 88px; }
+/* Ruimte voor de sticky header wanneer we via scrollIntoView naar het
+   resultaat springen (zowel zon- als geen-zon-pad delen deze wrapper). */
+.calc-page .calc-teaser { scroll-margin-top: 96px; }
 .calc-page .calc-teaser-text {
   margin: 10px 0 18px;
   max-width: 62ch;

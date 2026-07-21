@@ -419,11 +419,23 @@ export default function Calculator() {
     let raf2 = 0;
     const raf1 = requestAnimationFrame(() => {
       raf2 = requestAnimationFrame(() => {
-        let target = stepRef.current;
-        if (activeStepKey === "result") target = resultRef.current;
-        else if (activeStepKey === "lead" || activeStepKey === "success") {
-          target = leadRef.current;
+        // Resultaat: scroll betrouwbaar naar de echte teaser-kaart (geldt voor
+        // zowel het zon- als het geen-zon-pad, één gedeelde wrapper). Native
+        // scrollIntoView + scroll-margin-top klaart de sticky header en pakt de
+        // definitieve layout, ook nadat de goal-stap en de CTA-strip verdwenen.
+        if (activeStepKey === "result") {
+          if (resultRef.current) {
+            resultRef.current.scrollIntoView({
+              behavior: prefersReducedMotion() ? "auto" : "smooth",
+              block: "start",
+            });
+          }
+          return;
         }
+        const target =
+          activeStepKey === "lead" || activeStepKey === "success"
+            ? leadRef.current
+            : stepRef.current;
         scrollToCalculatorTarget(target);
       });
     });
@@ -1166,25 +1178,28 @@ export default function Calculator() {
       </section>
 
       {/* Conversie-strip die terugleidt naar de wizard (scrollt, geen
-          lead-modal). Bewust ná de info, vóór de FAQ/artikelen. */}
-      <section className="calc-recalc">
-        <div className="calc-recalc-inner">
-          <div className="calc-recalc-text">
-            <h2>Bereken direct welke batterij past</h2>
-            <p>
-              Beantwoord enkele korte vragen en ontvang direct een eerste
-              indicatie van de juiste batterijcapaciteit.
-            </p>
+          lead-modal). Bewust ná de info, vóór de FAQ/artikelen. Verdwijnt
+          zodra er een resultaat is — dan is deze CTA overbodig. */}
+      {!activeResult && (
+        <section className="calc-recalc">
+          <div className="calc-recalc-inner">
+            <div className="calc-recalc-text">
+              <h2>Bereken direct welke batterij past</h2>
+              <p>
+                Beantwoord enkele korte vragen en ontvang direct een eerste
+                indicatie van de juiste batterijcapaciteit.
+              </p>
+            </div>
+            <button
+              type="button"
+              className="cta-button cta-button-sm calc-recalc-btn"
+              onClick={scrollToWizard}
+            >
+              Bereken mijn batterijcapaciteit
+            </button>
           </div>
-          <button
-            type="button"
-            className="cta-button cta-button-sm calc-recalc-btn"
-            onClick={scrollToWizard}
-          >
-            Bereken mijn batterijcapaciteit
-          </button>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* FAQ — compact via native <details>/<summary>, geen accordion-JS. */}
       <section className="calc-faq">
