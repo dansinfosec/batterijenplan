@@ -2757,3 +2757,264 @@ article.post-detail.article-detail > img.cover {
   .article-detail .article-cta { padding: 20px 18px; }
   .article-detail .article-cta-btn { width: 100%; justify-content: center; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   PHASE 3 — CALCULATOR · "Het Energiedossier"
+   ALLE regels zijn gescoped onder .calc-page (de root van de calculator-
+   pagina), zodat gedeelde primitieven (.cta-button, .field-input,
+   .field-submit-button, .goal-card, .lead-form) op andere pagina's
+   (Contact, blog) ONgewijzigd blijven. Doel: harde offset-schaduwen weg,
+   rustige radius, geel als accent, dunne randen, data-rijen.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Knoppen: vlak, dunne rand, subtiele schaduw (geen offset-blok) ── */
+.calc-page .cta-button,
+.calc-page .cta-button-sm,
+.calc-page .field-submit-button {
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-1);
+  text-transform: none;
+  letter-spacing: 0;
+  transition: background 0.15s ease, transform 0.05s ease;
+}
+.calc-page .cta-button:hover,
+.calc-page .cta-button-sm:hover,
+.calc-page .field-submit-button:hover {
+  background: var(--volt-hi);
+  transform: none;
+  box-shadow: var(--shadow-1);
+}
+.calc-page .cta-button:active,
+.calc-page .cta-button-sm:active,
+.calc-page .field-submit-button:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+.calc-page .field-submit-button:disabled {
+  box-shadow: var(--shadow-1);
+}
+
+/* ── Invoervelden: dunne rand, kleine radius, gele focusring behouden ── */
+.calc-page .field-input {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: none;
+}
+.calc-page .field-input:hover { border-color: var(--ink); }
+.calc-page .field-input:focus {
+  border-color: var(--volt-dk);
+  box-shadow: 0 0 0 3px rgba(255, 209, 0, 0.3);
+}
+
+/* ── Intro / kengetallen ── */
+.calc-page .calc-intro { color: var(--ink-60); }
+
+/* ── Wizard: panelen als rustige vlakken, geen zware randen ── */
+.calc-page .calc-solar-choice,
+.calc-page .calc-step-panel {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: none;
+}
+.calc-page .calc-form-start {
+  border-bottom: 1px solid var(--rule);
+}
+
+/* Voortgangsbalk onder de wizard-bar */
+.calc-page .calc-wizard-progress { margin-bottom: 18px; }
+.calc-page .calc-progress-track {
+  margin-top: 10px; height: 3px; background: var(--rule);
+  border-radius: 2px; overflow: hidden;
+}
+.calc-page .calc-progress-track span {
+  display: block; height: 100%; background: var(--volt-dk);
+  transition: width 0.25s ease;
+}
+
+/* Keuzeknoppen: dunne rand; geel uitsluitend voor de actieve keuze */
+.calc-page .calc-type-btn,
+.calc-page .calc-solar-btn,
+.calc-page .calc-opt-btn {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+}
+.calc-page .calc-type-btn:hover,
+.calc-page .calc-solar-btn:hover,
+.calc-page .calc-solar-btn:focus-visible,
+.calc-page .calc-opt-btn:hover {
+  background: var(--paper);
+  border-color: var(--ink);
+}
+.calc-page .calc-type-btn.active,
+.calc-page .calc-solar-btn.active,
+.calc-page .calc-opt-btn.active {
+  background: var(--volt);
+  border-color: var(--ink);
+}
+.calc-page .calc-back-btn,
+.calc-page .calc-solar-switch,
+.calc-page .calc-help-cue,
+.calc-page .calc-chip {
+  border-radius: var(--radius-sm);
+}
+
+/* Doelkaarten: geen offset-schaduw; actief = geel accent links, geen vol vlak */
+.calc-page .goal-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: none;
+}
+.calc-page .goal-card:hover {
+  transform: none; box-shadow: none; border-color: var(--ink);
+}
+.calc-page .goal-card.active {
+  background: var(--surface);
+  border-color: var(--ink);
+  border-left: 4px solid var(--volt);
+  box-shadow: none; transform: none;
+}
+.calc-page .goal-card.active .goal-text { color: var(--ink-60); }
+
+/* Zonnige-dag-waarschuwing: rustiger (geen offset-schaduw) */
+.calc-page .calc-sunny-warning {
+  box-shadow: none;
+  border: 1px solid var(--border); border-left: 4px solid var(--volt);
+  border-radius: var(--radius);
+}
+
+/* ── Resultaat als navolgbaar rapport ── */
+.calc-page .calc-report {
+  margin-top: 32px; scroll-margin-top: 90px;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface); padding: 24px 24px 20px;
+}
+.calc-report-eyebrow {
+  display: block; margin-bottom: 12px; color: var(--volt-dk);
+}
+.calc-report-headline {
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 16px; margin-bottom: 4px;
+}
+.calc-report-headline-label {
+  display: block;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-60);
+}
+.calc-report-headline-value {
+  display: block; margin: 4px 0 2px;
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(30px, 6vw, 44px); line-height: 1.02; color: var(--copper);
+}
+.calc-report-headline-note {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--ink-60);
+}
+.calc-report-rows { display: grid; }
+.calc-drow {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--rule);
+}
+.calc-report-rows .calc-drow:last-child { border-bottom: 0; }
+.calc-drow-label {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--ink-60);
+}
+.calc-drow-value {
+  font-family: var(--font-body); font-weight: 600; font-size: 15px;
+  color: var(--ink); text-align: right;
+}
+.calc-report-section { margin-top: 18px; }
+.calc-report-subhead {
+  font-family: var(--font-display); font-weight: 700; font-size: 15px;
+  letter-spacing: -0.01em; margin-bottom: 8px;
+}
+.calc-report-section > p,
+.calc-report-why p { font-size: 14.5px; line-height: 1.6; color: var(--ink-60); }
+.calc-report-note {
+  margin-top: 8px; border-left: 3px solid var(--volt); padding-left: 12px;
+}
+.calc-check-list { list-style: none; display: grid; gap: 8px; }
+.calc-check-list li {
+  display: flex; gap: 10px; align-items: baseline;
+  font-size: 14.5px; line-height: 1.4; color: var(--ink);
+}
+.calc-check-list li::before {
+  content: ""; width: 7px; height: 7px; flex: 0 0 auto;
+  background: var(--volt); border: 1px solid var(--ink);
+  transform: translateY(1px);
+}
+
+/* ── Volgende stap: inline leadformulier ── */
+.calc-page .calc-next-step { margin-top: 28px; scroll-margin-top: 90px; }
+.calc-page .calc-next-step-head {
+  border-top: 1px solid var(--rule); padding-top: 24px; margin-bottom: 4px;
+}
+.calc-page .calc-next-step-eyebrow {
+  display: block; margin-bottom: 8px; color: var(--volt-dk);
+}
+.calc-page .calc-next-step .calc-lead-microcopy {
+  font-weight: 600; max-width: 62ch; margin: 0 0 4px;
+}
+
+/* Leadformulier: geen zwevende kaart met offset-schaduw/nokje, maar een
+   rustig omkaderd blok dat als vervolgstap onder het rapport leest. */
+.calc-page .lead-form {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: none; background: var(--surface); margin-top: 16px;
+}
+.calc-page .lead-form::before { display: none; }
+.calc-page .lead-form h2 {
+  font-family: var(--font-display); font-weight: 800;
+}
+.calc-page .lead-form-success { border-left: 4px solid var(--volt); }
+
+/* ── Hulpkaart / info-kaarten / afsluit-CTA: schaduwen en radius temperen ── */
+.calc-page .calc-help {
+  border: 1px solid var(--border); border-radius: var(--radius); box-shadow: none;
+}
+.calc-page .calc-help h2 { border-bottom: 1px solid var(--rule); }
+.calc-page .calc-help-mobile { box-shadow: none; }
+.calc-page .calc-help-steps li::before { border-radius: var(--radius-sm); }
+.calc-page .calc-needs-list li::before { border-radius: var(--radius-sm); }
+
+.calc-page .calc-info-card {
+  border: 1px solid var(--border); border-left: 3px solid var(--volt);
+  border-radius: var(--radius);
+}
+.calc-page .calc-recalc-inner { border-radius: var(--radius); }
+.calc-page .calc-recalc-btn { box-shadow: var(--shadow-1); }
+.calc-page .calc-final-cta {
+  box-shadow: none; border: 1px solid var(--border); border-radius: var(--radius);
+}
+.calc-page .calc-final-cta::before { display: none; }
+.calc-page .calc-faq-list {
+  border: 1px solid var(--border); border-radius: var(--radius);
+}
+
+/* ── Stage 2 (terugverdientijd-analyse): zelfde rustige taal ── */
+.calc-page .stage2-card {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: none; background: var(--surface);
+}
+.calc-page .stage2-opt {
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+.calc-page .stage2-opt:hover,
+.calc-page .stage2-opt:focus-visible { background: var(--paper); border-color: var(--ink); }
+.calc-page .stage2-opt.active { background: var(--volt); border-color: var(--ink); }
+.calc-page .stage2-advanced,
+.calc-page .stage2-figure,
+.calc-page .stage2-compare,
+.calc-page .stage2-compare-row,
+.calc-page .stage2-warmtefonds { border-color: var(--rule); }
+.calc-page .stage2-chip { border-radius: var(--radius-sm); }
+
+/* ── Mobiel ── */
+@media (max-width: 640px) {
+  .calc-page .calc-report { padding: 20px 16px 16px; }
+  .calc-page .calc-report-headline-value { font-size: clamp(28px, 9vw, 38px); }
+  .calc-page .calc-drow { gap: 12px; }
+}
