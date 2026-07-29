@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch.js";
 import { fetchPost, fetchComments, postComment } from "../api.js";
@@ -14,6 +14,50 @@ function wrapTables(html) {
   return html
     .replaceAll("<table>", '<div class="post-table-scroll"><table>')
     .replaceAll("</table>", "</table></div>");
+}
+
+// Stabiel, uniek anker-id afleiden uit een koptekst (Dutch-diacriticsveilig).
+function slugify(text) {
+  const base = text
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
+  return base || "sectie";
+}
+
+// "In dit artikel": injecteert id's op de H2's van de (al gerenderde) markdown
+// en bouwt een inhoudsopgave. Pure string-transformatie, geen dependency en
+// geen DOM-parser: bestaande id's worden gerespecteerd, nieuwe zijn uniek.
+// Faalt veilig terug op de onbewerkte body (met tabel-wrapper) bij een fout.
+function enhanceArticleBody(html) {
+  if (!html) return { html, toc: [] };
+  try {
+    const toc = [];
+    const used = new Set();
+    const out = html.replace(/<h2([^>]*)>([\s\S]*?)<\/h2>/gi, (match, attrs, inner) => {
+      const text = inner.replace(/<[^>]+>/g, "").trim();
+      if (!text) return match;
+      const existing = /\bid\s*=\s*["']([^"']+)["']/i.exec(attrs);
+      let id;
+      if (existing) {
+        id = existing[1];
+      } else {
+        id = slugify(text);
+        let n = 2;
+        while (used.has(id)) id = `${slugify(text)}-${n++}`;
+      }
+      used.add(id);
+      toc.push({ id, text });
+      const newAttrs = existing ? attrs : `${attrs} id="${id}"`;
+      return `<h2${newAttrs}>${inner}</h2>`;
+    });
+    return { html: wrapTables(out), toc };
+  } catch {
+    return { html: wrapTables(html), toc: [] };
+  }
 }
 
 function ReadProgress() {
@@ -39,24 +83,22 @@ function ReadProgress() {
   );
 }
 
-function CalculatorCta() {
+// Eén rustige calculator-CTA (geen groot geel marketingblok). Wordt precies één
+// keer gerenderd, aan het einde van het artikel.
+function ArticleCalculatorCta() {
   return (
-    <aside className="cta-block">
-      <h2>Bereken welke thuisbatterij bij uw woning past</h2>
-      <p>
-        Gebruik de gratis thuisbatterij calculator en ontvang direct een eerste
-        indicatie op basis van uw verbruik en teruglevering.
-      </p>
-
-      <div className="cta-block-actions">
-        <Link to="/calculator" className="cta-button cta-button-sm">
-          Start de calculator
-        </Link>
-
-        <Link to="/calculator?advies=1#advies" className="cta-text-link">
-          Of vraag gratis advies aan
-        </Link>
+    <aside className="article-cta">
+      <div className="article-cta-text">
+        <h2>Welke batterijcapaciteit past bij uw woning?</h2>
+        <p>
+          Gebruik uw stroomverbruik en teruglevering voor een persoonlijk eerste
+          advies.
+        </p>
       </div>
+      <Link to="/calculator" className="hp-btn article-cta-btn">
+        Bereken uw thuisbatterij
+        <span aria-hidden="true" className="hp-btn-arrow">→</span>
+      </Link>
     </aside>
   );
 }
@@ -124,24 +166,28 @@ function Comments({ slug }) {
       {items.map((c) => (
         <div className="comment" key={c.id}>
           <div className="who">
-            {c.name} · {new Date(c.created_at).toLocaleDateString("nl-NL")}
+            <span className="comment-author">{c.name}</span>
+            <span className="comment-date">
+              {new Date(c.created_at).toLocaleDateString("nl-NL")}
+            </span>
           </div>
           <p>{c.body}</p>
         </div>
       ))}
 
       {!loading && items.length === 0 && (
-        <p style={{ color: "var(--ink-60)" }}>Nog geen reacties.</p>
+        <p className="comments-empty">Nog geen reacties.</p>
       )}
 
       {sent ? (
-        <p style={{ marginTop: 24 }}>
+        <p className="comments-thanks">
           Bedankt! Uw reactie verschijnt na goedkeuring.
         </p>
       ) : (
         <form className="comment-form" onSubmit={submit}>
           <input
             placeholder="Naam"
+            aria-label="Naam"
             value={form.name}
             onChange={update("name")}
             required
@@ -149,6 +195,7 @@ function Comments({ slug }) {
 
           <input
             placeholder="E-mail (niet zichtbaar)"
+            aria-label="E-mailadres"
             type="email"
             value={form.email}
             onChange={update("email")}
@@ -157,12 +204,13 @@ function Comments({ slug }) {
 
           <textarea
             placeholder="Uw reactie…"
+            aria-label="Uw reactie"
             value={form.body}
             onChange={update("body")}
             required
           />
 
-          {err && <p style={{ color: "var(--copper)" }}>{err}</p>}
+          {err && <p className="comment-error">{err}</p>}
 
           <button type="submit" disabled={sending}>
             {sending ? "Bezig met plaatsen…" : "Plaats reactie"}
@@ -176,6 +224,13 @@ function Comments({ slug }) {
 export default function PostDetail() {
   const { slug } = useParams();
   const { data: post, loading, error } = useFetch(() => fetchPost(slug), [slug]);
+
+  // Body-verrijking (H2-ankers + inhoudsopgave + tabel-wrapper) is puur afgeleid
+  // van de body-HTML; memoiseren voorkomt herberekening bij elke render.
+  const { html: bodyHtml, toc } = useMemo(
+    () => enhanceArticleBody(post?.body_html),
+    [post?.body_html],
+  );
 
   useEffect(() => {
     if (post) {
@@ -204,7 +259,7 @@ export default function PostDetail() {
     // Bewust simpel: geen animaties, geen dependencies.
     return (
       <article
-        className="container post-detail post-detail-skeleton"
+        className="container post-detail article-detail post-detail-skeleton"
         aria-busy="true"
         aria-label="Artikel wordt geladen"
       >
@@ -231,44 +286,53 @@ export default function PostDetail() {
   if (error) {
     return (
       <div className="state">
-        Artikel niet gevonden. <Link to="/">Terug naar overzicht</Link>
+        Artikel niet gevonden. <Link to="/artikelen">Terug naar de kennisbank</Link>
       </div>
     );
   }
 
-  const date = post.published_at
+  const publishedDate = post.published_at
     ? new Date(post.published_at).toLocaleDateString("nl-NL", {
         day: "numeric",
         month: "long",
         year: "numeric",
       })
     : "";
+  const updatedDate = post.updated_at
+    ? new Date(post.updated_at).toLocaleDateString("nl-NL", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+    : "";
+  const showUpdated = updatedDate && updatedDate !== publishedDate;
+  const primaryTag = post.tags?.[0];
 
   return (
-    <article className="container post-detail">
+    <article className="container post-detail article-detail">
       <ReadProgress />
 
-      <p className="mono kicker">{post.tags?.join(" · ")}</p>
+      <header className="article-header">
+        {primaryTag && <p className="article-eyebrow">{primaryTag}</p>}
 
-      <h1>{post.title}</h1>
+        <h1>{post.title}</h1>
 
-      <div className="byline mono">
-        <span>{post.author}</span>
-        <span>{date}</span>
-        <span>{post.reading_minutes} min leestijd</span>
-      </div>
+        {post.excerpt && <p className="article-lead">{post.excerpt}</p>}
 
-      <p className="cta-inline mono">
-        Niet zeker welke batterijcapaciteit u nodig heeft?{" "}
-        <Link to="/calculator">Bereken het gratis.</Link>
-      </p>
+        <div className="article-meta">
+          {post.author && <span>{post.author}</span>}
+          {publishedDate && <span>{publishedDate}</span>}
+          {showUpdated && <span>Bijgewerkt {updatedDate}</span>}
+          {post.reading_minutes ? <span>{post.reading_minutes} min leestijd</span> : null}
+        </div>
+      </header>
 
       {post.cover_image_url && (
         <img
           className="cover"
           src={optimizedImageUrl(post.cover_image_url, 1200)}
           srcSet={coverSrcSet(post.cover_image_url)}
-          sizes="(max-width: 720px) 100vw, 960px"
+          sizes="(max-width: 720px) 100vw, 760px"
           width="1200"
           height="675"
           alt={post.cover_alt || post.title}
@@ -281,16 +345,27 @@ export default function PostDetail() {
         />
       )}
 
-      <CalculatorCta />
+      {toc.length >= 3 && (
+        <nav className="article-toc" aria-label="In dit artikel">
+          <p className="article-toc-title">In dit artikel</p>
+          <ol className="article-toc-list">
+            {toc.map((item) => (
+              <li key={item.id}>
+                <a href={`#${item.id}`}>{item.text}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
 
       <div
-        className="prose"
-        dangerouslySetInnerHTML={{ __html: wrapTables(post.body_html) }}
+        className="prose article-body"
+        dangerouslySetInnerHTML={{ __html: bodyHtml }}
       />
 
-      <RelatedPosts posts={post.related_posts} />
+      <ArticleCalculatorCta />
 
-      <CalculatorCta />
+      <RelatedPosts posts={post.related_posts} />
 
       <Comments slug={slug} />
     </article>

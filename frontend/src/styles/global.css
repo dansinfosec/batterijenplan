@@ -2481,3 +2481,279 @@ body,
   .hp-final .hp-btn { width: 100%; }
   .hp-compare-text { padding-left: 0; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   PHASE 2 — ARTIKELPAGINA'S · "Het Energiedossier"
+   Twee gebieden:
+   1) .articles-page*  → het kennisbank-overzicht (nieuwe /artikelen-route)
+   2) .article-detail  → een extra wrapperklasse óp .post-detail voor de
+      blogpost-pagina. ALLE detail-regels zijn onder .article-detail gescoped,
+      zodat de gedeelde basis (.post-detail, .prose, .cta-block, .related-*,
+      .comment*) die ook door calculator/privacy/contact wordt gebruikt,
+      volledig ongemoeid blijft. Hergebruikt de homepage-tokens en -atomen
+      (.hp-kicker, .hp-btn, .hp-link).
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Gedeelde artikel-labelatomen (overzicht + detail) */
+.article-tag {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--volt-dk);
+}
+.article-metaline {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em;
+  color: var(--ink-60);
+}
+
+/* ── Kennisbank-overzicht ───────────────────────────────────────── */
+.articles-page { padding: 48px 0 72px; }
+.articles-masthead {
+  border-bottom: 1px solid var(--rule); padding-bottom: 24px;
+}
+.articles-title {
+  margin-top: 12px;
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(28px, 4vw, 42px); line-height: 1.06; letter-spacing: -0.02em;
+  max-width: 20ch;
+}
+.articles-intro {
+  margin-top: 12px; max-width: 60ch;
+  font-size: 17px; line-height: 1.6; color: var(--ink-60);
+}
+.articles-page .state { text-align: left; padding: 40px 0; }
+
+/* Uitgelicht artikel: beeld naast informatie op desktop, gestapeld op mobiel. */
+.articles-featured {
+  display: grid; gap: 20px; margin-top: 20px;
+  padding: 28px 0; border-bottom: 1px solid var(--rule);
+  text-decoration: none; color: inherit;
+}
+@media (min-width: 820px) {
+  .articles-featured {
+    grid-template-columns: 1.15fr 1fr; gap: 40px; align-items: center;
+  }
+}
+.articles-featured-media {
+  aspect-ratio: 16 / 10; overflow: hidden;
+  border: 1px solid var(--rule); border-radius: var(--radius);
+  background: var(--paper-2);
+}
+.articles-featured-media img {
+  width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;
+}
+.articles-featured:hover .articles-featured-media img { transform: scale(1.02); }
+.articles-featured-body { display: grid; gap: 10px; }
+.articles-featured h2 {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(22px, 2.8vw, 30px); line-height: 1.12; letter-spacing: -0.01em;
+}
+.articles-featured:hover h2 { color: var(--copper); }
+.articles-featured-excerpt {
+  font-size: 16px; line-height: 1.55; color: var(--ink-60); max-width: 52ch;
+}
+.articles-featured-link { margin-top: 4px; }
+
+/* Artikellijst: gecontroleerd tweekoloms raster met haarlijnen (geen zwevende
+   kaarten met zware schaduw). */
+.article-list { display: grid; margin-top: 4px; }
+@media (min-width: 720px) {
+  .article-list { grid-template-columns: 1fr 1fr; column-gap: 40px; }
+}
+.article-card {
+  display: grid; gap: 12px; padding: 24px 0;
+  border-top: 1px solid var(--rule);
+  text-decoration: none; color: inherit;
+}
+.article-card-media {
+  aspect-ratio: 16 / 9; overflow: hidden;
+  border: 1px solid var(--rule); border-radius: var(--radius);
+  background: var(--paper-2);
+}
+.article-card-media img {
+  width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;
+}
+.article-card:hover .article-card-media img { transform: scale(1.02); }
+.article-card-body { display: grid; gap: 8px; }
+.article-card h3 {
+  font-family: var(--font-display); font-weight: 700; font-size: 19px;
+  line-height: 1.25; letter-spacing: -0.01em;
+}
+.article-card:hover h3 { color: var(--copper); }
+.article-card-excerpt {
+  font-size: 14.5px; line-height: 1.5; color: var(--ink-60);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Artikeldetail (gescoped onder .article-detail) ─────────────── */
+.article-detail .article-header { margin-bottom: 28px; }
+.article-detail .article-eyebrow {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--volt-dk); margin-bottom: 12px;
+}
+/* Prominente maar niet overdreven titel; leesbare afbreking. */
+.article-detail h1 {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(30px, 4.4vw, 44px); line-height: 1.08; letter-spacing: -0.02em;
+  margin: 0 0 16px; max-width: 22ch; text-transform: none;
+}
+.article-detail .article-lead {
+  font-size: 19px; line-height: 1.5; color: var(--ink-60);
+  max-width: 60ch; margin-bottom: 20px;
+}
+.article-detail .article-meta {
+  display: flex; flex-wrap: wrap; gap: 6px 20px;
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  padding: 12px 0;
+}
+.article-detail .article-meta span {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.02em;
+  color: var(--ink-60);
+}
+
+/* Cover: rustige rand + radius (specificiteit boven de basisregel
+   article.post-detail > img.cover). Behoudt object-fit/achtergrond uit de
+   basis; alleen rand/radius/marge worden verfijnd. */
+article.post-detail.article-detail > img.cover {
+  border: 1px solid var(--rule); border-radius: var(--radius);
+  margin-bottom: 28px;
+}
+
+/* "In dit artikel" — lichte inhoudsopgave boven de tekst. */
+.article-detail .article-toc {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface); padding: 16px 18px; margin: 0 0 32px;
+}
+.article-toc-title {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-60); margin-bottom: 10px;
+}
+.article-toc-list { list-style: none; counter-reset: toc; display: grid; gap: 8px; }
+.article-toc-list li { counter-increment: toc; display: flex; gap: 10px; align-items: baseline; }
+.article-toc-list li::before {
+  content: counter(toc, decimal-leading-zero);
+  font-family: var(--font-mono); font-size: 12px; color: var(--volt-dk);
+  flex: 0 0 auto;
+}
+.article-toc-list a {
+  color: var(--ink); text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.article-toc-list a:hover { color: var(--copper); border-bottom-color: var(--rule); }
+
+/* Leesbaarheid van de artikeltekst (gescoped: raakt privacy/contact/calculator
+   niet). Verfijnt de bestaande .prose-basis binnen de blogpost. */
+.article-detail .prose { font-size: 17px; line-height: 1.75; }
+.article-detail .prose h2 { scroll-margin-top: 88px; }
+.article-detail .prose a {
+  color: var(--volt-dk); text-decoration: underline; text-underline-offset: 2px;
+}
+.article-detail .prose a:hover { color: var(--ink); }
+.article-detail .prose blockquote {
+  border-left: 3px solid var(--volt); background: var(--paper-2);
+  padding: 12px 18px; margin: 24px 0; color: var(--ink-60);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.article-detail .prose hr {
+  border: 0; border-top: 1px solid var(--rule); margin: 32px 0;
+}
+/* Leesbare tabel: minder geel dan de basis (koptekst als rustige tint met
+   sterke onderrand i.p.v. een vol geel vlak). */
+.article-detail .prose th {
+  background: var(--paper-2); border-bottom: 2px solid var(--ink);
+}
+.article-detail .prose td,
+.article-detail .prose th { border: 1px solid var(--rule); }
+
+/* Eén rustige calculator-CTA (geel alleen op de knop). */
+.article-detail .article-cta {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 18px 32px; flex-wrap: wrap; margin: 40px 0;
+  padding: 24px; border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--paper-2);
+}
+.article-cta-text { min-width: 0; flex: 1 1 320px; }
+.article-detail .article-cta h2 {
+  font-family: var(--font-display); font-weight: 800; font-size: 20px;
+  line-height: 1.2; letter-spacing: -0.01em; margin: 0;
+}
+.article-cta-text p {
+  margin-top: 8px; font-size: 15px; line-height: 1.5; color: var(--ink-60);
+  max-width: 46ch;
+}
+.article-cta-btn { flex: 0 0 auto; }
+
+/* Gerelateerde artikelen: herstyle van de gedeelde component (gescoped). */
+.article-detail .related-posts {
+  border-top: 1px solid var(--rule); margin-top: 40px; padding-top: 28px;
+}
+.article-detail .related-posts h2 { font-size: 22px; margin-bottom: 18px; }
+.article-detail .related-post-card {
+  border: 1px solid var(--rule); border-radius: var(--radius);
+  padding: 16px 16px; box-shadow: none; transition: border-color 0.15s ease;
+}
+.article-detail .related-post-card:hover {
+  transform: none; box-shadow: none; border-color: var(--border);
+}
+.article-detail .related-post-card:hover h3 { color: var(--copper); }
+.article-detail .related-post-tag { color: var(--volt-dk); }
+
+/* Reacties: editorial — haarlijnen i.p.v. een kaart om elke reactie. */
+.article-detail .comments {
+  border-top: 1px solid var(--rule); margin-top: 48px; padding-top: 28px;
+}
+.article-detail .comments h2 { font-size: 22px; margin-bottom: 8px; }
+.article-detail .comment {
+  border: 0; background: transparent; border-radius: 0; margin: 0;
+  border-top: 1px solid var(--rule); padding: 16px 0;
+}
+.article-detail .comment .who {
+  display: flex; gap: 12px; align-items: baseline; margin-bottom: 6px;
+}
+.article-detail .comment-author {
+  font-family: var(--font-display); font-weight: 700; font-size: 14px;
+  letter-spacing: normal; text-transform: none; color: var(--ink);
+}
+.article-detail .comment-date {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em;
+  color: var(--ink-60);
+}
+.article-detail .comment p { font-size: 15px; line-height: 1.6; color: var(--ink); }
+.article-detail .comments-empty { color: var(--ink-60); font-size: 15px; padding: 16px 0 0; }
+.article-detail .comments-thanks { margin-top: 20px; color: var(--volt-dk); font-weight: 600; }
+.article-detail .comment-form {
+  margin-top: 24px; display: grid; gap: 12px; max-width: 560px;
+}
+.article-detail .comment-form input,
+.article-detail .comment-form textarea {
+  font: inherit; padding: 11px 14px; width: 100%;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+.article-detail .comment-form input:focus,
+.article-detail .comment-form textarea:focus {
+  outline: none; border-color: var(--volt-dk);
+  box-shadow: 0 0 0 3px rgba(255, 209, 0, 0.3);
+}
+.article-detail .comment-form textarea { min-height: 120px; resize: vertical; }
+.article-detail .comment-form button {
+  justify-self: start; cursor: pointer;
+  font-family: var(--font-display); font-weight: 700; font-size: 14px;
+  letter-spacing: 0; text-transform: none;
+  color: var(--ink); background: var(--volt);
+  border: 1px solid var(--ink); border-radius: var(--radius-sm);
+  padding: 11px 20px; box-shadow: none;
+  transition: background 0.15s ease;
+}
+.article-detail .comment-form button:hover {
+  background: var(--volt-hi); transform: none; box-shadow: none;
+}
+.article-detail .comment-error { color: var(--copper); font-size: 14px; }
+
+/* ── Artikelpagina's responsive ── */
+@media (max-width: 640px) {
+  .articles-page { padding: 36px 0 56px; }
+  .article-detail h1 { font-size: clamp(26px, 7vw, 34px); }
+  .article-detail .article-lead { font-size: 17px; }
+  .article-detail .article-cta { padding: 20px 18px; }
+  .article-detail .article-cta-btn { width: 100%; justify-content: center; }
+}

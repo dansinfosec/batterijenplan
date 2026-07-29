@@ -126,6 +126,43 @@ const PRIVACY_BODY = seoWrap(`        <h1>Privacyverklaring Batterijenplan.nl</h
         <h2>Uw gegevens inzien of verwijderen</h2>
         <p>U heeft het recht om uw gegevens in te zien, te laten corrigeren of te laten verwijderen. Stuur hiervoor een e-mail naar <a href="mailto:info@batterijenplan.nl">info@batterijenplan.nl</a>, dan verwerken wij uw verzoek zo snel mogelijk.</p>`);
 
+// Dynamische SEO-fallback voor /artikelen: een crawlbaar overzicht opgebouwd
+// uit de echte posts (dezelfde volgorde als de API-respons). Alle API-tekst
+// wordt ge-escaped. Geen afbeeldingen in de fallback. React vervangt dit blok
+// bij mount (createRoot().render() leegt #root), dus geen dubbele content.
+function articlesFallbackBody(posts) {
+  const articles = (posts || [])
+    // Alleen posts met zowel een niet-lege slug als titel; volgorde blijft gelijk.
+    .filter((post) => {
+      const slug = post.slug ? String(post.slug).trim() : "";
+      const title = post.title ? String(post.title).trim() : "";
+      return slug && title;
+    })
+    .map((post) => {
+      // URL veilig opbouwen (encodeURIComponent) en de uiteindelijke href
+      // escapen vóór insertie in het href-attribuut.
+      const href = escapeHtml(`/post/${encodeURIComponent(String(post.slug))}`);
+      const title = escapeHtml(String(post.title));
+      const excerpt = post.excerpt
+        ? `\n          <p>${escapeHtml(String(post.excerpt))}</p>`
+        : "";
+      const iso = post.published_at || post.updated_at || "";
+      const dateLabel = formatDateNl(iso);
+      const date = dateLabel
+        ? `\n          <p><time datetime="${escapeHtml(String(iso))}">${escapeHtml(dateLabel)}</time></p>`
+        : "";
+      return `        <article>
+          <h2><a href="${href}">${title}</a></h2>${excerpt}${date}
+        </article>`;
+    })
+    .join("\n");
+
+  return seoWrap(`        <h1>Alles over thuisbatterijen en energieopslag</h1>
+        <p>In onze kennisbank leest u artikelen over thuisbatterijen, batterijopslag en het opslaan van zonnestroom. Van capaciteit en installatie tot energieprijzen, rendement en slimme aansturing.</p>
+${articles}
+        <p><a href="/calculator">Bereken uw thuisbatterij</a></p>`);
+}
+
 // Route-specifieke SEO-pagina's. slug "" = dist/index.html (homepage houdt
 // zijn bestaande meta + performance-shell; alleen body wordt geïnjecteerd).
 const STATIC_PAGES = [
@@ -150,6 +187,15 @@ const STATIC_PAGES = [
     description:
       "Lees hoe Batterijenplan.nl omgaat met persoonsgegevens, contactaanvragen en calculatorgegevens.",
     body: PRIVACY_BODY,
+  },
+  {
+    // body wordt dynamisch opgebouwd uit de echte posts (articlesFallbackBody);
+    // zie generateStaticPages. Meta/canonical/sitemap blijven ongewijzigd.
+    slug: "artikelen",
+    title: "Kennisbank thuisbatterijen en energieopslag | Batterijenplan",
+    description:
+      "Lees praktische artikelen over thuisbatterijen, capaciteit, installatie, energieprijzen, rendement, EMS en het opslaan van zonnestroom.",
+    dynamicBody: articlesFallbackBody,
   },
 ];
 
@@ -221,7 +267,7 @@ function injectSeoBody(html, bodyHtml) {
   return html.replace(marker, () => `<div id="root">\n${bodyHtml}\n    </div>`);
 }
 
-async function generateStaticPages(template) {
+async function generateStaticPages(template, posts) {
   let count = 0;
   for (const page of STATIC_PAGES) {
     let html = page.keepMeta
@@ -231,7 +277,10 @@ async function generateStaticPages(template) {
     // Alleen de homepage houdt de performance-shell; overige routes niet.
     if (!page.keepHomeShell) html = stripHomeShell(html);
 
-    html = injectSeoBody(html, page.body);
+    // Pagina's met een dynamicBody (bijv. /artikelen) bouwen hun body uit de
+    // echte posts; de rest gebruikt hun statische body.
+    const body = page.dynamicBody ? page.dynamicBody(posts) : page.body;
+    html = injectSeoBody(html, body);
 
     if (page.slug === "") {
       // Alleen de homepage krijgt async CSS; zie asyncifyMainCss.
@@ -488,6 +537,7 @@ function buildSitemap(posts) {
   const entries = [
     { loc: `${SITE_URL}/` },
     { loc: `${SITE_URL}/calculator` },
+    { loc: `${SITE_URL}/artikelen` },
     { loc: `${SITE_URL}/privacy` },
     { loc: `${SITE_URL}/contact` },
     ...posts.map((post) => {
@@ -562,13 +612,13 @@ async function main() {
 
   // Statische SEO-fallback voor de hoofdpagina's (leest dezelfde in-memory
   // template; wijzigt dist/index.html en schrijft dist/<route>/index.html).
-  const staticCount = await generateStaticPages(template);
+  const staticCount = await generateStaticPages(template, posts);
 
   await writeFile(path.join(distDir, "sitemap.xml"), buildSitemap(posts), "utf8");
 
   console.log(`Prerender klaar: ${generated} blogpost-HTML-bestanden gegenereerd in dist/post/.`);
-  console.log(`Statische SEO-pagina's gegenereerd: ${staticCount} (/, /calculator, /contact, /privacy).`);
-  console.log(`sitemap.xml gegenereerd met ${posts.length + 4} URL's.`);
+  console.log(`Statische SEO-pagina's gegenereerd: ${staticCount} (/, /calculator, /artikelen, /contact, /privacy).`);
+  console.log(`sitemap.xml gegenereerd met ${posts.length + 5} URL's.`);
 }
 
 main().catch((err) => {

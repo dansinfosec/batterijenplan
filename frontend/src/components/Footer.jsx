@@ -30,7 +30,7 @@ export default function Footer() {
             <h4>Navigatie</h4>
             <ul>
               <li><Link to="/calculator">Bereken uw batterij</Link></li>
-              <li><Link to="/#artikelen">Artikelen</Link></li>
+              <li><Link to="/artikelen">Artikelen</Link></li>
               <li><Link to="/#rekenmethode">Over de berekening</Link></li>
               <li><Link to="/contact">Contact</Link></li>
             </ul>

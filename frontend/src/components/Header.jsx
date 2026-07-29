@@ -15,7 +15,7 @@ export default function Header() {
 
         <nav className="nav" aria-label="Hoofdnavigatie">
           <Link to="/calculator">Berekenen</Link>
-          <Link to="/#artikelen">Artikelen</Link>
+          <Link to="/artikelen">Artikelen</Link>
           <Link to="/#rekenmethode">Over de berekening</Link>
         </nav>
 
