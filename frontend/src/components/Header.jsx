@@ -9,7 +9,18 @@ export default function Header() {
     <header className="site-header">
       <div className="container">
         <Link to="/" className="logo">
-          <span className="cell" aria-hidden="true" />
+          {/* Beeldmerk uit brand-assets (concept D). Vaste width/height +
+              eigen CSS-formaat: geen layout shift terwijl de SVG laadt. Het
+              woordmerk ernaast blijft echte tekst, dus het beeldmerk is
+              decoratief — anders leest een screenreader de naam dubbel. */}
+          <img
+            src="/brand/logo-beeldmerk.svg"
+            width="30"
+            height="30"
+            alt=""
+            aria-hidden="true"
+            className="logo-mark"
+          />
           Batterijenplan
         </Link>
 

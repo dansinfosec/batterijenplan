@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="240" height="240" role="img" aria-label="Batterijenplan Woning en opslag">
+  <path d="M22 60 L60 26 L98 60" fill="none" stroke="#12130F" stroke-width="10" stroke-linecap="butt" stroke-linejoin="miter"/>
+  <rect x="36" y="66" width="48" height="8" fill="#FFD100"/>
+  <rect x="30" y="82" width="60" height="22" fill="#B4592E"/>
+</svg>

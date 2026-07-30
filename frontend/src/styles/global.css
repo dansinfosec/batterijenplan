@@ -90,17 +90,16 @@ img { max-width: 100%; display: block; }
   text-decoration: none; display: flex; align-items: center; gap: 10px;
   color: var(--ink); margin-right: auto;
 }
-.logo .cell {
-  width: 26px; height: 14px; border: 2px solid var(--ink); border-radius: 2px;
-  position: relative; display: inline-block;
+/* Beeldmerk (brand-assets concept D). Vaste hoogte, breedte volgt de
+   1:1-verhouding van de SVG — nooit uitgerekt. flex-shrink: 0 houdt het
+   vierkant intact in een krappe mobiele header. */
+.logo-mark {
+  width: 30px; height: 30px;
+  flex-shrink: 0;
+  display: block;
 }
-.logo .cell::before {
-  content: ""; position: absolute; inset: 2px; right: 40%;
-  background: var(--volt);
-}
-.logo .cell::after {
-  content: ""; position: absolute; right: -5px; top: 3px;
-  width: 3px; height: 4px; background: var(--ink);
+@media (max-width: 640px) {
+  .logo-mark { width: 26px; height: 26px; }
 }
 .nav { display: flex; gap: 26px; align-items: center; }
 .nav a { text-decoration: none; font-weight: 500; font-size: 15px; color: var(--ink); }
@@ -1476,7 +1475,9 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
 .footer-brand {
   font-family: var(--font-display); font-weight: 800; font-size: 18px;
   letter-spacing: -0.01em; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 9px;
 }
+.footer-brand-mark { width: 26px; height: 26px; flex-shrink: 0; display: block; }
 .footer-desc {
   font-size: 14px; line-height: 1.6; color: rgba(247, 246, 242, 0.66);
   max-width: 42ch;

@@ -71,6 +71,9 @@
     <noscript>
       <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..115,700..900&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=optional" rel="stylesheet" />
     </noscript>
+    <!-- SVG-favicon (brand-assets concept D, op papierwit zodat de daklijn ook
+         in donkere browsertabs leesbaar blijft); .ico blijft als fallback. -->
+    <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <!-- Perf: kritieke CSS voor de statische homepage-shell hieronder.
          Alleen systeemfonts, geen afbeeldingen; React ruimt de shell op. -->
@@ -86,7 +89,10 @@
       #static-home-shell{position:fixed;inset:0;z-index:9999;overflow:hidden;background:#F7F6F2;color:#12130F;line-height:1.55;-webkit-font-smoothing:antialiased}
       #static-home-shell .shs-w{max-width:1080px;margin:0 auto;padding:0 20px}
       #static-home-shell .shs-header{border-bottom:1px solid rgba(18,19,15,.12)}
-      #static-home-shell .shs-brand{display:flex;align-items:center;height:64px;font-weight:700;font-size:20px;letter-spacing:-.02em}
+      #static-home-shell .shs-brand{display:flex;align-items:center;gap:10px;height:64px;font-weight:700;font-size:20px;letter-spacing:-.02em}
+      /* Inline SVG: geen extra request vóór de LCP-paint. Formaten spiegelen
+         .logo-mark in de React-header, zodat de swap niets laat verspringen. */
+      #static-home-shell .shs-mark{width:26px;height:26px;flex-shrink:0;display:block}
       #static-home-shell .shs-hero{border-bottom:1px solid rgba(18,19,15,.12);padding:44px 0}
       #static-home-shell h1{font-weight:700;font-size:clamp(30px,8vw,44px);line-height:1.05;letter-spacing:-.02em;max-width:16ch;margin:0}
       #static-home-shell h1 span{color:#B4592E}
@@ -94,6 +100,7 @@
       #static-home-shell .shs-cta{display:block;margin-top:26px;padding:13px 20px;text-align:center;font-weight:700;font-size:16px;text-decoration:none;color:#12130F;background:#FFD100;border:1px solid #12130F;border-radius:6px}
       #static-home-shell .shs-note{margin:20px 0 0;font-size:12px;letter-spacing:.04em;color:#4C4D46}
       @media(min-width:641px){
+        #static-home-shell .shs-mark{width:30px;height:30px}
         #static-home-shell .shs-hero{padding:56px 0 52px}
         #static-home-shell h1{font-size:clamp(32px,5vw,52px);line-height:1.04}
         #static-home-shell .shs-sub{margin-top:20px;font-size:18px}
@@ -114,7 +121,7 @@
          door React opgeruimd zodra de app gemount is (App.jsx). -->
     <div id="static-home-shell">
       <div class="shs-header">
-        <div class="shs-w"><span class="shs-brand">Batterijenplan</span></div>
+        <div class="shs-w"><span class="shs-brand"><svg class="shs-mark" viewBox="0 0 120 120" width="30" height="30" aria-hidden="true" focusable="false"><path d="M22 60 L60 26 L98 60" fill="none" stroke="#12130F" stroke-width="10" stroke-linejoin="miter"/><rect x="36" y="66" width="48" height="8" fill="#FFD100"/><rect x="30" y="82" width="60" height="22" fill="#B4592E"/></svg>Batterijenplan</span></div>
       </div>
       <section class="shs-hero">
         <div class="shs-w">

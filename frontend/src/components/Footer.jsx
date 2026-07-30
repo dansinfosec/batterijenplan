@@ -17,7 +17,19 @@ export default function Footer() {
       <div className="container">
         <div className="footer-grid">
           <div className="footer-about">
-            <div className="footer-brand">Batterijenplan.nl</div>
+            <div className="footer-brand">
+              {/* op-ink-variant: papierwitte daklijn, want de footer heeft een
+                  donkere achtergrond. Decoratief — de naam staat ernaast. */}
+              <img
+                src="/brand/logo-beeldmerk-op-ink.svg"
+                width="26"
+                height="26"
+                alt=""
+                aria-hidden="true"
+                className="footer-brand-mark"
+              />
+              Batterijenplan.nl
+            </div>
             <p className="footer-desc">
               Onafhankelijk reken- en vergelijkingsplatform voor thuisbatterijen.
               Wij helpen u bepalen welke batterijcapaciteit past bij uw verbruik,

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 120" width="960" height="240" role="img" aria-label="Batterijenplan">
+  <g><path d="M22 60 L60 26 L98 60" fill="none" stroke="#12130F" stroke-width="10" stroke-linecap="butt" stroke-linejoin="miter"/>
+  <rect x="36" y="66" width="48" height="8" fill="#FFD100"/>
+  <rect x="30" y="82" width="60" height="22" fill="#B4592E"/></g>
+  <text x="150" y="77" font-family="TeX Gyre Heros, Helvetica, Arial, sans-serif" font-size="48" font-weight="700" letter-spacing="-1.2" fill="#12130F">Batterijenplan</text>
+</svg>
