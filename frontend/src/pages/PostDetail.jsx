@@ -5,6 +5,9 @@ import { fetchPost, fetchComments, postComment } from "../api.js";
 import { setPageMeta, setJsonLd, blogPostingSchema, postSeoTitle, DEFAULT_DESCRIPTION } from "../seo.js";
 import { optimizedImageUrl, coverSrcSet } from "../images.js";
 import RelatedPosts from "../components/RelatedPosts.jsx";
+import AdviceForm from "../components/AdviceForm.jsx";
+import MobileStickyCta from "../components/MobileStickyCta.jsx";
+import { trackEvent } from "../analytics.js";
 
 // Wrapt tabellen uit de (server-side gerenderde) markdown-body in een
 // scroll-container, zodat brede vergelijkingstabellen op mobiel zijwaarts
@@ -83,20 +86,37 @@ function ReadProgress() {
   );
 }
 
-// Eén rustige calculator-CTA (geen groot geel marketingblok). Wordt precies één
-// keer gerenderd, aan het einde van het artikel.
-function ArticleCalculatorCta() {
+// Splitst de body op het tweede H2 (≈ na de intro + eerste sectie) zodat de
+// lichte inline CTA ongeveer na het eerste derde tussen twee blokken valt.
+// Splitst alleen tussen top-level elementen (H2 is een blokgrens), dus de
+// markdown-structuur blijft intact. Null als er geen tweede H2 is.
+function splitAtSecondH2(html) {
+  if (!html) return null;
+  const re = /<h2[\s>]/gi;
+  let match;
+  let count = 0;
+  while ((match = re.exec(html)) !== null) {
+    count += 1;
+    if (count === 2) return [html.slice(0, match.index), html.slice(match.index)];
+  }
+  return null;
+}
+
+// Lichte inline CTA (link, géén formulier) na ongeveer het eerste derde van een
+// voldoende lang artikel. Verwijst naar de calculator.
+function ArticleInlineCta() {
   return (
-    <aside className="article-cta">
-      <div className="article-cta-text">
-        <h2>Welke batterijcapaciteit past bij uw woning?</h2>
-        <p>
-          Gebruik uw stroomverbruik en teruglevering voor een persoonlijk eerste
-          advies.
-        </p>
-      </div>
-      <Link to="/calculator" className="hp-btn article-cta-btn">
-        Bereken uw thuisbatterij
+    <aside className="article-inline-cta">
+      <p>
+        Bereken met uw eigen energiegegevens welke batterijcapaciteit bij uw
+        woning past.
+      </p>
+      <Link
+        to="/calculator"
+        className="hp-btn article-inline-cta-btn"
+        onClick={() => trackEvent("lead_cta_click", { lead_source: "article_inline" })}
+      >
+        Start de calculator
         <span aria-hidden="true" className="hp-btn-arrow">→</span>
       </Link>
     </aside>
@@ -308,6 +328,12 @@ export default function PostDetail() {
   const showUpdated = updatedDate && updatedDate !== publishedDate;
   const primaryTag = post.tags?.[0];
 
+  // Lichte inline CTA na ~eerste derde: alleen bij voldoende lange artikelen
+  // (genoeg leestijd of structuur) én als er een natuurlijk splitspunt (2e H2)
+  // is. Zeer korte artikelen krijgen geen inline CTA.
+  const longEnough = (post.reading_minutes ?? 0) >= 4 || toc.length >= 4;
+  const inlineParts = longEnough ? splitAtSecondH2(bodyHtml) : null;
+
   return (
     <article className="container post-detail article-detail">
       <ReadProgress />
@@ -358,16 +384,34 @@ export default function PostDetail() {
         </nav>
       )}
 
-      <div
-        className="prose article-body"
-        dangerouslySetInnerHTML={{ __html: bodyHtml }}
-      />
+      {inlineParts ? (
+        <>
+          <div className="prose article-body" dangerouslySetInnerHTML={{ __html: inlineParts[0] }} />
+          <ArticleInlineCta />
+          <div className="prose article-body" dangerouslySetInnerHTML={{ __html: inlineParts[1] }} />
+        </>
+      ) : (
+        <div className="prose article-body" dangerouslySetInnerHTML={{ __html: bodyHtml }} />
+      )}
 
-      <ArticleCalculatorCta />
+      {/* Compact adviesformulier aan het einde, vóór gerelateerde artikelen. */}
+      <div className="article-advice">
+        <AdviceForm
+          variant="compact"
+          headline="Wat betekent dit voor uw woning?"
+          text="Laat uw verbruik, zonnepanelen en teruglevering controleren en ontvang een persoonlijk eerste advies."
+          button="Vraag batterijadvies aan"
+          source="article_advice"
+          submitEvent="article_advice_submit"
+          articleSlug={post.slug}
+        />
+      </div>
 
       <RelatedPosts posts={post.related_posts} />
 
       <Comments slug={slug} />
+
+      <MobileStickyCta />
     </article>
   );
 }

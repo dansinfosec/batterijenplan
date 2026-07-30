@@ -4,6 +4,8 @@ import useFetch from "../hooks/useFetch.js";
 import { fetchPosts, fetchTags } from "../api.js";
 import { optimizedImageUrl } from "../images.js";
 import TagBar from "../components/TagBar.jsx";
+import AdviceForm from "../components/AdviceForm.jsx";
+import MobileStickyCta from "../components/MobileStickyCta.jsx";
 import {
   setPageMeta,
   setJsonLd,
@@ -321,6 +323,22 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── Sitewide lead-capture: gratis situatiecheck ── */}
+      <section className="hp-section hp-advice">
+        <div className="container">
+          <div className="hp-advice-inner">
+            <AdviceForm
+              variant="compact"
+              headline="Laat uw situatie gratis controleren"
+              text="Vertel ons kort over uw woning. We bekijken welke batterijcapaciteit en systeemopbouw logisch zijn."
+              button="Vraag gratis advies aan"
+              source="homepage_quick_check"
+              submitEvent="homepage_advice_submit"
+            />
+          </div>
+        </div>
+      </section>
+
       {/* ── Artikelen: editorial publicatielayout ── */}
       <section className="hp-articles" id="artikelen" ref={blogSectionRef}>
         <div className="container">
@@ -417,6 +435,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <MobileStickyCta />
     </>
   );
 }

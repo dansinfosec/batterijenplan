@@ -36,7 +36,16 @@ export function useLeadCapture() {
       [field]: e.target.type === "checkbox" ? e.target.checked : e.target.value,
     }));
 
-  const submit = async ({ calculatorInputs, calculatorResult }) => {
+  // source/trackingSource zijn optioneel met defaults die het bestaande
+  // calculator-gedrag EXACT behouden: zonder argumenten blijft de payload
+  // source "react_calculator" en het conversie-event lead_source
+  // "calculator_advies". De sitewide adviesformulieren geven eigen waarden mee.
+  const submit = async ({
+    calculatorInputs,
+    calculatorResult,
+    source = "react_calculator",
+    trackingSource = "calculator_advies",
+  } = {}) => {
     setError(null);
     if (!lead.consent) {
       setError("U moet akkoord gaan voordat wij contact mogen opnemen.");
@@ -54,13 +63,13 @@ export function useLeadCapture() {
         website: lead.website,
         calculator_inputs: calculatorInputs,
         calculator_result: calculatorResult,
-        source: "react_calculator",
+        source,
       });
       if (response && response.id && response.stage2_token) {
         setLeadMeta({ id: response.id, stage2_token: response.stage2_token });
       }
       setSent(true);
-      trackLeadSubmit("calculator_advies");
+      trackLeadSubmit(trackingSource);
       return true;
     } catch (err) {
       setError(err.message);
@@ -96,6 +105,15 @@ export default function LeadCaptureForm({
   variant = "inline",
   onDismiss,
   copy: copyOverride,
+  // Sitewide lead-CTA-opties (opt-in; calculator geeft ze niet mee en houdt
+  // dus zijn exacte gedrag). source/trackingSource sturen payload + conversie-
+  // event; compact verbergt het optionele bericht-veld; onStart vuurt bij de
+  // eerste focus (lead_form_start); onSubmitted vuurt ná een geslaagde inzending.
+  source,
+  trackingSource,
+  compact = false,
+  onStart,
+  onSubmitted,
 }) {
   const { lead, update, submit, sent, sending, error, validated, setValidated } = state;
   // Padspecifieke titel/tekst/knop (advies-check, handelscase, terugverdientijd)
@@ -107,14 +125,19 @@ export default function LeadCaptureForm({
     return (
       <div className={`lead-form lead-form-success lead-form--${variant}`}>
         <h2>Bedankt, wij nemen binnenkort contact met u op.</h2>
-        <p>Uw berekening is meegestuurd, zodat de specialist direct kan meekijken.</p>
+        <p>
+          {compact
+            ? "Wij nemen zo snel mogelijk contact met u op over uw situatie."
+            : "Uw berekening is meegestuurd, zodat de specialist direct kan meekijken."}
+        </p>
       </div>
     );
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    submit({ calculatorInputs, calculatorResult });
+    const ok = await submit({ calculatorInputs, calculatorResult, source, trackingSource });
+    if (ok && onSubmitted) onSubmitted();
   };
 
   return (
@@ -122,6 +145,7 @@ export default function LeadCaptureForm({
       className={`lead-form lead-form--${variant}${validated ? " form-validated" : ""}`}
       onSubmit={onSubmit}
       onInvalidCapture={() => setValidated(true)}
+      onFocusCapture={onStart ? () => onStart() : undefined}
     >
       <h2>{copy.title}</h2>
       <p>{copy.text}</p>
@@ -180,14 +204,16 @@ export default function LeadCaptureForm({
         </label>
       </div>
 
-      <label className="lead-message">
-        Bericht
-        <textarea
-          className="field-input"
-          value={lead.message} onChange={update("message")}
-          placeholder="Bijvoorbeeld: ik heb 12 zonnepanelen en een dynamisch contract."
-        />
-      </label>
+      {!compact && (
+        <label className="lead-message">
+          Bericht
+          <textarea
+            className="field-input"
+            value={lead.message} onChange={update("message")}
+            placeholder="Bijvoorbeeld: ik heb 12 zonnepanelen en een dynamisch contract."
+          />
+        </label>
+      )}
 
       {/* Honeypot: verborgen voor mensen, bots vullen hem in */}
       <label className="lead-website" aria-hidden="true">

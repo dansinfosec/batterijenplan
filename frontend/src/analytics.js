@@ -24,6 +24,14 @@ export function trackPageView(path) {
   });
 }
 
+// Generiek custom-event naar de dataLayer (zelfde uitgestelde mechanisme als de
+// rest: GTM verwerkt het pas ná toestemming). Gebruikt voor de sitewide
+// lead-CTA-events (lead_cta_click, lead_form_start, homepage_advice_submit,
+// article_advice_submit, mobile_sticky_click). Laadt GTM NIET vroeger.
+export function trackEvent(event, params = {}) {
+  dataLayerPush({ event, ...params });
+}
+
 // Lead/conversie: één semantisch event. In GTM hangen zowel de GA4-event-tag
 // als de Google Ads-conversietag aan de custom-event trigger "generate_lead".
 export function trackLeadSubmit(source = "calculator_advies") {
