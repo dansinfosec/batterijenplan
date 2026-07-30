@@ -68,8 +68,6 @@ const SUNNY_DAY_EXPORT_OPTIONS_BUSINESS = [
   { value: "unknown", label: "Ik weet het niet" },
 ];
 
-const MODAL_DELAY_MS = 4000;
-
 // ── Wizard-keuzelijsten ────────────────────────────────────────────────────
 const CONTRACT_TYPES = [
   { value: "fixed", label: "Vast" },
@@ -254,43 +252,6 @@ function CalcHelpCard({ onStart, className, variant }) {
   );
 }
 
-function LeadModal({ open, onClose, children }) {
-  useEffect(() => {
-    if (!open) return;
-
-    const onKey = (e) => {
-      if (e.key === "Escape") onClose();
-    };
-
-    document.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [open, onClose]);
-
-  if (!open) return null;
-
-  return (
-    <div className="lead-modal-backdrop" onClick={onClose}>
-      <div
-        className="lead-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-label="Gratis batterijadvies aanvragen"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button className="lead-modal-close" onClick={onClose} aria-label="Sluiten">
-          ×
-        </button>
-        {children}
-      </div>
-    </div>
-  );
-}
-
 export default function Calculator() {
   const [searchParams] = useSearchParams();
   const directAdvice = searchParams.get("advies") === "1";
@@ -326,12 +287,6 @@ export default function Calculator() {
   const [noSolarResult, setNoSolarResult] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
-
-  // Lead-magnet: na het teaser-resultaat blijft het detailrapport vergrendeld
-  // tot de bezoeker het leadformulier opent. false = alleen teaser + slot-
-  // kaarten + CTA; true = leadformulier zichtbaar.
-  const [leadUnlocked, setLeadUnlocked] = useState(false);
 
   const resultRef = useRef(null);
   const leadRef = useRef(null);
@@ -391,15 +346,16 @@ export default function Calculator() {
   }, [directAdvice]);
 
   // Eén identifier voor de zichtbare stap/toestand; stuurt de centrale scroll.
+  // Na verzenden: "success" (scrollt naar Stage 2). Zodra er een resultaat is:
+  // "result" (scrollt naar het rapport); het inline leadformulier staat er als
+  // vervolgstap direct onder. Het aparte "lead"-scrolldoel verviel met de gate.
   const activeStepKey = leadState.sent
     ? "success"
-    : leadUnlocked
-      ? "lead"
-      : activeResult
-        ? "result"
-        : hasSolar === null
-          ? "choice"
-          : stage;
+    : activeResult
+      ? "result"
+      : hasSolar === null
+        ? "choice"
+        : stage;
 
   // ── Centrale step-scroll ──
   // Draait ná render (useLayoutEffect) + twee requestAnimationFrames, zodat de
@@ -474,19 +430,6 @@ export default function Calculator() {
     };
   }, [showSunnyQuestion]);
 
-  // Popup ná het resultaat, maar alleen zolang het leadformulier nog niet
-  // inline is geopend: zodra de bezoeker op de CTA klikt, is het inline
-  // formulier leidend en zou de popup alleen maar storen.
-  useEffect(() => {
-    if (!activeResult || leadUnlocked || leadState.sent) return;
-
-    const timer = setTimeout(() => {
-      setModalOpen(true);
-    }, MODAL_DELAY_MS);
-
-    return () => clearTimeout(timer);
-  }, [activeResult, leadUnlocked, leadState.sent]);
-
   const update = (field) => (e) => {
     const value = e.target.value;
     if (field === "customer_type") {
@@ -512,9 +455,7 @@ export default function Calculator() {
     setResult(null);
     setLastInputs(null);
     setNoSolarResult(null);
-    setLeadUnlocked(false);
     setError(null);
-    setModalOpen(false);
   };
 
   // Klanttype wordt nu in stap 1 gekozen (voor beide zon-antwoorden), dus
@@ -640,7 +581,6 @@ export default function Calculator() {
     setLoading(true);
     setError(null);
     setResult(null);
-    setModalOpen(false);
 
     // "Beide" bestaat alleen in de UI; de API kent self_consumption/trading.
     // Mapping op trading (basis × 1,3) dekt beide doelen — formule ongewijzigd.
@@ -672,7 +612,6 @@ export default function Calculator() {
       return;
     }
     const usage = parseFloat(noSolarForm.yearly_usage);
-    setModalOpen(false);
     setError(null);
     setNoSolarResult({
       // Zonder zonnepanelen is teruglevering 0 kWh; expliciet vastleggen zodat
@@ -688,8 +627,6 @@ export default function Calculator() {
       ...noSolarIndication(usage, noSolarForm.contract_type, noSolarForm.goal),
     });
   };
-
-  const closeModal = () => setModalOpen(false);
 
   // ── Leaddata: het PUBLIEKE resultaat is een teaser, maar de lead-payload
   // blijft volledig — sales heeft alle rekendetails nodig. ──
@@ -713,9 +650,6 @@ export default function Calculator() {
             }
           : null)
       : result;
-
-  // De CTA opent het leadformulier (en scrollt ernaartoe via het effect).
-  const unlockLead = () => setLeadUnlocked(true);
 
   // Klanttype-/doellabels voor de teaser-chips.
   const customerTypeLabel =
@@ -776,11 +710,16 @@ export default function Calculator() {
 
       {/* Voortgang + terugknop (niet op stap 1 en niet op het resultaat) */}
       {hasSolar !== null && !activeResult && (
-        <div className="calc-wizard-bar">
-          <button type="button" className="calc-back-btn" onClick={goBack}>
-            ← Terug
-          </button>
-          <span className="mono calc-progress">{progressLabel}</span>
+        <div className="calc-wizard-progress">
+          <div className="calc-wizard-bar">
+            <button type="button" className="calc-back-btn" onClick={goBack}>
+              ← Terug
+            </button>
+            <span className="mono calc-progress">{progressLabel}</span>
+          </div>
+          <div className="calc-progress-track" aria-hidden="true">
+            <span style={{ width: `${(stepIndex / steps.length) * 100}%` }} />
+          </div>
         </div>
       )}
 
@@ -1039,37 +978,116 @@ export default function Calculator() {
 
       </div>
 
-      {/* ── Teaser-resultaat (publiek): alleen bevestiging + indicatieve range.
-          Terugverdientijd, maandvoordeel, product, prijs en financiering
-          worden telefonisch besproken en zitten achter het leadformulier. ── */}
+      {/* ── Resultaat als navolgbaar rapport: geadviseerde capaciteit, passend
+          systeem (model + capaciteit), de ingevoerde waarden, waarom deze
+          capaciteit en wat een specialist nog controleert. Prijs en exacte
+          terugverdientijd volgen via het adviesformulier hieronder — de
+          lead-payload (leadResult) blijft wél volledig. ── */}
       {activeResult && (
-        <div className="calc-result calc-teaser" ref={resultRef}>
-          <span className="mono calc-result-label">
-            {solarPath
-              ? "Uw eerste batterijadvies is klaar"
-              : "Uw situatie vraagt om extra controle"}
+        <section className="calc-report" ref={resultRef}>
+          <span className="mono calc-report-eyebrow">
+            {solarPath ? "Uw eerste batterijadvies" : "Uw eerste indicatie"}
           </span>
 
-          <p className="calc-teaser-text">
-            {solarPath
-              ? "Op basis van uw verbruik, teruglevering en gekozen doel hebben wij een eerste indicatie berekend. Voor de exacte terugverdientijd en beste batterijconfiguratie controleren wij uw situatie telefonisch."
-              : "Zonder zonnepanelen hangt de waarde van een batterij vooral af van dynamische sturing, energiecontract en zakelijk energiebeheer. Wij controleren dit telefonisch."}
-          </p>
-
-          <div className="calc-teaser-headline">
-            <span className="calc-card-label">Indicatieve capaciteit</span>
-            <b className="calc-card-value">
+          <div className="calc-report-headline">
+            <span className="calc-report-headline-label">Geadviseerde capaciteit</span>
+            <b className="calc-report-headline-value">
               {solarPath
                 ? `${result.lower_range} – ${result.upper_range} kWh`
                 : noSolarResult.range}
             </b>
+            <span className="calc-report-headline-note">
+              Indicatieve bandbreedte
+            </span>
           </div>
 
-          <div className="calc-teaser-meta">
-            <span className="calc-chip">{customerTypeLabel}</span>
-            {goalLabel && <span className="calc-chip">{goalLabel}</span>}
+          <div className="calc-report-rows">
+            <div className="calc-drow">
+              <span className="calc-drow-label">Passend systeem</span>
+              <span className="calc-drow-value">
+                {solarPath ? result.product_name : noSolarResult.productHint}
+              </span>
+            </div>
+            {solarPath && (
+              <div className="calc-drow">
+                <span className="calc-drow-label">Batterijcapaciteit</span>
+                <span className="calc-drow-value">{result.product_capacity}</span>
+              </div>
+            )}
+            <div className="calc-drow">
+              <span className="calc-drow-label">Doel</span>
+              <span className="calc-drow-value">
+                {solarPath ? result.goal_label : goalLabel || "—"}
+              </span>
+            </div>
+            <div className="calc-drow">
+              <span className="calc-drow-label">Klanttype</span>
+              <span className="calc-drow-value">{customerTypeLabel}</span>
+            </div>
           </div>
-        </div>
+
+          <div className="calc-report-section">
+            <p className="calc-report-subhead">Uw ingevoerde gegevens</p>
+            <div className="calc-report-rows">
+              <div className="calc-drow">
+                <span className="calc-drow-label">Jaarverbruik</span>
+                <span className="calc-drow-value">
+                  {solarPath ? lastInputs?.yearly_usage : noSolarResult.inputs.yearly_usage} kWh
+                </span>
+              </div>
+              <div className="calc-drow">
+                <span className="calc-drow-label">Teruglevering</span>
+                <span className="calc-drow-value">
+                  {solarPath
+                    ? `${lastInputs?.exported_energy} kWh`
+                    : "0 kWh (geen zonnepanelen)"}
+                </span>
+              </div>
+              {solarPath && (
+                <div className="calc-drow">
+                  <span className="calc-drow-label">Teruglevering per zonnige dag</span>
+                  <span className="calc-drow-value">± {result.daily_export} kWh</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="calc-report-section calc-report-why">
+            <p className="calc-report-subhead">Waarom deze capaciteit?</p>
+            {solarPath ? (
+              <>
+                <p>{result.explanation}</p>
+                {result.extra_notes?.map((note, i) => (
+                  <p key={i} className="calc-report-note">{note}</p>
+                ))}
+                {result.note && <p className="calc-report-note">{result.note}</p>}
+              </>
+            ) : (
+              <>
+                <p>
+                  Zonder zonnepanelen hangt de waarde van een batterij vooral af
+                  van dynamische sturing, uw energiecontract en zakelijk
+                  energiebeheer.
+                </p>
+                {noSolarResult.notes?.map((note, i) => (
+                  <p key={i} className="calc-report-note">{note}</p>
+                ))}
+              </>
+            )}
+          </div>
+
+          <div className="calc-report-section">
+            <p className="calc-report-subhead">
+              Wat wij controleren voor een definitief advies
+            </p>
+            <ul className="calc-check-list">
+              <li>Zonnepanelen en werkelijke teruglevering</li>
+              <li>Netaansluiting en omvormervermogen</li>
+              <li>EMS-sturing en energiecontract</li>
+              <li>Uw toekomstige verbruik (EV, warmtepomp)</li>
+            </ul>
+          </div>
+        </section>
       )}
 
       {/* ── Na verzenden: Stage 2-analysevragen (of de bestaande bedankkaart
@@ -1091,31 +1109,21 @@ export default function Calculator() {
         </div>
       )}
 
-      {/* ── Gated CTA: opent het leadformulier ── */}
-      {activeResult && !leadState.sent && !leadUnlocked && (
-        <section className="calc-report-cta">
-          <h2>Laat uw batterijadvies gratis controleren</h2>
-          <p>
-            Wij controleren uw berekening telefonisch op basis van uw
-            zonnepanelen, teruglevering, energiecontract, netaansluiting,
-            omvormervermogen en EMS-sturing.
-          </p>
-          <button type="button" className="cta-button cta-button-sm" onClick={unlockLead}>
-            Plan gratis batterijadvies
-          </button>
-          <p className="calc-report-cta-sub">Gratis en vrijblijvend · Telefonisch advies</p>
-        </section>
-      )}
-
-      {/* ── Leadformulier: de stap die het persoonlijke rapport ontgrendelt ── */}
-      {((activeResult && leadUnlocked && !leadState.sent) ||
-        (directAdvice && !activeResult)) && (
-        <div id="advies" ref={leadRef}>
+      {/* ── Volgende stap: leadformulier inline (geen popup, geen gate).
+          Positioneert het als de logische vervolgstap ná het advies: hier
+          ontvangt de bezoeker prijs en terugverdientijd. Alle indien-/payload-
+          logica (leadInputs/leadResult, GA4/Ads-events) blijft ongewijzigd. ── */}
+      {((activeResult && !leadState.sent) || (directAdvice && !activeResult)) && (
+        <div id="advies" ref={leadRef} className="calc-next-step">
           {activeResult && (
-            <p className="calc-lead-microcopy">
-              Laat uw gegevens achter, dan bespreken wij uw persoonlijke
-              berekening telefonisch.
-            </p>
+            <div className="calc-next-step-head">
+              <span className="mono calc-next-step-eyebrow">Volgende stap</span>
+              <p className="calc-lead-microcopy">
+                Ontvang uw persoonlijke prijs en terugverdientijd. Laat uw
+                gegevens achter, dan bespreken wij uw berekening — gratis en
+                vrijblijvend.
+              </p>
+            </div>
           )}
           <LeadCaptureForm
             state={leadState}
@@ -1267,16 +1275,6 @@ export default function Calculator() {
         </div>
       </section>
 
-      <LeadModal open={modalOpen && !leadState.sent} onClose={closeModal}>
-        <LeadCaptureForm
-          state={leadState}
-          calculatorInputs={leadInputs}
-          calculatorResult={leadResult}
-          variant="modal"
-          copy={activeResult ? leadCopy : undefined}
-          onDismiss={closeModal}
-        />
-      </LeadModal>
     </article>
   );
 }

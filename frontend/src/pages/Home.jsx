@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import useFetch from "../hooks/useFetch.js";
 import { fetchPosts, fetchTags } from "../api.js";
-import PostCard from "../components/PostCard.jsx";
+import { optimizedImageUrl } from "../images.js";
 import TagBar from "../components/TagBar.jsx";
+import AdviceForm from "../components/AdviceForm.jsx";
+import MobileStickyCta from "../components/MobileStickyCta.jsx";
 import {
   setPageMeta,
   setJsonLd,
@@ -12,96 +14,117 @@ import {
   DEFAULT_IMAGE,
 } from "../seo.js";
 
-// Trust-/adviescijfers in de hero — bewust hardcoded, geen admin/API/CMS.
-// Bewust geen garanties: alles is "doorgerekend" of "inzichtelijk gemaakt",
-// op basis van de situatie.
-const HERO_TRUST_CARDS = [
+// ── Statische content (geen API/CMS) ──────────────────────────────────────
+// Bewust geen harde beloftes of verzonnen cijfers. De voorbeeldberekening in
+// de hero is expliciet gelabeld als "Voorbeeldberekening".
+const STEPS = [
   {
-    id: "opslag",
-    value: "1.000+ kWh",
-    title: "Opslag uitgelegd",
-    text: "Voor klanten doorgerekend en uitgelegd: van kleine thuisbatterijen tot grotere opslagoplossingen.",
-    detail: "Capaciteit · teruglevering · verbruik",
-    panel: {
-      title: "Wat betekent opslag uitgelegd?",
-      text:
-        "Bij batterijadvies draait het niet alleen om een product, maar om de " +
-        "juiste capaciteit. Batterijenplan kijkt naar verbruik, teruglevering, " +
-        "zonnepanelen en toekomstplannen. Zo wordt duidelijk hoeveel opslag " +
-        "logisch is en waarom groter niet altijd beter is.",
-    },
+    num: "01",
+    title: "Uw energiegegevens",
+    text: "Verbruik, zonnepanelen en teruglevering vormen de basis.",
   },
   {
-    id: "dagwaarde",
-    value: "€350+ / dag",
-    title: "Dagwaarde inzichtelijk",
-    text: "Besparingspotentieel en batterijwaarde inzichtelijk gemaakt op basis van verbruik, teruglevering en contractvorm.",
-    detail: "Geen belofte · wel rekenwerk",
-    panel: {
-      title: "Waarom dagwaarde inzichtelijk maken?",
-      text:
-        "De waarde van een batterij verschilt per situatie. Op basis van " +
-        "teruglevering, stroomprijzen, eigen verbruik en contractvorm kan " +
-        "worden doorgerekend wat slim opslaan mogelijk betekent. Dit is geen " +
-        "vaste belofte, maar een praktische indicatie.",
-    },
+    num: "02",
+    title: "Uw energiedoel",
+    text: "Kies tussen meer eigen verbruik, dynamische prijzen of toekomstige uitbreiding.",
   },
   {
-    id: "salderen",
-    value: "01-01-2027",
-    title: "Salderen stopt",
-    text: "Vanaf 2027 verandert de rol van teruglevering. Eigen verbruik en slim opslaan worden belangrijker.",
-    detail: "Nederlandse regels · terugleverkosten · netbelasting",
-    panel: {
-      title: "Wat verandert er met salderen?",
-      text:
-        "Vanaf 1 januari 2027 stopt de salderingsregeling. Daardoor wordt het " +
-        "belangrijker om meer eigen zonnestroom direct te gebruiken of " +
-        "tijdelijk op te slaan. Een thuisbatterij kan daarbij helpen, " +
-        "afhankelijk van uw situatie.",
-    },
+    num: "03",
+    title: "Uw batterijadvies",
+    text: "Ontvang een passende indicatie voor capaciteit en systeemopbouw.",
   },
 ];
 
-// Alleen de kaartenrij; het uitlegpaneel staat los onder de hero-grid zodat
-// het de twee kolommen (content links, batterij rechts) niet verdringt.
-function TrustCards({ activeId, onToggle }) {
+const COMPARE_POINTS = [
+  {
+    term: "Bruikbare capaciteit",
+    text: "Niet de bruto-kWh, maar wat u werkelijk kunt gebruiken (ontlaaddiepte).",
+  },
+  {
+    term: "Laad- en ontlaadvermogen",
+    text: "Hoe snel de batterij kan laden en leveren, uitgedrukt in kW.",
+  },
+  {
+    term: "Garantie en restcapaciteit",
+    text: "Aantal cycli of jaren en de capaciteit die daarna gegarandeerd overblijft.",
+  },
+  {
+    term: "EMS en slimme aansturing",
+    text: "Sturing op verbruik, teruglevering en dynamische stroomprijzen.",
+  },
+  {
+    term: "Uitbreidbaarheid",
+    text: "Kunt u later modules bijplaatsen als uw verbruik groeit?",
+  },
+  {
+    term: "Compatibiliteit met omvormer en woning",
+    text: "Past het systeem bij uw omvormer, meterkast en netaansluiting?",
+  },
+];
+
+const METHOD_FACTORS = [
+  { factor: "Jaarlijks stroomverbruik", unit: "kWh / jaar" },
+  { factor: "Teruglevering", unit: "kWh / jaar" },
+  { factor: "Zonnepanelen", unit: "vermogen / aantal" },
+  { factor: "Energiecontract", unit: "vast / dynamisch" },
+  { factor: "Energieverlies", unit: "rendement" },
+  { factor: "Toekomstig verbruik", unit: "EV / warmtepomp" },
+];
+
+function prefersReducedMotion() {
   return (
-    <div className="trust-strip">
-      <div className="trust-cards">
-        {HERO_TRUST_CARDS.map((card) => {
-          const isActive = card.id === activeId;
-          return (
-            <button
-              key={card.id}
-              type="button"
-              className={`trust-card${isActive ? " active" : ""}`}
-              aria-expanded={isActive}
-              aria-controls="trust-panel"
-              onClick={() => onToggle(card.id)}
-            >
-              <span className="trust-title">{card.title}</span>
-              <b className="trust-value">{card.value}</b>
-              <span className="trust-text">{card.text}</span>
-              <span className="trust-detail">{card.detail}</span>
-              <span className="trust-chev" aria-hidden="true">▾</span>
-            </button>
-          );
-        })}
-      </div>
-    </div>
+    typeof window !== "undefined" &&
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
+}
+
+// Compacte voorbeeldberekening — volledig in HTML/CSS opgebouwd (geen
+// afbeelding), zodat er geen extra netwerk- of LCP-kosten zijn.
+function CalculationPreview() {
+  return (
+    <aside className="hp-preview" aria-label="Voorbeeldberekening">
+      <div className="hp-preview-head">
+        <span className="hp-preview-title">Energieprofiel</span>
+        <span className="hp-preview-tag">Voorbeeldberekening</span>
+      </div>
+      <div className="hp-prow">
+        <span className="hp-prow-label">Jaarverbruik</span>
+        <span className="hp-prow-value">4.500 kWh</span>
+      </div>
+      <div className="hp-prow">
+        <span className="hp-prow-label">Teruglevering</span>
+        <span className="hp-prow-value">3.200 kWh</span>
+      </div>
+      <div className="hp-prow">
+        <span className="hp-prow-label">Doel</span>
+        <span className="hp-prow-value">Meer eigen stroom</span>
+      </div>
+      <div className="hp-prow hp-prow--result">
+        <span className="hp-prow-label">Indicatief advies</span>
+        <span className="hp-result-value">14 kWh</span>
+      </div>
+    </aside>
+  );
+}
+
+function formatDate(value) {
+  if (!value) return "";
+  return new Date(value).toLocaleDateString("nl-NL", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 }
 
 export default function Home() {
   const [tag, setTag] = useState(null);
-  const [activeTrustId, setActiveTrustId] = useState(null);
-  const activeTrustCard = HERO_TRUST_CARDS.find((c) => c.id === activeTrustId);
+  const location = useLocation();
 
   // Perf: de bloglijst/tags staan onder de vouw. De API-calls starten pas
-  // wanneer de blogsectie in de buurt van de viewport komt (600px marge),
+  // wanneer de artikelensectie in de buurt van de viewport komt (600px marge),
   // zodat /api/posts/ en /api/tags/ volledig uit het kritieke laadpad van
-  // de hero (het LCP-element) verdwijnen.
+  // de hero verdwijnen.
   const [fetchReady, setFetchReady] = useState(false);
   const blogSectionRef = useRef(null);
   useEffect(() => {
@@ -144,91 +167,276 @@ export default function Home() {
     setJsonLd([ORGANIZATION_SCHEMA, WEBSITE_SCHEMA]);
   }, []);
 
+  // Anker-navigatie vanuit de header (/#artikelen, /#rekenmethode): scroll naar
+  // de sectie zodra hij bestaat. De secties staan altijd in de DOM (ook vóór de
+  // lazy fetch), dus dit werkt ook direct na een navigatie van een andere pagina.
+  useEffect(() => {
+    if (!location.hash) return;
+    const id = location.hash.slice(1);
+    const el = document.getElementById(id);
+    if (!el) return;
+    requestAnimationFrame(() => {
+      el.scrollIntoView({
+        behavior: prefersReducedMotion() ? "auto" : "smooth",
+        block: "start",
+      });
+    });
+  }, [location.hash]);
+
   const items = posts.data?.results ?? posts.data ?? [];
+  const featured = items[0];
+  const supporting = items.slice(1, 5);
 
   return (
     <>
-      <section className="hero">
+      {/* ── Hero: compacte editorial hero + voorbeeldberekening ── */}
+      <section className="hp-hero">
         <div className="container">
-          <div className="hero-grid">
-            <div className="hero-content">
-              <p className="mono" style={{ color: "var(--volt-dk)", marginBottom: 16 }}>
-                Kennisbank · thuisbatterijen · dynamische contracten
-              </p>
+          <div className="hp-hero-grid">
+            <div className="hp-hero-content">
+              <span className="hp-kicker">
+                Onafhankelijk · thuisbatterijen · dynamische contracten
+              </span>
               <h1>
-                Sla je energie slim op met een{" "}
-                <span className="accent">thuisbatterij</span>
+                Bereken welke <span className="accent">thuisbatterij</span> bij uw
+                woning past
               </h1>
-              <p className="sub">
-                Onafhankelijke uitleg over thuisbatterijen, zonnepanelen en
-                dynamische energiecontracten. Geen verkooppraat, wel getallen.
+              <p className="hp-hero-sub">
+                Ontvang een persoonlijk capaciteitsadvies op basis van uw
+                stroomverbruik, teruglevering en energiedoel.
               </p>
-              <Link to="/calculator" className="cta-button">
-                Bereken uw thuisbatterij
-              </Link>
-              <p className="cta-inline mono" style={{ marginTop: 16 }}>
-                Liever persoonlijk contact?{" "}
-                <Link to="/contact">Vraag gratis advies aan.</Link>
+              <div className="hp-hero-actions">
+                <Link to="/calculator" className="hp-btn">
+                  Bereken uw thuisbatterij
+                  <span aria-hidden="true" className="hp-btn-arrow">→</span>
+                </Link>
+                <Link to="/#rekenmethode" className="hp-link">
+                  Bekijk hoe de berekening werkt
+                </Link>
+              </div>
+              <p className="hp-hero-note">
+                Binnen enkele minuten een eerste indicatie
               </p>
-              <TrustCards
-                activeId={activeTrustId}
-                onToggle={(id) => setActiveTrustId(activeTrustId === id ? null : id)}
-              />
             </div>
 
-            <div className="hero-visual" aria-hidden="true">
-              <div className="hero-battery">
-                <div className="charge" />
+            {/* Bron-volgorde: op mobiel verschijnt de preview automatisch ónder
+                de tekst + CTA; op desktop staat hij rechts naast de tekst. */}
+            <CalculationPreview />
+          </div>
+        </div>
+      </section>
+
+      {/* ── Van energieprofiel naar batterijadvies ── */}
+      <section className="hp-section">
+        <div className="container">
+          <div className="hp-section-head">
+            <h2 className="hp-h2">Van energieprofiel naar batterijadvies</h2>
+          </div>
+          <div className="hp-steps">
+            {STEPS.map((step) => (
+              <div className="hp-step" key={step.num}>
+                <span className="hp-step-num">{step.num}</span>
+                <span className="hp-step-title">{step.title}</span>
+                <p className="hp-step-text">{step.text}</p>
+              </div>
+            ))}
+          </div>
+          <div className="hp-section-cta">
+            <Link to="/calculator" className="hp-link">
+              Start de berekening
+              <span aria-hidden="true" className="hp-link-arrow">→</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Vergelijken op meer dan capaciteit ── */}
+      <section className="hp-section">
+        <div className="container">
+          <div className="hp-section-head">
+            <h2 className="hp-h2">
+              Een thuisbatterij vergelijkt u op meer dan capaciteit
+            </h2>
+            <p className="hp-section-intro">
+              Capaciteit is maar één maatstaf. Voor een eerlijke vergelijking
+              telt vooral hoe een systeem zich in de praktijk gedraagt.
+            </p>
+          </div>
+          <div className="hp-compare-list">
+            {COMPARE_POINTS.map((point) => (
+              <div className="hp-compare-item" key={point.term}>
+                <div className="hp-compare-term">{point.term}</div>
+                <p className="hp-compare-text">{point.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Methodiek: berekeningen die u kunt volgen ── */}
+      <section className="hp-method" id="rekenmethode">
+        <div className="container">
+          <div className="hp-method-grid">
+            <div>
+              <span className="hp-kicker">Rekenmethode</span>
+              <h2 className="hp-h2">Berekeningen die u kunt volgen</h2>
+              <p className="hp-section-intro">
+                Wij rekenen niet met vaste beloftes, maar met uw eigen situatie.
+                Voor een passend batterijadvies kijken wij naar:
+              </p>
+              <ul className="hp-method-intro-list">
+                <li>Jaarlijks stroomverbruik</li>
+                <li>Teruglevering</li>
+                <li>Zonnepanelen</li>
+                <li>Energiecontract</li>
+                <li>Energieverlies</li>
+                <li>Toekomstig verbruik</li>
+              </ul>
+              <div className="hp-section-cta">
+                {/* Er bestaat (nog) geen aparte rekenmethode-route. Bewust naar de
+                    calculator gelinkt i.p.v. een gebroken route aan te maken;
+                    vervang dit door de methodiek-pagina zodra die bestaat. */}
+                <Link to="/calculator" className="hp-link">
+                  Bekijk de rekenmethode
+                  <span aria-hidden="true" className="hp-link-arrow">→</span>
+                </Link>
+              </div>
+            </div>
+
+            <div className="hp-sheet" aria-hidden="true">
+              <div className="hp-sheet-head">
+                <span>Rekenbladen</span>
+                <span>Invoer → advies</span>
+              </div>
+              {METHOD_FACTORS.map((row) => (
+                <div className="hp-sheet-row" key={row.factor}>
+                  <span className="hp-sheet-factor">{row.factor}</span>
+                  <span className="hp-sheet-unit">{row.unit}</span>
+                </div>
+              ))}
+              <div className="hp-sheet-total">
+                <span className="hp-sheet-factor">Passend batterijadvies</span>
+                <span className="hp-sheet-unit">kWh-capaciteit</span>
               </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          {activeTrustCard && (
-            <div
-              className="trust-panel"
-              id="trust-panel"
-              role="region"
-              aria-label={activeTrustCard.panel.title}
-            >
-              <h2>{activeTrustCard.panel.title}</h2>
-              <p>{activeTrustCard.panel.text}</p>
-              <Link to="/calculator" className="cta-button cta-button-sm">
-                Bereken uw thuisbatterij
-              </Link>
+      {/* ── Sitewide lead-capture: gratis situatiecheck ── */}
+      <section className="hp-section hp-advice">
+        <div className="container">
+          <div className="hp-advice-inner">
+            <AdviceForm
+              variant="compact"
+              headline="Laat uw situatie gratis controleren"
+              text="Vertel ons kort over uw woning. We bekijken welke batterijcapaciteit en systeemopbouw logisch zijn."
+              button="Vraag gratis advies aan"
+              source="homepage_quick_check"
+              submitEvent="homepage_advice_submit"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ── Artikelen: editorial publicatielayout ── */}
+      <section className="hp-articles" id="artikelen" ref={blogSectionRef}>
+        <div className="container">
+          <div className="hp-section-head">
+            <h2 className="hp-h2">Artikelen over thuisbatterijen en energieopslag</h2>
+            <p className="hp-section-intro">
+              Praktische kennis over batterijopslag, EMS en dynamische
+              energiecontracten — zonder verkooppraat, wel getallen.
+            </p>
+          </div>
+
+          <TagBar tags={tags.data} active={tag} onSelect={setTag} />
+
+          {posts.loading && (
+            <div className="state mono"><span className="blink">▮▮▮</span> laden…</div>
+          )}
+          {posts.error && (
+            <div className="state">
+              Kan de artikelen niet laden. Draait de Django-server op poort 8000?
+            </div>
+          )}
+          {!posts.loading && !posts.error && items.length === 0 && (
+            <div className="state">
+              Nog geen gepubliceerde artikelen. Maak er één aan in de Django-admin.
+            </div>
+          )}
+
+          {items.length > 0 && (
+            <div className="hp-articles-grid">
+              {featured && (
+                <Link to={`/post/${featured.slug}`} className="hp-feature">
+                  {featured.cover_image_url && (
+                    <div className="hp-feature-media">
+                      <img
+                        src={optimizedImageUrl(featured.cover_image_url, 800)}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        onError={(e) => { e.currentTarget.style.display = "none"; }}
+                      />
+                    </div>
+                  )}
+                  <div className="hp-feature-body">
+                    {featured.tags?.length > 0 && (
+                      <span className="hp-tag">{featured.tags[0]}</span>
+                    )}
+                    <h3>{featured.title}</h3>
+                    {featured.excerpt && (
+                      <p className="hp-feature-excerpt">{featured.excerpt}</p>
+                    )}
+                    <span className="hp-meta">
+                      {formatDate(featured.published_at)}
+                      {featured.reading_minutes
+                        ? ` · ${featured.reading_minutes} min leestijd`
+                        : ""}
+                    </span>
+                  </div>
+                </Link>
+              )}
+
+              {supporting.length > 0 && (
+                <div className="hp-article-list">
+                  {supporting.map((p) => (
+                    <Link key={p.id} to={`/post/${p.slug}`} className="hp-article">
+                      <div className="hp-article-top">
+                        {p.tags?.length > 0 && <span className="hp-tag">{p.tags[0]}</span>}
+                        <span className="hp-meta">{formatDate(p.published_at)}</span>
+                      </div>
+                      <h4>{p.title}</h4>
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>
       </section>
 
-      <div className="container" ref={blogSectionRef}>
-        <div className="blog-intro">
-          <h2>Laatste artikelen over thuisbatterijen en energieopslag</h2>
-          <p>
-            Praktische kennis over batterijopslag, EMS en dynamische
-            energiecontracten — zonder verkooppraat, wel getallen.
-          </p>
-        </div>
-
-        <TagBar tags={tags.data} active={tag} onSelect={setTag} />
-
-        {posts.loading && (
-          <div className="state mono"><span className="blink">▮▮▮</span> laden…</div>
-        )}
-        {posts.error && (
-          <div className="state">
-            Kan de artikelen niet laden. Draait de Django-server op poort 8000?
+      {/* ── Afsluitende CTA ── */}
+      <section className="hp-final">
+        <div className="container">
+          <div className="hp-final-inner">
+            <div className="hp-final-text">
+              <h2>Klaar om uw batterijcapaciteit te berekenen?</h2>
+              <p>
+                Gebruik uw eigen verbruik en teruglevering voor een persoonlijk
+                eerste advies.
+              </p>
+            </div>
+            <Link to="/calculator" className="hp-btn">
+              Start de berekening
+              <span aria-hidden="true" className="hp-btn-arrow">→</span>
+            </Link>
           </div>
-        )}
-        {!posts.loading && !posts.error && items.length === 0 && (
-          <div className="state">
-            Nog geen gepubliceerde artikelen. Maak er één aan in de Django-admin.
-          </div>
-        )}
-
-        <div className="post-grid">
-          {items.map((p) => <PostCard key={p.id} post={p} />)}
         </div>
-      </div>
+      </section>
+
+      <MobileStickyCta />
     </>
   );
 }

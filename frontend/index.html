@@ -79,26 +79,26 @@
          shell verschuift de pagina eronder niet — dat hield CLS op ~0.77. */
       /* Alleen directe systeemfonts: de shell-H1 (LCP) mag nooit wachten op
          Google Fonts of op variabelen uit de CSS-bundle. */
+      /* Geometrie spiegelt de nieuwe React-hero (.hp-hero) zodat de swap geen
+         layout shift geeft. Alleen systeemfonts (Arial): de shell-H1 (LCP) mag
+         nooit wachten op Google Fonts of op de CSS-bundle. */
       #static-home-shell,#static-home-shell *{font-family:Arial,Helvetica,sans-serif}
-      #static-home-shell{position:fixed;inset:0;z-index:9999;overflow:hidden;background:#F7F6F2;color:#12130F;line-height:1.7;-webkit-font-smoothing:antialiased}
+      #static-home-shell{position:fixed;inset:0;z-index:9999;overflow:hidden;background:#F7F6F2;color:#12130F;line-height:1.55;-webkit-font-smoothing:antialiased}
       #static-home-shell .shs-w{max-width:1080px;margin:0 auto;padding:0 20px}
-      #static-home-shell .shs-header{border-bottom:2px solid #12130F}
-      #static-home-shell .shs-brand{display:flex;align-items:center;height:64px;font-weight:900;font-size:20px;letter-spacing:-.02em}
-      #static-home-shell .shs-hero{border-bottom:2px solid #12130F;padding:44px 0 48px}
-      #static-home-shell h1{font-weight:900;font-size:clamp(34px,10vw,48px);line-height:.98;letter-spacing:-.03em;text-transform:uppercase;max-width:12ch;margin:0}
+      #static-home-shell .shs-header{border-bottom:1px solid rgba(18,19,15,.12)}
+      #static-home-shell .shs-brand{display:flex;align-items:center;height:64px;font-weight:700;font-size:20px;letter-spacing:-.02em}
+      #static-home-shell .shs-hero{border-bottom:1px solid rgba(18,19,15,.12);padding:44px 0}
+      #static-home-shell h1{font-weight:700;font-size:clamp(30px,8vw,44px);line-height:1.05;letter-spacing:-.02em;max-width:16ch;margin:0}
       #static-home-shell h1 span{color:#B4592E}
-      #static-home-shell .shs-sub{margin:18px 0 0;max-width:52ch;font-size:16px;color:#4C4D46}
-      #static-home-shell .shs-cta{display:block;margin-top:26px;padding:15px 20px;text-align:center;font-weight:900;font-size:16px;text-transform:uppercase;letter-spacing:.04em;text-decoration:none;color:#12130F;background:#FFD100;border:3px solid #12130F;border-radius:8px;box-shadow:5px 5px 0 #12130F}
-      #static-home-shell .shs-stats{margin-top:28px;display:flex;flex-wrap:wrap;gap:16px 24px}
-      #static-home-shell .shs-stats div{border-left:3px solid #FFD100;padding-left:12px}
-      #static-home-shell .shs-stats b{display:block;font-size:20px}
-      #static-home-shell .shs-stats span{font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+      #static-home-shell .shs-sub{margin:20px 0 0;max-width:52ch;font-size:16px;color:#4C4D46}
+      #static-home-shell .shs-cta{display:block;margin-top:26px;padding:13px 20px;text-align:center;font-weight:700;font-size:16px;text-decoration:none;color:#12130F;background:#FFD100;border:1px solid #12130F;border-radius:6px}
+      #static-home-shell .shs-note{margin:20px 0 0;font-size:12px;letter-spacing:.04em;color:#4C4D46}
       @media(min-width:641px){
-        #static-home-shell .shs-hero{padding:64px 0}
-        #static-home-shell h1{font-size:clamp(40px,7vw,84px)}
-        #static-home-shell .shs-sub{margin-top:24px;font-size:18px}
-        #static-home-shell .shs-cta{display:inline-block;margin-top:32px;padding:16px 32px;font-size:18px}
-        #static-home-shell .shs-stats{margin-top:40px;gap:32px}
+        #static-home-shell .shs-hero{padding:56px 0 52px}
+        #static-home-shell h1{font-size:clamp(32px,5vw,52px);line-height:1.04}
+        #static-home-shell .shs-sub{margin-top:20px;font-size:18px}
+        #static-home-shell .shs-cta{display:inline-block;margin-top:28px;padding:13px 22px;font-size:16px}
+        #static-home-shell .shs-note{margin-top:20px}
       }
     </style>
   </head>
@@ -114,21 +114,17 @@
          door React opgeruimd zodra de app gemount is (App.jsx). -->
     <div id="static-home-shell">
       <div class="shs-header">
-        <div class="shs-w"><span class="shs-brand">Batterijenplan.nl</span></div>
+        <div class="shs-w"><span class="shs-brand">Batterijenplan</span></div>
       </div>
       <section class="shs-hero">
         <div class="shs-w">
-          <h1>Sla je <span>energie</span> slim op</h1>
+          <h1>Bereken welke <span>thuisbatterij</span> bij uw woning past</h1>
           <p class="shs-sub">
-            Onafhankelijke uitleg over thuisbatterijen, zonnepanelen en
-            dynamische energiecontracten. Geen verkooppraat, wel getallen.
+            Ontvang een persoonlijk capaciteitsadvies op basis van uw
+            stroomverbruik, teruglevering en energiedoel.
           </p>
           <a class="shs-cta" href="/calculator">Bereken uw thuisbatterij</a>
-          <div class="shs-stats">
-            <div><b>1.000+ kWh</b><span>Opslag uitgelegd</span></div>
-            <div><b>€350+ / dag</b><span>Dagwaarde inzichtelijk</span></div>
-            <div><b>01-01-2027</b><span>Salderen stopt</span></div>
-          </div>
+          <p class="shs-note">Binnen enkele minuten een eerste indicatie</p>
         </div>
       </section>
     </div>

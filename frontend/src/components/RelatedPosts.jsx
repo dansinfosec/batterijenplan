@@ -6,12 +6,16 @@ import { Link } from "react-router-dom";
 export default function RelatedPosts({ posts }) {
   if (!posts?.length) return null;
 
+  // Maximaal drie gerelateerde artikelen (data komt kant-en-klaar van de API:
+  // voorkeur voor overlappende tags, aangevuld met recente posts).
+  const items = posts.slice(0, 3);
+
   return (
     <section className="related-posts">
       <h2>Gerelateerde artikelen</h2>
 
       <div className="related-posts-grid">
-        {posts.map((post) => (
+        {items.map((post) => (
           <Link key={post.slug} to={`/post/${post.slug}`} className="related-post-card">
             {post.tags?.length > 0 && (
               <span className="related-post-tag mono">{post.tags[0]}</span>
