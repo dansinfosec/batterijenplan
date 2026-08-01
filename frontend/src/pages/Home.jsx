@@ -2,10 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import useFetch from "../hooks/useFetch.js";
 import { fetchPosts, fetchTags } from "../api.js";
-import { optimizedImageUrl } from "../images.js";
-import TagBar from "../components/TagBar.jsx";
-import AdviceForm from "../components/AdviceForm.jsx";
 import MobileStickyCta from "../components/MobileStickyCta.jsx";
+import BatteryPreview from "../components/home/BatteryPreview.jsx";
+import AdviceJourney from "../components/home/AdviceJourney.jsx";
+import CapacityCompare from "../components/home/CapacityCompare.jsx";
+import CalcTransparency from "../components/home/CalcTransparency.jsx";
+import LeadSection from "../components/home/LeadSection.jsx";
+import ArticlesSection from "../components/home/ArticlesSection.jsx";
 import {
   setPageMeta,
   setJsonLd,
@@ -14,107 +17,12 @@ import {
   DEFAULT_IMAGE,
 } from "../seo.js";
 
-// ── Statische content (geen API/CMS) ──────────────────────────────────────
-// Bewust geen harde beloftes of verzonnen cijfers. De voorbeeldberekening in
-// de hero is expliciet gelabeld als "Voorbeeldberekening".
-const STEPS = [
-  {
-    num: "01",
-    title: "Uw energiegegevens",
-    text: "Verbruik, zonnepanelen en teruglevering vormen de basis.",
-  },
-  {
-    num: "02",
-    title: "Uw energiedoel",
-    text: "Kies tussen meer eigen verbruik, dynamische prijzen of toekomstige uitbreiding.",
-  },
-  {
-    num: "03",
-    title: "Uw batterijadvies",
-    text: "Ontvang een passende indicatie voor capaciteit en systeemopbouw.",
-  },
-];
-
-const COMPARE_POINTS = [
-  {
-    term: "Bruikbare capaciteit",
-    text: "Niet de bruto-kWh, maar wat u werkelijk kunt gebruiken (ontlaaddiepte).",
-  },
-  {
-    term: "Laad- en ontlaadvermogen",
-    text: "Hoe snel de batterij kan laden en leveren, uitgedrukt in kW.",
-  },
-  {
-    term: "Garantie en restcapaciteit",
-    text: "Aantal cycli of jaren en de capaciteit die daarna gegarandeerd overblijft.",
-  },
-  {
-    term: "EMS en slimme aansturing",
-    text: "Sturing op verbruik, teruglevering en dynamische stroomprijzen.",
-  },
-  {
-    term: "Uitbreidbaarheid",
-    text: "Kunt u later modules bijplaatsen als uw verbruik groeit?",
-  },
-  {
-    term: "Compatibiliteit met omvormer en woning",
-    text: "Past het systeem bij uw omvormer, meterkast en netaansluiting?",
-  },
-];
-
-const METHOD_FACTORS = [
-  { factor: "Jaarlijks stroomverbruik", unit: "kWh / jaar" },
-  { factor: "Teruglevering", unit: "kWh / jaar" },
-  { factor: "Zonnepanelen", unit: "vermogen / aantal" },
-  { factor: "Energiecontract", unit: "vast / dynamisch" },
-  { factor: "Energieverlies", unit: "rendement" },
-  { factor: "Toekomstig verbruik", unit: "EV / warmtepomp" },
-];
-
 function prefersReducedMotion() {
   return (
     typeof window !== "undefined" &&
     typeof window.matchMedia === "function" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
-}
-
-// Compacte voorbeeldberekening — volledig in HTML/CSS opgebouwd (geen
-// afbeelding), zodat er geen extra netwerk- of LCP-kosten zijn.
-function CalculationPreview() {
-  return (
-    <aside className="hp-preview" aria-label="Voorbeeldberekening">
-      <div className="hp-preview-head">
-        <span className="hp-preview-title">Energieprofiel</span>
-        <span className="hp-preview-tag">Voorbeeldberekening</span>
-      </div>
-      <div className="hp-prow">
-        <span className="hp-prow-label">Jaarverbruik</span>
-        <span className="hp-prow-value">4.500 kWh</span>
-      </div>
-      <div className="hp-prow">
-        <span className="hp-prow-label">Teruglevering</span>
-        <span className="hp-prow-value">3.200 kWh</span>
-      </div>
-      <div className="hp-prow">
-        <span className="hp-prow-label">Doel</span>
-        <span className="hp-prow-value">Meer eigen stroom</span>
-      </div>
-      <div className="hp-prow hp-prow--result">
-        <span className="hp-prow-label">Indicatief advies</span>
-        <span className="hp-result-value">14 kWh</span>
-      </div>
-    </aside>
-  );
-}
-
-function formatDate(value) {
-  if (!value) return "";
-  return new Date(value).toLocaleDateString("nl-NL", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
 }
 
 export default function Home() {
@@ -183,16 +91,14 @@ export default function Home() {
     });
   }, [location.hash]);
 
-  const items = posts.data?.results ?? posts.data ?? [];
-  const featured = items[0];
-  const supporting = items.slice(1, 5);
-
   return (
     <>
-      {/* ── Hero: compacte editorial hero + voorbeeldberekening ── */}
-      <section className="hp-hero">
+      {/* ── Hero: interactief beslisgebied. H1/sub/CTA/note-teksten zijn
+          identiek aan de statische shell in index.html (LCP-continuïteit). ── */}
+      <section className="hp-hero hp2-hero">
+        <div className="hp2-hero-deco" aria-hidden="true" />
         <div className="container">
-          <div className="hp-hero-grid">
+          <div className="hp2-hero-grid">
             <div className="hp-hero-content">
               <span className="hp-kicker">
                 Onafhankelijk · thuisbatterijen · dynamische contracten
@@ -206,7 +112,7 @@ export default function Home() {
                 stroomverbruik, teruglevering en energiedoel.
               </p>
               <div className="hp-hero-actions">
-                <Link to="/calculator" className="hp-btn">
+                <Link to="/calculator" className="hp-btn hp2-btn-main">
                   Bereken uw thuisbatterij
                   <span aria-hidden="true" className="hp-btn-arrow">→</span>
                 </Link>
@@ -217,218 +123,47 @@ export default function Home() {
               <p className="hp-hero-note">
                 Binnen enkele minuten een eerste indicatie
               </p>
+              <p className="hp2-hero-trust">
+                Zonder verkooppraat · uw gegevens alleen voor uw advies
+              </p>
             </div>
 
             {/* Bron-volgorde: op mobiel verschijnt de preview automatisch ónder
                 de tekst + CTA; op desktop staat hij rechts naast de tekst. */}
-            <CalculationPreview />
+            <BatteryPreview />
           </div>
         </div>
       </section>
 
-      {/* ── Van energieprofiel naar batterijadvies ── */}
-      <section className="hp-section">
+      <AdviceJourney />
+
+      <CapacityCompare />
+
+      <CalcTransparency />
+
+      <LeadSection />
+
+      <ArticlesSection
+        posts={posts}
+        tags={tags}
+        tag={tag}
+        onSelectTag={setTag}
+        sectionRef={blogSectionRef}
+      />
+
+      {/* ── Afsluitende CTA: donkere contrastband ── */}
+      <section className="hp2-final">
         <div className="container">
-          <div className="hp-section-head">
-            <h2 className="hp-h2">Van energieprofiel naar batterijadvies</h2>
-          </div>
-          <div className="hp-steps">
-            {STEPS.map((step) => (
-              <div className="hp-step" key={step.num}>
-                <span className="hp-step-num">{step.num}</span>
-                <span className="hp-step-title">{step.title}</span>
-                <p className="hp-step-text">{step.text}</p>
-              </div>
-            ))}
-          </div>
-          <div className="hp-section-cta">
-            <Link to="/calculator" className="hp-link">
-              Start de berekening
-              <span aria-hidden="true" className="hp-link-arrow">→</span>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Vergelijken op meer dan capaciteit ── */}
-      <section className="hp-section">
-        <div className="container">
-          <div className="hp-section-head">
-            <h2 className="hp-h2">
-              Een thuisbatterij vergelijkt u op meer dan capaciteit
-            </h2>
-            <p className="hp-section-intro">
-              Capaciteit is maar één maatstaf. Voor een eerlijke vergelijking
-              telt vooral hoe een systeem zich in de praktijk gedraagt.
-            </p>
-          </div>
-          <div className="hp-compare-list">
-            {COMPARE_POINTS.map((point) => (
-              <div className="hp-compare-item" key={point.term}>
-                <div className="hp-compare-term">{point.term}</div>
-                <p className="hp-compare-text">{point.text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Methodiek: berekeningen die u kunt volgen ── */}
-      <section className="hp-method" id="rekenmethode">
-        <div className="container">
-          <div className="hp-method-grid">
-            <div>
-              <span className="hp-kicker">Rekenmethode</span>
-              <h2 className="hp-h2">Berekeningen die u kunt volgen</h2>
-              <p className="hp-section-intro">
-                Wij rekenen niet met vaste beloftes, maar met uw eigen situatie.
-                Voor een passend batterijadvies kijken wij naar:
-              </p>
-              <ul className="hp-method-intro-list">
-                <li>Jaarlijks stroomverbruik</li>
-                <li>Teruglevering</li>
-                <li>Zonnepanelen</li>
-                <li>Energiecontract</li>
-                <li>Energieverlies</li>
-                <li>Toekomstig verbruik</li>
-              </ul>
-              <div className="hp-section-cta">
-                {/* Er bestaat (nog) geen aparte rekenmethode-route. Bewust naar de
-                    calculator gelinkt i.p.v. een gebroken route aan te maken;
-                    vervang dit door de methodiek-pagina zodra die bestaat. */}
-                <Link to="/calculator" className="hp-link">
-                  Bekijk de rekenmethode
-                  <span aria-hidden="true" className="hp-link-arrow">→</span>
-                </Link>
-              </div>
-            </div>
-
-            <div className="hp-sheet" aria-hidden="true">
-              <div className="hp-sheet-head">
-                <span>Rekenbladen</span>
-                <span>Invoer → advies</span>
-              </div>
-              {METHOD_FACTORS.map((row) => (
-                <div className="hp-sheet-row" key={row.factor}>
-                  <span className="hp-sheet-factor">{row.factor}</span>
-                  <span className="hp-sheet-unit">{row.unit}</span>
-                </div>
-              ))}
-              <div className="hp-sheet-total">
-                <span className="hp-sheet-factor">Passend batterijadvies</span>
-                <span className="hp-sheet-unit">kWh-capaciteit</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Sitewide lead-capture: gratis situatiecheck ── */}
-      <section className="hp-section hp-advice">
-        <div className="container">
-          <div className="hp-advice-inner">
-            <AdviceForm
-              variant="compact"
-              headline="Laat uw situatie gratis controleren"
-              text="Vertel ons kort over uw woning. We bekijken welke batterijcapaciteit en systeemopbouw logisch zijn."
-              button="Vraag gratis advies aan"
-              source="homepage_quick_check"
-              submitEvent="homepage_advice_submit"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* ── Artikelen: editorial publicatielayout ── */}
-      <section className="hp-articles" id="artikelen" ref={blogSectionRef}>
-        <div className="container">
-          <div className="hp-section-head">
-            <h2 className="hp-h2">Artikelen over thuisbatterijen en energieopslag</h2>
-            <p className="hp-section-intro">
-              Praktische kennis over batterijopslag, EMS en dynamische
-              energiecontracten — zonder verkooppraat, wel getallen.
-            </p>
-          </div>
-
-          <TagBar tags={tags.data} active={tag} onSelect={setTag} />
-
-          {posts.loading && (
-            <div className="state mono"><span className="blink">▮▮▮</span> laden…</div>
-          )}
-          {posts.error && (
-            <div className="state">
-              Kan de artikelen niet laden. Draait de Django-server op poort 8000?
-            </div>
-          )}
-          {!posts.loading && !posts.error && items.length === 0 && (
-            <div className="state">
-              Nog geen gepubliceerde artikelen. Maak er één aan in de Django-admin.
-            </div>
-          )}
-
-          {items.length > 0 && (
-            <div className="hp-articles-grid">
-              {featured && (
-                <Link to={`/post/${featured.slug}`} className="hp-feature">
-                  {featured.cover_image_url && (
-                    <div className="hp-feature-media">
-                      <img
-                        src={optimizedImageUrl(featured.cover_image_url, 800)}
-                        alt=""
-                        loading="lazy"
-                        decoding="async"
-                        onError={(e) => { e.currentTarget.style.display = "none"; }}
-                      />
-                    </div>
-                  )}
-                  <div className="hp-feature-body">
-                    {featured.tags?.length > 0 && (
-                      <span className="hp-tag">{featured.tags[0]}</span>
-                    )}
-                    <h3>{featured.title}</h3>
-                    {featured.excerpt && (
-                      <p className="hp-feature-excerpt">{featured.excerpt}</p>
-                    )}
-                    <span className="hp-meta">
-                      {formatDate(featured.published_at)}
-                      {featured.reading_minutes
-                        ? ` · ${featured.reading_minutes} min leestijd`
-                        : ""}
-                    </span>
-                  </div>
-                </Link>
-              )}
-
-              {supporting.length > 0 && (
-                <div className="hp-article-list">
-                  {supporting.map((p) => (
-                    <Link key={p.id} to={`/post/${p.slug}`} className="hp-article">
-                      <div className="hp-article-top">
-                        {p.tags?.length > 0 && <span className="hp-tag">{p.tags[0]}</span>}
-                        <span className="hp-meta">{formatDate(p.published_at)}</span>
-                      </div>
-                      <h4>{p.title}</h4>
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* ── Afsluitende CTA ── */}
-      <section className="hp-final">
-        <div className="container">
-          <div className="hp-final-inner">
-            <div className="hp-final-text">
-              <h2>Klaar om uw batterijcapaciteit te berekenen?</h2>
+          <div className="hp2-final-inner">
+            <div className="hp2-final-text">
+              <span className="hp2-final-kicker mono">Klaar voor de volgende stap?</span>
+              <h2>Bereken uw batterijcapaciteit</h2>
               <p>
                 Gebruik uw eigen verbruik en teruglevering voor een persoonlijk
                 eerste advies.
               </p>
             </div>
-            <Link to="/calculator" className="hp-btn">
+            <Link to="/calculator" className="hp-btn hp2-btn-main hp2-final-btn">
               Start de berekening
               <span aria-hidden="true" className="hp-btn-arrow">→</span>
             </Link>

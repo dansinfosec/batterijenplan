@@ -419,7 +419,7 @@ export default function Stage2Analysis({ leadMeta }) {
         </div>
       </details>
 
-      {error && <div className="calc-error mono">{error}</div>}
+      {error && <div className="calc-error mono" role="alert">{error}</div>}
 
       <div className="stage2-submit">
         <button

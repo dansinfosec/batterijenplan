@@ -3,6 +3,9 @@ import { Link, useSearchParams } from "react-router-dom";
 import { postCalculator } from "../api.js";
 import LeadCaptureForm, { useLeadCapture } from "../components/LeadCaptureForm.jsx";
 import Stage2Analysis from "../components/Stage2Analysis.jsx";
+import ChoiceCard from "../components/calculator/ChoiceCard.jsx";
+import CalcProgress from "../components/calculator/CalcProgress.jsx";
+import LiveSummary from "../components/calculator/LiveSummary.jsx";
 import { setPageMeta, setJsonLd, ORGANIZATION_SCHEMA } from "../seo.js";
 import { friendlyValidity, withValidityClear } from "../formValidation.js";
 
@@ -337,7 +340,7 @@ export default function Calculator() {
 
     const timer = setTimeout(() => {
       document.getElementById("advies")?.scrollIntoView({
-        behavior: "smooth",
+        behavior: prefersReducedMotion() ? "auto" : "smooth",
         block: "start",
       });
     }, 150);
@@ -661,27 +664,35 @@ export default function Calculator() {
   const progressLabel = `Stap ${stepIndex} van ${steps.length}`;
 
   return (
-    <article className="container post-detail calc-page">
-      <p className="mono kicker">Calculator · batterijcapaciteit · advies</p>
+    <article className="calc2-page calc-page">
+      {/* ── Calculator-hero: vloeit direct de wizard in ── */}
+      <header className="calc2-hero">
+        <div className="calc2-hero-deco" aria-hidden="true" />
+        <div className="container calc2-container">
+          <p className="mono kicker calc2-kicker">Calculator · batterijcapaciteit · advies</p>
+          <h1>
+            Thuisbatterij <span className="accent">Calculator</span>
+          </h1>
+          <p className="sub calc2-intro">
+            Bereken gratis welke batterijcapaciteit past bij uw stroomverbruik,
+            teruglevering en energiedoel.
+          </p>
+          <p className="calc2-hero-trust">
+            Gratis · direct resultaat · geen e-mailadres nodig voor de eerste indicatie
+          </p>
 
-      <h1>
-        Thuisbatterij <span className="accent">Calculator</span>
-      </h1>
+          {/* Educatieve indicatoren — geen harde beloftes (bestaande teksten) */}
+          <div className="calc2-strip">
+            <div><b>10–20 kWh</b><span>Vaak geschikt voor woningen</span></div>
+            <div><b>250 dagen</b><span>Zonopwek als rekenbasis</span></div>
+            <div><b>Gratis check</b><span>Laat uw uitkomst controleren</span></div>
+          </div>
+        </div>
+      </header>
 
-      <p className="sub calc-intro">
-        Bereken gratis welke batterijcapaciteit past bij uw stroomverbruik,
-        teruglevering en energiedoel.
-      </p>
-
-      <div className="calc-layout">
-      <div className="calc-main">
-
-      {/* Educatieve indicatoren — geen harde beloftes */}
-      <div className="calc-mini-strip">
-        <div><b>10–20 kWh</b><span>Vaak geschikt voor woningen</span></div>
-        <div><b>250 dagen</b><span>Zonopwek als rekenbasis</span></div>
-        <div><b>Gratis check</b><span>Laat uw uitkomst controleren</span></div>
-      </div>
+      <div className="container calc2-container">
+      <div className="calc2-layout">
+      <div className="calc2-main">
 
       {/* Wat heeft u nodig? — voorbereiding, alleen op het startscherm. */}
       {hasSolar === null && (
@@ -700,27 +711,17 @@ export default function Calculator() {
         </div>
       )}
 
-      {/* Onboardingblok: uitsluitend op het beginscherm (vóór stap 1). Verdwijnt
-          zodra een pad is gekozen — geen pop-in boven stap 2, geen layout-shift. */}
-      {hasSolar === null && (
-        <CalcHelpCard onStart={scrollToWizard} variant="mobile" className="calc-help-mobile" />
-      )}
+      <div className="calc-wizard calc2-wizard" ref={wizardRef}>
 
-      <div className="calc-wizard" ref={wizardRef}>
-
-      {/* Voortgang + terugknop (niet op stap 1 en niet op het resultaat) */}
-      {hasSolar !== null && !activeResult && (
-        <div className="calc-wizard-progress">
-          <div className="calc-wizard-bar">
-            <button type="button" className="calc-back-btn" onClick={goBack}>
-              ← Terug
-            </button>
-            <span className="mono calc-progress">{progressLabel}</span>
-          </div>
-          <div className="calc-progress-track" aria-hidden="true">
-            <span style={{ width: `${(stepIndex / steps.length) * 100}%` }} />
-          </div>
-        </div>
+      {/* Voortgang + terugknop: verbonden stappen zodra het pad bekend is. */}
+      {hasSolar !== null && (
+        <CalcProgress
+          steps={steps}
+          currentStage={stage}
+          hasResult={!!activeResult}
+          onBack={goBack}
+          showBack
+        />
       )}
 
       {/* Geen-zon-pad: teruglevering is meestal 0 kWh — dat leggen we direct uit. */}
@@ -741,12 +742,13 @@ export default function Calculator() {
           <span className="mono calc-progress">Stap 1</span>
 
           <p className="calc-form-start">Bent u particulier of zakelijk?</p>
-          <div className="calc-type-toggle">
+          <div className="calc-type-toggle calc2-seg">
             {CUSTOMER_TYPES.map((option) => (
               <button
                 key={option.value}
                 type="button"
-                className={`calc-type-btn ${form.customer_type === option.value ? "active" : ""}`}
+                className={`calc-type-btn calc2-seg-btn ${form.customer_type === option.value ? "active" : ""}`}
+                aria-pressed={form.customer_type === option.value}
                 onClick={() => chooseCustomerType(option.value)}
               >
                 {option.label}
@@ -759,31 +761,25 @@ export default function Calculator() {
             Zo stellen we direct de juiste vervolgvragen — u vult nooit gegevens
             in die niet op uw situatie slaan.
           </p>
-          <div className="calc-solar-choice-buttons calc-solar-choice-buttons--three">
-            <button
-              type="button"
-              className="calc-solar-btn"
-              onClick={() => choosePath("yes")}
-            >
-              <b>Ja</b>
-              <span>Advies op basis van uw teruglevering</span>
-            </button>
-            <button
-              type="button"
-              className="calc-solar-btn"
-              onClick={() => choosePath("no")}
-            >
-              <b>Nee</b>
-              <span>Advies op basis van dynamische handel</span>
-            </button>
-            <button
-              type="button"
-              className="calc-solar-btn"
-              onClick={() => choosePath("planned")}
-            >
-              <b>Ik laat zonnepanelen plaatsen</b>
-              <span>We rekenen met uw verwachte teruglevering</span>
-            </button>
+          <div className="calc2-choice-grid calc2-choice-grid--three">
+            <ChoiceCard
+              selected={hasSolar === "yes"}
+              onSelect={() => choosePath("yes")}
+              title="Ja"
+              text="Advies op basis van uw teruglevering"
+            />
+            <ChoiceCard
+              selected={hasSolar === "no"}
+              onSelect={() => choosePath("no")}
+              title="Nee"
+              text="Advies op basis van dynamische handel"
+            />
+            <ChoiceCard
+              selected={hasSolar === "planned"}
+              onSelect={() => choosePath("planned")}
+              title="Ik laat zonnepanelen plaatsen"
+              text="We rekenen met uw verwachte teruglevering"
+            />
           </div>
         </div>
       )}
@@ -908,16 +904,15 @@ export default function Calculator() {
       {hasSolar === "no" && !activeResult && stage === "contract" && (
         <div className="calc-step-panel" ref={stepRef}>
           <p className="calc-form-start">Wat voor energiecontract heeft u?</p>
-          <div className="calc-choice-grid">
+          <div className="calc2-choice-grid">
             {CONTRACT_TYPES.map((option) => (
-              <button
+              <ChoiceCard
                 key={option.value}
-                type="button"
-                className={`calc-solar-btn ${noSolarForm.contract_type === option.value ? "active" : ""}`}
-                onClick={() => chooseContract(option.value)}
-              >
-                <b>{option.label}</b>
-              </button>
+                compact
+                selected={noSolarForm.contract_type === option.value}
+                onSelect={() => chooseContract(option.value)}
+                title={option.label}
+              />
             ))}
           </div>
         </div>
@@ -929,25 +924,22 @@ export default function Calculator() {
             {solarPath ? "Wat is uw doel?" : "Wat wilt u bereiken?"}
           </p>
 
-          <div className="goal-choice goal-choice-wizard">
+          <div className="calc2-choice-grid calc2-choice-grid--goals">
             {(solarPath ? SOLAR_GOALS : NO_SOLAR_GOALS).map((option) => {
               const selected =
                 (solarPath ? form.goal : noSolarForm.goal) === option.value;
               return (
-                <button
+                <ChoiceCard
                   key={option.value}
-                  type="button"
-                  className={`goal-card goal-card-btn ${selected ? "active" : ""}`}
-                  onClick={() =>
+                  selected={selected}
+                  onSelect={() =>
                     solarPath
                       ? setForm({ ...form, goal: option.value })
                       : updateNoSolar("goal", option.value)
                   }
-                >
-                  <span className="goal-title">{option.title}</span>
-                  {option.text && <span className="goal-text">{option.text}</span>}
-                  <span className="goal-check" aria-hidden="true">✓</span>
-                </button>
+                  title={option.title}
+                  text={option.text}
+                />
               );
             })}
           </div>
@@ -974,7 +966,7 @@ export default function Calculator() {
         </div>
       )}
 
-      {error && <div className="calc-error mono">{error}</div>}
+      {error && <div className="calc-error mono" role="alert">{error}</div>}
 
       </div>
 
@@ -984,20 +976,27 @@ export default function Calculator() {
           terugverdientijd volgen via het adviesformulier hieronder — de
           lead-payload (leadResult) blijft wél volledig. ── */}
       {activeResult && (
-        <section className="calc-report" ref={resultRef}>
-          <span className="mono calc-report-eyebrow">
+        <section className="calc-report calc2-report" ref={resultRef}>
+          <span className="mono calc-report-eyebrow calc2-report-eyebrow">
             {solarPath ? "Uw eerste batterijadvies" : "Uw eerste indicatie"}
           </span>
 
-          <div className="calc-report-headline">
-            <span className="calc-report-headline-label">Geadviseerde capaciteit</span>
-            <b className="calc-report-headline-value">
-              {solarPath
-                ? `${result.lower_range} – ${result.upper_range} kWh`
-                : noSolarResult.range}
-            </b>
-            <span className="calc-report-headline-note">
-              Indicatieve bandbreedte
+          <div className="calc-report-headline calc2-report-headline">
+            <div className="calc2-report-headline-text">
+              <span className="calc-report-headline-label">Geadviseerde capaciteit</span>
+              <b className="calc-report-headline-value">
+                {solarPath
+                  ? `${result.lower_range} – ${result.upper_range} kWh`
+                  : noSolarResult.range}
+              </b>
+              <span className="calc-report-headline-note">
+                Indicatieve bandbreedte
+              </span>
+            </div>
+            {/* Decoratieve batterij-indicator — geen berekende vulgraad. */}
+            <span className="calc2-report-batt" aria-hidden="true">
+              <span className="calc2-report-batt-cap" />
+              <span className="calc2-report-batt-fill" />
             </span>
           </div>
 
@@ -1137,11 +1136,22 @@ export default function Calculator() {
 
       </div>
 
-      {hasSolar === null && (
-        <CalcHelpCard onStart={scrollToWizard} variant="desktop" className="calc-help-desktop" />
-      )}
+      <LiveSummary
+        customerTypeLabel={customerTypeLabel}
+        hasSolar={hasSolar}
+        solarPath={solarPath}
+        form={form}
+        noSolarForm={noSolarForm}
+        goalLabel={goalLabel}
+        hasResult={!!activeResult}
+        remainingLabel={hasSolar !== null && !activeResult ? progressLabel : null}
+      />
+      </div>
       </div>
 
+      {/* Ondersteunende secties in hun eigen container (het artikel zelf is
+          full-width geworden voor de hero en afwisselende banden). */}
+      <div className="container calc2-container">
       {/* Ondersteunende info — scanbare kaarten i.p.v. een tekstblok, zodat
           de pagina als conversie-calculator voelt (niet als SEO-artikel). */}
       <section className="calc-info">
@@ -1274,6 +1284,7 @@ export default function Calculator() {
           ))}
         </div>
       </section>
+      </div>
 
     </article>
   );

@@ -65,11 +65,16 @@ export default function App() {
 
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      {/* Skip-link: onzichtbaar tot toetsenbordfocus, springt over de header heen. */}
+      <a href="#main" className="skip-link">
+        Direct naar inhoud
+      </a>
+
       <AnalyticsTracker />
 
       <Header />
 
-      <main style={{ flex: 1 }}>
+      <main id="main" style={{ flex: 1 }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/artikelen" element={<Articles />} />

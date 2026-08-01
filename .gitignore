@@ -39,3 +39,9 @@ Thumbs.db
 .mypy_cache/
 .pytest_cache/
 .ruff_cache/
+
+# Graphify knowledge graph (gegenereerd, niet committen)
+graphify-out/
+
+# Lokale Claude-config (bevat machine-specifieke paden)
+.claude/settings.json

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   initConsent,
@@ -51,15 +51,54 @@ export default function CookieConsent() {
     return () => window.removeEventListener(OPEN_COOKIE_SETTINGS_EVENT, openSettings);
   }, []);
 
-  // Esc sluit het voorkeurenscherm (alleen als er al een keuze is gemaakt).
+  // Toegankelijkheid voorkeurenscherm: Esc sluit het scherm (is er nog geen
+  // keuze, dan verschijnt de banner weer — er wordt dus nooit stilzwijgend
+  // toestemming gezet), Tab blijft binnen de dialog (focus trap), de focus
+  // start op de dialog zelf en keert bij sluiten terug naar de knop die hem
+  // opende (WCAG 2.1.2 / 2.4.3).
+  const modalRef = useRef(null);
+  const restoreFocusRef = useRef(null);
+
   useEffect(() => {
     if (!modalOpen) return;
+
+    restoreFocusRef.current = document.activeElement;
+    // Initial focus op de dialog-container (tabIndex -1), zodat de titel en
+    // intro als eerste worden voorgelezen in plaats van een willekeurige knop.
+    modalRef.current?.focus();
+
     const onKey = (e) => {
-      if (e.key === "Escape" && decided) setModalOpen(false);
+      if (e.key === "Escape") {
+        e.stopPropagation();
+        setModalOpen(false);
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const root = modalRef.current;
+      if (!root) return;
+      const focusables = root.querySelectorAll(
+        'button, [href], input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusables.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first || document.activeElement === root) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [modalOpen, decided]);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      // Focus teruggeven aan het element dat de dialog opende.
+      restoreFocusRef.current?.focus?.();
+    };
+  }, [modalOpen]);
 
   const acceptAll = () => {
     saveConsent({ statistics: true, marketing: true });
@@ -117,6 +156,8 @@ export default function CookieConsent() {
             role="dialog"
             aria-modal="true"
             aria-label="Cookievoorkeuren"
+            ref={modalRef}
+            tabIndex={-1}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="cookie-modal-title">Cookievoorkeuren</h2>

@@ -79,8 +79,15 @@ export async function postCalculator(data) {
   });
   const json = await res.json().catch(() => null);
   if (!res.ok) {
-    const message = json?.error || "Controleer de ingevulde gegevens.";
-    throw new Error(message);
+    // De API kent twee foutvormen: {error: "..."} (BatteryAdviceError) en het
+    // DRF-velddict {veld: ["bericht"]} bij serializer-validatie. Toon in beide
+    // gevallen het eerste concrete bericht i.p.v. de generieke fallback.
+    let message = json?.error;
+    if (!message && json && typeof json === "object") {
+      const first = Object.values(json)[0];
+      if (Array.isArray(first) && first.length) message = first[0];
+    }
+    throw new Error(message || "Controleer de ingevulde gegevens.");
   }
   return json;
 }

@@ -179,7 +179,8 @@ export default function LeadCaptureForm({
           <span className="field-error-text">Vul uw telefoonnummer in.</span>
         </label>
         <label>
-          E-mail <span className="field-required">*</span>
+          {/*   voorkomt dat de asterisk op een eigen regel valt (QA-bevinding) */}
+          E-mail{" "}<span className="field-required">*</span>
           <input
             className="field-input"
             type="email"
@@ -237,7 +238,7 @@ export default function LeadCaptureForm({
         <Link to="/privacy">privacyverklaring</Link>.
       </p>
 
-      {error && <div className="calc-error mono">{error}</div>}
+      {error && <div className="calc-error mono" role="alert">{error}</div>}
 
       <button type="submit" className="field-submit-button" disabled={sending}>
         {sending ? "Bezig…" : copy.button}
