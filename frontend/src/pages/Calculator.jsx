@@ -6,6 +6,8 @@ import Stage2Analysis from "../components/Stage2Analysis.jsx";
 import ChoiceCard from "../components/calculator/ChoiceCard.jsx";
 import CalcProgress from "../components/calculator/CalcProgress.jsx";
 import LiveSummary from "../components/calculator/LiveSummary.jsx";
+import MilestoneTracker from "../components/calculator/MilestoneTracker.jsx";
+import PaybackUnlock from "../components/calculator/PaybackUnlock.jsx";
 import { setPageMeta, setJsonLd, ORGANIZATION_SCHEMA } from "../seo.js";
 import { friendlyValidity, withValidityClear } from "../formValidation.js";
 
@@ -108,23 +110,25 @@ const NO_SOLAR_GOALS = [
 ];
 
 
-// Lead-magnet: het detailrapport (terugverdientijd, maandvoordeel, product,
-// prijs, financiering) wordt telefonisch besproken en zit achter het
-// leadformulier. De copy hieronder staat bóven dat formulier.
+// Lead-magnet: het indicatieve terugverdientijd-rapport (Stage 2) wordt ná
+// het leadformulier direct online getoond; de telefonische controle volgt
+// daarna. De copy hieronder beschrijft die echte flow — geen beloftes die
+// pas later waargemaakt worden. Alleen presentatie: payload/analytics van
+// het formulier blijven exact gelijk.
 const LEAD_COPY = {
   solar: {
-    title: "Ontvang uw persoonlijke terugverdientijd",
+    title: "Ontgrendel uw persoonlijke terugverdientijd",
     text:
-      "Laat uw gegevens achter, dan bespreken wij uw persoonlijke berekening " +
-      "telefonisch.",
-    button: "Ontvang mijn terugverdientijd",
+      "Uw gegevens worden alleen gebruikt voor uw persoonlijke berekening " +
+      "en het vrijblijvende adviesgesprek daarna.",
+    button: "Ontgrendel mijn terugverdientijd",
   },
   nosolar: {
-    title: "Laat uw batterijcase controleren",
+    title: "Ontgrendel uw persoonlijke terugverdientijd",
     text:
-      "Laat uw gegevens achter, dan bespreken wij uw persoonlijke berekening " +
-      "telefonisch.",
-    button: "Laat mijn batterijcase controleren",
+      "Uw gegevens worden alleen gebruikt voor uw persoonlijke berekening " +
+      "en het vrijblijvende adviesgesprek daarna.",
+    button: "Ontgrendel mijn terugverdientijd",
   },
 };
 
@@ -290,6 +294,9 @@ export default function Calculator() {
   const [noSolarResult, setNoSolarResult] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  // Puur voor de mijlpaal-weergave: true zodra Stage 2 het echte rapport van
+  // de backend heeft ontvangen (via onReport). Verandert niets aan de flow.
+  const [stage2Done, setStage2Done] = useState(false);
 
   const resultRef = useRef(null);
   const leadRef = useRef(null);
@@ -459,6 +466,7 @@ export default function Calculator() {
     setLastInputs(null);
     setNoSolarResult(null);
     setError(null);
+    setStage2Done(false);
   };
 
   // Klanttype wordt nu in stap 1 gekozen (voor beide zon-antwoorden), dus
@@ -977,6 +985,16 @@ export default function Calculator() {
           lead-payload (leadResult) blijft wél volledig. ── */}
       {activeResult && (
         <section className="calc-report calc2-report" ref={resultRef}>
+          {/* Succeskop + mijlpalen: capaciteit staat vrij zichtbaar klaar; de
+              terugverdientijd is de volgende, duidelijk gemarkeerde beloning. */}
+          <div className="calc2-report-success" role="status">
+            <span className="calc2-report-check" aria-hidden="true">✓</span>
+            <span className="calc2-report-success-text">
+              Uw batterijcapaciteit is berekend
+            </span>
+          </div>
+          <MilestoneTracker leadDone={leadState.sent} stage2Done={stage2Done} />
+
           <span className="mono calc-report-eyebrow calc2-report-eyebrow">
             {solarPath ? "Uw eerste batterijadvies" : "Uw eerste indicatie"}
           </span>
@@ -1089,12 +1107,32 @@ export default function Calculator() {
         </section>
       )}
 
-      {/* ── Na verzenden: Stage 2-analysevragen (of de bestaande bedankkaart
-          als er geen lead-id/token beschikbaar is, bv. bij een honeypot). ── */}
+      {/* ── Na verzenden: beloningsbevestiging + Stage 2-analysevragen (of de
+          bestaande bedankkaart als er geen lead-id/token beschikbaar is,
+          bv. bij een honeypot). ── */}
       {activeResult && leadState.sent && (
         <div className="stage2-wrap" ref={leadRef}>
           {leadState.leadMeta ? (
-            <Stage2Analysis leadMeta={leadState.leadMeta} />
+            <>
+              {/* Mijlpaal 2 voltooid: rustige bevestiging vóór de laatste stap.
+                  role="status" zodat screenreaders de voortgang horen. */}
+              {!stage2Done && (
+                <div className="calc2-reward" role="status">
+                  <span className="calc2-reward-check" aria-hidden="true">✓</span>
+                  <div>
+                    <b>Gegevens ontvangen — uw berekening is opgeslagen.</b>
+                    <p>
+                      Beantwoord nog enkele korte vragen om uw terugverdientijd
+                      te berekenen.
+                    </p>
+                  </div>
+                </div>
+              )}
+              <Stage2Analysis
+                leadMeta={leadState.leadMeta}
+                onReport={() => setStage2Done(true)}
+              />
+            </>
           ) : (
             <div className="lead-form lead-form-success lead-form--inline">
               <h2>Bedankt, uw berekening is ontvangen.</h2>
@@ -1113,24 +1151,16 @@ export default function Calculator() {
           ontvangt de bezoeker prijs en terugverdientijd. Alle indien-/payload-
           logica (leadInputs/leadResult, GA4/Ads-events) blijft ongewijzigd. ── */}
       {((activeResult && !leadState.sent) || (directAdvice && !activeResult)) && (
-        <div id="advies" ref={leadRef} className="calc-next-step">
-          {activeResult && (
-            <div className="calc-next-step-head">
-              <span className="mono calc-next-step-eyebrow">Volgende stap</span>
-              <p className="calc-lead-microcopy">
-                Ontvang uw persoonlijke prijs en terugverdientijd. Laat uw
-                gegevens achter, dan bespreken wij uw berekening — gratis en
-                vrijblijvend.
-              </p>
-            </div>
-          )}
-          <LeadCaptureForm
-            state={leadState}
-            calculatorInputs={leadInputs}
-            calculatorResult={leadResult}
-            variant="inline"
-            copy={activeResult ? leadCopy : undefined}
-          />
+        <div id="advies" ref={leadRef} className="calc-next-step calc2-next-step">
+          <PaybackUnlock hasResult={!!activeResult}>
+            <LeadCaptureForm
+              state={leadState}
+              calculatorInputs={leadInputs}
+              calculatorResult={leadResult}
+              variant="inline"
+              copy={activeResult ? leadCopy : undefined}
+            />
+          </PaybackUnlock>
         </div>
       )}
 

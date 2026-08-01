@@ -70,7 +70,9 @@ const formatYears = (value) => String(value).replace(".", ",");
 // 7454 → "€ 7.454" (NL-duizendtallen, hele euro's)
 const formatEuro = (value) => `€ ${Number(value).toLocaleString("nl-NL")}`;
 
-export default function Stage2Analysis({ leadMeta }) {
+// onReport is optioneel en puur voor de voortgangsweergave in Calculator.jsx
+// (mijlpaal "Persoonlijke analyse" voltooid); payload en flow ongewijzigd.
+export default function Stage2Analysis({ leadMeta, onReport }) {
   const [answers, setAnswers] = useState({
     heat_pump: "",
     ev: "",
@@ -125,6 +127,7 @@ export default function Stage2Analysis({ leadMeta }) {
     try {
       const data = await postLeadStage2(leadMeta.id, payload);
       setReport(data);
+      if (onReport) onReport(data);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -132,12 +135,13 @@ export default function Stage2Analysis({ leadMeta }) {
     }
   };
 
-  // ── Rapportkaart na verzenden ──
+  // ── Rapportkaart na verzenden: het emotionele sluitstuk van de flow.
+  // stage2-reveal geeft een ingetogen onthulling (reduced-motion-gated). ──
   if (report) {
     return (
-      <section className="stage2-card stage2-report">
+      <section className="stage2-card stage2-report stage2-reveal">
         <span className="mono stage2-kicker">Analyse gereed</span>
-        <h2>Uw persoonlijke analyse is aangemaakt</h2>
+        <h2>Uw persoonlijke berekening is compleet</h2>
 
         <div className="stage2-figures">
           <div className="stage2-figure stage2-figure-accent">
@@ -316,17 +320,29 @@ export default function Stage2Analysis({ leadMeta }) {
     );
   }
 
-  // ── Vragenkaart ──
+  // ── Vragenkaart: "Laatste stap" met zichtbare vraagvoortgang. De
+  // ontvangst-bevestiging staat in Calculator.jsx (calc2-reward), dus hier
+  // geen dubbele "ontvangen"-melding meer. ──
+  const answeredCount = QUESTIONS.filter((q) => answers[q.field]).length;
+
   return (
     <section className="stage2-card">
-      <span className="mono stage2-kicker stage2-received">
-        ✓ Uw berekening is ontvangen. Beantwoord nog 4 korte vragen voor een
-        betere terugverdientijd.
-      </span>
+      <div className="stage2-lastword">
+        <span className="mono stage2-kicker stage2-received">Laatste stap</span>
+        <span className="mono stage2-qprogress" aria-live="polite">
+          {answeredCount} van {QUESTIONS.length} beantwoord
+        </span>
+      </div>
+      <div className="stage2-qtrack" aria-hidden="true">
+        <span style={{ width: `${(answeredCount / QUESTIONS.length) * 100}%` }} />
+      </div>
       <h2>Maak uw terugverdientijd nauwkeuriger</h2>
       <p className="stage2-intro">
-        Beantwoord nog 4 korte vragen. Dan kunnen wij uw maandvoordeel,
-        terugverdientijd en Warmtefonds-mogelijkheden beter inschatten.
+        Beantwoord nog {QUESTIONS.length - answeredCount > 0
+          ? `${QUESTIONS.length - answeredCount} korte ${QUESTIONS.length - answeredCount === 1 ? "vraag" : "vragen"}`
+          : "0 vragen"}. Dan kunnen wij uw maandvoordeel,
+        terugverdientijd en Warmtefonds-mogelijkheden beter inschatten — elk
+        antwoord maakt de berekening nauwkeuriger.
       </p>
 
       {QUESTIONS.map((q) => (

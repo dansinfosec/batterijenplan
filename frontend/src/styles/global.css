@@ -3860,3 +3860,166 @@ details[open] > summary .hp2-acc-chevron { transform: rotate(225deg); }
   .calc2-seg .calc2-seg-btn { flex: 1; padding: 11px 8px; }
   .calc2-strip > div { flex: 1 1 100%; }
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   Fase 2D — Conversieflow (capaciteit → unlock → Stage 2 → rapport)
+   plus spacing-polish homepage/calculator. ADDITIEF; beweging valt onder
+   de globale reduced-motion-kill + expliciete no-preference-gates.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── Resultaat: succeskop ── */
+.calc2-report-success {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px;
+  font-family: var(--font-display); font-weight: 900; font-size: 18px;
+}
+.calc2-report-check {
+  flex: none; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--volt); border: 2px solid var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .calc2-report-check { animation: calc2-checkpop 0.4s cubic-bezier(0.3, 1.4, 0.5, 1); }
+}
+@keyframes calc2-checkpop {
+  from { transform: scale(0.4); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ── Mijlpalen: capaciteit → terugverdientijd → analyse ── */
+.calc2-milestones {
+  list-style: none; display: flex; gap: 0; margin: 0 0 18px;
+  border: 1px solid var(--rule); border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.calc2-mstep {
+  flex: 1; display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; font-size: 12.5px; color: var(--ink-60);
+  background: var(--paper);
+}
+.calc2-mstep + .calc2-mstep { border-left: 1px solid var(--rule); }
+.calc2-mstep-dot {
+  flex: none; width: 16px; height: 16px; border-radius: 50%;
+  border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+.calc2-mstep--done { color: var(--ink); }
+.calc2-mstep--done .calc2-mstep-dot { background: var(--volt); border-color: var(--ink); }
+.calc2-mstep--current { color: var(--ink); font-weight: 600; background: rgba(255, 209, 0, 0.12); }
+.calc2-mstep--current .calc2-mstep-dot { border-color: var(--ink); background: var(--surface); }
+.calc2-mstep-label { line-height: 1.2; }
+
+/* ── Vergrendelde terugverdientijd-kaart (unlock) ── */
+.calc2-next-step { margin-top: 24px; }
+.calc2-unlock {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--volt);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-1);
+  padding: 26px 26px 22px;
+  position: relative;
+}
+.calc2-unlock-eyebrow {
+  display: block; font-size: 12px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--volt-dk); margin-bottom: 8px;
+}
+.calc2-unlock-title {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(21px, 2.6vw, 26px); line-height: 1.15; margin: 0 0 8px;
+}
+.calc2-unlock-text { color: var(--ink-60); font-size: 15px; line-height: 1.6; max-width: 64ch; }
+.calc2-unlock-metrics {
+  position: relative;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin: 18px 0 16px;
+}
+.calc2-unlock-metric {
+  border: 1px dashed var(--border); border-radius: var(--radius-sm);
+  background: var(--paper); padding: 14px 16px;
+  display: grid; gap: 6px;
+}
+.calc2-unlock-metric-label {
+  font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--ink-60);
+}
+.calc2-unlock-metric-value {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-display); font-weight: 900; font-size: 20px;
+  color: var(--ink-40);
+}
+.calc2-unlock-lock { width: 18px; height: 18px; color: var(--ink-60); flex: none; }
+/* Energielijn: analyse-in-opbouw richting de metrics (decoratief). */
+.calc2-unlock-wire {
+  position: absolute; left: 8px; right: 8px; top: -9px; height: 2px;
+  background: repeating-linear-gradient(90deg, var(--volt) 0 8px, transparent 8px 16px);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .calc2-unlock-wire { animation: hp2-wireflow 1.4s linear infinite; background-size: 32px 2px; }
+}
+.calc2-unlock-steps {
+  list-style: none; display: grid; gap: 8px; margin: 0 0 6px;
+}
+.calc2-unlock-steps li {
+  display: flex; align-items: baseline; gap: 10px;
+  font-size: 14px; color: var(--ink-60); line-height: 1.5;
+}
+.calc2-unlock-step-num {
+  flex: none; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--paper); border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: var(--ink);
+  transform: translateY(3px);
+}
+/* Geïntegreerd formulier: geen kaart-in-kaart, maar een naadloos vervolg. */
+.calc2-unlock-form { margin-top: 18px; border-top: 1px solid var(--rule); padding-top: 4px; }
+.calc2-page .calc2-unlock-form .lead-form {
+  border: none; box-shadow: none; background: transparent;
+  margin-top: 0; padding-left: 0; padding-right: 0;
+}
+.calc2-page .calc2-unlock-form .lead-form h2 { font-size: 19px; }
+.calc2-page .calc2-unlock-form .field-submit-button { width: 100%; }
+
+/* ── Beloningsbevestiging na leadinzending ── */
+.calc2-reward {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: rgba(255, 209, 0, 0.16);
+  border: 1px solid var(--border); border-left: 4px solid var(--volt);
+  border-radius: var(--radius);
+  padding: 14px 18px; margin-bottom: 16px;
+}
+.calc2-reward b { font-size: 15px; }
+.calc2-reward p { margin: 2px 0 0; font-size: 14px; color: var(--ink-60); }
+.calc2-reward-check {
+  flex: none; width: 24px; height: 24px; border-radius: 50%;
+  background: var(--volt); border: 2px solid var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .calc2-reward { animation: calc2-stepin 0.35s ease; }
+  .calc2-reward-check { animation: calc2-checkpop 0.4s cubic-bezier(0.3, 1.4, 0.5, 1); }
+}
+
+/* ── Stage 2: "Laatste stap" + vraagvoortgang ── */
+.stage2-lastword {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+}
+.stage2-qprogress { font-size: 11.5px; letter-spacing: 0.05em; color: var(--ink-60); }
+.stage2-qtrack {
+  height: 4px; background: rgba(18, 19, 15, 0.08);
+  border-radius: 999px; overflow: hidden; margin-top: -6px;
+}
+.stage2-qtrack > span {
+  display: block; height: 100%; background: var(--volt); border-radius: 999px;
+  transition: width 0.35s ease;
+}
+
+/* ── Stage 2-rapport: ingetogen onthulling ── */
+@media (prefers-reduced-motion: no-preference) {
+  .stage2-reveal { animation: calc2-resultin 0.55s ease; }
+  .stage2-reveal .stage2-figures { animation: calc2-stepin 0.5s ease 0.15s backwards; }
+}
