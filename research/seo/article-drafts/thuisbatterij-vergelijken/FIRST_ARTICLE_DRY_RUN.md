@@ -22,7 +22,7 @@ Diff computed by seeding a throwaway migrated SQLite DB from the read-only produ
 | cover_alt | Thuisbatterij vergelijken op capaciteit, prijs, merk en slimme energiesturing | Thuisbatterij vergelijken op capaciteit, vermogen, EMS en garantie |
 | body | ~3,774 chars (rendered; 2-min) | 8,854 chars markdown — answer-first pillar, 16 sections, 2 tables, FAQ |
 | tags | EMS, batterij vergelijken, energieopslag, thuisaccu, thuisbatterij, thuisbatterij vergelijken | thuisbatterij, thuisbatterij vergelijken, EMS, energieopslag (consolidated, deduped) |
-| cover_image | (none set) | upload `…/v2/…_v2_final.png` (V2, with real logo) |
+| cover_image | (none set) | upload `…/v2/thuisbatterij-vergelijken-v2.png` (V2, with real logo) |
 
 > Note: the "old" body char count reflects the API's rendered `body_html`. Against production, the
 > command diffs the raw markdown body directly; the substantial expansion + full rewrite is the same.
@@ -47,7 +47,7 @@ Field diff for 'thuisbatterij-vergelijken':
   body: 3774 -> 8854 chars (CHANGED)
   tags: [EMS, batterij vergelijken, energieopslag, thuisaccu, thuisbatterij, thuisbatterij vergelijken]
         -> [thuisbatterij, thuisbatterij vergelijken, EMS, energieopslag]
-  cover_image: None -> upload '…/v2/article-cover-…_v2_final.png'
+  cover_image: None -> upload '…/v2/thuisbatterij-vergelijken-v2.png'
   PRESERVED: slug='thuisbatterij-vergelijken', published_at=2026-07-06 00:03:50+00:00, status='published' (status will NOT change)
 
 DRY-RUN complete. No database changes were made. Re-run with --apply to write.

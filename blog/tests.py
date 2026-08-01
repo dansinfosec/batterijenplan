@@ -5,12 +5,19 @@ import tempfile
 from datetime import datetime, timezone
 from unittest import mock
 
+from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.files.storage import default_storage
 from django.core.management import call_command
 from django.core.management.base import CommandError
 from django.test import TestCase
 
 from blog.models import Post
+
+# The exact long basename that shipped originally (generate_filename → 96 chars,
+# which under max_length=100 leaves no safe headroom for storage suffixes).
+OLD_LONG_BASENAME = "article-cover-thuisbatterij-vergelijken_recraft-v4-1_2026-08-01_v2_final.png"
+SHORT_BASENAME = "thuisbatterij-vergelijken-v2.png"
 
 
 def write_manifest(tmpdir, posts):
@@ -153,3 +160,57 @@ class SeoUpdatePostsTests(TestCase):
         p = Post.objects.get(slug="thuisbatterij-vergelijken")
         self.assertEqual(p.title, "Oude titel")
         self.assertEqual(sorted(p.tags.names()), ["thuisbatterij"])
+
+    # --- cover filename storage-headroom regression tests ---
+
+    def _make_cover(self, basename):
+        p = os.path.join(self.tmp, basename)
+        with open(p, "wb") as fh:
+            fh.write(b"\x89PNG\r\n")
+        return p
+
+    def test_long_cover_path_rejected_for_lacking_headroom(self):
+        """The 96-char generated path is rejected — not because it exceeds
+        max_length (it does not), but because it leaves no safe headroom for
+        storage-generated suffixes."""
+        field = Post._meta.get_field("cover_image")
+        generated = field.generate_filename(None, OLD_LONG_BASENAME)
+        self.assertLessEqual(len(generated), field.max_length)        # 96 <= 100 (does NOT overflow yet)
+        self.assertGreater(len(generated), field.max_length - 20)     # 96 > 80 (no headroom)
+        entry = self._valid_entry(cover_image=self._make_cover(OLD_LONG_BASENAME))
+        path = write_manifest(self.tmp, {"thuisbatterij-vergelijken": entry})
+        with self.assertRaises(CommandError):
+            call_command("seo_update_posts", slug="thuisbatterij-vergelijken", manifest=path)
+
+    def test_short_cover_path_passes(self):
+        field = Post._meta.get_field("cover_image")
+        self.assertLessEqual(len(field.generate_filename(None, SHORT_BASENAME)), field.max_length - 20)
+        entry = self._valid_entry(cover_image=self._make_cover(SHORT_BASENAME))
+        path = write_manifest(self.tmp, {"thuisbatterij-vergelijken": entry})
+        call_command("seo_update_posts", slug="thuisbatterij-vergelijken", manifest=path)  # no raise
+
+    def test_validation_runs_before_storage_save(self):
+        """A failing cover validation must abort before storage.save() is ever called."""
+        entry = self._valid_entry(cover_image=self._make_cover(OLD_LONG_BASENAME))
+        path = write_manifest(self.tmp, {"thuisbatterij-vergelijken": entry})
+        with mock.patch.object(default_storage, "save") as msave:
+            with self.assertRaises(CommandError):
+                call_command("seo_update_posts", slug="thuisbatterij-vergelijken",
+                             manifest=path, apply=True, backup_dir=self.tmp)
+        msave.assert_not_called()
+        # DB untouched.
+        self.assertEqual(Post.objects.get(slug="thuisbatterij-vergelijken").title, "Oude titel")
+
+    def test_all_changed_charfields_fit_limits(self):
+        """Every changed CharField value in the real production manifest fits its limit."""
+        mpath = os.path.join(settings.BASE_DIR,
+                             "research/seo/article-drafts/thuisbatterij-vergelijken/production-manifest.json")
+        e = json.load(open(mpath, encoding="utf-8"))["posts"]["thuisbatterij-vergelijken"]
+        for fname in ["title", "seo_title", "excerpt", "cover_alt"]:
+            ml = Post._meta.get_field(fname).max_length
+            self.assertIsNotNone(ml)
+            self.assertLessEqual(len(e[fname]), ml, f"{fname} exceeds max_length {ml}")
+        # cover_image: generated storage path fits with headroom.
+        field = Post._meta.get_field("cover_image")
+        gen = field.generate_filename(None, os.path.basename(e["cover_image"]))
+        self.assertLessEqual(len(gen), field.max_length - 20)

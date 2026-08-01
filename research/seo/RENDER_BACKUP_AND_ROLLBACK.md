@@ -8,7 +8,7 @@ and **not** needed for blog FK integrity on a same-DB rollback.
 ## 0. Prereqs in the production environment
 - The reviewed files must be present in the deployed checkout (they live in the repo):
   - `research/seo/article-drafts/thuisbatterij-vergelijken/production-manifest.json`
-  - `brand-assets/higgsfield-thuisbatterij-vergelijken/generated/v2/…_v2_final.png` (the cover)
+  - `brand-assets/higgsfield-thuisbatterij-vergelijken/generated/v2/thuisbatterij-vergelijken-v2.png` (the cover)
 - If `research/` or `brand-assets/` are **not** in the deployed image, upload those two files to the
   shell working directory first, or upload the cover via Django Admin instead.
 

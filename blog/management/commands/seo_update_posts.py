@@ -44,6 +44,16 @@ MARKER = "[SOURCE REQUIRED]"
 # Field length limits mirrored from blog.models.Post (fail early, before the DB).
 MAX_LEN = {"title": 250, "seo_title": 70, "excerpt": 400, "cover_alt": 160}
 
+# Reserved headroom for the generated cover storage path. The generated name
+# (upload_to + filename) is NOT the final stored value: Django's storage.save()
+# calls get_available_name(), which on a name collision appends a uniqueness
+# suffix ("_" + 7 random chars ≈ 8 chars), and the Cloudinary backend may apply
+# its own transformations. A name that fits at generate_filename() time can
+# therefore still overflow the ImageField's varchar(max_length) after save().
+# We require the generated path to be <= (max_length - headroom) so those extra
+# characters always fit. 20 comfortably covers the 8-char collision suffix.
+COVER_FILENAME_HEADROOM = 20
+
 INTERNAL_LINK_RE = re.compile(r"\]\((/[^)\s]+)\)")
 
 
@@ -120,6 +130,8 @@ class Command(BaseCommand):
                     errors.append("'tags' contains duplicate values (case-insensitive).")
 
         # Image + alt: if a cover image change is requested, both file and alt are required.
+        # This runs BEFORE any file is opened or uploaded (see handle(): _validate() is
+        # called before the atomic apply block that performs storage.save()).
         cover = entry.get("cover_image")
         if cover:
             path = cover if os.path.isabs(cover) else os.path.join(settings.BASE_DIR, cover)
@@ -127,6 +139,20 @@ class Command(BaseCommand):
                 errors.append(f"cover_image file not found: {cover}")
             if not (entry.get("cover_alt") or "").strip():
                 errors.append("cover_image change requested but cover_alt is missing/empty.")
+
+            # Storage-path headroom: use the ImageField's own generate_filename logic and
+            # require the generated path to leave headroom for storage-generated suffixes.
+            field = Post._meta.get_field("cover_image")
+            generated = field.generate_filename(None, os.path.basename(path))
+            limit = field.max_length - COVER_FILENAME_HEADROOM
+            if len(generated) > limit:
+                errors.append(
+                    f"cover_image storage path lacks safe headroom: generated '{generated}' is "
+                    f"{len(generated)} chars, but must be <= {limit} "
+                    f"(max_length {field.max_length} minus {COVER_FILENAME_HEADROOM} reserved for "
+                    f"storage-generated uniqueness suffixes like '_XXXXXXX' or backend transformations). "
+                    f"Use a shorter cover filename."
+                )
 
         # Internal links: manifest-declared links must appear in the body, and every
         # internal link in the body must resolve to a known route or an existing post.
