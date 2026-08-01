@@ -116,6 +116,24 @@ Legenda classificatie: zie `../README.md`.
 
 ---
 
+## BP-PRESENT-001 — Homepage-hero voorbeeldadvies (14 / 21 kWh)
+- **Bestand:** `frontend/src/components/home/BatteryPreview.jsx`
+- **Classificatie:** **PRESENTATION EXAMPLE / DOCUMENTATION NOTE** — géén
+  PRACTICE DATA en géén backend-rekenresultaat.
+- **Betekenis:** de interactieve hero-preview toont bij het voorbeeldprofiel
+  (4.500 / 3.200 kWh) per doel een vast illustratief advies: 14 kWh
+  (eigen verbruik) en 21 kWh (dynamische handel). Beide zijn bewust door de
+  projecteigenaar gekozen presentatievoorbeelden, expliciet gelabeld als
+  "Voorbeeldberekening".
+- **Afbakening:** de waarden worden client-side hardcoded weergegeven, gaan
+  nooit een API-payload in en mogen nooit als calculator-uitkomst worden
+  hergebruikt; het echte advies komt uitsluitend uit `calculate_battery_advice`.
+- **Noot:** de gedocumenteerde formule geeft voor dit profiel bij handel
+  ±15–18 kWh; het getoonde 21 kWh is dus een presentatiekeuze, geen
+  formule-uitkomst.
+
+---
+
 ## Vaste noten
 - **Indicatief, geen garantie** — geldt voor alle bovenstaande waarden (zie `DISCLAIMER` in `calculators/stage2.py`).
 - **Privacy** — geen individuele MijnBatterij-gebruikersgegevens in dit dossier; alleen geaggregeerd/geanonimiseerd.

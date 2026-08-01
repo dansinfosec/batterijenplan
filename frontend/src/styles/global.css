@@ -4023,3 +4023,81 @@ details[open] > summary .hp2-acc-chevron { transform: rotate(225deg); }
   .stage2-reveal { animation: calc2-resultin 0.55s ease; }
   .stage2-reveal .stage2-figures { animation: calc2-stepin 0.5s ease 0.15s backwards; }
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   Spacing-polish (QA): rustiger ritme, ademruimte vóór de footer.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* Homepage: artikelensectie krijgt meer lucht, vooral onderaan richting de
+   donkere afsluitband, zodat de overgang bewust voelt i.p.v. abrupt. */
+.hp2-articles { padding: 64px 0 96px; }
+.hp2-articles-grid { margin-top: 28px; }
+.hp2-article { padding-top: 18px; padding-bottom: 18px; }
+.hp2-final { padding: 84px 0; }
+@media (max-width: 640px) {
+  .hp2-articles { padding: 48px 0 64px; }
+  .hp2-articles-grid { gap: 24px; }
+  .hp2-final { padding: 60px 0 64px; }
+}
+
+/* Homepage: iets ruimere verticale maat tussen de grote secties. */
+.hp2-journey.hp-section { padding: 64px 0; }
+.hp2-lead.hp-section { padding: 64px 0 72px; }
+@media (max-width: 640px) {
+  .hp2-journey.hp-section { padding: 48px 0; }
+  .hp2-lead.hp-section { padding: 48px 0 56px; }
+}
+
+/* Calculator: laatste sectie (artikelen) krijgt ademruimte vóór de footer. */
+.calc2-page .calc-related { padding-bottom: 88px; }
+@media (max-width: 640px) {
+  .calc2-page .calc-related { padding-bottom: 64px; }
+  .calc2-unlock { padding: 20px 16px 18px; }
+  .calc2-unlock-metrics { grid-template-columns: 1fr; }
+  .calc2-milestones { flex-direction: column; }
+  .calc2-mstep + .calc2-mstep { border-left: none; border-top: 1px solid var(--rule); }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   Fix — BatteryPreview animatie-lifecycle (run-once per toggle).
+   Root cause: de oude regels gaven ALLE wires een infinite animation-name
+   die bij een doelwissel nooit van identiteit veranderde; de browser
+   herstartte dus niets, en de dim-uitzonderingen (lagere specificiteit)
+   verloren de cascade. Deze append-overrides vervangen dat model:
+   de SVG remount via een React-key (goal + cycle) en speelt run-once
+   animaties af. Reduced-motion/off-screen = direct de eindtoestand.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* Oude infinite-loops uitschakelen (zelfde specificiteit, later in bestand
+   = wint; geldt binnen dezelfde media-conditie als de oude regels). */
+@media (prefers-reduced-motion: no-preference) {
+  .hp2-preview.is-live .hp2-wire { animation: none; }
+  .hp2-preview.is-live .hp2-batt-fill {
+    transform-box: fill-box; transform-origin: bottom;
+    /* Run-once vulling: start laag, eindigt vol. 'both' houdt de startstand
+       vast tijdens de delay (vulling begint zichtbaar ná de padanimatie). */
+    animation: hp2-battfill-once 1.5s ease-out 0.4s both;
+  }
+  /* Alleen de actieve stromen reizen richting de batterij (4-class
+     specificiteit > oude 3-class regel). Dashoffset 48 → 0 = zichtbare
+     verplaatsing in padrichting (bron → batterij), eenmalig. */
+  .hp2-preview.is-live .hp2-flow--self .hp2-wire-sun,
+  .hp2-preview.is-live .hp2-flow--self .hp2-wire-house,
+  .hp2-preview.is-live .hp2-flow--trading .hp2-wire-grid {
+    animation: hp2-wiretravel 1.1s linear forwards;
+  }
+  /* Gedimde paden: statisch (opacity-dim uit de bestaande regels blijft). */
+  .hp2-preview.is-live .hp2-flow--self .hp2-wire-grid,
+  .hp2-preview.is-live .hp2-flow--trading .hp2-wire-sun,
+  .hp2-preview.is-live .hp2-flow--trading .hp2-wire-house {
+    animation: none;
+  }
+}
+@keyframes hp2-wiretravel {
+  from { stroke-dashoffset: 48; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes hp2-battfill-once {
+  from { transform: scaleY(0.15); }
+  to { transform: scaleY(1); }
+}
