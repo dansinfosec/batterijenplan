@@ -1,13 +1,8 @@
-# Source requirements — `energieprijzen-stijgen-thuisbatterij-voordeel-2027`
+# Source requirements — `energieprijzen-stijgen-thuisbatterij-voordeel-2027` (reconciled)
 
-**Time-sensitive — fresh verification done 2026-08-01. Visible recheck banner present in body.**
+Re-verified 2026-08-01: saldering stops 1-1-2027 + ≥50% kaal leveringstarief until 2030 (Rijksoverheid); thuisbatterij 21% btw, trading VAT rules (Belastingdienst). Existing in-article Bronnen retained.
 
-| Claim | Class | Source | Retrieved | In public copy | Recheck | Risk if outdated |
-|---|---|---|---|---|---|---|
-| Salderingsregeling stopt 1-1-2027 | EXT (verified) | Rijksoverheid — Salderingsregeling (https://www.rijksoverheid.nl/themas/klimaat-milieu-en-natuur/energie-thuis/salderingsregeling) | 2026-08-01 | yes | on policy change / quarterly | High — core premise |
-| Terugleververgoeding ≥50% kaal leveringstarief tot 2030 | EXT (verified) | Rijksoverheid — Salderingsregeling (https://www.rijksoverheid.nl/themas/klimaat-milieu-en-natuur/energie-thuis/salderingsregeling) | 2026-08-01 | yes | quarterly | Med |
-| Salderen loopt door t/m 31-12-2026 | EXT (verified) | Rijksoverheid — Salderingsregeling (https://www.rijksoverheid.nl/themas/klimaat-milieu-en-natuur/energie-thuis/salderingsregeling) | 2026-08-01 | yes | quarterly | Med |
-| Thuisbatterij 21% btw; handel → 21% over vergoeding, kwartaalaangifte; particulier geen aangifteplicht | EXT (verified) | Belastingdienst — Thuisbatterij en btw (https://www.belastingdienst.nl/wps/wcm/connect/nl/btw/content/thuisbatterij-btw) | 2026-08-01 | yes | on tax change | Med |
-| Zonnepanelen 0% btw | EXT (verified) | Belastingdienst — Thuisbatterij en btw (https://www.belastingdienst.nl/wps/wcm/connect/nl/btw/content/thuisbatterij-btw) | 2026-08-01 | yes | on tax change | Low |
+Factual-integrity rules honored: every number retains a traceable source, documented project methodology,
+or an explicit illustrative/model label; none reclassified. No `[SOURCE REQUIRED]` marker present.
 
-No unverified figures published. No guaranteed payback. Competitors not used as a factual source.
+**CONTENT-MAINTENANCE NOTE (internal):** time-sensitive. Re-verified 2026-08-01 (Rijksoverheid saldering; Belastingdienst btw). **Recheck by 2026-11-01 or on any policy change** before re-apply. Do not publish updated figures without fresh verification.

@@ -1,11 +1,6 @@
-# Source requirements — `wat-levert-een-thuisbatterij-op`
+# Source requirements — `wat-levert-een-thuisbatterij-op` (reconciled)
 
-Mostly general explanatory content + one dated 2027 reference (links to the 2027 article).
+Existing in-article register kept verbatim (EPEX/Fraunhofer, TenneT, PVGIS, CBS, Rijksoverheid, ACM, mijnbatterij.nl). No new external claims added.
 
-| Claim | Class | Source | In public copy |
-|---|---|---|---|
-| Battery yields via self-consumption + trading | G (general) | — | yes |
-| No guaranteed payback / savings | G | — | yes (explicitly) |
-| Saldering ends 2027 (context) | EXT (verified) | Rijksoverheid — Salderingsregeling (https://www.rijksoverheid.nl/themas/klimaat-milieu-en-natuur/energie-thuis/salderingsregeling) (retrieved 2026-08-01) | yes (brief, links to 2027 article) |
-
-No unsupported price/payback/savings figures. Reconcile with live data before apply.
+Factual-integrity rules honored: every number retains a traceable source, documented project methodology,
+or an explicit illustrative/model label; none reclassified. No `[SOURCE REQUIRED]` marker present.

@@ -1,6 +1,49 @@
-# Wat levert een thuisbatterij op? Onderzoek op basis van 135 simulaties en 300+ echte installaties
+# Current raw production body (frozen snapshot) — `wat-levert-een-thuisbatterij-op`
 
-> RECONCILED — preserves the full production body (all research, tables, methodology, sources) and adds contextual internal links + the calculator link. No valuable content removed.
+> **Source:** reconstructed from production `body_html` (rendered) retrieved read-only on 2026-08-01.
+> The authoritative **raw Markdown `body`** lives only in the production DB — see extraction
+> instructions in `research/seo/PAYBACK_BATCH_FINAL_REVIEW.md` / the report. This reconstruction
+> contains every section, table, list, link and claim of the live article and is complete for a
+> content-loss audit. Do not treat it as byte-identical to the original Markdown source.
+
+- production id: 14
+- title: Wat levert een thuisbatterij op? Onderzoek op basis van 135 simulaties en 300+ echte installaties
+- slug: wat-levert-een-thuisbatterij-op
+- published_at: 2026-07-16T22:11:30Z
+- updated_at: 2026-07-19T21:50:01.521676Z
+- word count (reconstructed): ~3839
+- tables: 7
+- heading structure: 14 H2 / 8 H3
+- internal links: []
+- external/source links: []
+
+## Heading structure
+- ## Het antwoord in één oogopslag
+- ## Dit moet u weten
+- ## 1. Hoe wij dit onderzocht hebben
+- ## 2. Waar de opbrengst vandaan komt
+- ## 3. 2026 versus 2027: het kanteljaar
+- ## 4. De opbrengstmatrix: 25 profielen
+- ## 5. Validatie: klopt dit met de praktijk?
+- ## 6. Alle 21 leveranciers vergeleken
+- ## 7. Terugverdientijd
+- ## 8. Voor wie, en voor wie niet?
+- ## 9. Beperkingen van dit onderzoek
+- ## Verantwoording en bronnen
+- ## Veelgestelde vragen
+- ## Wat levert een thuisbatterij op in úw situatie?
+  - ### Conclusies uit de leveranciersvergelijking
+  - ### Wat levert een thuisbatterij gemiddeld op?
+  - ### Heb ik zonnepanelen nodig voor een thuisbatterij?
+  - ### Wat verandert er op 1 januari 2027?
+  - ### Verdient een batterij echt geld op de onbalansmarkt?
+  - ### Welke leverancier is de beste bij een thuisbatterij?
+  - ### Hoe belangrijk is het rendement van de batterij?
+  - ### Wat is een realistische terugverdientijd?
+
+---
+
+## Reconstructed raw body (Markdown)
 
 Onderzoek van Batterijenplan · 135 simulaties op 70.000+ kwartieren echte markt- en TenneT-data · 25 huishoudprofielen · 21 energieleveranciers · gevalideerd tegen 300+ werkelijke installaties · Laatst bijgewerkt: 17 juli 2026 · Alle bedragen incl. btw
 
@@ -54,7 +97,7 @@ Dynamisch contract 2027 — actief multi-market EMS: € 812
 
 Salderen 2026 — batterij voor eigen verbruik: − € 148
 
-Componenten komen uit één dispatch en tellen exact op tot het totaal — geen dubbeltelling. Conclusie: in 2026 komt de waarde uit handel; vanaf 2027 uit handel én opslag. Zie de afweging in [handel of zelfconsumptie](/post/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie).
+Componenten komen uit één dispatch en tellen exact op tot het totaal — geen dubbeltelling. Conclusie: in 2026 komt de waarde uit handel; vanaf 2027 uit handel én opslag.
 
 De vier bronnen, over de hele matrix:
 
@@ -77,7 +120,7 @@ De vier bronnen, over de hele matrix:
 | **Totale batterijopbrengst** | **≈ € 684** | **≈ € 812** (dynamisch + EMS) |
 | Terugverdientijd bij € 6.000 geïnstalleerd | 8,8 jaar | **7,4 jaar** |
 
-Let op wat hier gebeurt: onder salderen concurreert de batterij met een gratis alternatief (het net streept uw teruglevering weg tegen uw inkoop). Daarom is opslag van eigen zon in 2026 waardeloos en draait alles op handel. Vanaf 2027 vervalt dat gratis alternatief en wordt elke opgeslagen kilowattuur het verschil waard tussen inkopen (± € 0,30) en terugleveren (± € 0,03 tot zelfs negatief). **Een thuisbatterij wordt op 1 januari 2027 dus niet minder waard — hij wordt méér waard.** Meer over dit kantelpunt: [thuisbatterij en 2027](/post/energieprijzen-stijgen-thuisbatterij-voordeel-2027).**
+Let op wat hier gebeurt: onder salderen concurreert de batterij met een gratis alternatief (het net streept uw teruglevering weg tegen uw inkoop). Daarom is opslag van eigen zon in 2026 waardeloos en draait alles op handel. Vanaf 2027 vervalt dat gratis alternatief en wordt elke opgeslagen kilowattuur het verschil waard tussen inkopen (± € 0,30) en terugleveren (± € 0,03 tot zelfs negatief). **Een thuisbatterij wordt op 1 januari 2027 dus niet minder waard — hij wordt méér waard.**
 
 ## 4. De opbrengstmatrix: 25 profielen
 
@@ -201,7 +244,7 @@ In ons onderzoek over 25 huishoudprofielen: mediaan € 764 per jaar (marktjaar 
 
 ### Heb ik zonnepanelen nodig voor een thuisbatterij?
 
-Nee. Zonder panelen levert het systeem € 654 – 686 per jaar op via energiehandel. Hoe het opslaan van eigen zon werkt, leest u in [stroom opslaan met zonnepanelen](/post/stroom-opslaan-zonnepanelen). Zonnepanelen voegen € 30 – 200 toe — en vanaf 2027 meer, omdat opgeslagen zonnestroom dan de volle inkoopprijs waard wordt.
+Nee. Zonder panelen levert het systeem € 654 – 686 per jaar op via energiehandel. Zonnepanelen voegen € 30 – 200 toe — en vanaf 2027 meer, omdat opgeslagen zonnestroom dan de volle inkoopprijs waard wordt.
 
 ### Wat verandert er op 1 januari 2027?
 
@@ -217,7 +260,7 @@ In onze vergelijking van 21 leveranciers is Groene Vrienden de goedkoopste (€ 
 
 ### Hoe belangrijk is het rendement van de batterij?
 
-Veel minder dan gedacht: tussen 86% en 94% round-trip zit ± € 15 per jaar. Waar u verder op let bij het kiezen, staat in [thuisbatterij vergelijken](/post/thuisbatterij-vergelijken). Let liever op omvormervermogen (+46% opbrengst van 5 naar 10 kW), vaste EMS-/platformkosten en eventuele winstdeling bij aanbieders die daarmee werken. Groene Vrienden rekent in deze vergelijking zonder winstdeling.
+Veel minder dan gedacht: tussen 86% en 94% round-trip zit ± € 15 per jaar. Let liever op omvormervermogen (+46% opbrengst van 5 naar 10 kW), vaste EMS-/platformkosten en eventuele winstdeling bij aanbieders die daarmee werken. Groene Vrienden rekent in deze vergelijking zonder winstdeling.
 
 ### Wat is een realistische terugverdientijd?
 
@@ -225,4 +268,4 @@ Veel minder dan gedacht: tussen 86% en 94% round-trip zit ± € 15 per jaar. Wa
 
 ## Wat levert een thuisbatterij op in úw situatie?
 
-Dit onderzoek geeft het landelijke beeld — maar de matrix laat óók zien dat uw verbruik, opwek, contract en batterijconfiguratie samen honderden euro's per jaar verschuiven. Precies die combinatie rekent de [Batterijenplan Calculator](/calculator) voor u door, met uw eigen cijfers in plaats van een modelprofiel.
+Dit onderzoek geeft het landelijke beeld — maar de matrix laat óók zien dat uw verbruik, opwek, contract en batterijconfiguratie samen honderden euro's per jaar verschuiven. Precies die combinatie rekent de Batterijenplan Calculator voor u door, met uw eigen cijfers in plaats van een modelprofiel.

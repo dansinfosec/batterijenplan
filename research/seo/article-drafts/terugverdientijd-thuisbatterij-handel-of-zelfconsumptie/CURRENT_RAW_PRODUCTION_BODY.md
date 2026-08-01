@@ -1,6 +1,43 @@
-# Terugverdientijd thuisbatterij: handel of zelfconsumptie?
+# Current raw production body (frozen snapshot) — `terugverdientijd-thuisbatterij-handel-of-zelfconsumptie`
 
-> RECONCILED — preserves the full production body (all research, tables, methodology, sources) and adds contextual internal links + the calculator link. No valuable content removed.
+> **Source:** reconstructed from production `body_html` (rendered) retrieved read-only on 2026-08-01.
+> The authoritative **raw Markdown `body`** lives only in the production DB — see extraction
+> instructions in `research/seo/PAYBACK_BATCH_FINAL_REVIEW.md` / the report. This reconstruction
+> contains every section, table, list, link and claim of the live article and is complete for a
+> content-loss audit. Do not treat it as byte-identical to the original Markdown source.
+
+- production id: 3
+- title: Terugverdientijd thuisbatterij: handel of zelfconsumptie?
+- slug: terugverdientijd-thuisbatterij-handel-of-zelfconsumptie
+- published_at: 2026-07-04T09:25:45Z
+- updated_at: 2026-07-15T21:53:19.395517Z
+- word count (reconstructed): ~1225
+- tables: 0
+- heading structure: 15 H2 / 0 H3
+- internal links: []
+- external/source links: []
+
+## Heading structure
+- ## Een thuisbatterij verdient zichzelf niet vanzelf terug
+- ## Zelfconsumptie: uw eigen zonnestroom beter gebruiken
+- ## Handel: slimmer sturen met dynamische prijzen
+- ## Handel vraagt om een goed EMS-systeem
+- ## Zelfconsumptie of handel: wat verdient sneller terug?
+- ## Pas op met vaste beloftes
+- ## Waarom capaciteit belangrijk is
+- ## Grotere batterij betekent niet altijd betere terugverdientijd
+- ## Het verschil in één zin
+- ## Voor wie is zelfconsumptie interessant?
+- ## Voor wie is handel interessant?
+- ## De rol van laadcycli
+- ## De simpele vergelijking
+- ## De belangrijkste vraag
+- ## Conclusie
+
+
+---
+
+## Reconstructed raw body (Markdown)
 
 Een van de eerste vragen bij een thuisbatterij is logisch:
 
@@ -89,7 +126,7 @@ Maar op uw eigen situatie.
 
 Een batterij voor handel heeft slimme sturing nodig.
 
-Dat noemen we een EMS-systeem: Energy Management System. Meer hierover: [wie de controle houdt over uw stroom](/post/ems-systeem-thuisbatterij-controle-over-stroom).
+Dat noemen we een EMS-systeem: Energy Management System.
 
 Het EMS bepaalt wanneer de batterij laadt, wanneer die ontlaadt en hoe de stroom wordt ingezet.
 
@@ -112,7 +149,7 @@ Maar de echte vraag is:
 
 ## Zelfconsumptie of handel: wat verdient sneller terug?
 
-In veel situaties kan handel met dynamische prijzen interessanter zijn dan alleen zelfconsumptie. Zie [dynamisch energiecontract met thuisbatterij](/post/dynamisch-energiecontract-thuisbatterij).
+In veel situaties kan handel met dynamische prijzen interessanter zijn dan alleen zelfconsumptie.
 
 Maar dat betekent niet automatisch dat het voor iedereen beter is.
 
@@ -317,4 +354,4 @@ Wilt u ook inspelen op dynamische energieprijzen?
 
 Dan wordt handel met EMS-aansturing interessant.
 
-De juiste keuze begint met een goede berekening. Bekijk het volledige opbrengstonderzoek in [wat levert een thuisbatterij op](/post/wat-levert-een-thuisbatterij-op), of reken uw situatie door met de [calculator](/calculator).
+De juiste keuze begint met een goede berekening.

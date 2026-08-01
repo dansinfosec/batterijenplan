@@ -1,6 +1,59 @@
-# Energieprijzen stijgen: waarom een thuisbatterij vanaf 2027 meer kan opleveren
+# Current raw production body (frozen snapshot) — `energieprijzen-stijgen-thuisbatterij-voordeel-2027`
 
-> RECONCILED — preserves the full production body (all research, tables, methodology, sources) and adds contextual internal links + the calculator link. No valuable content removed.
+> **Source:** reconstructed from production `body_html` (rendered) retrieved read-only on 2026-08-01.
+> The authoritative **raw Markdown `body`** lives only in the production DB — see extraction
+> instructions in `research/seo/PAYBACK_BATCH_FINAL_REVIEW.md` / the report. This reconstruction
+> contains every section, table, list, link and claim of the live article and is complete for a
+> content-loss audit. Do not treat it as byte-identical to the original Markdown source.
+
+- production id: 13
+- title: Energieprijzen stijgen: waarom een thuisbatterij vanaf 2027 meer kan opleveren
+- slug: energieprijzen-stijgen-thuisbatterij-voordeel-2027
+- published_at: 2026-07-15T20:53:41Z
+- updated_at: 2026-07-16T09:53:13.096110Z
+- word count (reconstructed): ~3006
+- tables: 10
+- heading structure: 19 H2 / 13 H3
+- internal links: ['/calculator']
+- external/source links: ['https://consument.acm.nl/elektriciteit-en-gas/duurzame-energie/teruglevering-van-elektriciteit', 'https://consument.acm.nl/elektriciteit-en-gas/duurzame-energie/wat-is-salderen', 'https://groenevrienden-energie.nl/', 'https://groenevrienden.nl/dynamisch-contract/', 'https://www.acm.nl/nl/publicaties/energiemonitor-acm-tariefswijziging-variabele-contracten-1-juli-goed-moment-om-tarieven-te-vergelijken', 'https://www.cbs.nl/nl-nl/cijfers/detail/85592NED']
+
+## Heading structure
+- ## De belangrijkste conclusie
+- ## Inhoud
+- ## Wat verandert er vanaf 1 januari 2027?
+- ## Actuele Nederlandse stroomprijzen in 2026
+- ## De beursprijs is voor dynamische leveranciers niet het belangrijkste verschil
+- ## Waarom Groene Vrienden in deze vergelijking wordt gebruikt
+- ## Uitgangspunten van de praktijkberekening
+- ## Stap 1: de fysieke energiestromen
+- ## Berekening 1: vast contract met terugleverkosten
+- ## Berekening 2: dynamisch contract met slim EMS
+- ## Vast versus dynamisch: waar komt het verschil vandaan?
+- ## Waarom een goed EMS belangrijker is dan alleen de batterij
+- ## Energiehandel: alleen netto en zonder dubbele telling
+- ## Eigenaar van uw stroom betekent eigenaar van het moment
+- ## Wat betekent dit voor de terugverdientijd?
+- ## Conclusie: de batterij is opslag, het EMS bepaalt de waarde
+- ## Bereken wat een thuisbatterij bij uw woning werkelijk kan opleveren
+- ## Veelgestelde vragen
+- ## Bronnen
+  - ### Zonder thuisbatterij
+  - ### Met een thuisbatterij van circa 10 kWh
+  - ### 1. Vermeden stroominkoop
+  - ### 2. Vermeden terugleverkosten
+  - ### 3. Gemiste terugleververgoeding
+  - ### Netto voordeel vast contract
+  - ### Controle van het middenscenario
+  - ### Is dynamische stroom altijd goedkoper dan een vast contract?
+  - ### Betekent een negatieve beursprijs dat ik gratis kan laden?
+  - ### Heeft een dynamisch contract terugleverkosten?
+  - ### Waarom rekent deze berekening met 90% rendement?
+  - ### Kan een EMS handelen en tegelijk zonnestroom opslaan?
+  - ### Kan een thuisbatterij in vijf jaar worden terugverdiend?
+
+---
+
+## Reconstructed raw body (Markdown)
 
 **Bijgewerkt met Nederlandse energiegegevens van juli 2026**
 
@@ -486,8 +539,6 @@ Het hoogste rendement ontstaat niet doordat een batterij blind zoveel
  verliezen.
 
 ## Bereken wat een thuisbatterij bij uw woning werkelijk kan opleveren
-
-Reken uw eigen situatie door met de [calculator](/calculator). Voor het volledige opbrengstonderzoek, zie [wat levert een thuisbatterij op](/post/wat-levert-een-thuisbatterij-op); voor de strategiekeuze, zie [handel of zelfconsumptie](/post/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie).
 
 Een goede batterijberekening gebruikt geen algemeen percentage, maar uw
  werkelijke slimme-meterdata, zonneproductie, energiecontract en

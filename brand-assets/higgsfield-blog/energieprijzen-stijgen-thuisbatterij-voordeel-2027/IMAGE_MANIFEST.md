@@ -16,3 +16,7 @@
 | production-manifest cover_image | brand-assets/higgsfield-blog/energieprijzen-stijgen-thuisbatterij-voordeel-2027/final/thuisbatterij-2027.png |
 | generated storage path | batterijenplan\blog\thuisbatterij-2027.png (42 chars, <=80 OK) |
 | approval status | inspected on contact sheet - approved |
+
+
+## OG title update (2026-08-01)
+- OG local title changed: 'Thuisbatterij en 2027' -> 'Thuisbatterij vanaf 2027' (local Sharp text overlay only; illustration, logo, dimensions, crop, and the production cover unchanged).
