@@ -1,5 +1,15 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { postLeadStage2 } from "../api.js";
+
+// Lokale kopie van de calculator-helper: scroll-/focusgedrag respecteert de
+// OS-voorkeur voor verminderde beweging.
+function prefersReducedMotion() {
+  return (
+    typeof window !== "undefined" &&
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
 
 // ── Stage 2: extra analysevragen ná het leadformulier ─────────────────────
 // Vier korte hoofdvragen (grote tap-targets, gestapeld op mobiel) plus een
@@ -87,6 +97,34 @@ export default function Stage2Analysis({ leadMeta, onReport }) {
   const [report, setReport] = useState(null);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState(null);
+  // Wijst naar de kop + kernmetrics van het voltooide rapport (niet het hele
+  // lange rapport), zodat de terugverdientijd de eerste zichtbare uitkomst is.
+  const paybackResultRef = useRef(null);
+
+  // Zodra het backend-rapport van afwezig → aanwezig gaat: scroll de
+  // resultaatkop + maandvoordeel/terugverdientijd in beeld en verplaats de
+  // focus naar de kop (toetsenbord + screenreader krijgen de uitkomst ook).
+  // requestAnimationFrame wacht tot React het voltooide rapport heeft
+  // gerenderd; een tweede rAF vangt nog niet-uitgelijnde layout op.
+  useEffect(() => {
+    if (!report) return;
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        const el = paybackResultRef.current;
+        if (!el) return;
+        el.scrollIntoView({
+          behavior: prefersReducedMotion() ? "auto" : "smooth",
+          block: "start",
+        });
+        el.focus({ preventScroll: true });
+      });
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      if (raf2) cancelAnimationFrame(raf2);
+    };
+  }, [report]);
 
   const choose = (field, value) => {
     setError(null);
@@ -140,23 +178,34 @@ export default function Stage2Analysis({ leadMeta, onReport }) {
   if (report) {
     return (
       <section className="stage2-card stage2-report stage2-reveal">
-        <span className="mono stage2-kicker">Analyse gereed</span>
-        <h2>Uw persoonlijke berekening is compleet</h2>
+        {/* Scroll-/focusdoel: kop + kernmetrics. tabIndex=-1 maakt het
+            programmatisch focusbaar zonder het in de tabvolgorde te zetten.
+            role=status + aria-live meldt de voltooiing aan screenreaders. */}
+        <div
+          ref={paybackResultRef}
+          className="stage2-result-head"
+          tabIndex={-1}
+          role="status"
+          aria-live="polite"
+        >
+          <span className="mono stage2-kicker">Analyse gereed</span>
+          <h2>Uw persoonlijke berekening is compleet</h2>
 
-        <div className="stage2-figures">
-          <div className="stage2-figure stage2-figure-accent">
-            <span className="stage2-figure-label">Indicatief maandvoordeel</span>
-            <b>
-              € {report.estimated_monthly_benefit_min} – €{" "}
-              {report.estimated_monthly_benefit_max}
-            </b>
-          </div>
-          <div className="stage2-figure">
-            <span className="stage2-figure-label">Indicatieve terugverdientijd</span>
-            <b>
-              {formatYears(report.estimated_payback_years_min)} –{" "}
-              {formatYears(report.estimated_payback_years_max)} jaar
-            </b>
+          <div className="stage2-figures">
+            <div className="stage2-figure stage2-figure-accent">
+              <span className="stage2-figure-label">Indicatief maandvoordeel</span>
+              <b>
+                € {report.estimated_monthly_benefit_min} – €{" "}
+                {report.estimated_monthly_benefit_max}
+              </b>
+            </div>
+            <div className="stage2-figure">
+              <span className="stage2-figure-label">Indicatieve terugverdientijd</span>
+              <b>
+                {formatYears(report.estimated_payback_years_min)} –{" "}
+                {formatYears(report.estimated_payback_years_max)} jaar
+              </b>
+            </div>
           </div>
         </div>
 

@@ -2012,6 +2012,17 @@ body,
    accent. Grote tap-targets op mobiel; geavanceerde velden ingeklapt. */
 .calc-page .stage2-wrap { margin-bottom: 30px; }
 
+/* Scroll-/focusdoel na Stage 2: kop + kernmetrics. scroll-margin-top houdt
+   ruimte vrij voor de sticky header; interne gap herstelt de spacing die het
+   div-omhulsel binnen de grid-kaart zou verliezen; geen storende outline bij
+   programmatische focus (toetsenbord-focus toont wel de globale focusring). */
+.stage2-result-head {
+  display: grid;
+  gap: 16px;
+  scroll-margin-top: 90px;
+}
+.stage2-result-head:focus { outline: none; }
+
 .stage2-card {
   border: 3px solid var(--ink);
   border-radius: 10px;
