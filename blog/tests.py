@@ -227,3 +227,68 @@ class SeoUpdatePostsTests(TestCase):
         field = Post._meta.get_field("cover_image")
         gen = field.generate_filename(None, os.path.basename(e["cover_image"]))
         self.assertLessEqual(len(gen), field.max_length - 20)
+
+
+class VerifyReconciliationTests(TestCase):
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.user = User.objects.create_user("editor2", password="x")
+        self.fixed_pub = datetime(2026, 7, 16, tzinfo=timezone.utc)
+        self.post = Post.objects.create(
+            title="X", slug="test-post", author=self.user,
+            body="## Sectie A\n\ninhoud A\n\n## Sectie B\n\ninhoud B [calc](/calculator)",
+            excerpt="x", status="published", seo_title="t", seo_description="d",
+            published_at=self.fixed_pub,
+        )
+
+    def _mani(self, key, body, **extra):
+        entry = {"body": body}
+        entry.update(extra)
+        return write_manifest(self.tmp, {key: entry})
+
+    def test_readonly_no_mutation(self):
+        before = (self.post.title, self.post.body, self.post.updated_at)
+        path = self._mani("test-post", self.post.body + "\n\nExtra [calc](/calculator).")
+        call_command("verify_seo_post_reconciliation", slug="test-post", manifest=path)  # PASS, no raise
+        p = Post.objects.get(slug="test-post")
+        self.assertEqual((p.title, p.body, p.updated_at), before)  # unchanged = read-only
+
+    def test_detects_removed_section(self):
+        path = self._mani("test-post", "## Sectie B\n\ninhoud B [calc](/calculator)")  # 'Sectie A' gone
+        with self.assertRaises(CommandError):
+            call_command("verify_seo_post_reconciliation", slug="test-post", manifest=path)
+
+    def test_allow_removed_passes(self):
+        path = self._mani("test-post", "## Sectie B\n\ninhoud B [calc](/calculator)")
+        call_command("verify_seo_post_reconciliation", slug="test-post", manifest=path, allow_removed="Sectie A")
+
+    def test_detects_source_marker(self):
+        path = self._mani("test-post", self.post.body + " [SOURCE REQUIRED]")
+        with self.assertRaises(CommandError):
+            call_command("verify_seo_post_reconciliation", slug="test-post", manifest=path)
+
+    def test_detects_banned_term(self):
+        path = self._mani("test-post", self.post.body + " zonovershot")
+        with self.assertRaises(CommandError):
+            call_command("verify_seo_post_reconciliation", slug="test-post", manifest=path)
+
+    def test_detects_slug_change(self):
+        path = self._mani("test-post", self.post.body, slug="other-slug")
+        with self.assertRaises(CommandError):
+            call_command("verify_seo_post_reconciliation", slug="test-post", manifest=path)
+
+    def test_detects_guarantee_claim(self):
+        path = self._mani("test-post", self.post.body + " Gegarandeerde besparing van 500 euro.")
+        with self.assertRaises(CommandError):
+            call_command("verify_seo_post_reconciliation", slug="test-post", manifest=path)
+
+    def test_required_elements_for_pillar(self):
+        Post.objects.create(
+            title="Pillar", slug="wat-levert-een-thuisbatterij-op", author=self.user,
+            body="## Basis\n\nte weinig inhoud", excerpt="x", status="published",
+            seo_title="t", seo_description="d", published_at=self.fixed_pub)
+        # proposed body missing the required research elements -> fail
+        path = self._mani("wat-levert-een-thuisbatterij-op", "## Basis\n\nte weinig inhoud")
+        with self.assertRaises(CommandError):
+            call_command("verify_seo_post_reconciliation",
+                         slug="wat-levert-een-thuisbatterij-op", manifest=path)
