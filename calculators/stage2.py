@@ -19,6 +19,10 @@ from .services import _match_product
 # Bewust brede, voorzichtige banden. De ondergrens is conservatief; de
 # bovengrens veronderstelt gunstige sturing. Gedifferentieerd naar contract:
 # bij een dynamisch contract valt er het meest te sturen, bij vast het minst.
+# BP-PRACTICE-006 (PRACTICE DATA — MANUALLY VERIFIED) — indicatieve opbrengstbanden
+# (EUR per kWh batterijcapaciteit per jaar), handmatig door de projecteigenaar
+# afgeleid uit MijnBatterij.nl-praktijkresultaten en bewust conservatief gekozen.
+# Zie research/METHODOLOGY.md en research/assumptions/calculator-values.md.
 SOLAR_BENEFIT_BANDS = {
     "dynamic": (55, 95),
     # Dynamisch contract, maar doel = eigen verbruik: slimme zelfconsumptie op
@@ -32,6 +36,8 @@ SOLAR_BENEFIT_BANDS = {
 # Zonder zonnepanelen is er geen eigen opwek om te verschuiven: vrijwel alle
 # waarde komt uit dynamische handel. Zonder dynamisch contract is de band
 # bewust laag — dat gesprek hoort telefonisch gevoerd te worden.
+# BP-PRACTICE-007 (PRACTICE DATA — MANUALLY VERIFIED) — opbrengstbanden zonder
+# zonnepanelen; zelfde herkomst en methode als BP-PRACTICE-006. Zie research/.
 NO_SOLAR_BENEFIT_BANDS = {
     "dynamic": (45, 85),
     "dynamic_self": (30, 65),
@@ -43,15 +49,23 @@ NO_SOLAR_BENEFIT_BANDS = {
 # Opslagfactoren voor extra elektrificatie: meer eigen verbruik betekent meer
 # nuttige inzet van de batterij. Bij elkaar begrensd op ×1,3 zodat de
 # indicatie nooit hard wegloopt van de basisband.
-HEAT_PUMP_FACTORS = {"all_electric": 1.10, "hybrid": 1.05}
-EV_FACTORS = {"yes": 1.10, "soon": 1.05}
-RETURN_COSTS_FACTOR = 1.08  # vermeden terugleverkosten (alleen zon-pad)
-MAX_TOTAL_FACTOR = 1.3
+# BP-PRACTICE-008 t/m BP-PRACTICE-011 (PRACTICE-DERIVED ASSUMPTION) — correctie-
+# factoren afgeleid van praktijkobservaties (warmtepomp/EV/terugleverkosten) plus
+# een veiligheidsplafond. Zie research/assumptions/calculator-values.md. Ongewijzigd.
+HEAT_PUMP_FACTORS = {"all_electric": 1.10, "hybrid": 1.05}  # BP-PRACTICE-008
+EV_FACTORS = {"yes": 1.10, "soon": 1.05}  # BP-PRACTICE-009
+RETURN_COSTS_FACTOR = 1.08  # BP-PRACTICE-010 — vermeden terugleverkosten (alleen zon-pad)
+MAX_TOTAL_FACTOR = 1.3  # BP-PRACTICE-011 — plafond op gecombineerde factor
 
+# BP-PRACTICE-012 (DOCUMENTATION GAP) — begrenzing terugverdientijd; onderbouwing
+# nog te registreren. Zie research/SOURCE_REGISTER.md. Waarden ongewijzigd.
 PAYBACK_MIN_YEARS = 1.0
 PAYBACK_MAX_YEARS = 30.0
 
 # ── Warmtefonds-voorbeeld (vast rekenvoorbeeld, geen offerte) ──────────────
+# BP-PRACTICE-013 (DOCUMENTATION GAP) — vast rekenvoorbeeld op basis van publieke
+# Nationaal Warmtefonds-voorwaarden (GEEN MijnBatterij-data, GEEN offerte). Bron en
+# peildatum nog te registreren; zie research/SOURCE_REGISTER.md. Waarden ongewijzigd.
 WARMTEFONDS_EXAMPLE_AMOUNT = 8500
 WARMTEFONDS_EXAMPLE_YEARS = 10
 WARMTEFONDS_EXAMPLE_MONTHLY = 71  # 8.500 / 120 maanden bij 0% rente

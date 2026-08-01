@@ -1,7 +1,13 @@
+# BP-PRACTICE-001 (DOCUMENTATION GAP) — rekenbasis "zonnige dagen per jaar"
+# waarover de jaarlijkse teruglevering wordt uitgesmeerd. Bron nog te registreren;
+# zie research/SOURCE_REGISTER.md. Waarde en gedrag ongewijzigd.
 SOLAR_DAYS_PER_YEAR = 250
-DAYS_PER_YEAR = 365
+DAYS_PER_YEAR = 365  # kalenderconstante — geen onderzoekswaarde
 
 # Handel/dynamisch contract: ± 30% extra opslagruimte bovenop de basis.
+# BP-PRACTICE-002 (PRACTICE-DERIVED ASSUMPTION) — ~30% extra opslagruimte voor
+# handel/dynamisch, afgeleid van MijnBatterij-praktijkobservaties (projecteigenaar).
+# Zie research/assumptions/calculator-values.md. Waarde ongewijzigd.
 TRADING_MULTIPLIER = 1.3
 
 
@@ -18,6 +24,9 @@ class BatteryAdviceError(Exception):
 
 # ── Productcatalogus ──────────────────────────────────────────────────────
 # (naam, capaciteit kWh, prijs €, omvormer-notitie of None)
+# BP-PRACTICE-005 (DOCUMENTATION GAP) — productnamen, capaciteiten en prijzen komen
+# uit leveranciers-/inkoopprijslijsten (GEEN MijnBatterij-praktijkdata). Bron en
+# peildatum nog te registreren; zie research/SOURCE_REGISTER.md. Waarden ongewijzigd.
 RESIDENTIAL_CATALOG = [
     ("Dyness S3 Tower T7", 7.10, 6872.80, None),
     ("Dyness S3 Tower T10", 10.15, 7453.60, None),
@@ -85,6 +94,8 @@ INVERTER_NOTE = (
 # liggen dan het jaargemiddelde doet vermoeden. Geldt voor béide doelen
 # (zelfconsumptie én handel/dynamisch): de batterij moet minimaal kunnen
 # opslaan wat één sterke zonnige dag oplevert.
+# BP-PRACTICE-003 (DOCUMENTATION GAP) — drempelverhouding voor de zonnige-dag-vraag.
+# Heuristiek; onderbouwing nog te registreren. Zie research/SOURCE_REGISTER.md.
 SUNNY_DAY_TRIGGER_RATIO = 2  # jaarverbruik >= 2x jaarlijkse teruglevering
 
 # Particulier: bandbreedtes passend bij een woninginstallatie.
@@ -119,6 +130,9 @@ SUNNY_DAY_EXPORT_CHOICES = (
 # heeft bewust geen waarde, dat houdt de bestaande berekening ongewijzigd).
 # Sleutels van beide lijsten zijn uniek, dus één gedeelde lookup volstaat —
 # de rekenlogica hoeft niet te weten uit welke lijst een keuze afkomstig is.
+# BP-PRACTICE-004 (PRACTICE-DERIVED ASSUMPTION) — representatieve middelpunten per
+# teruglever-bandbreedte, afgeleid van praktijkverdelingen. Zie
+# research/assumptions/calculator-values.md. Waarden ongewijzigd.
 SUNNY_DAY_EXPORT_VALUES = {
     # particulier
     "under_10": 5,
