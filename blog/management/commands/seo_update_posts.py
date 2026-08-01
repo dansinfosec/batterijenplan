@@ -41,6 +41,10 @@ KNOWN_ROUTES = {"/", "/calculator", "/artikelen", "/contact", "/privacy"}
 REQUIRED_TEXT_FIELDS = ["title", "excerpt", "body", "seo_title", "seo_description"]
 MARKER = "[SOURCE REQUIRED]"
 
+# Known incorrect spellings / typos that must never reach production copy.
+# 'zonovershot' was a non-word typo corrected in production to 'zonne-overschot'.
+BANNED_TERMS = ["zonovershot"]
+
 # Field length limits mirrored from blog.models.Post (fail early, before the DB).
 MAX_LEN = {"title": 250, "seo_title": 70, "excerpt": 400, "cover_alt": 160}
 
@@ -112,6 +116,15 @@ class Command(BaseCommand):
             val = entry.get(field)
             if isinstance(val, str) and MARKER.lower() in val.lower():
                 errors.append(f"Field '{field}' still contains {MARKER}.")
+
+        # Reject known typos / banned terms anywhere in the text fields.
+        for field in REQUIRED_TEXT_FIELDS + ["cover_alt"]:
+            val = entry.get(field)
+            if isinstance(val, str):
+                low = val.lower()
+                for term in BANNED_TERMS:
+                    if term in low:
+                        errors.append(f"Field '{field}' contains banned term/typo: {term!r}.")
 
         # Length limits (mirror the model).
         for field, limit in MAX_LEN.items():

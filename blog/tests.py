@@ -201,6 +201,19 @@ class SeoUpdatePostsTests(TestCase):
         # DB untouched.
         self.assertEqual(Post.objects.get(slug="thuisbatterij-vergelijken").title, "Oude titel")
 
+    def test_rejects_known_typo_zonovershot(self):
+        """The corrected-in-production typo must never pass validation again."""
+        entry = self._valid_entry(body="Snelheid bij zonovershot. [calc](/calculator)",
+                                  internal_links=["/calculator"])
+        path = write_manifest(self.tmp, {"thuisbatterij-vergelijken": entry})
+        with self.assertRaises(CommandError):
+            call_command("seo_update_posts", slug="thuisbatterij-vergelijken", manifest=path)
+        # And the corrected spelling passes.
+        entry_ok = self._valid_entry(body="Snelheid bij zonne-overschot. [calc](/calculator)",
+                                     internal_links=["/calculator"])
+        path_ok = write_manifest(self.tmp, {"thuisbatterij-vergelijken": entry_ok})
+        call_command("seo_update_posts", slug="thuisbatterij-vergelijken", manifest=path_ok)  # no raise
+
     def test_all_changed_charfields_fit_limits(self):
         """Every changed CharField value in the real production manifest fits its limit."""
         mpath = os.path.join(settings.BASE_DIR,
