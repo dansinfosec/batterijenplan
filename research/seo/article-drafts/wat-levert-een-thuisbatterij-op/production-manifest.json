@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "generated": "2026-08-01",
+  "notes": "Repositioning proposal for wat-levert-een-thuisbatterij-op. Markers resolved; reconcile with live body before apply.",
+  "posts": {
+    "wat-levert-een-thuisbatterij-op": {
+      "title": "Wat levert een thuisbatterij op? De variabelen die uw opbrengst bepalen",
+      "excerpt": "Wat een thuisbatterij oplevert, hangt af van uw situatie — geen vast bedrag. Ontdek de variabelen die uw opbrengst bepalen en reken uw eigen situatie door.",
+      "seo_title": "Wat levert een thuisbatterij op? | Batterijenplan",
+      "seo_description": "Wat levert een thuisbatterij op? De opbrengst hangt af van verbruik, zonnepanelen, contract en 2027-beleid. Geen vaste belofte — reken uw eigen situatie door.",
+      "tags": [
+        "thuisbatterij",
+        "terugverdientijd",
+        "energieopslag",
+        "zonnepanelen"
+      ],
+      "cover_image": "brand-assets/higgsfield-blog/wat-levert-een-thuisbatterij-op/final/opbrengst-thuisbatterij.png",
+      "cover_alt": "Variabelen die de opbrengst van een thuisbatterij bepalen: verbruik, zonnepanelen, contract en sturing",
+      "internal_links": [
+        "/calculator",
+        "/post/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie",
+        "/post/stroom-opslaan-zonnepanelen",
+        "/post/energieprijzen-stijgen-thuisbatterij-voordeel-2027"
+      ],
+      "body": "Wat een thuisbatterij oplevert, hangt af van uw eigen situatie. Er bestaat geen vast, gegarandeerd bedrag en geen gegarandeerde terugverdientijd. De opbrengst wordt bepaald door een aantal variabelen die per woning verschillen. Deze pagina legt uit welke variabelen dat zijn en hoe u ze voor uw eigen situatie doorrekent.\n\nWilt u meteen een indicatie voor uw woning? Gebruik dan de [calculator](/calculator) — die rekent met uw eigen verbruik, zonnepanelen en teruglevering.\n\n## De variabelen die de opbrengst bepalen\n\n| Variabele | Waarom het uitmaakt |\n|---|---|\n| Stroomverbruik | Meer eigen verbruik dat u kunt verschuiven, betekent meer waarde uit opslag |\n| Zonnepanelen en teruglevering | Hoe meer u nu teruglevert, hoe meer u kunt opslaan voor eigen gebruik |\n| Energiecontract | Een dynamisch contract maakt slim laden/ontladen mogelijk |\n| EMS / sturing | Bepaalt hoe slim de batterij inspeelt op prijzen en verbruik |\n| Bruikbare capaciteit | Bepaalt hoeveel u daadwerkelijk kunt opslaan |\n| Beleid (2027) | Het einde van de salderingsregeling verandert de rekensom |\n\n## Twee bronnen van opbrengst\n\nEen thuisbatterij levert op twee manieren waarde:\n\n1. **Zelfconsumptie verhogen** — u gebruikt uw eigen zonnestroom later zelf in plaats van terug te leveren.\n2. **Slim sturen op prijs** — met een dynamisch contract laadt u bij lage prijzen en ontlaadt u bij hoge prijzen.\n\nWelke van de twee voor u het meeste oplevert, hangt af van uw profiel. De afweging leest u in [handel of zelfconsumptie](/post/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie). Hoe zelfconsumptie precies werkt, staat in [stroom opslaan met zonnepanelen](/post/stroom-opslaan-zonnepanelen).\n\n## Waarom 2027 de rekensom verandert\n\nDe salderingsregeling stopt vanaf 1 januari 2027. Daardoor wordt teruggeleverde stroom minder waard en wordt het zelf gebruiken van uw zonnestroom aantrekkelijker. Wat dit concreet betekent, leest u in [waarom een thuisbatterij vanaf 2027 meer kan opleveren](/post/energieprijzen-stijgen-thuisbatterij-voordeel-2027).\n\n## Geen gegarandeerde terugverdientijd\n\nWij noemen bewust geen vaste terugverdientijd of gegarandeerd rendement: die hangen af van prijzen, beleid en uw gedrag, die allemaal kunnen veranderen. Een eerlijke indicatie krijgt u alleen door uw eigen cijfers door te rekenen.\n\n## Bereken uw eigen opbrengst\n\nMet de [gratis calculator](/calculator) berekent u op basis van uw verbruik, zonnepanelen en teruglevering welke capaciteit en opzet bij u passen — een onderbouwde indicatie, geen belofte.\n\n## Veelgestelde vragen\n\n**Wat levert een thuisbatterij gemiddeld op?** Er is geen betrouwbaar \"gemiddelde\": de opbrengst verschilt sterk per woning. Reken uw eigen situatie door.\n\n**Krijg ik een vaste terugverdientijd?** Nee. Terugverdientijd hangt af van prijzen, beleid en verbruik en is niet gegarandeerd.\n\n**Wordt een batterij aantrekkelijker na 2027?** Voor veel huishoudens wel, omdat teruglevering minder oplevert en zelfconsumptie belangrijker wordt.\n"
+    }
+  }
+}
