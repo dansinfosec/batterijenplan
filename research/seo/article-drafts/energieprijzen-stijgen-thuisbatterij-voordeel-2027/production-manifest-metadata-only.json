@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "generated": "2026-08-02",
+  "mode": "metadata-only",
+  "notes": "preserve_body=true. Body is NEVER changed by this manifest. Only metadata + cover.",
+  "posts": {
+    "energieprijzen-stijgen-thuisbatterij-voordeel-2027": {
+      "preserve_body": true,
+      "title": "Energieprijzen stijgen: waarom een thuisbatterij vanaf 2027 meer kan opleveren",
+      "excerpt": "Vanaf 1 januari 2027 stopt de salderingsregeling. Tegelijkertijd worden energiecontracten duurder en blijven terugleververgoedingen relatief laag. Ontdek hoe een slimme thuisbatterij kan besparen met zelfconsumptie, slim laden en energiehandel.",
+      "seo_title": "Thuisbatterij vanaf 2027: einde saldering | Batterijenplan",
+      "seo_description": "Vanaf 1 januari 2027 stopt de salderingsregeling. Wat dat betekent voor teruglevering, zelfconsumptie en uw thuisbatterij — met actuele, gecontroleerde bronnen.",
+      "tags": [
+        "dynamisch energiecontract",
+        "EMS-systeem",
+        "energiehandel",
+        "energieprijzen",
+        "salderingsregeling 2027",
+        "slim energiebeheer",
+        "terugleverkosten",
+        "terugverdientijd",
+        "thuisbatterij",
+        "zonnepanelen"
+      ],
+      "cover_image": "brand-assets/higgsfield-blog/energieprijzen-stijgen-thuisbatterij-voordeel-2027/final/thuisbatterij-2027.png",
+      "cover_alt": "Tijdlijn richting 2027: einde salderingsregeling en de gevolgen voor teruglevering en thuisbatterij"
+    }
+  }
+}

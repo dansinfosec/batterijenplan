@@ -1,13 +1,20 @@
 """
-verify_seo_post_reconciliation — READ-ONLY comparison of the live DB `Post.body`
-against a proposed reconciled manifest body. Detects content loss before any apply.
+verify_seo_post_reconciliation - READ-ONLY safety check comparing the live DB
+`Post.body` against a proposed manifest, to decide whether a change is safe.
 
-Guarantees: never saves/mutates a post, never opens or uploads cover images, never
-changes tags, never updates timestamps. It only reads (Post.objects.get + file read)
-and prints a report. Exits non-zero (CommandError) on any integrity failure.
+It never saves/mutates a post, never opens or uploads cover images, never changes
+tags, never updates timestamps. It only reads (Post.objects.get + file read).
 
-Usage:
-    python manage.py verify_seo_post_reconciliation --slug <slug> --manifest <path>
+Verdict:
+- METADATA-ONLY manifests (preserve_body:true / no body): body is untouched, so
+  no content-loss risk - verify metadata only and PASS if clean.
+- FULL-BODY manifests: BLOCK. Production `Post.body` is stored as rendered HTML,
+  while proposed bodies are Markdown - the two are incompatible representations,
+  so a section/heading comparison cannot guarantee no content loss, and a
+  wholesale replacement would silently drop characters. These are refused until an
+  exact raw-Markdown anchor-patch workflow exists.
+
+Exits non-zero (CommandError) on any BLOCK or integrity failure.
 """
 from __future__ import annotations
 
@@ -16,7 +23,6 @@ import json
 import os
 import re
 
-from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
 from blog.models import Post
@@ -25,74 +31,34 @@ import markdown
 MARKER = "[SOURCE REQUIRED]"
 BANNED_TERMS = ["zonovershot"]
 COVER_HEADROOM = 20
-# Guaranteed-claim patterns (a real assertion, not the negated "geen gegarandeerde …").
+MATERIAL_SHORTER = 0.95  # proposed shorter than 95% of current = material loss
 GUARANTEE_RE = re.compile(r'(?<!geen )gegarandeerd[e]?\s+(besparing|rendement|terugverdientijd|opbrengst|winst)', re.I)
-
-# Required research elements per slug: (label, test) where test(body_lower) -> bool present.
-def _has(*subs):
-    return lambda b: all(s in b for s in subs)
-def _any(*subs):
-    return lambda b: any(s in b for s in subs)
-
-REQUIRED = {
-    "wat-levert-een-thuisbatterij-op": [
-        ("135 simulations", _has("135")),
-        ("25 profiles", lambda b: bool(re.search(r'25\s+(profiel|huishoud|combinaties)', b))),
-        ("21 suppliers", lambda b: bool(re.search(r'21\s+(leverancier|energ)', b))),
-        ("300+ installations", _has("300")),
-        ("Zonneplan fleet validation", _has("zonneplan", "267")),
-        ("Groene Vrienden practice example", _has("groene vrienden", "praktijkvoorbeeld")),
-        ("methodology", _any("hoe wij dit onderzocht", "dispatch", "methode")),
-        ("limitations", _has("beperkingen")),
-        ("source register", _any("verantwoording en bronnen", "bronnen")),
-        ("partnership disclosure", _has("werkt samen", "groene vrienden")),
-        ("no guaranteed returns", _has("geen gegarandeerde")),
-    ],
-    "energieprijzen-stijgen-thuisbatterij-voordeel-2027": [
-        ("salderingsregeling context", _any("salderingsregeling", "salderen")),
-        ("1 January 2027", _has("1 januari 2027")),
-        ("uncertainty wording", _any("onzeker", "kan wijzigen", "aanname", "onbekend", "niet openbaar")),
-        ("sources section", _any("bronnen", "bron")),
-    ],
-    "terugverdientijd-thuisbatterij-handel-of-zelfconsumptie": [
-        ("trading", _has("handel")),
-        ("self-consumption", _has("zelfconsumptie")),
-        ("decision framework", _any("voor wie", "wanneer", "past bij", "belangrijkste vraag")),
-        ("capacity/power/cycle trade-offs", _any("capaciteit", "laadcycli", "vermogen")),
-    ],
-}
-# Sections/markers that must NOT appear (would mean duplicating the pillar's heavy analysis).
-FORBIDDEN_IN = {
-    "terugverdientijd-thuisbatterij-handel-of-zelfconsumptie":
-        [("full pillar duplication", _any("135 simulaties", "opbrengstmatrix", "21 leveranciers vergeleken"))],
-}
+HTML_TAG_RE = re.compile(r'</?(h[1-6]|p|table|thead|tbody|tr|t[dh]|ul|ol|li|div|strong|em|a|blockquote)\b', re.I)
+MD_SIGNAL_RE = re.compile(r'(?:^|\n)#{2,6}\s|\]\((?:/|https?://)|\|\s*-{3,}')
 
 
 class Command(BaseCommand):
-    help = "READ-ONLY: verify a reconciled manifest body against the live DB post body (content-loss check)."
+    help = "READ-ONLY: verify a manifest against the live DB post; BLOCK unsafe full-body replacements."
 
     def add_arguments(self, parser):
         parser.add_argument("--slug", required=True)
         parser.add_argument("--manifest", required=True)
-        parser.add_argument("--allow-removed", default="",
-                            help="Comma-separated H2 titles that are approved to be removed.")
+        parser.add_argument("--approved-patch-list", default="",
+                            help="Path to an approved exact-anchor patch list (enables full-body review).")
 
-    # --- helpers (all pure/read-only) ---
+    # pure/read-only helpers
     def _h2(self, b): return re.findall(r'^##[ \t]+(\S.*?)\s*$', b, re.M)
     def _h3(self, b): return re.findall(r'^###[ \t]+(\S.*?)\s*$', b, re.M)
-    def _tables(self, b): return len(re.findall(r'^\s*\|[\s:\-|]+\|\s*$', b, re.M))
+    def _tables_md(self, b): return len(re.findall(r'^\s*\|[\s:\-|]+\|\s*$', b, re.M))
+    def _tables_html(self, b): return len(re.findall(r'<table\b', b, re.I))
     def _internal(self, b): return sorted(set(re.findall(r'\]\((/[^)\s]+)\)', b)))
     def _external(self, b): return sorted(set(re.findall(r'\]\((https?://[^)\s]+)\)', b)))
     def _calc(self, b): return len(re.findall(r'\]\(/calculator', b))
     def _render(self, b):
-        html = markdown.markdown(b or "", extensions=["fenced_code", "tables", "nl2br"])
-        return re.sub(r'\s+', ' ', html).strip()
+        return re.sub(r'\s+', ' ', markdown.markdown(b or "", extensions=["fenced_code", "tables", "nl2br"])).strip()
 
     def handle(self, *args, **o):
         slug = o["slug"]
-        allow_removed = {s.strip() for s in o["allow_removed"].split(",") if s.strip()}
-
-        # READ manifest
         if not os.path.isfile(o["manifest"]):
             raise CommandError(f"Manifest not found: {o['manifest']}")
         try:
@@ -102,84 +68,96 @@ class Command(BaseCommand):
         if slug not in posts:
             raise CommandError(f"Slug '{slug}' not in manifest.")
         prop = posts[slug]
-        pbody = prop.get("body") or ""
-
-        # READ db (read-only)
         try:
             post = Post.objects.get(slug=slug)
         except Post.DoesNotExist:
-            raise CommandError(f"No DB post with slug '{slug}' (run this in the environment that has the post).")
+            raise CommandError(f"No DB post with slug '{slug}'.")
         dbody = post.body or ""
 
-        errors = []
         self.stdout.write(self.style.MIGRATE_HEADING(f"verify_seo_post_reconciliation [READ-ONLY] slug={slug}"))
+        metadata_only = prop.get("preserve_body") is True or not prop.get("body")
 
-        # counts
-        self.stdout.write(f"  raw chars:  db={len(dbody)}  proposed={len(pbody)}")
-        self.stdout.write(f"  raw words:  db={len(dbody.split())}  proposed={len(pbody.split())}")
-        dh2, ph2 = self._h2(dbody), self._h2(pbody)
-        self.stdout.write(f"  H2: db={len(dh2)} proposed={len(ph2)} | H3: db={len(self._h3(dbody))} proposed={len(self._h3(pbody))}")
-        self.stdout.write(f"  markdown tables: db={self._tables(dbody)} proposed={self._tables(pbody)}")
-        self.stdout.write(f"  internal links (proposed): {self._internal(pbody)}")
-        self.stdout.write(f"  external links (proposed): {self._external(pbody)}")
-        self.stdout.write(f"  calculator links (proposed): {self._calc(pbody)}")
-
-        # research-phrase occurrence counts
-        for label, _ in REQUIRED.get(slug, []):
-            pass
-        phrases = ["135", "300", "Zonneplan", "Groene Vrienden", "mijnbatterij", "salderingsregeling",
-                   "1 januari 2027", "zelfconsumptie", "handel", "beperkingen"]
-        occ = {p: (dbody.lower().count(p.lower()), pbody.lower().count(p.lower())) for p in phrases}
-        self.stdout.write(f"  phrase occurrences (db, proposed): " +
-                          ", ".join(f"{p}={d}/{pp}" for p, (d, pp) in occ.items() if d or pp))
-
-        # equality
-        self.stdout.write(f"  exact raw equality: {dbody == pbody}")
-        self.stdout.write(f"  normalized rendered-HTML equality: {self._render(dbody) == self._render(pbody)}")
-
-        # section deltas
-        only_prod = [h for h in dh2 if h not in ph2]
-        only_manifest = [h for h in ph2 if h not in dh2]
-        self.stdout.write(f"  sections only in production: {only_prod or 'none'}")
-        self.stdout.write(f"  sections only in manifest: {only_manifest or 'none'}")
-
-        # unified diff summary
-        diff = list(difflib.unified_diff(dbody.splitlines(), pbody.splitlines(), lineterm="", n=0))
-        added = sum(1 for l in diff if l.startswith("+") and not l.startswith("+++"))
-        removed = sum(1 for l in diff if l.startswith("-") and not l.startswith("---"))
-        self.stdout.write(f"  diff summary: +{added} / -{removed} lines")
-
-        # --- integrity failures (exit non-zero) ---
-        for h in only_prod:
-            if h not in allow_removed:
-                errors.append(f"Production section removed without approval: '{h}'")
-        for label, test in REQUIRED.get(slug, []):
-            if not test(pbody.lower()):
-                errors.append(f"Required research element missing: {label}")
-        for label, test in FORBIDDEN_IN.get(slug, []):
-            if test(pbody.lower()):
-                errors.append(f"Forbidden content present ({label}) — would duplicate the pillar.")
-        if MARKER.lower() in pbody.lower():
-            errors.append(f"{MARKER} present in proposed body.")
-        for t in BANNED_TERMS:
-            if t in pbody.lower():
-                errors.append(f"Banned term/typo present: {t!r}.")
-        if GUARANTEE_RE.search(pbody):
-            errors.append("Guaranteed savings/return/payback/tariff claim present.")
+        # --- shared metadata integrity checks (both modes) ---
+        errors = []
         if prop.get("slug", slug) != post.slug:
             errors.append("Manifest would change the slug.")
         if prop.get("status") not in (None, post.status):
             errors.append("Manifest would change the status.")
-        if prop.get("published_at") not in (None, post.published_at.isoformat() if post.published_at else None):
+        pub = post.published_at.isoformat() if post.published_at else None
+        if prop.get("published_at") not in (None, pub):
             errors.append("Manifest would change published_at.")
+        for f in ("title", "excerpt", "seo_title", "seo_description", "cover_alt"):
+            v = prop.get(f)
+            if isinstance(v, str):
+                if MARKER.lower() in v.lower():
+                    errors.append(f"{MARKER} present in field '{f}'.")
+                for t in BANNED_TERMS:
+                    if t in v.lower():
+                        errors.append(f"Banned term {t!r} in field '{f}'.")
         cover = prop.get("cover_image")
         if cover:
             field = Post._meta.get_field("cover_image")
             gen = field.generate_filename(None, os.path.basename(cover))
             if len(gen) > field.max_length - COVER_HEADROOM:
-                errors.append(f"Cover storage path too long ({len(gen)} > {field.max_length - COVER_HEADROOM}): {gen}")
+                errors.append(f"Cover storage path too long ({len(gen)} > {field.max_length - COVER_HEADROOM}).")
 
-        if errors:
-            self.stdout.write(self.style.ERROR("\nFAIL:\n  - " + "\n  - ".join(errors)))
-            raise CommandError(f"Reconciliation verification FAILED for '{slug}' ({len(errors)} issue(s)).")
-        self.stdout.write(self.style.SUCCESS("\nPASS — no content loss; all required elements present; read-only."))
+        if metadata_only:
+            self.stdout.write("  mode: METADATA-ONLY (preserve_body) - body is not changed")
+            self.stdout.write(f"  body: PRESERVED EXACTLY (db chars={len(dbody)})")
+            self.stdout.write("  body comparison: N/A (no replacement proposed)")
+            if errors:
+                self.stdout.write(self.style.ERROR("\nFAIL:\n  - " + "\n  - ".join(errors)))
+                raise CommandError(f"Metadata-only verification FAILED for '{slug}'.")
+            self.stdout.write(self.style.SUCCESS("\nPASS - metadata-only; body untouched; read-only."))
+            return
+
+        # --- FULL-BODY manifest: report + BLOCK ---
+        pbody = prop.get("body") or ""
+        db_is_html = bool(HTML_TAG_RE.search(dbody))
+        proposed_is_md = bool(MD_SIGNAL_RE.search(pbody))
+        exact_equal = dbody == pbody
+        rendered_equal = self._render(dbody) == self._render(pbody)
+        self.stdout.write(f"  raw chars: db={len(dbody)} proposed={len(pbody)} (delta {len(pbody)-len(dbody)})")
+        self.stdout.write(f"  db looks like HTML: {db_is_html} | proposed looks like Markdown: {proposed_is_md}")
+        self.stdout.write(f"  db H2(md)={len(self._h2(dbody))} tables(md)={self._tables_md(dbody)} tables(html)={self._tables_html(dbody)}")
+        self.stdout.write(f"  proposed H2(md)={len(self._h2(pbody))} tables(md)={self._tables_md(pbody)}")
+        self.stdout.write(f"  exact raw equality: {exact_equal} | normalized rendered equality: {rendered_equal}")
+        diff = list(difflib.unified_diff(dbody.splitlines(), pbody.splitlines(), lineterm="", n=0))
+        self.stdout.write(f"  diff summary: +{sum(1 for l in diff if l[:1]=='+' and l[:3]!='+++')} / "
+                          f"-{sum(1 for l in diff if l[:1]=='-' and l[:3]!='---')} lines")
+
+        approved_patch = bool(o["approved_patch_list"]) and os.path.isfile(o["approved_patch_list"])
+        blocked = []
+        incompatible = (db_is_html and proposed_is_md) or (proposed_is_md and not db_is_html and len(self._h2(dbody)) == 0 and len(dbody) > 500)
+        if incompatible:
+            blocked.append("incompatible body representations (DB stored as HTML, proposed is Markdown) - "
+                           "heading/table comparison cannot guarantee no content loss")
+        if not exact_equal and not approved_patch:
+            blocked.append("complete body replacement proposed (raw bodies not equal) - not allowed without an "
+                           "approved exact-anchor patch list")
+        if not rendered_equal and not approved_patch:
+            blocked.append("normalized rendered HTML not equal and no approved patch list")
+        if len(pbody) < MATERIAL_SHORTER * len(dbody):
+            blocked.append(f"proposed body materially shorter (would remove {len(dbody)-len(pbody)} characters)")
+        if len(self._h2(dbody)) == 0 and len(dbody) > 500:
+            blocked.append("heading extraction on the DB body is unreliable (0 Markdown H2 in a large body) - "
+                           "cannot compare sections safely")
+        if MARKER.lower() in pbody.lower():
+            blocked.append(f"{MARKER} present in proposed body")
+        for t in BANNED_TERMS:
+            if t in pbody.lower():
+                blocked.append(f"banned term {t!r} in proposed body")
+        if GUARANTEE_RE.search(pbody):
+            blocked.append("guaranteed savings/return/payback claim in proposed body")
+
+        if blocked or errors:
+            self.stdout.write(self.style.ERROR("\nBLOCKED - incompatible body representations"))
+            for b in blocked + errors:
+                self.stdout.write(self.style.ERROR(f"  - {b}"))
+            self.stdout.write(self.style.WARNING(
+                "  -> Use a metadata-only manifest (preserve_body:true) or an exact raw-Markdown anchor-patch "
+                "workflow. Full-body replacement is refused."))
+            raise CommandError(f"BLOCKED: full-body replacement for '{slug}' is not safe ({len(blocked)+len(errors)} reason(s)).")
+
+        # Only reachable with an approved patch list AND raw/rendered equality - not used yet.
+        self.stdout.write(self.style.SUCCESS("\nPASS - approved patch, representations compatible."))

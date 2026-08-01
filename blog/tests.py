@@ -1,4 +1,5 @@
 """Tests for the seo_update_posts management command (dry-run-by-default updater)."""
+import io
 import json
 import os
 import tempfile
@@ -10,7 +11,7 @@ from django.contrib.auth.models import User
 from django.core.files.storage import default_storage
 from django.core.management import call_command
 from django.core.management.base import CommandError
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 from blog.models import Post
 
@@ -229,66 +230,141 @@ class SeoUpdatePostsTests(TestCase):
         self.assertLessEqual(len(gen), field.max_length - 20)
 
 
+import tempfile as _tf
+_MEDIA = _tf.mkdtemp()
+
+
 class VerifyReconciliationTests(TestCase):
+    """Corrected verifier: metadata-only PASSES; full-body replacement is BLOCKED."""
     def setUp(self):
         self.tmp = tempfile.mkdtemp()
         self.user = User.objects.create_user("editor2", password="x")
         self.fixed_pub = datetime(2026, 7, 16, tzinfo=timezone.utc)
         self.post = Post.objects.create(
             title="X", slug="test-post", author=self.user,
-            body="## Sectie A\n\ninhoud A\n\n## Sectie B\n\ninhoud B [calc](/calculator)",
+            body="## Sectie A\n\ninhoud A\n\n## Sectie B\n\ninhoud B",
             excerpt="x", status="published", seo_title="t", seo_description="d",
-            published_at=self.fixed_pub,
-        )
+            published_at=self.fixed_pub)
 
-    def _mani(self, key, body, **extra):
-        entry = {"body": body}
-        entry.update(extra)
-        return write_manifest(self.tmp, {key: entry})
+    def _mani(self, **entry):
+        return write_manifest(self.tmp, {"test-post": entry})
 
-    def test_readonly_no_mutation(self):
-        before = (self.post.title, self.post.body, self.post.updated_at)
-        path = self._mani("test-post", self.post.body + "\n\nExtra [calc](/calculator).")
-        call_command("verify_seo_post_reconciliation", slug="test-post", manifest=path)  # PASS, no raise
+    def test_metadata_only_passes_and_readonly(self):
+        before = (self.post.body, self.post.updated_at)
+        path = self._mani(preserve_body=True, title="Nieuw", excerpt="e",
+                          seo_title="s", seo_description="d")
+        call_command("verify_seo_post_reconciliation", slug="test-post", manifest=path)
         p = Post.objects.get(slug="test-post")
-        self.assertEqual((p.title, p.body, p.updated_at), before)  # unchanged = read-only
+        self.assertEqual((p.body, p.updated_at), before)
 
-    def test_detects_removed_section(self):
-        path = self._mani("test-post", "## Sectie B\n\ninhoud B [calc](/calculator)")  # 'Sectie A' gone
+    def test_metadata_only_slug_change_fails(self):
+        path = self._mani(preserve_body=True, slug="ander", title="t")
         with self.assertRaises(CommandError):
             call_command("verify_seo_post_reconciliation", slug="test-post", manifest=path)
 
-    def test_allow_removed_passes(self):
-        path = self._mani("test-post", "## Sectie B\n\ninhoud B [calc](/calculator)")
-        call_command("verify_seo_post_reconciliation", slug="test-post", manifest=path, allow_removed="Sectie A")
-
-    def test_detects_source_marker(self):
-        path = self._mani("test-post", self.post.body + " [SOURCE REQUIRED]")
+    def test_metadata_only_marker_fails(self):
+        path = self._mani(preserve_body=True, seo_title="x [SOURCE REQUIRED]")
         with self.assertRaises(CommandError):
             call_command("verify_seo_post_reconciliation", slug="test-post", manifest=path)
 
-    def test_detects_banned_term(self):
-        path = self._mani("test-post", self.post.body + " zonovershot")
+    def test_full_body_replacement_blocks(self):
+        path = self._mani(body=self.post.body + "\n\nExtra [calc](/calculator).")
         with self.assertRaises(CommandError):
             call_command("verify_seo_post_reconciliation", slug="test-post", manifest=path)
 
-    def test_detects_slug_change(self):
-        path = self._mani("test-post", self.post.body, slug="other-slug")
-        with self.assertRaises(CommandError):
-            call_command("verify_seo_post_reconciliation", slug="test-post", manifest=path)
-
-    def test_detects_guarantee_claim(self):
-        path = self._mani("test-post", self.post.body + " Gegarandeerde besparing van 500 euro.")
-        with self.assertRaises(CommandError):
-            call_command("verify_seo_post_reconciliation", slug="test-post", manifest=path)
-
-    def test_required_elements_for_pillar(self):
+    def test_html_db_vs_markdown_proposed_blocks(self):
         Post.objects.create(
-            title="Pillar", slug="wat-levert-een-thuisbatterij-op", author=self.user,
-            body="## Basis\n\nte weinig inhoud", excerpt="x", status="published",
-            seo_title="t", seo_description="d", published_at=self.fixed_pub)
-        # proposed body missing the required research elements -> fail
-        path = self._mani("wat-levert-een-thuisbatterij-op", "## Basis\n\nte weinig inhoud")
+            title="P", slug="html-post", author=self.user, excerpt="x",
+            status="published", seo_title="t", seo_description="d", published_at=self.fixed_pub,
+            body="<h2>Sectie</h2><p>tekst</p><table><tr><td>a</td></tr></table>" * 20)
+        path = write_manifest(self.tmp, {"html-post": {"body": "## Sectie\n\ntekst\n\n| a |\n|---|\n| b |"}})
+        buf = io.StringIO()
         with self.assertRaises(CommandError):
-            call_command("verify_seo_post_reconciliation",
-                         slug="wat-levert-een-thuisbatterij-op", manifest=path)
+            call_command("verify_seo_post_reconciliation", slug="html-post", manifest=path, stdout=buf)
+        self.assertIn("incompatible body representations", buf.getvalue())
+
+    def test_materially_shorter_blocks(self):
+        long_body = "## A\n\n" + ("woord " * 500)
+        Post.objects.create(title="L", slug="long-post", author=self.user, body=long_body,
+            excerpt="x", status="published", seo_title="t", seo_description="d", published_at=self.fixed_pub)
+        path = write_manifest(self.tmp, {"long-post": {"body": "## A\n\nkort"}})
+        with self.assertRaises(CommandError):
+            call_command("verify_seo_post_reconciliation", slug="long-post", manifest=path)
+
+
+class SeoUpdatePreserveBodyTests(TestCase):
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.user = User.objects.create_user("editor3", password="x")
+        self.fixed_pub = datetime(2026, 7, 6, tzinfo=timezone.utc)
+        self.body = "## Origineel\n\nDit is de echte productie-body, byte voor byte."
+        self.post = Post.objects.create(
+            title="Oud", slug="preserve-post", author=self.user, body=self.body,
+            excerpt="oud", status="published", seo_title="oud", seo_description="oud",
+            cover_alt="oud", published_at=self.fixed_pub)
+        self.post.tags.set(["thuisbatterij"])
+
+    def _pmani(self, **fields):
+        entry = {"preserve_body": True}
+        entry.update(fields)
+        return write_manifest(self.tmp, {"preserve-post": entry})
+
+    def _meta(self):
+        return dict(title="Nieuwe titel", excerpt="Nieuwe excerpt",
+                    seo_title="Nieuwe SEO", seo_description="Nieuwe beschrijving",
+                    cover_alt="Nieuwe alt", tags=["thuisbatterij", "EMS"])
+
+    def test_preserve_dry_run_no_change(self):
+        path = self._pmani(**self._meta())
+        call_command("seo_update_posts", slug="preserve-post", manifest=path)
+        p = Post.objects.get(slug="preserve-post")
+        self.assertEqual(p.title, "Oud")
+        self.assertEqual(p.body, self.body)
+
+    def test_preserve_apply_body_unchanged_metadata_saved(self):
+        import hashlib
+        before = hashlib.sha256(self.body.encode()).hexdigest()
+        path = self._pmani(**self._meta())
+        call_command("seo_update_posts", slug="preserve-post", manifest=path, apply=True, backup_dir=self.tmp)
+        p = Post.objects.get(slug="preserve-post")
+        self.assertEqual(p.body, self.body)
+        self.assertEqual(hashlib.sha256(p.body.encode()).hexdigest(), before)
+        self.assertEqual(p.title, "Nieuwe titel")
+        self.assertEqual(p.published_at, self.fixed_pub)
+        self.assertEqual(p.status, "published")
+        self.assertEqual(sorted(p.tags.names()), ["EMS", "thuisbatterij"])
+
+    def test_preserve_rejects_included_body(self):
+        path = self._pmani(body="## Iets anders", **self._meta())
+        with self.assertRaises(CommandError):
+            call_command("seo_update_posts", slug="preserve-post", manifest=path, apply=True, backup_dir=self.tmp)
+        self.assertEqual(Post.objects.get(slug="preserve-post").body, self.body)
+
+    @override_settings(MEDIA_ROOT=_MEDIA)
+    def test_preserve_cover_can_be_saved(self):
+        from PIL import Image
+        cov = os.path.join(self.tmp, "preserve-cover.png")
+        Image.new("RGB", (4, 4), (247, 246, 242)).save(cov)
+        path = self._pmani(cover_image=cov, **self._meta())
+        call_command("seo_update_posts", slug="preserve-post", manifest=path, apply=True, backup_dir=self.tmp)
+        p = Post.objects.get(slug="preserve-post")
+        self.assertEqual(p.body, self.body)
+        self.assertTrue(p.cover_image.name)
+
+    def test_preserve_rolls_back_on_body_hash_change(self):
+        path = self._pmani(**self._meta())
+        with mock.patch("blog.management.commands.seo_update_posts._body_hash",
+                        side_effect=["HASH_A", "HASH_B_DIFFERENT"]):
+            with self.assertRaises(CommandError):
+                call_command("seo_update_posts", slug="preserve-post", manifest=path, apply=True, backup_dir=self.tmp)
+        p = Post.objects.get(slug="preserve-post")
+        self.assertEqual(p.title, "Oud")
+        self.assertEqual(p.body, self.body)
+
+    def test_normal_full_body_mode_still_works(self):
+        path = write_manifest(self.tmp, {"preserve-post": {
+            "title": "T", "excerpt": "e", "seo_title": "s", "seo_description": "d",
+            "body": "## Nieuw\n\nvolledige nieuwe body [calc](/calculator)",
+            "internal_links": ["/calculator"], "cover_alt": "a"}})
+        call_command("seo_update_posts", slug="preserve-post", manifest=path, apply=True, backup_dir=self.tmp)
+        self.assertIn("volledige nieuwe body", Post.objects.get(slug="preserve-post").body)

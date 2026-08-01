@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "generated": "2026-08-02",
+  "mode": "metadata-only",
+  "notes": "preserve_body=true. Body is NEVER changed by this manifest. Only metadata + cover.",
+  "posts": {
+    "wat-levert-een-thuisbatterij-op": {
+      "preserve_body": true,
+      "title": "Wat levert een thuisbatterij op? Onderzoek op basis van 135 simulaties en 300+ echte installaties",
+      "excerpt": "Wij simuleerden 25 combinaties van verbruik en zonne-opwek op ruim 70.000 kwartieren echte marktdata, vergeleken 21 energieleveranciers op één grondslag en valideerden tegen 300+ werkelijke installaties. De mediaan: €764 per jaar. Maar de opbouw verrast — en verandert fundamenteel op 1 januari 2027.",
+      "seo_title": "Wat levert een thuisbatterij op? | Batterijenplan",
+      "seo_description": "Wat levert een thuisbatterij op? Onderzoek op 135 simulaties + 300+ installaties: de variabelen, geen gegarandeerde opbrengst. Reken uw eigen situatie door.",
+      "tags": [
+        "besparing",
+        "dynamisch contract",
+        "dyness s3 tower t21",
+        "EMS",
+        "Groene Vrienden",
+        "terugleverkosten",
+        "thuisbatterij",
+        "zonnepanelen"
+      ],
+      "cover_image": "brand-assets/higgsfield-blog/wat-levert-een-thuisbatterij-op/final/opbrengst-thuisbatterij.png",
+      "cover_alt": "Variabelen die de opbrengst van een thuisbatterij bepalen: verbruik, zonnepanelen, contract en sturing"
+    }
+  }
+}

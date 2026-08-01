@@ -1,5 +1,5 @@
 """
-seo_update_posts — admin-safe, dry-run-by-default updater for blog posts.
+seo_update_posts - admin-safe, dry-run-by-default updater for blog posts.
 
 Applies a reviewed content manifest to a SINGLE existing post. Designed to be run
 in the production shell (Render) after a backup. Safety model:
@@ -24,6 +24,8 @@ import os
 import re
 from datetime import datetime, timezone
 
+import hashlib
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.files import File
@@ -34,7 +36,11 @@ from blog.models import Post
 
 logger = logging.getLogger("blog.seo_update_posts")
 
-# Routes that exist in the React app (frontend/src/App.jsx) — used to validate
+
+def _body_hash(body):
+    return hashlib.sha256((body or "").encode("utf-8")).hexdigest()
+
+# Routes that exist in the React app (frontend/src/App.jsx) - used to validate
 # internal links inside article copy. /post/<slug> links are checked against the DB.
 KNOWN_ROUTES = {"/", "/calculator", "/artikelen", "/contact", "/privacy"}
 
@@ -98,6 +104,7 @@ class Command(BaseCommand):
 
     def _validate(self, slug, entry):
         errors = []
+        preserve = entry.get("preserve_body") is True
 
         # Slug is preserved by default: a differing slug in the manifest is rejected.
         if "slug" in entry and entry["slug"] != slug:
@@ -106,19 +113,27 @@ class Command(BaseCommand):
                 "allowed by this command (would require a 301 redirect workflow)."
             )
 
-        for field in REQUIRED_TEXT_FIELDS:
+        # In preserve_body mode the body is NEVER touched: it must be omitted, and 'body' is
+        # dropped from the required/validated text fields. Including a body here is ambiguous
+        # (do we replace it or not?) and is rejected outright.
+        if preserve and entry.get("body"):
+            errors.append("preserve_body=true but the manifest includes a 'body'. Remove the "
+                          "body field to avoid ambiguity - this mode never changes the body.")
+        required = ["title", "excerpt", "seo_title", "seo_description"] if preserve else REQUIRED_TEXT_FIELDS
+
+        for field in required:
             val = entry.get(field)
             if not isinstance(val, str) or not val.strip():
                 errors.append(f"Missing or empty required field: {field}")
 
-        # Reject unresolved source markers anywhere in the text fields.
-        for field in REQUIRED_TEXT_FIELDS + ["cover_alt"]:
+        # Reject unresolved source markers anywhere in the text fields being set.
+        for field in required + ["cover_alt"]:
             val = entry.get(field)
             if isinstance(val, str) and MARKER.lower() in val.lower():
                 errors.append(f"Field '{field}' still contains {MARKER}.")
 
-        # Reject known typos / banned terms anywhere in the text fields.
-        for field in REQUIRED_TEXT_FIELDS + ["cover_alt"]:
+        # Reject known typos / banned terms anywhere in the text fields being set.
+        for field in required + ["cover_alt"]:
             val = entry.get(field)
             if isinstance(val, str):
                 low = val.lower()
@@ -167,21 +182,22 @@ class Command(BaseCommand):
                     f"Use a shorter cover filename."
                 )
 
-        # Internal links: manifest-declared links must appear in the body, and every
-        # internal link in the body must resolve to a known route or an existing post.
-        body = entry.get("body") or ""
-        declared = entry.get("internal_links") or []
-        for link in declared:
-            if link not in body:
-                errors.append(f"Declared internal link not found in body: {link}")
-        for link in set(INTERNAL_LINK_RE.findall(body)):
-            base = link.split("#")[0].rstrip("/") or "/"
-            if base.startswith("/post/"):
-                target = base[len("/post/"):]
-                if not Post.objects.filter(slug=target).exists():
-                    errors.append(f"Internal /post/ link targets a non-existent slug: {link}")
-            elif base not in KNOWN_ROUTES and link not in KNOWN_ROUTES:
-                errors.append(f"Internal link is not a known route or post: {link}")
+        # Internal links: only validated when the body is actually being changed. In
+        # preserve_body mode there is no body to check.
+        if not preserve:
+            body = entry.get("body") or ""
+            declared = entry.get("internal_links") or []
+            for link in declared:
+                if link not in body:
+                    errors.append(f"Declared internal link not found in body: {link}")
+            for link in set(INTERNAL_LINK_RE.findall(body)):
+                base = link.split("#")[0].rstrip("/") or "/"
+                if base.startswith("/post/"):
+                    target = base[len("/post/"):]
+                    if not Post.objects.filter(slug=target).exists():
+                        errors.append(f"Internal /post/ link targets a non-existent slug: {link}")
+                elif base not in KNOWN_ROUTES and link not in KNOWN_ROUTES:
+                    errors.append(f"Internal link is not a known route or post: {link}")
 
         # Status / publish guard.
         new_status = entry.get("status")
@@ -232,7 +248,11 @@ class Command(BaseCommand):
                     self.stdout.write(f"    + new: {new!r}")
                 else:
                     self.stdout.write(f"  {field}: (unchanged)")
-        if "body" in entry:
+        if entry.get("preserve_body") is True:
+            self.stdout.write("  body: PRESERVED EXACTLY")
+            self.stdout.write(f"    current character count: {len(post.body or '')}")
+            self.stdout.write(f"    current SHA-256: {_body_hash(post.body)}")
+        elif "body" in entry:
             old_len, new_len = len(post.body or ""), len(entry["body"])
             self.stdout.write(f"  body: {old_len} -> {new_len} chars ({'CHANGED' if post.body != entry['body'] else 'unchanged'})")
         if "tags" in entry and entry["tags"] is not None:
@@ -264,6 +284,7 @@ class Command(BaseCommand):
         except Post.DoesNotExist:
             raise CommandError(f"No post with slug '{slug}' exists. Aborting (no changes).")
 
+        preserve = entry.get("preserve_body") is True
         self._validate(slug, entry)
         self.stdout.write(self.style.SUCCESS("Validation passed (no [SOURCE REQUIRED], fields OK, links resolve)."))
         self._print_diff(post, entry, options["publish"])
@@ -288,10 +309,12 @@ class Command(BaseCommand):
                 with open(backup_path, "w", encoding="utf-8") as fh:
                     json.dump(self._snapshot(post), fh, ensure_ascii=False, indent=2)
 
+                pre_body_hash = _body_hash(post.body)
                 for field in ["title", "excerpt", "seo_title", "seo_description", "cover_alt"]:
                     if field in entry and entry[field] is not None:
                         setattr(post, field, entry[field])
-                if "body" in entry:
+                # Body is written ONLY in normal (non-preserve) mode.
+                if not preserve and "body" in entry:
                     post.body = entry["body"]
 
                 # Status only changes with explicit --publish; published_at never touched here.
@@ -308,11 +331,25 @@ class Command(BaseCommand):
                 post.full_clean(exclude=["slug", "author"])
                 post.save()
 
+                # Body-preservation invariant: re-read the persisted body and require an
+                # identical hash. Any change (even accidental) aborts and rolls back.
+                if preserve:
+                    post.refresh_from_db(fields=["body"])
+                    post_body_hash = _body_hash(post.body)
+                    if post_body_hash != pre_body_hash:
+                        raise CommandError(
+                            f"preserve_body invariant violated: body SHA-256 changed "
+                            f"({pre_body_hash} -> {post_body_hash}). Transaction rolled back."
+                        )
+
                 if entry.get("tags") is not None:
                     post.tags.set(self._dedupe_tags(entry["tags"]))
 
-            logger.info("seo_update_posts APPLIED slug=%s backup=%s", slug, backup_path)
+            logger.info("seo_update_posts APPLIED slug=%s backup=%s preserve_body=%s", slug, backup_path, preserve)
             self.stdout.write(self.style.SUCCESS(f"\nAPPLIED. Pre-write backup: {backup_path}"))
+            if preserve:
+                self.stdout.write(self.style.SUCCESS(
+                    f"body PRESERVED EXACTLY - pre-write SHA-256 {pre_body_hash} == post-write {post_body_hash}"))
             self.stdout.write(self.style.SUCCESS(f"post.updated_at is now {post.updated_at.isoformat()}"))
         except ValidationError as exc:
             raise CommandError(f"Model validation failed, transaction rolled back: {exc.messages}")

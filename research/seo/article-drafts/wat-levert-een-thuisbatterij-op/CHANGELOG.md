@@ -13,3 +13,10 @@
 - Reconciled manifest now PRESERVES the full production body (~3507 words) + adds 5 internal links.
 - CONTENT LOSS CHECK: PASS — no valuable unique content was lost.
 - Body reconstructed from production body_html; confirm against raw dumpdata before apply.
+
+
+## FULL-BODY APPLY BLOCKED (2026-08-02)
+
+The proposed body was reconstructed from API body_html rather than copied from the exact raw production Markdown. Production dry-runs showed substantial character loss (e.g. -10,381 chars for the pillar, -19,102 for the 2027 article) and incompatible heading/table detection (production Post.body is stored as HTML, proposal is Markdown). Full-body manifests may only be reconsidered after an exact raw-Markdown patch workflow exists.
+
+Safe release now = `production-manifest-metadata-only.json` (preserve_body=true; body untouched).

@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "generated": "2026-08-02",
+  "mode": "metadata-only",
+  "notes": "preserve_body=true. Body is NEVER changed by this manifest. Only metadata + cover.",
+  "posts": {
+    "terugverdientijd-thuisbatterij-handel-of-zelfconsumptie": {
+      "preserve_body": true,
+      "title": "Terugverdientijd thuisbatterij: handel of zelfconsumptie?",
+      "excerpt": "De terugverdientijd van een thuisbatterij hangt af van uw verbruik, teruglevering, energiecontract en aansturing. Het verschil tussen zelfconsumptie en handelen met een dynamisch contract is daarbij belangrijk.",
+      "seo_title": "Handel of zelfconsumptie thuisbatterij? | Batterijenplan",
+      "seo_description": "Handel of zelfconsumptie met uw thuisbatterij? Vergelijk beide strategieën en kies wat bij uw verbruik en contract past. Reken uw situatie gratis door.",
+      "tags": [
+        "batterij advies",
+        "dynamisch contract",
+        "EMS",
+        "energieopslag",
+        "terugverdientijd",
+        "thuisbatterij",
+        "zelfconsumptie"
+      ],
+      "cover_image": "brand-assets/higgsfield-blog/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie/final/handel-vs-zelfconsumptie.png",
+      "cover_alt": "Twee strategieën voor een thuisbatterij: zelfconsumptie verhogen versus handelen op dynamische prijzen"
+    }
+  }
+}
