@@ -3111,6 +3111,14 @@ article.post-detail.article-detail > img.cover {
   font-family: var(--font-display); font-weight: 700; font-size: 16px;
   line-height: 1.3; letter-spacing: -0.01em; color: var(--ink);
 }
+/* Optionele kop + tekst binnen dezelfde CTA (ArticleCalculatorCta). De tekst
+   onder de kop is bewust lichter/regulier, zodat de kop de nadruk houdt. */
+.article-inline-cta-copy { display: flex; flex-direction: column; gap: 4px; }
+.article-inline-cta-title { max-width: 52ch; }
+.article-inline-cta-copy p:not(.article-inline-cta-title) {
+  font-family: var(--font-body); font-weight: 400; font-size: 15px;
+  color: var(--ink-soft, var(--ink)); max-width: 60ch;
+}
 .article-inline-cta-btn { flex: 0 0 auto; }
 
 /* ── Artikel: compact adviesformulier aan het einde ── */

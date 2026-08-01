@@ -2,12 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch.js";
 import { fetchPost, fetchComments, postComment } from "../api.js";
-import { setPageMeta, setJsonLd, blogPostingSchema, postSeoTitle, DEFAULT_DESCRIPTION } from "../seo.js";
+import { setPageMeta, setJsonLd, blogPostingSchema, breadcrumbSchema, postSeoTitle, DEFAULT_DESCRIPTION } from "../seo.js";
 import { optimizedImageUrl, coverSrcSet } from "../images.js";
 import RelatedPosts from "../components/RelatedPosts.jsx";
 import AdviceForm from "../components/AdviceForm.jsx";
 import MobileStickyCta from "../components/MobileStickyCta.jsx";
-import { trackEvent } from "../analytics.js";
+import ArticleCalculatorCta from "../components/ArticleCalculatorCta.jsx";
 
 // Wrapt tabellen uit de (server-side gerenderde) markdown-body in een
 // scroll-container, zodat brede vergelijkingstabellen op mobiel zijwaarts
@@ -100,27 +100,6 @@ function splitAtSecondH2(html) {
     if (count === 2) return [html.slice(0, match.index), html.slice(match.index)];
   }
   return null;
-}
-
-// Lichte inline CTA (link, géén formulier) na ongeveer het eerste derde van een
-// voldoende lang artikel. Verwijst naar de calculator.
-function ArticleInlineCta() {
-  return (
-    <aside className="article-inline-cta">
-      <p>
-        Bereken met uw eigen energiegegevens welke batterijcapaciteit bij uw
-        woning past.
-      </p>
-      <Link
-        to="/calculator"
-        className="hp-btn article-inline-cta-btn"
-        onClick={() => trackEvent("lead_cta_click", { lead_source: "article_inline" })}
-      >
-        Start de calculator
-        <span aria-hidden="true" className="hp-btn-arrow">→</span>
-      </Link>
-    </aside>
-  );
 }
 
 function Comments({ slug }) {
@@ -266,7 +245,7 @@ export default function PostDetail() {
         path: `/post/${post.slug}`,
         image: post.cover_image_url,
       });
-      setJsonLd([blogPostingSchema(post)]);
+      setJsonLd([blogPostingSchema(post), breadcrumbSchema(post)]);
     }
 
     window.scrollTo(0, 0);
@@ -384,14 +363,26 @@ export default function PostDetail() {
         </nav>
       )}
 
+      {/* Precies één calculator-CTA per artikel. Lange artikelen: licht,
+          tekst-only, na ~het eerste derde (tussen twee H2's). Korte artikelen
+          (geen tweede H2 / te kort): dezelfde herbruikbare CTA aan het einde,
+          mét kop. De CTA is een React-broer van de body en wijzigt de body_html
+          van de API niet. */}
       {inlineParts ? (
         <>
           <div className="prose article-body" dangerouslySetInnerHTML={{ __html: inlineParts[0] }} />
-          <ArticleInlineCta />
+          <ArticleCalculatorCta
+            heading=""
+            body="Bereken met uw eigen energiegegevens welke batterijcapaciteit bij uw woning past."
+            source="article_inline"
+          />
           <div className="prose article-body" dangerouslySetInnerHTML={{ __html: inlineParts[1] }} />
         </>
       ) : (
-        <div className="prose article-body" dangerouslySetInnerHTML={{ __html: bodyHtml }} />
+        <>
+          <div className="prose article-body" dangerouslySetInnerHTML={{ __html: bodyHtml }} />
+          <ArticleCalculatorCta source="article_end" />
+        </>
       )}
 
       {/* Compact adviesformulier aan het einde, vóór gerelateerde artikelen. */}

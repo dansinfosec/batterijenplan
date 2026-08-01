@@ -137,17 +137,36 @@ export const WEBSITE_SCHEMA = {
   inLanguage: "nl-NL",
 };
 
+// Publisher-blok is site-breed gelijk (Organization met logo als ImageObject —
+// door Google aanbevolen boven een kale URL).
+const PUBLISHER_SCHEMA = {
+  "@type": "Organization",
+  name: SITE_NAME,
+  logo: {
+    "@type": "ImageObject",
+    url: `${SITE_URL}/favicon.ico`,
+  },
+};
+
 export function blogPostingSchema(post) {
   const url = canonicalUrl(`/post/${post.slug}`);
   const schema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.title,
-    description: post.meta_description || post.excerpt || DEFAULT_DESCRIPTION,
+    // Zelfde voorkeursvolgorde als de <meta description>: backend seo_description
+    // > (uit body afgeleide) meta_description > excerpt > site-default.
+    description:
+      post.seo_description || post.meta_description || post.excerpt || DEFAULT_DESCRIPTION,
     url,
     mainEntityOfPage: url,
+    inLanguage: "nl-NL",
+    // Auteur bewust als Organization: de API geeft momenteel een gebruikersnaam
+    // (bijv. "dschu") terug, geen publieke weergavenaam — die als Person-naam
+    // tonen zou een dev-handle publiceren. Zet dit om naar Person zodra de
+    // backend een echte auteursnaam levert. Publisher = organisatie met logo.
     author: { "@type": "Organization", name: SITE_NAME },
-    publisher: { "@type": "Organization", name: SITE_NAME },
+    publisher: PUBLISHER_SCHEMA,
   };
 
   if (post.cover_image_url) schema.image = post.cover_image_url;
@@ -157,24 +176,41 @@ export function blogPostingSchema(post) {
   return schema;
 }
 
-// Korte <title>/og:title voor posts waarvan de volle titel + "— Batterijenplan"
-// te lang werd (SEO-audit: "<title> tag too long"). Deze titels bevatten zélf
-// al de merknaam ("| Batterijenplan"), dus géén extra brandingsuffix.
-// De zichtbare H1 blijft altijd post.title. Zelfde map als in
-// scripts/prerender-blog-meta.mjs (klein, bewust geen gedeeld systeem).
-export const POST_SEO_TITLES = {
-  "dynamisch-energiecontract-thuisbatterij": "Dynamisch contract + thuisbatterij | Batterijenplan",
-  "elektrische-auto-ems-systeem": "EV slim laden met EMS | Batterijenplan",
-  "ems-systeem-thuisbatterij-controle-over-stroom": "EMS voor thuisbatterijen | Batterijenplan",
-  "enphase-vs-dyness": "Enphase vs Dyness | Batterijenplan",
-  "groene-vrienden-vs-zonneplan-vs-tibber": "Groene Vrienden vs Zonneplan | Batterijenplan",
-  "terugverdientijd-thuisbatterij-handel-of-zelfconsumptie": "Terugverdientijd thuisbatterij | Batterijenplan",
-  "thuisbatterij-installatie": "Thuisbatterij installatie | Batterijenplan",
-  "thuisbatterij-vergelijken": "Thuisbatterij vergelijken | Batterijenplan",
-};
+// BreadcrumbList voor een artikel: Home › Kennisbank › {titel}. Weerspiegelt de
+// werkelijke navigatiepaden (/ → /artikelen → /post/<slug>) — geen verzonnen
+// niveaus. Verbetert de breadcrumb-weergave in de zoekresultaten.
+export function breadcrumbSchema(post) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: canonicalUrl("/") },
+      { "@type": "ListItem", position: 2, name: "Kennisbank", item: canonicalUrl("/artikelen") },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: post.title,
+        item: canonicalUrl(`/post/${post.slug}`),
+      },
+    ],
+  };
+}
 
-// SEO-titel voor een post: backend-veld (indien ooit toegevoegd) > korte map >
-// standaard "{titel} — Batterijenplan".
+// Bron van waarheid voor de SEO-titel is het backend-veld `seo_title` (per post
+// beheerd in de CMS/admin). De live API bevestigde dat alle gepubliceerde posts
+// een `seo_title` teruggeven, dus de vroegere hardgecodeerde per-slug map is
+// overbodig geworden en verwijderd (voorkomt drift tussen dit bestand en
+// scripts/prerender-blog-meta.mjs en verouderde titels bij nieuwe artikelen).
+//
+// De map blijft als LEGE escape-hatch bestaan: zet hier alléén een entry als een
+// post ooit géén backend `seo_title` heeft en de generieke fallback
+// ("{titel} — Batterijenplan") te lang zou worden. Beheer de titel bij voorkeur
+// in de backend, niet hier.
+export const POST_SEO_TITLES = {};
+
+// SEO-titel voor een post: backend `seo_title` > (legacy) `meta_title` >
+// noodfallback-map > standaard "{titel} — Batterijenplan". De zichtbare H1
+// blijft altijd post.title.
 export function postSeoTitle(post) {
   return (
     post.seo_title ||

@@ -445,22 +445,13 @@ async function fetchPostDetail(slug) {
 }
 
 // Korte <title>/og:title voor posts waarvan de volle titel + "— Batterijenplan"
-// te lang werd (SEO-audit: "<title> tag too long"). Bevatten zélf al de
-// merknaam ("| Batterijenplan"), dus géén extra brandingsuffix. De zichtbare
-// H1 (postBodyFallback) blijft post.title. Spiegelt POST_SEO_TITLES in
-// src/seo.js (klein, bewust geen gedeeld systeem).
-const POST_SEO_TITLES = {
-  "dynamisch-energiecontract-thuisbatterij": "Dynamisch contract + thuisbatterij | Batterijenplan",
-  "elektrische-auto-ems-systeem": "EV slim laden met EMS | Batterijenplan",
-  "ems-systeem-thuisbatterij-controle-over-stroom": "EMS voor thuisbatterijen | Batterijenplan",
-  "enphase-vs-dyness": "Enphase vs Dyness | Batterijenplan",
-  "groene-vrienden-vs-zonneplan-vs-tibber": "Groene Vrienden vs Zonneplan | Batterijenplan",
-  "terugverdientijd-thuisbatterij-handel-of-zelfconsumptie": "Terugverdientijd thuisbatterij | Batterijenplan",
-  "thuisbatterij-installatie": "Thuisbatterij installatie | Batterijenplan",
-  "thuisbatterij-vergelijken": "Thuisbatterij vergelijken | Batterijenplan",
-};
+// Bron van waarheid is het backend-veld `seo_title` (bevestigd via de live API
+// voor alle gepubliceerde posts). De vroegere hardgecodeerde map is daarom leeg
+// en dient enkel nog als noodfallback; spiegelt src/seo.js. Beheer titels in de
+// backend, niet hier — zo blijft prerender en client-side identiek zonder drift.
+const POST_SEO_TITLES = {};
 
-// SEO-titel: backend-veld (indien ooit toegevoegd) > korte map > standaard.
+// SEO-titel: backend `seo_title` > (legacy) meta_title > noodfallback-map > standaard.
 function seoTitle(post) {
   return (
     post.seo_title ||
@@ -489,12 +480,32 @@ function postMetaBlock(post) {
     description,
     url,
     mainEntityOfPage: url,
+    inLanguage: "nl-NL",
+    // Auteur bewust als Organization (spiegelt src/seo.js): de API levert een
+    // gebruikersnaam, geen publieke weergavenaam. Publisher = organisatie met
+    // logo als ImageObject.
     author: { "@type": "Organization", name: SITE_NAME },
-    publisher: { "@type": "Organization", name: SITE_NAME },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/favicon.ico` },
+    },
   };
   if (image) schema.image = image;
   if (post.published_at) schema.datePublished = post.published_at;
   if (post.updated_at) schema.dateModified = post.updated_at;
+
+  // BreadcrumbList: Home › Kennisbank › {titel} (spiegelt breadcrumbSchema in
+  // src/seo.js). Statisch meegeleverd zodat crawlers de breadcrumb pre-JS zien.
+  const breadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+      { "@type": "ListItem", position: 2, name: "Kennisbank", item: `${SITE_URL}/artikelen` },
+      { "@type": "ListItem", position: 3, name: post.title, item: url },
+    ],
+  };
 
   const t = escapeHtml(title);
   const d = escapeHtml(description);
@@ -528,6 +539,7 @@ function postMetaBlock(post) {
   tags.push(
     `<link rel="canonical" href="${u}" />`,
     `<script type="application/ld+json">${jsonLdHtml(schema)}</script>`,
+    `<script type="application/ld+json">${jsonLdHtml(breadcrumb)}</script>`,
   );
 
   return tags.join("\n    ");
