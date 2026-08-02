@@ -8,10 +8,21 @@ from datetime import datetime, timezone
 from django.contrib.auth.models import User
 from django.core.management import call_command
 from django.core.management.base import CommandError
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 from blog.models import Post
-from blog.management.commands.seo_release_v2 import body_sha, body_struct
+from blog.management.commands.seo_release_v2 import body_sha, body_struct, lint_body
+
+ART_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)),
+                       "research", "seo", "article-drafts",
+                       "energieprijzen-stijgen-thuisbatterij-voordeel-2027")
+FIXED_BODY_PATH = os.path.join(ART_DIR, "PROPOSED_ARTICLE_FORMAT_FIXED_V3.md")
+
+# In-memory storage so cover_image.save() never touches Cloudinary / the network in tests.
+MEM_STORAGE = {
+    "default": {"BACKEND": "django.core.files.storage.InMemoryStorage"},
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+}
 
 PUB = datetime(2026, 7, 4, 9, 25, 45, tzinfo=timezone.utc)
 PUB_STR = "2026-07-04T09:25:45+00:00"
@@ -192,6 +203,148 @@ class RestoreCommand(Base):
                 "published_at": PUB.isoformat()}
         bk = write(self.tmp, snap)
         self.assertRaises(CommandError, call_command, "seo_restore_post_backup", "--slug", "r3", "--backup", bk, "--apply")
+
+
+class FormatLint(TestCase):
+    """lint_body rejects article prose that would render as code blocks / <pre><code>."""
+
+    def test_clean_body_passes(self):
+        b = "## Kop\n\nNormale zin.\n\n- item een\n- item twee\n\n| a | b |\n|---|---|\n| 1 | 2 |\n"
+        self.assertEqual(lint_body(b), [])
+
+    def test_detects_fenced_code_with_prose(self):
+        b = "```\nDit is een lange Nederlandse alinea die per ongeluk als code rendert.\n```\n"
+        self.assertIn("fenced_code", lint_body(b))
+
+    def test_detects_four_space_indented_prose(self):
+        b = "## Kop\n\n    Deze alinea is met vier spaties ingesprongen en wordt een codeblok.\n"
+        self.assertIn("indented_prose", lint_body(b))
+
+    def test_detects_pre_code(self):
+        self.assertIn("pre_code", lint_body("<pre><code>rekenvoorbeeld</code></pre>"))
+        self.assertIn("pre_code", lint_body('<pre class="x">grafiek</pre>'))
+
+    def test_detects_giant_preformatted_block(self):
+        b = "## Grafiek\n\n        prijs |####       64\n        prijs |########   95\n"
+        issues = lint_body(b)
+        self.assertIn("indented_prose", issues)
+        self.assertIn("giant_preformatted", issues)
+
+    def test_fixed_2027_article_is_clean_and_intact(self):
+        """The delivered format-fixed body must be code-block-free and structurally preserved."""
+        if not os.path.isfile(FIXED_BODY_PATH):
+            self.skipTest("format-fixed article not present")
+        raw = open(FIXED_BODY_PATH, encoding="utf-8").read()
+        body = raw[raw.index("\n") + 1:].strip() + "\n"      # Post.body = drop the H1 title line
+        self.assertEqual(lint_body(body), [])                 # no code blocks / pre / indent
+        st = body_struct(body)
+        self.assertEqual((st["h2"], st["h3"], st["tables"]), (19, 13, 10))  # counts unchanged
+        # day-ahead visual + its source caption present
+        self.assertIn("nederlandse-day-ahead-prijzen-2025-2026-v3.png", body)
+        self.assertIn("Bron: ACM", body)
+        # disclosure + calculator CTA + canonical internal link unchanged
+        self.assertIn("Groene Vrienden", body)
+        self.assertIn("/calculator", body)
+        self.assertIn("/post/wat-levert-een-thuisbatterij-op", body)
+        # no giant ASCII chart survived (no run of many box-drawing / pipe chars)
+        self.assertNotIn("```", body)
+
+
+@override_settings(STORAGES=MEM_STORAGE)
+class CoverOnly(Base):
+    """cover_only mode: assign a Cloudinary-workflow cover while preserving body byte-for-byte."""
+
+    def _png(self):
+        from PIL import Image
+        p = os.path.join(self.tmp, "hero.png")
+        Image.new("RGB", (8, 4), (255, 209, 0)).save(p)
+        return p
+
+    def _manifest(self, slug, src, upname="cover-v3.png", alt="hero met titel", pre=None):
+        man = {"schema": "x", "mode": "cover_only", "slug": slug,
+               "precondition": pre if pre is not None else {"status": "published"},
+               "preserve": {"slug": slug, "status": "published", "body": "PRESERVED_EXACTLY"},
+               "cover": {"cover_source": src, "cover_upload_name": upname, "cover_alt": alt}}
+        return write(self.tmp, man)
+
+    def test_apply_sets_cover_and_preserves_body(self):
+        p = self.mkpost("c1", CUR)
+        before = body_sha(p.body)
+        m = self._manifest("c1", self._png(), alt="Wat levert een thuisbatterij op? hero")
+        call_command("seo_release_v2", "--slug", "c1", "--manifest", m, "--apply",
+                     "--backup-dir", os.path.join(self.tmp, "bk"))
+        p2 = Post.objects.get(slug="c1")
+        self.assertTrue(p2.cover_image.name)                  # cover assigned
+        self.assertEqual(body_sha(p2.body), before)           # body byte-for-byte
+        self.assertEqual(p2.body, CUR)
+        self.assertEqual(p2.cover_alt, "Wat levert een thuisbatterij op? hero")
+        self.assertEqual(p2.slug, "c1")
+        self.assertEqual(p2.status, "published")
+        self.assertEqual(p2.published_at, PUB)
+        self.assertTrue(any(f.endswith("_cover.json") for f in os.listdir(os.path.join(self.tmp, "bk"))))
+
+    def test_dry_run_makes_no_change(self):
+        self.mkpost("c2", CUR)
+        m = self._manifest("c2", self._png())
+        call_command("seo_release_v2", "--slug", "c2", "--manifest", m)  # dry-run default
+        self.assertFalse(Post.objects.get(slug="c2").cover_image.name)
+
+    def test_precondition_status_mismatch_aborts(self):
+        self.mkpost("c3", CUR)
+        m = self._manifest("c3", self._png(), pre={"status": "draft"})
+        self.assertRaises(CommandError, call_command,
+                          "seo_release_v2", "--slug", "c3", "--manifest", m, "--apply")
+        self.assertFalse(Post.objects.get(slug="c3").cover_image.name)
+
+    def test_missing_cover_source_aborts(self):
+        self.mkpost("c4", CUR)
+        m = self._manifest("c4", os.path.join(self.tmp, "does-not-exist.png"))
+        self.assertRaises(CommandError, call_command,
+                          "seo_release_v2", "--slug", "c4", "--manifest", m, "--apply")
+
+    def test_no_headroom_long_upload_name_aborts(self):
+        self.mkpost("c5", CUR)
+        m = self._manifest("c5", self._png(), upname="x" * 90 + ".png")
+        self.assertRaises(CommandError, call_command,
+                          "seo_release_v2", "--slug", "c5", "--manifest", m, "--apply")
+
+    def test_empty_cover_alt_aborts(self):
+        self.mkpost("c6", CUR)
+        m = self._manifest("c6", self._png(), alt="   ")
+        self.assertRaises(CommandError, call_command,
+                          "seo_release_v2", "--slug", "c6", "--manifest", m, "--apply")
+
+
+class ProductionManifestsV3(TestCase):
+    """The shipped V3 manifests must be well-formed and internally consistent with their bodies."""
+
+    def _load(self, *parts):
+        p = os.path.join(os.path.dirname(os.path.dirname(__file__)), "research", "seo", "article-drafts", *parts)
+        if not os.path.isfile(p):
+            self.skipTest(f"manifest not present: {p}")
+        return json.load(open(p, encoding="utf-8"))
+
+    def test_format_release_matches_fixed_body(self):
+        man = self._load("energieprijzen-stijgen-thuisbatterij-voordeel-2027", "production-format-release-v3.json")
+        self.assertEqual(man["mode"], "full_body")
+        prop = man["proposed"]
+        self.assertEqual(body_sha(prop["body"]), prop["sha256"])
+        st = body_struct(prop["body"])
+        self.assertEqual((st["h2"], st["h3"], st["tables"]), (prop["h2"], prop["h3"], prop["tables"]))
+        self.assertEqual((st["h2"], st["h3"], st["tables"]), (19, 13, 10))
+        self.assertEqual(lint_body(prop["body"]), [])
+        self.assertEqual(man["precondition"]["sha256"],
+                         "0bc77e4d93a94aeaa49daca412940c305b52b497ef0e4d4b67448e835b29d96b")
+
+    def test_cover_manifests_are_cover_only(self):
+        for slug in ("wat-levert-een-thuisbatterij-op",
+                     "energieprijzen-stijgen-thuisbatterij-voordeel-2027"):
+            man = self._load(slug, "production-cover-release-v3.json")
+            self.assertEqual(man["mode"], "cover_only")
+            self.assertEqual(man["slug"], slug)
+            self.assertTrue(man["cover"]["cover_source"].endswith(".png"))
+            self.assertTrue(man["cover"]["cover_alt"].strip())
+            self.assertNotIn("body", man.get("proposed", {}))  # cover-only carries no body
 
 
 class StructureCounter(TestCase):

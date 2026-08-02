@@ -1,0 +1,20 @@
+{
+  "schema": "batterijenplan-release-v2/1",
+  "mode": "cover_only",
+  "slug": "wat-levert-een-thuisbatterij-op",
+  "generated": "2026-08-02",
+  "notes": "Cover-only release: upload goedgekeurde titel-hero via de bestaande Cloudinary cover_image-workflow. Body byte-voor-byte behouden; slug/status/published_at ongewijzigd. Body-SHA voor en na geverifieerd.",
+  "precondition": {
+    "status": "published"
+  },
+  "preserve": {
+    "slug": "wat-levert-een-thuisbatterij-op",
+    "status": "published",
+    "body": "PRESERVED_EXACTLY"
+  },
+  "cover": {
+    "cover_source": "brand-assets/article-visuals/wat-levert-een-thuisbatterij-op/hero/wat-levert-een-thuisbatterij-op-hero.png",
+    "cover_upload_name": "wat-levert-cover-v3.png",
+    "cover_alt": "Wat levert een thuisbatterij op? — hero met titel en Batterijenplan-logo"
+  }
+}

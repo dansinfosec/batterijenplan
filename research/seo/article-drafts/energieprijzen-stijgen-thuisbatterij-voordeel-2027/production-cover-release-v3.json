@@ -1,0 +1,20 @@
+{
+  "schema": "batterijenplan-release-v2/1",
+  "mode": "cover_only",
+  "slug": "energieprijzen-stijgen-thuisbatterij-voordeel-2027",
+  "generated": "2026-08-02",
+  "notes": "Cover-only release: upload goedgekeurde titel-hero via de bestaande Cloudinary cover_image-workflow. Body byte-voor-byte behouden; slug/status/published_at ongewijzigd. Body-SHA voor en na geverifieerd.",
+  "precondition": {
+    "status": "published"
+  },
+  "preserve": {
+    "slug": "energieprijzen-stijgen-thuisbatterij-voordeel-2027",
+    "status": "published",
+    "body": "PRESERVED_EXACTLY"
+  },
+  "cover": {
+    "cover_source": "brand-assets/article-visuals/energieprijzen-stijgen-thuisbatterij-voordeel-2027/hero/energieprijzen-stijgen-thuisbatterij-voordeel-2027-hero-v2.png",
+    "cover_upload_name": "thuisbatterij-2027-cover-v3.png",
+    "cover_alt": "Thuisbatterij vanaf 2027 — hero met titel en Batterijenplan-logo"
+  }
+}

@@ -29,6 +29,7 @@ import re
 from datetime import datetime
 
 from django.conf import settings
+from django.core.files import File
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 from django.utils.dateparse import parse_datetime
@@ -67,8 +68,23 @@ def body_struct(body: str) -> dict:
     }
 
 
+def lint_body(body: str) -> list:
+    """Return a list of presentation defects (empty = clean). Article prose must not render as code."""
+    b = body or ""
+    issues = []
+    if "```" in b:
+        issues.append("fenced_code")
+    if re.search(r"(?i)<pre\b|<code\b", b):
+        issues.append("pre_code")
+    if re.search(r"(?m)^ {4,}\S", b):
+        issues.append("indented_prose")          # 4-space indent -> Markdown code block
+    if re.search(r"(?m)^ {8,}\S", b):
+        issues.append("giant_preformatted")      # deep indent -> giant ASCII/code block
+    return issues
+
+
 class Command(BaseCommand):
-    help = "Guarded, dry-run-by-default V2 release (full_body or visual_patch) for one post."
+    help = "Guarded, dry-run-by-default V2 release (full_body, visual_patch or cover_only) for one post."
 
     def add_arguments(self, parser):
         parser.add_argument("--slug", required=True)
@@ -87,8 +103,8 @@ class Command(BaseCommand):
             raise CommandError(f"Malformed manifest JSON: {exc}")
         if data.get("slug") != slug:
             raise CommandError(f"Manifest slug {data.get('slug')!r} != --slug {slug!r}.")
-        if data.get("mode") not in ("full_body", "visual_patch"):
-            raise CommandError("Manifest 'mode' must be 'full_body' or 'visual_patch'.")
+        if data.get("mode") not in ("full_body", "visual_patch", "cover_only"):
+            raise CommandError("Manifest 'mode' must be 'full_body', 'visual_patch' or 'cover_only'.")
         return data
 
     def _check_precondition(self, post, pre):
@@ -153,6 +169,57 @@ class Command(BaseCommand):
             "body_sha256": body_sha(post.body),
         }
 
+    def _cover_only(self, post, data, apply, o):
+        """preserve_body cover upload via the existing Cloudinary cover_image workflow."""
+        cov = data["cover"]
+        src = cov["cover_source"]
+        src_path = src if os.path.isabs(src) else os.path.join(settings.BASE_DIR, src)
+        if not os.path.isfile(src_path):
+            raise CommandError(f"cover_source not found: {src}")
+        upload_name = cov["cover_upload_name"]
+        if not (cov.get("cover_alt") or "").strip():
+            raise CommandError("cover_only requires a non-empty cover_alt.")
+        field = Post._meta.get_field("cover_image")
+        generated = field.generate_filename(None, upload_name)
+        limit = field.max_length - 20
+        if len(generated) > limit:
+            raise CommandError(f"cover storage path lacks headroom: '{generated}' is {len(generated)} chars > {limit}.")
+        pre_sha = body_sha(post.body)
+        self.stdout.write(f"  current cover: {post.cover_image.name or None}")
+        self.stdout.write(f"  local approved upload source: {src}")
+        self.stdout.write(f"  proposed cover filename: {upload_name}")
+        self.stdout.write(self.style.WARNING("  body: PRESERVED EXACTLY"))
+        self.stdout.write(f"  body SHA-256 (current == required post-write): {pre_sha}")
+        if not apply:
+            self.stdout.write(self.style.SUCCESS("\nDRY-RUN complete. No database changes. Re-run with --apply to write."))
+            return
+        backup_dir = o["backup_dir"] or os.path.join(settings.BASE_DIR, "research", "seo", "production-backups", "release-v2-backups")
+        os.makedirs(backup_dir, exist_ok=True)
+        backup_path = os.path.join(backup_dir, f"{post.slug}_{datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')}_cover.json")
+        json.dump(self._snapshot(post), open(backup_path, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+        try:
+            with transaction.atomic():
+                pre_slug, pre_status, pre_pub = post.slug, post.status, post.published_at
+                with open(src_path, "rb") as fh:
+                    post.cover_image.save(upload_name, File(fh), save=False)
+                if cov.get("cover_alt"):
+                    post.cover_alt = cov["cover_alt"]
+                post.full_clean(exclude=["slug", "author"])
+                post.save()
+                post.refresh_from_db()
+                errs = []
+                if body_sha(post.body) != pre_sha:
+                    errs.append(f"body SHA changed {pre_sha[:16]} -> {body_sha(post.body)[:16]}")
+                if post.slug != pre_slug: errs.append("slug changed")
+                if post.status != pre_status: errs.append("status changed")
+                if post.published_at != pre_pub: errs.append("published_at changed")
+                if errs:
+                    raise CommandError("COVER-ONLY VERIFICATION FAILED (rolling back):\n  - " + "\n  - ".join(errs))
+        except Exception as exc:
+            raise CommandError(f"Cover release aborted, transaction rolled back: {exc}")
+        self.stdout.write(self.style.SUCCESS(f"\nAPPLIED cover. Backup: {backup_path}"))
+        self.stdout.write(self.style.SUCCESS(f"new cover: {post.cover_image.name}; body PRESERVED (sha {pre_sha} unchanged)."))
+
     # ---- main ----
     def handle(self, *args, **o):
         slug = o["slug"]
@@ -168,6 +235,8 @@ class Command(BaseCommand):
         cur = self._check_precondition(post, data["precondition"])
         self.stdout.write(self.style.SUCCESS(
             f"Precondition OK: {cur['chars']} chars, sha {cur['sha256'][:16]}, {cur['h2']}H2/{cur['h3']}H3/{cur['tables']}tbl"))
+        if data["mode"] == "cover_only":
+            return self._cover_only(post, data, apply, o)
         final, expected_sha = self._build_final(post, data)
         fst = body_struct(final)
         self.stdout.write(f"Proposed final: {fst['chars']} chars, sha {expected_sha[:16]}, "
