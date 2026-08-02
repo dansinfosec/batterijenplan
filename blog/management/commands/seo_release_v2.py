@@ -166,6 +166,8 @@ class Command(BaseCommand):
             "seo_description": post.seo_description,
             "cover_image": post.cover_image.name if post.cover_image else None, "cover_alt": post.cover_alt,
             "published_at": post.published_at.isoformat() if post.published_at else None,
+            "author": post.author_id, "author_username": getattr(post.author, "username", None),
+            "updated_at": post.updated_at.isoformat() if getattr(post, "updated_at", None) else None,
             "body_sha256": body_sha(post.body),
         }
 
@@ -235,6 +237,13 @@ class Command(BaseCommand):
         cur = self._check_precondition(post, data["precondition"])
         self.stdout.write(self.style.SUCCESS(
             f"Precondition OK: {cur['chars']} chars, sha {cur['sha256'][:16]}, {cur['h2']}H2/{cur['h3']}H3/{cur['tables']}tbl"))
+        # required visual sources (repo-relative) must exist before any write
+        missing = [r for r in data.get("required_visuals", [])
+                   if not os.path.isfile(r if os.path.isabs(r) else os.path.join(settings.BASE_DIR, r))]
+        if missing:
+            raise CommandError("Required visual source(s) missing:\n  - " + "\n  - ".join(missing))
+        if data.get("required_visuals"):
+            self.stdout.write(self.style.SUCCESS(f"Required visuals present: {len(data['required_visuals'])} files"))
         if data["mode"] == "cover_only":
             return self._cover_only(post, data, apply, o)
         final, expected_sha = self._build_final(post, data)
@@ -257,8 +266,10 @@ class Command(BaseCommand):
         try:
             with transaction.atomic():
                 pre_slug, pre_status, pre_pub = post.slug, post.status, post.published_at
+                pre_cover = post.cover_image.name if post.cover_image else None
+                pre_author = post.author_id
+                prop = data.get("proposed", {})
                 if data["mode"] == "full_body":
-                    prop = data["proposed"]
                     for f in ("title", "excerpt", "seo_title", "seo_description"):
                         if prop.get(f) is not None:
                             setattr(post, f, prop[f])
@@ -274,9 +285,15 @@ class Command(BaseCommand):
                 for k in ("h2", "h3", "tables"):
                     if fst[k] != st[k]:
                         errs.append(f"post-write {k}={st[k]} != {fst[k]}")
+                if data["mode"] == "full_body":
+                    for f in ("title", "excerpt", "seo_title", "seo_description"):
+                        if prop.get(f) is not None and getattr(post, f) != prop[f]:
+                            errs.append(f"{f} != approved after write")
                 if post.slug != pre_slug: errs.append("slug changed")
                 if post.status != pre_status: errs.append("status changed")
                 if post.published_at != pre_pub: errs.append("published_at changed")
+                if (post.cover_image.name if post.cover_image else None) != pre_cover: errs.append("cover_image changed")
+                if post.author_id != pre_author: errs.append("author changed")
                 if errs:
                     raise CommandError("POST-WRITE VERIFICATION FAILED (rolling back):\n  - " + "\n  - ".join(errs))
         except Exception as exc:

@@ -1,0 +1,26 @@
+{
+ "v1-voor-en-na-2027": {
+  "alt": "Energiestroom vóór 2027 (saldering, 1-op-1 verrekend) versus vanaf 2027 (afname en teruglevering apart afgerekend), waardoor direct gebruiken en opslaan waardevoller wordt.",
+  "caption": "Vóór 2027 wordt teruglevering 1-op-1 gesaldeerd; vanaf 2027 worden afname en teruglevering apart afgerekend. Bron: ACM / Wet beëindiging salderingsregeling."
+ },
+ "v2-scenario-matrix": {
+  "alt": "Kwadrantmatrix: extra 2027-voordeel is groot bij veel zon-overschot en weinig dagverbruik, klein bij weinig overschot.",
+  "caption": "Het extra 2027-voordeel hangt af van zon-overschot en verbruik overdag. Bron: Batterijenplan scenario-analyse (kwalitatief, geen euro's op de assen)."
+ },
+ "v4-waarde-waterfall": {
+  "alt": "Waterfall: vermeden inkoop +397, vermeden terugleverkosten +211, gemiste terugleververgoeding −123, totaal ná 2027 ≈ €485; circa €318 daarvan is het 2027-effect boven de €167 die vóór 2027 al bestond.",
+  "caption": "Waarde-opbouw voorbeeldhuishouden (vast contract). Afgeleide berekening op CBS juni 2026-tarief en de ACM 50%-ondergrens; zie 08_SCENARIO_CALCULATIONS.csv."
+ },
+ "v6-beslisboom": {
+  "alt": "Beslisboom met vijf ja/nee-vragen; vaste/variabele contracten leiden naar klein, matig of substantieel extra voordeel, dynamische contracten naar een contractspecifieke berekening.",
+  "caption": "Zelfdiagnose: hoeveel verschil maakt 2027 in uw situatie? Dynamische contracten vergen altijd een contractspecifieke berekening. Indicatief, geen garantie."
+ },
+ "v3-profielvergelijking": {
+  "alt": "Staafdiagram batterijwaarde vóór 2027 (amber) versus vanaf 2027 (geel) voor vijf vaste-contractsituaties; het verschil is het afgeleide 2027-effect.",
+  "caption": "Afgeleid vast-contractscenario per situatie (geen onderzoeksresultaat): batterijwaarde vóór versus vanaf 2027. Zie het scenario-rekenblad."
+ },
+ "v5-vast-vs-dynamisch": {
+  "alt": "Twee vaste-contractstaven met een 2027-effect van circa 318 euro, plus een paneel dat aangeeft dat het 2027-verschil voor dynamische contracten contract- en kwartierdata vereist.",
+  "caption": "Vast versus dynamisch. Vast: afgeleid scenario. Voor dynamische contracten is het 2027-verschil niet te kwantificeren zonder kwartierdata en contractvoorwaarden; prijssturing is een aparte waarde, geen salderingseffect."
+ }
+}

@@ -1,0 +1,11 @@
+PRODUCTION_BODY_V4.md
+char_count: 29213
+word_count: 3617
+sha256: 0b2f870a0a7884ee02c026cefa9cb231ea25b92f34f442a9bf7f5098d5a64aea
+h2: 20
+h3: 0
+tables: 4
+visuals(figure): 6
+internal_links: 6 ['/calculator', '/post/dynamisch-energiecontract-thuisbatterij', '/post/ems-systeem-thuisbatterij-controle-over-stroom', '/post/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie', '/post/thuisbatterij-vergelijken', '/post/wat-levert-een-thuisbatterij-op']
+h1_in_body: 0
+pre_code_or_fence: 0

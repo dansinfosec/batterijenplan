@@ -1,0 +1,22 @@
+{
+ "words": 3440,
+ "h1_in_body": 0,
+ "h2": 20,
+ "h3": 0,
+ "tables": 4,
+ "figures": 6,
+ "picture": 6,
+ "img": 6,
+ "img_alt": 6,
+ "figcaption": 6,
+ "pre_code": 0,
+ "escaped_lt_figure": 0,
+ "internal_links": [
+  "/calculator",
+  "/post/dynamisch-energiecontract-thuisbatterij",
+  "/post/ems-systeem-thuisbatterij-controle-over-stroom",
+  "/post/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie",
+  "/post/thuisbatterij-vergelijken",
+  "/post/wat-levert-een-thuisbatterij-op"
+ ]
+}

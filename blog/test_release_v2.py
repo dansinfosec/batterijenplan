@@ -2,6 +2,7 @@
 """Tests for the guarded V2 release + restore commands (seo_release_v2, seo_restore_post_backup)."""
 import json
 import os
+import re
 import tempfile
 from datetime import datetime, timezone
 from unittest import mock
@@ -386,6 +387,131 @@ class CoverOnly(Base):
         fresh = Post.objects.get(slug="c10")
         self.assertFalse(fresh.cover_image.name)       # no cover persisted
         self.assertEqual(body_sha(fresh.body), before)  # body untouched
+
+
+V4_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)),
+                      "research", "seo", "article-drafts",
+                      "energieprijzen-stijgen-thuisbatterij-voordeel-2027", "v4-scenario-rebuild")
+
+
+@override_settings(STORAGES=MEM_STORAGE)
+class FullBodyReleaseV4(Base):
+    """Guarded full_body release: metadata/cover/author verification, visuals, rollback."""
+
+    def _png(self):
+        from PIL import Image
+        p = os.path.join(self.tmp, "vis.png"); Image.new("RGB", (8, 4), (255, 209, 0)).save(p); return p
+
+    def _man(self, slug, cur, prop, required_visuals=None):
+        m = self.full_manifest(slug, cur, prop)   # writes m.json
+        data = json.load(open(m, encoding="utf-8"))
+        if required_visuals is not None:
+            data["required_visuals"] = required_visuals
+        return write(self.tmp, data)
+
+    def test_missing_visual_aborts(self):
+        self.mkpost("f1", CUR)
+        m = self._man("f1", CUR, PROP, required_visuals=[os.path.join(self.tmp, "nope.svg")])
+        self.assertRaises(CommandError, call_command, "seo_release_v2", "--slug", "f1", "--manifest", m, "--apply")
+        self.assertEqual(Post.objects.get(slug="f1").body, CUR)
+
+    def test_applies_metadata_preserves_and_backs_up(self):
+        p = self.mkpost("f2", CUR)
+        pre_author, pre_cover = p.author_id, (p.cover_image.name or None)
+        bdir = os.path.join(self.tmp, "bk")
+        m = self._man("f2", CUR, PROP, required_visuals=[self._png()])
+        call_command("seo_release_v2", "--slug", "f2", "--manifest", m, "--apply", "--backup-dir", bdir)
+        q = Post.objects.get(slug="f2")
+        self.assertEqual(q.body, PROP)
+        self.assertEqual(q.title, "Nieuw"); self.assertEqual(q.seo_title, "s2"); self.assertEqual(q.seo_description, "d2")
+        self.assertEqual(q.slug, "f2"); self.assertEqual(q.status, "published"); self.assertEqual(q.published_at, PUB)
+        self.assertEqual(q.author_id, pre_author); self.assertEqual((q.cover_image.name or None), pre_cover)
+        bk = json.load(open(os.path.join(bdir, [f for f in os.listdir(bdir) if f.endswith(".json")][0]), encoding="utf-8"))
+        for k in ("body", "title", "excerpt", "seo_title", "seo_description", "slug", "status", "published_at",
+                  "cover_image", "author", "updated_at", "body_sha256"):
+            self.assertIn(k, bk)
+
+    def test_body_write_failure_rolls_back(self):
+        self.mkpost("f3", CUR)
+        m = self._man("f3", CUR, PROP)
+        with mock.patch.object(Post, "save", side_effect=RuntimeError("db down")):
+            self.assertRaises(CommandError, call_command, "seo_release_v2", "--slug", "f3", "--manifest", m, "--apply",
+                              "--backup-dir", os.path.join(self.tmp, "bk"))
+        self.assertEqual(Post.objects.get(slug="f3").body, CUR)
+
+    def test_post_write_body_mismatch_rolls_back(self):
+        self.mkpost("f4", CUR)
+        m = self._man("f4", CUR, PROP)
+        with mock.patch.object(Post, "refresh_from_db", autospec=True,
+                               side_effect=lambda self, *a, **k: setattr(self, "body", PROP + " X")):
+            self.assertRaises(CommandError, call_command, "seo_release_v2", "--slug", "f4", "--manifest", m, "--apply",
+                              "--backup-dir", os.path.join(self.tmp, "bk"))
+        self.assertEqual(Post.objects.get(slug="f4").body, CUR)  # rolled back
+
+    def test_metadata_mismatch_rolls_back(self):
+        self.mkpost("f5", CUR)
+        m = self._man("f5", CUR, PROP)
+        with mock.patch.object(Post, "refresh_from_db", autospec=True, side_effect=lambda self,*a,**k: setattr(self,"title","TAMPERED")):
+            self.assertRaises(CommandError, call_command, "seo_release_v2", "--slug", "f5", "--manifest", m, "--apply",
+                              "--backup-dir", os.path.join(self.tmp, "bk"))
+        self.assertEqual(Post.objects.get(slug="f5").title, "f5")  # title rolled back to original
+
+
+class Production2027V4Artifacts(TestCase):
+    """Validate the shipped V4 production body + manifest + public visuals."""
+
+    NAMES = ["voor-en-na-salderen-2027-v4", "scenario-matrix-thuisbatterij-2027-v4",
+             "profielvergelijking-vast-contract-2027-v4", "waardeopbouw-thuisbatterij-2027-v4",
+             "vast-versus-dynamisch-2027-v4", "beslisboom-thuisbatterij-2027-v4"]
+
+    def setUp(self):
+        self.body_path = os.path.join(V4_DIR, "PRODUCTION_BODY_V4.md")
+        if not os.path.isfile(self.body_path):
+            self.skipTest("PRODUCTION_BODY_V4.md not present")
+        self.body = open(self.body_path, encoding="utf-8").read()
+
+    def test_body_no_h1_no_codeblocks(self):
+        self.assertEqual(len(re.findall(r"(?m)^# ", self.body)), 0)
+        self.assertEqual(self.body.count("```"), 0)
+        self.assertFalse(re.search(r"<pre\b|<code\b", self.body))
+        self.assertEqual(len(re.findall(r"(?m)^ {4,}\S", self.body)), 0)
+
+    def test_six_visuals_each_once(self):
+        self.assertEqual(self.body.count("<figure"), 6)
+        for n in self.NAMES:
+            self.assertEqual(self.body.count(f"{n}.png"), 1, n)
+            self.assertEqual(self.body.count(f"{n}.svg"), 1, n)
+
+    def test_corrected_terminology_holds(self):
+        low = self.body.lower()
+        self.assertFalse(re.search(r"2027-effect (is )?(≈|~|ongeveer )?\s?€?0(?![,\d])", low))
+        self.assertNotIn("grotendeels irrelevant", low)
+        self.assertNotIn("2027 nauwelijks iets", low)
+        self.assertIn("scenariowaarde", low)                 # EUR0,07 labelled
+        self.assertIn("gemodelleerde", low)                  # 1.760 kWh not physical max
+        self.assertFalse(re.search(r"onafhankelijk van (de )?terugleverkosten", low))
+
+    def test_manifest_consistent(self):
+        mp = os.path.join(V4_DIR, "production-release-v4.json")
+        if not os.path.isfile(mp): self.skipTest("manifest not present")
+        man = json.load(open(mp, encoding="utf-8"))
+        self.assertEqual(man["mode"], "full_body")
+        self.assertEqual(man["cover_change"], False)
+        self.assertNotIn("cover_image", man.get("proposed", {}))
+        self.assertEqual(body_sha(man["proposed"]["body"]), man["proposed"]["sha256"])
+        self.assertEqual(man["precondition"]["sha256"],
+                         "03c6c3ab6785df87cda2d5d98dfbd2fbc662efac8c56ff8db91521359efd7659")
+        self.assertEqual(man["proposed"]["title"], man["approved_title"])
+
+    def test_visual_sources_exist_and_valid(self):
+        vdir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "public",
+                            "article-visuals", "energieprijzen-stijgen-thuisbatterij-voordeel-2027", "v4")
+        if not os.path.isdir(vdir): self.skipTest("public v4 visuals not present")
+        from PIL import Image
+        for n in self.NAMES:
+            svg = os.path.join(vdir, f"{n}.svg"); png = os.path.join(vdir, f"{n}.png")
+            self.assertTrue(os.path.getsize(svg) > 0 and "viewBox" in open(svg, encoding="utf-8").read(), n)
+            self.assertGreaterEqual(Image.open(png).size[0], 1200, n)
 
 
 class CoverReleaseManifestsV1(TestCase):
