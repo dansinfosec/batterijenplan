@@ -1,0 +1,402 @@
+[
+  {
+    "svg": "opbrengstmatrix-14kwh-10kw-model.svg",
+    "label": "median",
+    "displayed_value": 734,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.statistics_unweighted.median",
+    "claim_id": "matrix_2025_median"
+  },
+  {
+    "svg": "opbrengstmatrix-14kwh-10kw-model.svg",
+    "label": "mean",
+    "displayed_value": 744,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.statistics_unweighted.mean",
+    "claim_id": "matrix_2025_mean"
+  },
+  {
+    "svg": "opbrengstmatrix-14kwh-10kw-model.svg",
+    "label": "min",
+    "displayed_value": 654,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.statistics_unweighted.min",
+    "claim_id": "matrix_2025_min"
+  },
+  {
+    "svg": "opbrengstmatrix-14kwh-10kw-model.svg",
+    "label": "max",
+    "displayed_value": 878,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.statistics_unweighted.max",
+    "claim_id": "matrix_2025_max"
+  },
+  {
+    "svg": "opbrengstmatrix-14kwh-10kw-model.svg",
+    "label": "p10",
+    "displayed_value": 678,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.statistics_unweighted.p10",
+    "claim_id": "matrix_2025_p10"
+  },
+  {
+    "svg": "opbrengstmatrix-14kwh-10kw-model.svg",
+    "label": "p90",
+    "displayed_value": 830,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.statistics_unweighted.p90",
+    "claim_id": "matrix_2025_p90"
+  },
+  {
+    "svg": "opbrengstmatrix-14kwh-10kw-model.svg",
+    "label": "cells",
+    "displayed_value": [
+      [
+        654,
+        683,
+        691,
+        695,
+        696
+      ],
+      [
+        673,
+        699,
+        719,
+        729,
+        734
+      ],
+      [
+        686,
+        734,
+        754,
+        768,
+        772
+      ],
+      [
+        684,
+        764,
+        788,
+        812,
+        817
+      ],
+      [
+        675,
+        796,
+        839,
+        867,
+        878
+      ]
+    ],
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.matrix.cells_eur_per_year",
+    "claim_id": "matrix_2025_cells"
+  },
+  {
+    "svg": "opbrengst-per-woningprofiel-14kwh.svg",
+    "label": "appartement geen zon",
+    "displayed_value": 654,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.matrix.cells_eur_per_year[0][0]",
+    "claim_id": "matrix_2025_cells"
+  },
+  {
+    "svg": "opbrengst-per-woningprofiel-14kwh.svg",
+    "label": "appartement 1,6x",
+    "displayed_value": 696,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.matrix.cells_eur_per_year[0][4]",
+    "claim_id": "matrix_2025_cells"
+  },
+  {
+    "svg": "opbrengst-per-woningprofiel-14kwh.svg",
+    "label": "tussenwoning geen zon",
+    "displayed_value": 673,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.matrix.cells_eur_per_year[1][0]",
+    "claim_id": "matrix_2025_cells"
+  },
+  {
+    "svg": "opbrengst-per-woningprofiel-14kwh.svg",
+    "label": "tussenwoning 1,6x",
+    "displayed_value": 734,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.matrix.cells_eur_per_year[1][4]",
+    "claim_id": "matrix_2025_cells"
+  },
+  {
+    "svg": "opbrengst-per-woningprofiel-14kwh.svg",
+    "label": "hoekwoning geen zon",
+    "displayed_value": 686,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.matrix.cells_eur_per_year[2][0]",
+    "claim_id": "matrix_2025_cells"
+  },
+  {
+    "svg": "opbrengst-per-woningprofiel-14kwh.svg",
+    "label": "hoekwoning 1,6x",
+    "displayed_value": 772,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.matrix.cells_eur_per_year[2][4]",
+    "claim_id": "matrix_2025_cells"
+  },
+  {
+    "svg": "opbrengst-per-woningprofiel-14kwh.svg",
+    "label": "2-onder-1-kap geen zon",
+    "displayed_value": 684,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.matrix.cells_eur_per_year[3][0]",
+    "claim_id": "matrix_2025_cells"
+  },
+  {
+    "svg": "opbrengst-per-woningprofiel-14kwh.svg",
+    "label": "2-onder-1-kap 1,6x",
+    "displayed_value": 817,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.matrix.cells_eur_per_year[3][4]",
+    "claim_id": "matrix_2025_cells"
+  },
+  {
+    "svg": "opbrengst-per-woningprofiel-14kwh.svg",
+    "label": "vrijstaand / warmtepomp geen zon",
+    "displayed_value": 675,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.matrix.cells_eur_per_year[4][0]",
+    "claim_id": "matrix_2025_cells"
+  },
+  {
+    "svg": "opbrengst-per-woningprofiel-14kwh.svg",
+    "label": "vrijstaand / warmtepomp 1,6x",
+    "displayed_value": 878,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.matrix.cells_eur_per_year[4][4]",
+    "claim_id": "matrix_2025_cells"
+  },
+  {
+    "svg": "invloed-zonnepanelen-op-opbrengst.svg",
+    "label": "4.500 Geen zon",
+    "displayed_value": 684,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.matrix.cells_eur_per_year[3][0]",
+    "claim_id": "matrix_2025_cells"
+  },
+  {
+    "svg": "invloed-zonnepanelen-op-opbrengst.svg",
+    "label": "4.500 0,5x",
+    "displayed_value": 764,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.matrix.cells_eur_per_year[3][1]",
+    "claim_id": "matrix_2025_cells"
+  },
+  {
+    "svg": "invloed-zonnepanelen-op-opbrengst.svg",
+    "label": "4.500 0,8x",
+    "displayed_value": 788,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.matrix.cells_eur_per_year[3][2]",
+    "claim_id": "matrix_2025_cells"
+  },
+  {
+    "svg": "invloed-zonnepanelen-op-opbrengst.svg",
+    "label": "4.500 1,2x",
+    "displayed_value": 812,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.matrix.cells_eur_per_year[3][3]",
+    "claim_id": "matrix_2025_cells"
+  },
+  {
+    "svg": "invloed-zonnepanelen-op-opbrengst.svg",
+    "label": "4.500 1,6x",
+    "displayed_value": 817,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.matrix.cells_eur_per_year[3][4]",
+    "claim_id": "matrix_2025_cells"
+  },
+  {
+    "svg": "model-versus-praktijk.svg",
+    "label": "Zonneplan Nexus 20 kWh / 10 kW min",
+    "displayed_value": 992.48,
+    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "json_path": "$.systems[?(@.id=='zonneplan_nexus_20')].eur_min",
+    "claim_id": "zonneplan_nexus_20"
+  },
+  {
+    "svg": "model-versus-praktijk.svg",
+    "label": "Zonneplan Nexus 20 kWh / 10 kW max",
+    "displayed_value": 1122.71,
+    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "json_path": "$.systems[?(@.id=='zonneplan_nexus_20')].eur_max",
+    "claim_id": "zonneplan_nexus_20"
+  },
+  {
+    "svg": "model-versus-praktijk.svg",
+    "label": "Sigenergy 24,2 kWh / 12 kW min",
+    "displayed_value": 733.39,
+    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "json_path": "$.systems[?(@.id=='sigenergy_242')].eur_min",
+    "claim_id": "sigenergy_242"
+  },
+  {
+    "svg": "model-versus-praktijk.svg",
+    "label": "Sigenergy 24,2 kWh / 12 kW max",
+    "displayed_value": 1800.06,
+    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "json_path": "$.systems[?(@.id=='sigenergy_242')].eur_max",
+    "claim_id": "sigenergy_242"
+  },
+  {
+    "svg": "model-versus-praktijk.svg",
+    "label": "Tibber Homevolt 13,3 kWh / 6 kW min",
+    "displayed_value": 1162.0,
+    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "json_path": "$.systems[?(@.id=='tibber_homevolt_133')].eur_min",
+    "claim_id": "tibber_homevolt_133"
+  },
+  {
+    "svg": "model-versus-praktijk.svg",
+    "label": "Tibber Homevolt 13,3 kWh / 6 kW max",
+    "displayed_value": 1298.0,
+    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "json_path": "$.systems[?(@.id=='tibber_homevolt_133')].eur_max",
+    "claim_id": "tibber_homevolt_133"
+  },
+  {
+    "svg": "model-versus-praktijk.svg",
+    "label": "Bliq 20 kWh / 8 kW min",
+    "displayed_value": 966.68,
+    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "json_path": "$.systems[?(@.id=='bliq_20')].eur_min",
+    "claim_id": "bliq_20"
+  },
+  {
+    "svg": "model-versus-praktijk.svg",
+    "label": "Bliq 20 kWh / 8 kW max",
+    "displayed_value": 1276.68,
+    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "json_path": "$.systems[?(@.id=='bliq_20')].eur_max",
+    "claim_id": "bliq_20"
+  },
+  {
+    "svg": "model-versus-praktijk.svg",
+    "label": "GivEnergy 20,4 kWh / 10 kW min",
+    "displayed_value": 639.44,
+    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "json_path": "$.systems[?(@.id=='givenergy_204')].eur_min",
+    "claim_id": "givenergy_204"
+  },
+  {
+    "svg": "model-versus-praktijk.svg",
+    "label": "GivEnergy 20,4 kWh / 10 kW max",
+    "displayed_value": 1363.55,
+    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "json_path": "$.systems[?(@.id=='givenergy_204')].eur_max",
+    "claim_id": "givenergy_204"
+  },
+  {
+    "svg": "model-versus-praktijk.svg",
+    "label": "Dyness–Solis 21,3 kWh / 10 kW min",
+    "displayed_value": 1139.71,
+    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "json_path": "$.systems[?(@.id=='dyness_solis_213')].eur_min",
+    "claim_id": "dyness_solis_213"
+  },
+  {
+    "svg": "model-versus-praktijk.svg",
+    "label": "Dyness–Solis 21,3 kWh / 10 kW max",
+    "displayed_value": 1139.71,
+    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "json_path": "$.systems[?(@.id=='dyness_solis_213')].eur_max",
+    "claim_id": "dyness_solis_213"
+  },
+  {
+    "svg": "model-versus-praktijk.svg",
+    "label": "HYXiPOWER 21,2 kWh / 12 kW min",
+    "displayed_value": 657.19,
+    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "json_path": "$.systems[?(@.id=='hyxipower_212')].eur_min",
+    "claim_id": "hyxipower_212"
+  },
+  {
+    "svg": "model-versus-praktijk.svg",
+    "label": "HYXiPOWER 21,2 kWh / 12 kW max",
+    "displayed_value": 657.19,
+    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "json_path": "$.systems[?(@.id=='hyxipower_212')].eur_max",
+    "claim_id": "hyxipower_212"
+  },
+  {
+    "svg": "model-versus-praktijk.svg",
+    "label": "model min",
+    "displayed_value": 654,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.statistics_unweighted.min",
+    "claim_id": "matrix_2025_min"
+  },
+  {
+    "svg": "model-versus-praktijk.svg",
+    "label": "model max",
+    "displayed_value": 878,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.statistics_unweighted.max",
+    "claim_id": "matrix_2025_max"
+  },
+  {
+    "svg": "model-versus-praktijk.svg",
+    "label": "model median",
+    "displayed_value": 734,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.statistics_unweighted.median",
+    "claim_id": "matrix_2025_median"
+  },
+  {
+    "svg": "opbrengst-per-kwh-praktijk.svg",
+    "label": "Zonneplan Nexus 20 kWh",
+    "displayed_value": [
+      49.6,
+      56.1
+    ],
+    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "json_path": "$.systems[?(@.id=='zonneplan_nexus_20')].eur_per_kwh_min|max",
+    "claim_id": "zonneplan_nexus_20"
+  },
+  {
+    "svg": "opbrengst-per-kwh-praktijk.svg",
+    "label": "Sigenergy 24,2 kWh",
+    "displayed_value": [
+      30.3,
+      74.4
+    ],
+    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "json_path": "$.systems[?(@.id=='sigenergy_242')].eur_per_kwh_min|max",
+    "claim_id": "sigenergy_242"
+  },
+  {
+    "svg": "opbrengst-per-kwh-praktijk.svg",
+    "label": "Tibber Homevolt 13,3 kWh",
+    "displayed_value": [
+      87.4,
+      97.6
+    ],
+    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "json_path": "$.systems[?(@.id=='tibber_homevolt_133')].eur_per_kwh_min|max",
+    "claim_id": "tibber_homevolt_133"
+  },
+  {
+    "svg": "opbrengst-per-kwh-praktijk.svg",
+    "label": "Dyness–Solis 21,3 kWh",
+    "displayed_value": [
+      53.5,
+      53.5
+    ],
+    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "json_path": "$.systems[?(@.id=='dyness_solis_213')].eur_per_kwh_min|max",
+    "claim_id": "dyness_solis_213"
+  },
+  {
+    "svg": "opbrengst-per-kwh-praktijk.svg",
+    "label": "model per kWh",
+    "displayed_value": 53,
+    "canonical_file": "CANONICAL_METRICS.json",
+    "json_path": "$.statistics_unweighted.per_nominal_kwh_mean",
+    "claim_id": "matrix_2025_per_kwh"
+  }
+]

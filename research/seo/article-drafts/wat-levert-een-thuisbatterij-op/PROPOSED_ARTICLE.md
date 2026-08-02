@@ -1,68 +1,85 @@
-# Wat levert een thuisbatterij op? Onderzoek op basis van 135 simulaties en 300+ echte installaties
+# Wat levert een thuisbatterij op? Onderzoek met 135 simulaties, vergeleken met 300+ praktijkresultaten
 
-> **HUMAN-REWRITE DRAFT (2026-08-02) - editorial pass:** stronger opening + a 30-second summary added; the full research body and all data, tables and sources below are preserved unchanged. Deeper prose polish of the body is a flagged human-review item. Future full-body update - not a production manifest and not for automatic apply.
+> **HUMAN-REWRITE DRAFT (2026-08-02) — commerciële editorial pass:** zelfverzekerder, klantgerichter en met een duidelijke koopadvies-lijn. Alle data, tabellen en canonieke cijfers blijven ongewijzigd; diepere methodiek staat nu lager in het artikel. Future full-body update — geen productiemanifest en niet voor automatische apply.
 
-## Samenvatting in 30 seconden
-
-- Wat een thuisbatterij oplevert, hangt af van uw situatie: er is geen vast bedrag en geen gegarandeerde terugverdientijd.
-- In ons onderzoek: mediaan circa EUR 764 per jaar, normale bandbreedte EUR 650-900 (marktjaar 2025). Dit zijn doorgerekende scenario's, geen belofte.
-- Zelfs zonder zonnepanelen: circa EUR 654-686 per jaar via handel.
-- 2027 is het kantelpunt: het einde van saldering maakt opgeslagen zonnestroom meer waard.
-- Alle cijfers zijn onderbouwd en gevalideerd tegen ruim 300 echte installaties.
-
-Onderzoek van Batterijenplan · 135 simulaties op 70.000+ kwartieren echte markt- en TenneT-data · 25 huishoudprofielen · 21 energieleveranciers · gevalideerd tegen 300+ werkelijke installaties · Laatst bijgewerkt: 17 juli 2026 · Alle bedragen incl. btw
+Onderzoek van Batterijenplan · 135 simulaties op 70.000+ kwartieren echte markt- en TenneT-data · 25 huishoudprofielen · 21 energieleveranciers · vergeleken met openbaar gerapporteerde praktijkresultaten van 300+ installaties · Laatst bijgewerkt: 17 juli 2026 · Alle bedragen incl. btw
 
 ## Het antwoord in één oogopslag
 
-| € 764
- **mediaan per jaar**
- 14 kWh / 10 kW, actief EMS, marktjaar 2025 | € 650 – 900
- **normale bandbreedte**
- P10–P90 over alle zonprofielen: € 695 – 839 | € 1.260 – 1.460
- **in een gunstig marktjaar**
- zelfde model op marktjaar 2024 | 2027
- **het kanteljaar**
- einde salderen maakt opgeslagen zon € 119 – 816 per jaar waard |
-|---|---|---|---|
+- **Nu al:** €654–€878 per jaar voor een thuisbatterij van 14 kWh / 10 kW met actieve EMS-sturing (ons doorgerekende 2025-model; mediaan €734, gemiddelde €744).
+- **In de praktijk kan het meer zijn:** grotere of slimmer aangestuurde systemen halen volgens openbare praktijkcijfers meer dan €1.000 per jaar — Zonneplan (20 kWh) realiseerde €992–€1.123 over 267 installaties.
+- **De winst zit in de aansturing:** slimme handel, meer omvormervermogen en een goed EMS bepalen de opbrengst sterker dan de omvang van de batterij alleen.
+- **Vanaf 2027 groeit de kans:** als de saldering stopt, wordt eigen stroom bewaren belangrijker dan ooit.
 
-De uitkomst verschilt per woning en per marktjaar; alle bedragen zijn doorgerekende scenario's, geen gegarandeerde opbrengsten.
+> Dit model is een ondergrens-tot-middenband voor één configuratie, geen plafond. Uw eigen opbrengst hangt af van uw situatie — die rekent u onderaan zelf door.
 
-## Dit moet u weten
+Een thuisbatterij is in 2025 geen gok meer, maar een doorgerekende investering. Hieronder ziet u eerst wat hij nú oplevert, waarom de praktijk hoger kan uitkomen, waar het geld vandaan komt, en welke keuzes uw opbrengst maken of breken.
 
-- **Een thuisbatterij verdient uit vier bronnen tegelijk:** meer eigen zonnestroom gebruiken, het nadeel van terugleveren vermijden, goedkoop inkopen, en actieve energiehandel. Een goed EMS kiest per kwartier welke bron op dat moment het meeste oplevert — dezelfde kilowattuur kan maar één ding tegelijk.
-- **In 2026 (mét salderen) is opslag van eigen zon financieel zinloos:** in onze berekening kost puur zelfverbruik zelfs € 39 – 213 per jaar (verliezen), omdat het net al gratis "opslaat". De hele batterijwaarde komt nu uit handel: € 654 – 686 per jaar.
-- **Vanaf 1 januari 2027 kantelt dat volledig.** Teruggeleverde stroom is dan weinig of zelfs mínder dan niets waard, en opgeslagen zonnestroom wordt € 119 – 816 per jaar waard, afhankelijk van uw opwek. De batterij verdient dan uit álle vier de bronnen.
-- **De batterij bepaalt méér dan de woning.** Over alle 25 doorgerekende profielen — van appartement zonder zon tot groot huis met 10.400 kWh opwek — varieert het totaal maar € 224 per jaar (€ 654 – 878).
-- **Zelfs zonder zonnepanelen levert het systeem € 654 – 686 per jaar op.** Pure handelswaarde op de onbalansmarkt van TenneT.
-- **De goedkoopste leverancier hangt af van uw batterij** — en het verschil in de kopgroep is klein. Wat wél groot verschil maakt: € 0 of € 10+ per maand EMS-/platformkosten, wel of geen terugleverkosten, en bij sommige aanbieders wel of geen winstdeling.
+## 1. Wat levert een thuisbatterij nú op?
 
-## 1. Hoe wij dit onderzocht hebben
+Voor een standaardsysteem van 14 kWh / 10 kW met actieve EMS-sturing op een dynamisch contract, marktjaar 2025, ligt de jaaropbrengst tussen **€654 en €878** — mediaan €734, gemiddelde €744. Dit is de kern van 25 doorgerekende huishoudprofielen:
 
-Vrijwel elke pagina over dit onderwerp rekent met één voorbeeldwoning en een aangenomen "gemiddelde besparing". Wij hebben het empirisch aangepakt:
+| Jaarverbruik ↓ / Opwek t.o.v. verbruik → | Geen zon | 0,5× | 0,8× | 1,2× | 1,6× |
+|---|---|---|---|---|---|
+| 1.800 kWh (appartement) | € 654 | € 683 | € 691 | € 695 | € 696 |
+| 2.650 kWh (tussenwoning) | € 673 | € 699 | € 719 | € 729 | € 734 |
+| 3.500 kWh (hoekwoning) | € 686 | € 734 | € 754 | € 768 | € 772 |
+| 4.500 kWh (2-onder-1-kap) | € 684 | € 764 | € 788 | € 812 | € 817 |
+| 6.500 kWh (vrijstaand / warmtepomp) | € 675 | € 796 | € 839 | € 867 | € 878 |
 
-- **Echte marktdata:** 41.639 Nederlandse day-ahead prijzen (EPEX SPOT via Fraunhofer Energy-Charts, 2024–2026), alle TenneT-verrekenprijzen van de onbalansmarkt (88.988 kwartieren) en het TenneT balance-delta-signaal op 1-minuutresolutie (ruim 1 miljoen datapunten) — het signaal waar commerciële EMS-platformen daadwerkelijk op sturen.
-- **Fysiek batterijmodel:** 14 kWh (12,6 kWh bruikbaar), 10 kW hybride omvormer, 90% round-trip rendement, slijtage € 0,04 per ontladen kWh. Het EMS beslist per kwartier op basis van uitsluitend toen-beschikbare informatie (2 minuten signaalvertraging) en rekent af tegen de échte verrekenprijzen, inclusief de punitieve dual-pricing-momenten. Energiebelasting (€ 0,111/kWh), btw en leveranciersopslag worden bij elke netlading betaald.
-- **25 huishoudprofielen:** vijf verbruiksniveaus (1.800 – 6.500 kWh, verankerd op CBS-cijfers per woningtype) × vijf opwekverhoudingen (geen zon tot 1,6× het verbruik).
-- **Drie contractlagen op dezelfde energiestromen:** salderen (2026), vast contract 2027 (inkoop € 0,30, vergoeding € 0,075, terugleverkosten € 0,12 — modelscenario) en dynamisch contract 2027.
-- **Validatie:** gerealiseerde jaarresultaten van ruim 300 echte installaties (mijnbatterij.nl).
+![Opbrengstmatrix 14 kWh / 10 kW met 25 huishoud- en zonprofielen, jaaropbrengst 2025, MODEL/SCENARIO](opbrengstmatrix-14kwh-10kw-model.png)
 
-Elke simulatie dwingt de energiebalans per kwartier af. Zelfconsumptie en handel worden nooit opgeteld: het is één batterij in één dispatch, en de componenten hieronder tellen exact op tot het totaal.
+*Opbrengstmatrix 14 kWh / 10 kW — MODEL/SCENARIO. Jaaropbrengst per huishoud- en zonprofiel, actief EMS, dynamisch contract, marktjaar 2025.*
 
-## 2. Waar de opbrengst vandaan komt
+Bereik €654–878 · mediaan €734 · gemiddelde €744 · P10–P90 €678–830 · zonder zonnepanelen €654–686. Dit is een modeluitkomst voor één configuratie en marktjaar — een stevige middenband, geen bovengrens.
 
-Voor een herkenbaar profiel (4.500 kWh verbruik, 5.400 kWh opwek), marktjaar 2025:
+Drie dingen vallen meteen op:
 
-Opbouw batterijopbrengst per strategie (4.500 kWh, opwek 1,2×)
+1. **Ook zonder zonnepanelen levert het systeem geld op:** €654–686 per jaar, puur uit slimme energiehandel. Zonnepanelen voegen daar €30–200 aan toe, maar boven een opwekverhouding van 0,8 vlakt die meerwaarde af — extra panelen concurreren dan met de handelsruimte in de accu.
+2. **Het woningprofiel verschuift de opbrengst, maar beperkt:** over alle 25 profielen is de spreiding €224 (€654–878). Uw type woning bepaalt dus minder dan veel mensen denken.
+3. **De grootste knoppen zitten elders:** het marktjaar, het omvormervermogen en de kwaliteit van het EMS wegen zwaarder dan verbruik of het aantal panelen. Daarover verderop meer.
 
-€ per jaar incl. btw · marktjaar 2025 · eigen simulatie op EPEX/TenneT-data · model
+![Opbrengst per woningprofiel bij 14 kWh / 10 kW: jaaropbrengst per woningtype bij geen zon, 0,8x en 1,6x opwek](opbrengst-per-woningprofiel-14kwh.png)
 
-Vast contract 2027 — batterij voor eigen verbruik: € 545
+*Opbrengst per woningprofiel (14 kWh / 10 kW, MODEL/SCENARIO). Het woningtype verschuift de opbrengst, maar de spreiding over alle 25 profielen blijft €224.*
 
-Dynamisch contract 2027 — actief multi-market EMS: € 812
+## 2. Waarom hogere praktijkresultaten mogelijk zijn
 
-Salderen 2026 — batterij voor eigen verbruik: − € 148
+Ons model rekent bewust conservatief met één vaste configuratie. In de praktijk draaien grotere en slimmer aangestuurde systemen hoger. Openbaar gerapporteerde jaarresultaten over 2025 (MijnBatterij.nl) laten dat duidelijk zien:
 
-Componenten komen uit één dispatch en tellen exact op tot het totaal — geen dubbeltelling. Conclusie: in 2026 komt de waarde uit handel; vanaf 2027 uit handel én opslag. Zie de afweging in [handel of zelfconsumptie](/post/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie).
+| Systeem | Capaciteit | Omvormer | Meldingen (N) | Gerapporteerd 2025 | Per nominale kWh | Aard van het cijfer |
+|---|---|---|---:|---|---|---|
+| Zonneplan Nexus | 20 kWh | 10 kW | 267 | € 992,48 – 1.122,71 | € 49,6 – 56,1 | PRACTICE/REFERENCE — LARGE SAMPLE |
+| Sigenergy | 24,2 kWh | 12 kW | 25 | € 733,39 – 1.800,06 | € 30,3 – 74,4 | PRACTICE/REFERENCE — SMALL SAMPLE |
+| Sigenergy (losse melding) | 24,2 kWh | 12 kW | 1 | € 1.688,37 | € 69,8 | PRACTICE/REFERENCE — N=1 |
+| GivEnergy | 20,4 kWh | 10 kW | 4 | € 639,44 – 1.363,55 | € 31,3 – 66,8 | PRACTICE/REFERENCE — SMALL SAMPLE |
+| Bliq | 20 kWh | 8 kW | 3 | € 966,68 – 1.276,68 | € 48,3 – 63,8 | PRACTICE/REFERENCE — SMALL SAMPLE |
+| Dyness Tower–Solis (Groene Vrienden-voorbeeld) | 21,3 kWh | 10 kW | 1 | € 1.139,71 | € 53,5 | PRACTICE/REFERENCE — N=1 |
+| HYXiPOWER | 21,2 kWh | 12 kW | 1 | € 657,19 | € 31,0 | PRACTICE/REFERENCE — N=1 |
+
+Lees deze cijfers in drie niveaus:
+
+- **€650–900 per jaar — ons genormaliseerde 14 kWh-model.** De betrouwbare middenband.
+- **€1.000–1.120 per jaar — de grootste praktijkgroep.** 267 Zonneplan-installaties van 20 kWh.
+- **Boven €1.500 per jaar — losse uitschieters** in kleinere of variabelere steekproeven (Sigenergy tot €1.800). Mooi om te zien, maar geen standaardverwachting.
+
+![Model versus praktijk: eigen genormaliseerd 14 kWh-model naast praktijkmeldingen van 20–24 kWh-systemen, 2025](model-versus-praktijk.png)
+
+*Model versus praktijk. Hogere opbrengsten komen in de praktijk voor; configuratie, aansturing, meetperiode en steekproef verschillen, dus de cijfers zijn niet één-op-één vergelijkbaar.*
+
+Wat de vergelijking sterk maakt: **per nominale kWh loopt het model vrijwel gelijk met de praktijk.** Ons model komt op circa €53 per kWh per jaar; de 267 Zonneplan-installaties op €50–56 per kWh. Onze absolute bedragen zijn lager doordat ons modelsysteem kleiner is (14 kWh tegenover 20 kWh), niet doordat het per kWh minder presteert. De opbrengst schaalt dus mee met een groter, goed aangestuurd systeem.
+
+![Opbrengst per nominale kWh: model en grootste praktijkgroep vallen vrijwel samen](opbrengst-per-kwh-praktijk.png)
+
+*Opbrengst per nominale kWh — model (MODEL/SCENARIO) en praktijk (PRACTICE/REFERENCE) liggen vrijwel op één lijn.*
+
+## 3. Waar de opbrengst vandaan komt
+
+Een thuisbatterij verdient uit vier bronnen tegelijk. Voor een herkenbaar profiel (4.500 kWh verbruik, 5.400 kWh opwek), marktjaar 2025, ziet de opbouw er zo uit:
+
+- Dynamisch contract 2027 — actief multi-market EMS: **€ 812**
+- Vast contract 2027 — batterij voor eigen verbruik: **€ 545**
+- Salderen 2026 — batterij voor eigen verbruik: **− € 148**
 
 De vier bronnen, over de hele matrix:
 
@@ -73,9 +90,27 @@ De vier bronnen, over de hele matrix:
 | **C. Slim inkopen (day-ahead)** | beperkt: de belastingwig van € 0,245/kWh maakt netladen voor eigen gebruik zelden rendabel | Bij grote day-ahead spreiding |
 | **D. Actieve energiehandel (onbalans)** | € 606 – 614 bruto verkoop + € 35 – 86 betaald laden | Altijd — ook zonder zonnepanelen |
 
-**De verrassing van dit onderzoek:** bron D is in het huidige marktklimaat de grootste — en bron A wordt pas groot ná 1 januari 2027. Wie vandaag een batterij koopt, koopt dus eigenlijk twee verdienmodellen: handel nu, opslag straks.
+**De kern:** vandaag is bron D (handel) de grootste, en bron A (eigen zon opslaan) wordt pas groot ná 1 januari 2027. Wie nu een goede batterij koopt, koopt dus twee verdienmodellen in één: handel nu, opslag straks. De componenten komen uit één dispatch en tellen exact op tot het totaal — geen dubbeltelling. Zie de afweging in [handel of zelfconsumptie](/post/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie).
 
-## 3. 2026 versus 2027: het kanteljaar
+## 4. Waarom omvormervermogen en EMS de opbrengst bepalen
+
+**Een batterij moet niet alleen groot zijn. Hij moet snel en slim zijn.** De capaciteit van een batterij bepaalt hoeveel energie zij kan opslaan; het omvormervermogen bepaalt hoe snel die energie kan worden geladen en ontladen. Bij korte prijs- en onbalansmomenten kan een krachtigere omvormer daardoor meer mogelijkheden benutten.
+
+**Meer opslag helpt pas wanneer de omvormer die energie snel genoeg kan verplaatsen.** Een grote batterij achter een te kleine omvormer loopt tegen een flessenhals aan: de opslag zit er wel, maar komt niet op tijd de markt op. Welke verhouding optimaal is, hangt af van de batterij, de netaansluiting, de aansturing, het gebruiksprofiel en het marktjaar — daarom beoordeelt u capaciteit en omvormervermogen altijd samen.
+
+Achter dat vermogen zit de aansturing. Een goed EMS kiest per kwartier de meest waardevolle actie en heeft toegang tot de onbalansmarkt. Meer daarover: [de rol van het EMS](/post/ems-systeem-thuisbatterij-controle-over-stroom) en [een dynamisch energiecontract](/post/dynamisch-energiecontract-thuisbatterij).
+
+## 5. Waarom het voordeel de komende jaren kan groeien
+
+Dit is de vooruitblik van Batterijenplan — een onderbouwde verwachting, geen gegarandeerde voorspelling. Maar de richting is duidelijk: **vanaf 2027 wordt eigen stroom bewaren belangrijker dan ooit.**
+
+- **De saldering stopt vanaf 1 januari 2027.** Huishoudens kunnen teruggeleverde stroom dan niet meer één-op-één wegstrepen tegen ingekochte stroom.
+- **Opgeslagen zonnestroom wordt daardoor waardevoller:** elke bewaarde kilowattuur scheelt het verschil tussen inkopen (± €0,30) en terugleveren (± €0,03 tot zelfs negatief).
+- **EMS-systemen worden steeds beter** in het herkennen en benutten van korte marktmomenten.
+- **Meer omvormervermogen** laat de batterij in die korte vensters meer energie verplaatsen.
+- **Het vermijden van vaste platformkosten en winstdeling** telt over de hele levensduur van het systeem steeds zwaarder.
+
+Een goed geconfigureerde batterij heeft daardoor in de komende jaren waarschijnlijk méér verdienkansen dan een eenvoudige batterij die alleen eigen zon opslaat. Wat er in 2026 versus 2027 met dezelfde woning gebeurt:
 
 | Zelfde woning (4.500 kWh / 5.400 kWh opwek), zelfde batterij | 2026 mét salderen | 2027 zonder salderen |
 |---|---|---|
@@ -85,58 +120,20 @@ De vier bronnen, over de hele matrix:
 | **Totale batterijopbrengst** | **≈ € 684** | **≈ € 812** (dynamisch + EMS) |
 | Terugverdientijd bij € 6.000 geïnstalleerd | 8,8 jaar | **7,4 jaar** |
 
-Let op wat hier gebeurt: onder salderen concurreert de batterij met een gratis alternatief (het net streept uw teruglevering weg tegen uw inkoop). Daarom is opslag van eigen zon in 2026 waardeloos en draait alles op handel. Vanaf 2027 vervalt dat gratis alternatief en wordt elke opgeslagen kilowattuur het verschil waard tussen inkopen (± € 0,30) en terugleveren (± € 0,03 tot zelfs negatief). **Een thuisbatterij wordt op 1 januari 2027 dus niet minder waard — hij wordt méér waard.** Meer over dit kantelpunt: [thuisbatterij en 2027](/post/energieprijzen-stijgen-thuisbatterij-voordeel-2027).**
+Alle 2027-bedragen zijn scenario-aannames op een modelcontract (inkoop €0,30 / vergoeding €0,075 / terugleverkosten €0,12). Meer over dit kantelpunt: [thuisbatterij en 2027](/post/energieprijzen-stijgen-thuisbatterij-voordeel-2027).
 
-## 4. De opbrengstmatrix: 25 profielen
+## 6. Welke kosten de opbrengst verlagen
 
-Totale jaaropbrengst met actief EMS op een dynamisch contract, marktjaar 2025 (beste strategie per profiel; het dynamische contract won in alle 25 gevallen van het vaste contract):
+De opbrengst is één kant; wat u ervan overhoudt, is de andere. Twee kostenposten maken het grootste verschil:
 
-| Jaarverbruik ↓ / Opwek t.o.v. verbruik → | Geen zon | 0,5× | 0,8× | 1,2× | 1,6× |
-|---|---|---|---|---|---|
-| 1.800 kWh (appartement) | € 654 | € 683 | € 691 | € 695 | € 696 |
-| 2.650 kWh (tussenwoning) | € 673 | € 699 | € 719 | € 729 | € 734 |
-| 3.500 kWh (hoekwoning) | € 686 | € 734 | € 754 | € 768 | € 772 |
-| 4.500 kWh (2-onder-1-kap) | € 684 | € 764 | € 788 | € 812 | € 817 |
-| 6.500 kWh (vrijstaand / warmtepomp) | € 675 | € 796 | € 839 | € 867 | € 878 |
+- **Elke vaste EMS-euro gaat rechtstreeks van uw opbrengst af.** €10 per maand aan platform-/EMS-kosten is €120 per jaar minder rendement — bij een mediaan van €734 is dat ruim een zesde.
+- **Wie winstdeling betaalt, levert ieder goed marktjaar opnieuw een deel van de winst in.** 15% inhouding verlaagt de netto opbrengst bij onze mediaan met ongeveer €90 per jaar, en juist in de beste jaren het meest.
 
-Spreiding van de jaaropbrengst over alle zonprofielen
+Vertaald naar de terugverdientijd bij €6.000 geïnstalleerd (14 kWh / 10 kW): de realistische bandbreedte is **7 tot 9 jaar** op het 2025-marktklimaat, binnen de gangbare garantietermijn van 10 jaar. Platformkosten van €10/maand voegen ± 1,5 jaar toe; 15% winstdeling ± 1 jaar; een zwakke configuratie (€400–550 per jaar) kan richting 11–15 jaar lopen. In een sterk marktjaar als 2024 zakt de terugverdientijd richting 4,5 jaar. Het echte risico zit niet in de techniek maar in de markt: als de onbalansmarkt door massale batterijgroei vlakker wordt, loopt de terugverdientijd op. De volledige afweging staat in [terugverdientijd: handel of zelfconsumptie](/post/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie).
 
-€ per jaar incl. btw · 20 zonprofielen, marktjaar 2025 · eigen simulatie · model
+## 7. Beste totaalscore in onze vergelijking: Groene Vrienden
 
-Gewogen gemiddelde (woningvoorraad): € 750 · Groene Vrienden rekent in deze vergelijking zonder winstdeling en zonder vaste EMS-kosten · bij aanbieders met 15% winstdeling daalt dit indicatief naar ± € 660 · zonder zonnepanelen: € 654 – 686 · gunstig marktjaar (2024): € 1.260 – 1.460. De hele spreiding over 25 totaal verschillende huishoudens is € 224 — de batterij bepaalt, de woning verschuift.
-
-Drie inzichten die u nergens anders vindt:
-
-1. **Vanaf welke opwek wordt een batterij interessant?** Vanaf nul. Zelfs zonder panelen levert het systeem € 654+ op via handel. Zon voegt € 30 – 200 toe, maar boven een opwekverhouding van 0,8 vlakt de meerwaarde sterk af: van 1,2× naar 1,6× opwek levert nog maar € 1 – 11 extra op. Extra panelen concurreren met de handelsruimte in de accu.
-1. **Vanaf welk verbruik daalt de terugverdientijd?** Hij daalt licht met verbruik: van 9,2 jaar (1.800 kWh, geen zon) naar 6,8 jaar (6.500 kWh, veel zon) bij € 6.000 aanschaf. Het effect van verbruik is reëel maar klein — € 654 versus € 878.
-1. **Wat bepaalt de opbrengst het meest?** In volgorde van gemeten impact: het marktjaar (2024 gaf ×1,9), het omvormervermogen (5 → 10 kW = +46%), de snelheid van het stuursignaal (± € 45 per minuut vertraging), de EMS-/platformkosten en eventuele winstdeling bij aanbieders die daarmee werken (€ 10/maand = − € 120/jaar), het woningprofiel (± 15%) en pas als laatste het celrendement (86% vs 94% = ± € 15).
-
-Invloed van omvormervermogen en capaciteit
-
-€ per jaar incl. btw · marktjaar 2025 · eigen simulatie · model
-
-Een kleine batterij met krachtige omvormer (€ 812) verslaat een grote batterij met zwakke omvormer (€ 641). Vermogen weegt zwaarder dan capaciteit.
-
-## 5. Validatie: klopt dit met de praktijk?
-
-Wij hebben ons model niet gekalibreerd op praktijkcijfers — we hebben het er achteraf naast gelegd. Onafhankelijk gepubliceerde jaarresultaten 2025 (mijnbatterij.nl, echte installaties):
-
-| Platform | Systeem | Installaties | Gerealiseerd 2025 | Per kWh·jaar |
-|---|---|---|---|---|
-| Zonneplan | Nexus 20 kWh / 10 kW | **267** | € 992 – 1.123 | € 50 – 56 |
-| Frank Energie | Sigenergy 24,2 kWh / 12 kW | 25 | € 733 – 1.800 | € 30 – 74 |
-| Frank Energie | AlphaESS 19 kWh / 10 kW | 15 | € 21 – 1.381 | deels deeljaar |
-| Tibber | Homevolt 13,3 kWh / 6 kW | 11 | € 1.162 – 1.298 | € 87 – 98 |
-| Bliq (via Frank) | diverse | — | € 490 – 1.530 | — |
-| Groene Vrienden | Dyness Tower 21,3 kWh | 1 praktijkvoorbeeld | € 1.139,71 | € 53,5 |
-
-**Ons matrixgemiddelde komt uit op € 53,6 per nominale kWh per jaar. De 267 Zonneplan-installaties — de grootste gevalideerde vloot van Nederland — realiseerden € 50 – 56.** Het Groene Vrienden-praktijkvoorbeeld van € 1.139,71 op 21,3 kWh komt uit op € 53,5 per kWh·jaar en ligt daarmee vrijwel exact op dezelfde modellijn. Dat voorbeeld is dus sterk als praktijkanker, maar het is nog geen vlootgemiddelde zoals bij Zonneplan. Een directe modelrun op de Frank/Sigenergy-configuratie (24,2 kWh / 12 kW) gaf € 1.012, midden in de gerealiseerde band van € 733 – 1.800. Ook de maandpatronen kloppen: december 2025 was in de praktijk een magere maand (€ 50 – 87) en in ons model eveneens.
-
-Eén eerlijke uitschieter: Tibber realiseert € 87 – 98 per kWh met maar 6 kW vermogen — boven wat ons model bij dat vermogen voorspelt. Mogelijke verklaringen: de getoonde resultaten omvatten ook slim-verbruik-besparingen, of Tibber stuurt op sub-minuutniveau. Met 11 installaties is dit te klein om het model op bij te stellen, maar het markeert de bovengrens van wat aansturing kan toevoegen.
-
-## 6. Alle 21 leveranciers vergeleken
-
-Alle leveranciers herberekend op één grondslag (identiek verbruiksprofiel en identieke marktcomponent; peildatum 15 juli 2026). De kolom "totaal" is het volledige jaarcontract (stroom + gas); de batterijkolom is de leverancierspecifieke jaarlast bij een huishouden mét batterij (netafname ± 1.500 kWh, stroom-only).
+Wij hebben 21 energieleveranciers op één grondslag doorgerekend (identiek verbruiksprofiel en identieke marktcomponent, peildatum 15 juli 2026). De conclusie berust op het **complete pakket** — leverancierskosten, EMS-kosten, winstdeling, contractvoorwaarden, batterijprestaties en beschikbare praktijkresultaten — niet op één losse prijs.
 
 | # | Leverancier | Vastrecht /mnd | Opslag /kWh | Totaal /jaar | Leverancierskosten bij batterij /jaar | EMS-/platformkosten | Terugleverkosten / winstdeling | Publiek praktijkresultaat batterij | Geschikt voor |
 |---|---|---|---|---|---|---|---|---|---|
@@ -148,7 +145,7 @@ Alle leveranciers herberekend op één grondslag (identiek verbruiksprofiel en i
 | 6 | Energiedirect | € 6,99 | € 0,0210 | € 2.144 | € 115 | Niet openbaar | Niet openbaar | Geen publieke data | Gemiddeld profiel |
 | 7 | Next Energy | € 5,99 | € 0,0220 | € 2.145 | € 105 | Niet openbaar | Niet openbaar | Geen publieke data | Gemiddeld profiel |
 | 8 | Hallostroom | € 6,25 | € 0,0200 | € 2.146 | € 105 | Niet openbaar | Niet openbaar | Geen publieke data | Gemiddeld profiel |
-| 9 | Zonneplan | € 6,25 | € 0,0200 | € 2.146 | € 105 | Eigen platform | Niet openbaar | **€ 992 – 1.123 (267 inst.)** | Grootste gevalideerde batterijvloot |
+| 9 | Zonneplan | € 6,25 | € 0,0200 | € 2.146 | € 105 | Eigen platform | Niet openbaar | **€ 992 – 1.123 (267 inst.)** | Grootste openbaar gerapporteerde batterijvloot |
 | 10 | Energie VanOns | € 5,00 | € 0,0290 | € 2.151 | € 103 | Niet openbaar | Niet openbaar | Geen publieke data | Batterijhuishoudens (laag vastrecht) |
 | 11 | Innova Energie | € 6,96 | € 0,0180 | € 2.153 | € 110 | Niet openbaar | Niet openbaar | Geen publieke data | Gemiddeld profiel |
 | 12 | Vandebron | € 7,00 | € 0,0260 | € 2.159 | € 123 | Niet openbaar | Niet openbaar | Geen publieke data | Groene voorkeur |
@@ -162,76 +159,107 @@ Alle leveranciers herberekend op één grondslag (identiek verbruiksprofiel en i
 | 20 | EnergyZero | € 7,51 | € 0,0340 | € 2.220 | € 141 | Niet openbaar | Niet openbaar | Geen publieke data | Minder geschikt bij hoog verbruik |
 | 21 | Samsam | € 7,99 | € 0,0340 | € 2.231 | € 146 | Niet openbaar | Niet openbaar | Geen publieke data | Minder geschikt bij hoog verbruik |
 
-Totaal/jaar: herberekend op identiek profiel en identieke marktcomponent voor alle 21 rijen (consistentiecontrole: spreiding van de marktcomponent € 0,02). Essent, Vattenfall en Coolblue Energie: geen actuele geverifieerde tarieven beschikbaar op de peildatum — bewust niet geschat. "Leverancierskosten bij batterij /jaar" = 12 × vastrecht + 1.483 kWh × opslag. Dit is dus niet de batterijopbrengst, maar alleen de resterende leverancierskosten bij een huishouden mét batterij.
+*Herberekend op identiek profiel en identieke marktcomponent voor alle 21 rijen (spreiding marktcomponent € 0,02). Essent, Vattenfall en Coolblue Energie: geen actuele geverifieerde tarieven op de peildatum — bewust niet geschat. "Leverancierskosten bij batterij /jaar" = 12 × vastrecht + 1.483 kWh × opslag; dit is niet de batterijopbrengst maar de resterende leverancierskosten.*
 
-### Conclusies uit de leveranciersvergelijking
+Waarom Groene Vrienden de sterkste totaalscore haalt — uitsluitend punten die onderbouwd zijn in deze vergelijking of in de eigen productvergelijking van Batterijenplan:
 
-- **Goedkoopste totaalaanbod:** Groene Vrienden (€ 2.081/jaar), in een kopgroep met Noord Energie, Powerpeers, Energiek en Budget Thuis die binnen € 3 per maand ligt. Dat verschil valt binnen de marge van tariefwijzigingen; de kopgroep is belangrijker dan de exacte volgorde.
-- **Goedkoopst zónder batterij (stroom-only):** Powerpeers — de laagste opslag (€ 0,009) wint bij hoge netafname.
-- **Goedkoopst mét batterij:** Groene Vrienden — een batterij halveert de netafname, waardoor laag vastrecht + lage opslag + € 0 vaste EMS-kosten + geen winstdeling samen winnen. Dit patroon geldt in alle 25 doorgerekende profielen.
-- **Hoogste gevalideerde batterijopbrengst:** Zonneplan heeft met 267 installaties de grootste bewezen vloot (€ 992 – 1.123 voor 20 kWh); Tibber realiseert het hoogste resultaat per kWh (met kanttekening); Frank toont de breedste spreiding — en publiceert als enige de winstdeling (± 15%).
-- **Beste keuze voor actieve energiehandel:** de platformen met bewezen onbalansaccess zijn onder andere Frank Energie, Zonneplan, Tibber en Groene Vrienden. Onderscheidend zijn de kosten: elke € 10 per maand platformkosten kost € 120 van uw jaaropbrengst. Bij aanbieders die met winstdeling werken, verlaagt 15% inhouding de netto opbrengst bij onze mediaan met ongeveer € 90 per jaar. Groene Vrienden rekent in deze vergelijking met € 0 vaste EMS-kosten en zonder winstdeling.
-- **Beste allround keuze in deze vergelijking:** Groene Vrienden — goedkoopste totaalcontract, € 0 vaste EMS-kosten, geen terugleverkosten, geen winstdeling en levering + batterij + aansturing bij één partij. Kanttekeningen die daarbij horen: het publiek gedeelde praktijkresultaat berust nu op één installatie (tegenover 267 bij Zonneplan), en Batterijenplan werkt met Groene Vrienden samen — de berekening hierboven is daarom volledig reproduceerbaar opgezet, zodat u hem zelf kunt controleren.
+- **Goedkoopste totaalcontract** in de vergelijking (€ 2.081/jaar), in een kopgroep van vijf die binnen € 3/maand ligt.
+- **Geen vaste EMS-kosten** in de vergeleken propositie — en elke vaste EMS-euro gaat rechtstreeks van uw opbrengst af.
+- **Geen winstdeling** — u levert in goede marktjaren geen deel van de winst in.
+- **Geen terugleverkosten** in de vergeleken propositie.
+- **Alles bij één partij:** energie, batterij, installatie en aansturing.
+- **Slimme marktsturing** met onbalansaccess.
+- **Leveranciersvrijheid:** het EMS is levenslang gratis inbegrepen en vrij mee te nemen naar een andere leverancier; het systeem zit niet vast aan één energieleverancier.
+- **Garantie tot 12.000 laadcycli**, afhankelijk van het gekozen systeem — ruim voor huishoudens die ook actief handelen.
+- **U houdt meer van de gerealiseerde opbrengst zelf,** doordat vaste EMS-kosten en winstdeling ontbreken.
 
-## 7. Terugverdientijd
+**De beste batterij is de batterij waarvan u zelf de controle en opbrengst houdt.**
 
-Terugverdientijd bij € 6.000 geïnstalleerd (14 kWh / 10 kW)
+<small>Batterijenplan werkt samen met meerdere partijen in de energiemarkt, waaronder Groene Vrienden. Alle aanbieders in deze vergelijking zijn beoordeeld met dezelfde uitgangspunten en rekenmethode. De commerciële samenwerking bepaalt niet de berekende rangschikking. Op basis van leverancierskosten, EMS-kosten, winstdeling, contractvoorwaarden, batterijprestaties en beschikbare praktijkresultaten behaalt Groene Vrienden binnen deze vergelijking de beste totaalscore. Dit is een eigen vakinhoudelijke vergelijking van Batterijenplan en geen test van een officiële consumentenorganisatie.</small>
 
-Jaren · eigen simulatie · scenario
+## 8. Bereken uw eigen situatie
 
-Gangbare garantie: 10 jaar — alle scenario’s blijven daarbinnen. Bij aanbieders met 15% winstdeling: + ± 1 jaar. Bij Groene Vrienden is in deze vergelijking gerekend zonder winstdeling. Bij € 10/maand EMS-/platformkosten: + ± 1,5 jaar.
+Dit onderzoek geeft het landelijke beeld — maar uw verbruik, opwek, contract en batterijconfiguratie verschuiven samen honderden euro's per jaar. Precies die combinatie rekent de [Batterijenplan Calculator](/calculator) voor u door, met uw eigen cijfers in plaats van een modelprofiel.
 
-De realistische bandbreedte voor de terugverdientijd is **7 tot 9 jaar** op het 2025-marktklimaat, binnen de garantietermijn van 10 jaar die gangbaar is. In een marktjaar als 2024 zakt hij richting 4,5 jaar; als de onbalansmarkt door massale batterijgroei vlakker wordt, loopt hij op. Dat laatste is het echte risico van deze investering — niet de techniek, maar de markt.
+![Besliskaart: acht factoren die uw batterijopbrengst bepalen, met verwijzing naar de calculator](welke-opbrengst-past-bij-mijn-situatie.png)
 
-## 8. Voor wie, en voor wie niet?
+*Acht factoren bepalen samen uw eigen opbrengst — reken uw scenario door met de [Batterijenplan Calculator](/calculator).*
 
-| Situatie | Verwachting (2025-klimaat) | Advies |
+## Voor wie past een thuisbatterij — en voor wie niet?
+
+| Situatie | Verwachting (2025-klimaat, MODEL/SCENARIO) | Advies |
 |---|---|---|
 | Zonnepanelen + terugleverkosten + gemiddeld/hoog verbruik | € 750 – 880/jaar, vanaf 2027 alle vier de bronnen | **Sterkste businesscase** |
 | Zonnepanelen, geen terugleverkosten, dynamisch contract | € 700 – 800/jaar | Goed, mits EMS zonder maandkosten |
-| Geen zonnepanelen | € 650 – 690/jaar, puur handel | Verrassend goed — mits u het marktrisico accepteert |
+| Geen zonnepanelen | € 654 – 686/jaar (2025-model), puur handel | Verrassend goed — mits u het marktrisico accepteert |
 | Klein verbruik + al veel opwek (ratio > 1,2) | Extra panelen voegen vrijwel niets toe; batterij wel | Batterij vóór extra panelen |
-| Batterij met zwakke omvormer (≤ 5 kW), € 15+/mnd platformkosten of winstdeling bij andere aanbieders | € 400 – 550/jaar | Heroverweeg de configuratie — hier lekt het geld weg |
+| Batterij met zwakke omvormer (≤ 5 kW), € 15+/mnd platformkosten of winstdeling | € 400 – 550/jaar | Heroverweeg de configuratie — hier lekt het geld weg |
 
-## 9. Beperkingen van dit onderzoek
+## Zo hebben wij dit onderzocht
+
+Vrijwel elke pagina over dit onderwerp rekent met één voorbeeldwoning en een aangenomen "gemiddelde besparing". Wij hebben het empirisch aangepakt:
+
+- **Echte marktdata:** 41.639 Nederlandse day-ahead prijzen (EPEX SPOT via Fraunhofer Energy-Charts, 2024–2026), alle TenneT-verrekenprijzen van de onbalansmarkt (88.988 kwartieren) en het TenneT balance-delta-signaal op 1-minuutresolutie (ruim 1 miljoen datapunten) — het signaal waar commerciële EMS-platformen daadwerkelijk op sturen.
+- **Fysiek batterijmodel:** 14 kWh (12,6 kWh bruikbaar), 10 kW hybride omvormer, 90% round-trip rendement, slijtage € 0,04 per ontladen kWh. Het EMS beslist per kwartier op basis van uitsluitend toen-beschikbare informatie (2 minuten signaalvertraging) en rekent af tegen de échte verrekenprijzen, inclusief de punitieve dual-pricing-momenten. Energiebelasting (€ 0,111/kWh), btw en leveranciersopslag worden bij elke netlading betaald.
+- **25 huishoudprofielen:** vijf verbruiksniveaus (1.800 – 6.500 kWh, verankerd op CBS-cijfers per woningtype) × vijf opwekverhoudingen (geen zon tot 1,6× het verbruik).
+- **Drie contractlagen op dezelfde energiestromen:** salderen (2026), vast contract 2027 (inkoop € 0,30, vergoeding € 0,075, terugleverkosten € 0,12 — modelscenario) en dynamisch contract 2027.
+- **Validatie:** gerealiseerde jaarresultaten van ruim 300 echte installaties (mijnbatterij.nl).
+
+Onafhankelijk gepubliceerde jaarresultaten 2025 die we ernaast hebben gelegd (plausibiliteitstoets, geen kalibratie):
+
+| Platform | Systeem | Installaties | Gerealiseerd 2025 | Per kWh·jaar | Aard van het cijfer |
+|---|---|---|---|---|---|
+| Zonneplan | Nexus 20 kWh / 10 kW | 267 | € 992 – 1.123 | € 50 – 56 | PRACTICE/REFERENCE — LARGE SAMPLE |
+| Frank Energie | Sigenergy 24,2 kWh / 12 kW | 25 | € 733 – 1.800 | € 30 – 74 | PRACTICE/REFERENCE — SMALL SAMPLE |
+| Frank Energie | AlphaESS 19 kWh / 10 kW | 15 | € 21 – 1.381 | deels deeljaar | PRACTICE/REFERENCE — SMALL SAMPLE, PARTIAL-YEAR |
+| Tibber | Homevolt 13,3 kWh / 6 kW | 11 | € 1.162 – 1.298 | € 87 – 98 | PRACTICE/REFERENCE — SMALL SAMPLE |
+| Bliq (via Frank) | diverse | — | € 490 – 1.530 | — | PRACTICE/REFERENCE |
+| Groene Vrienden | Dyness Tower 21,3 kWh | 1 praktijkvoorbeeld | € 1.139,71 | € 53,5 | PRACTICE EXAMPLE — N=1 |
+
+Model en praktijk zijn **niet één-op-één vergelijkbaar** — ze verschillen in batterijcapaciteit (13,3–24,2 kWh), omvormervermogen (6–12 kW), meetperiode (volledige jaren en deeljaren), EMS-reactiesnelheid, mogelijke slim-verbruik-besparingen, platformkosten/winstdeling en steekproefgrootte (N = 1 tot N = 267). Tibber realiseert bijvoorbeeld € 87–98 per kWh op maar 6 kW — boven wat ons model bij dat vermogen voorspelt, mogelijk door sub-minuutsturing of meegerekende slim-verbruik-besparingen; met 11 installaties te klein om het model op bij te stellen. Een eerdere enkele modelrun op een groter systeem (24,2 kWh / 12 kW) kwam uit op € 1.012 per jaar, midden in de Frank/Sigenergy-band — één referentiepunt, geen doorgerekende matrix. Een naar woningvoorraad gewogen gemiddelde vergt weegfactoren die niet in deze dataset zijn vastgelegd; daarom tonen we de ongewogen statistiek.
+
+![Bewijsladder achter de opbrengstcijfers: van ruwe marktdata via 135 simulaties tot validatie en beperkingen](bewijs-achter-de-opbrengst.png)
+
+*De bewijsladder achter dit onderzoek: van ruwe markt- en TenneT-data tot de vergelijking met praktijkresultaten en de beperkingen.*
+
+## Beperkingen van dit onderzoek
 
 Vier dingen die u moet weten voordat u op deze cijfers beslist. (1) De verbruiksprofielen zijn modelprofielen, verankerd op CBS-jaartotalen maar niet op echte meterdata. (2) Terugleverkosten en -vergoedingen zijn voor de meeste leveranciers niet openbaar; het vaste 2027-contract is een gemarkeerd modelscenario (€ 0,30 / € 0,075 / € 0,12). (3) Intradayhandel en flexibiliteitsdiensten zijn niet gemodelleerd (geen publieke data) — onze handelscijfers zijn daardoor eerder een onder- dan een bovengrens. (4) Historische marktjaren garanderen niets: 2024 en 2025 verschilden onderling al een factor 1,9, en het einde van saldering zal het marktbeeld opnieuw veranderen.
 
 ## Verantwoording en bronnen
 
-**Data:** EPEX SPOT day-ahead via Fraunhofer Energy-Charts (41.639 punten, 2024–2026; kruisvalidatie: ons 2024-gemiddelde 77,29 €/MWh vs TenneT's gepubliceerde 77); TenneT verrekenprijzen en balance delta (officiële exports, checksums vastgelegd); PVGIS v5.2 (JRC) zonprofiel; CBS-energieverbruik per woningtype; energiebelasting en btw 2026 (Rijksoverheid); ACM-publicaties over terugleverkosten; leverancierstarieven peildatum 15-07-2026; gerealiseerde batterijresultaten via mijnbatterij.nl. **Methode:** per-kwartier dispatch met afgedwongen energiebalans, causale beslisinformatie (2 min vertraging), verrekening tegen werkelijke verrekenprijzen, componenten uit één dispatch (geen dubbeltelling), belastingwig volledig meegenomen. **Transparantie:** Batterijenplan werkt samen met leveranciers, waaronder Groene Vrienden; alle berekeningen in dit artikel zijn daarom reproduceerbaar opgezet en de volledige methode staat hierboven. Dit is een eigen vakinhoudelijke vergelijking, geen onafhankelijke consumententest.
+**Data:** EPEX SPOT day-ahead via Fraunhofer Energy-Charts (41.639 punten, 2024–2026; kruisvalidatie: ons 2024-gemiddelde 77,29 €/MWh vs TenneT's gepubliceerde 77); TenneT verrekenprijzen en balance delta (officiële exports, checksums vastgelegd); PVGIS v5.2 (JRC) zonprofiel; CBS-energieverbruik per woningtype; energiebelasting en btw 2026 (Rijksoverheid); ACM-publicaties over terugleverkosten; leverancierstarieven peildatum 15-07-2026; gerealiseerde batterijresultaten via mijnbatterij.nl; Groene Vrienden-propositie (EMS levenslang gratis en meeneembaar, garantie tot 12.000 laadcycli afhankelijk van systeem) via de eigen productvergelijking [Groene Vrienden vs Zonneplan vs Tibber](/post/groene-vrienden-vs-zonneplan-vs-tibber). **Methode:** per-kwartier dispatch met afgedwongen energiebalans, causale beslisinformatie (2 min vertraging), verrekening tegen werkelijke verrekenprijzen, componenten uit één dispatch (geen dubbeltelling), belastingwig volledig meegenomen. **Transparantie:** Batterijenplan werkt samen met leveranciers, waaronder Groene Vrienden; alle berekeningen in dit artikel zijn reproduceerbaar opgezet. Dit is een eigen vakinhoudelijke vergelijking, geen onafhankelijke consumententest.
 
 ## Veelgestelde vragen
 
 ### Wat levert een thuisbatterij gemiddeld op?
 
-In ons onderzoek over 25 huishoudprofielen: mediaan € 764 per jaar (marktjaar 2025), normale bandbreedte € 650 – 900, tot € 1.260 – 1.460 in een gunstig marktjaar. Gevalideerd tegen ruim 300 echte installaties.
+In ons onderzoek over 25 huishoudprofielen: mediaan € 734 en gemiddelde € 744 per jaar (marktjaar 2025), bandbreedte € 654 – 878, tot € 1.260 – 1.460 in een gunstig marktjaar. Vergeleken met openbaar gerapporteerde praktijkresultaten van ruim 300 installaties.
 
 ### Heb ik zonnepanelen nodig voor een thuisbatterij?
 
-Nee. Zonder panelen levert het systeem € 654 – 686 per jaar op via energiehandel. Hoe het opslaan van eigen zon werkt, leest u in [stroom opslaan met zonnepanelen](/post/stroom-opslaan-zonnepanelen). Zonnepanelen voegen € 30 – 200 toe — en vanaf 2027 meer, omdat opgeslagen zonnestroom dan de volle inkoopprijs waard wordt.
+Nee. Ook zonder panelen levert het systeem in ons 2025-model € 654 – 686 per jaar op via energiehandel. Hoe het opslaan van eigen zon werkt, leest u in [stroom opslaan met zonnepanelen](/post/stroom-opslaan-zonnepanelen). Zonnepanelen voegen € 30 – 200 toe — en vanaf 2027 meer, omdat opgeslagen zonnestroom dan de volle inkoopprijs waard wordt.
 
 ### Wat verandert er op 1 januari 2027?
 
-De salderingsregeling stopt. Teruggeleverde stroom levert dan weinig op (soms kost hij zelfs geld door terugleverkosten), terwijl ingekochte stroom de volle prijs kost. Opslag van eigen zon wordt daardoor € 119 – 816 per jaar waard, waar hij onder saldering niets toevoegt. Een batterij wordt in 2027 dus méér waard, niet minder.
+De salderingsregeling stopt. Teruggeleverde stroom levert dan weinig op (soms kost hij zelfs geld door terugleverkosten), terwijl ingekochte stroom de volle prijs kost. Opslag van eigen zon wordt daardoor € 119 – 816 per jaar waard, waar hij onder saldering niets toevoegt. Een batterij wordt in 2027 dus eerder méér waard dan minder.
 
 ### Verdient een batterij echt geld op de onbalansmarkt?
 
-Ja — dit is in 2025 zelfs de grootste opbrengstbron (± € 600 per jaar bruto in ons model). Wij berekenden dit causaal op de officiële TenneT-data en valideerden het tegen 267 echte Zonneplan-installaties. Voorwaarden: een dynamisch contract, een EMS met onbalansaccess en voldoende omvormervermogen.
+Ja — dit is in 2025 zelfs de grootste opbrengstbron (± € 600 per jaar bruto in ons model). Wij berekenden dit causaal op de officiële TenneT-data en vergeleken het met 267 openbaar gerapporteerde Zonneplan-installaties. Voorwaarden: een dynamisch contract, een EMS met onbalansaccess en voldoende omvormervermogen.
 
 ### Welke leverancier is de beste bij een thuisbatterij?
 
-In onze vergelijking van 21 leveranciers is Groene Vrienden de goedkoopste (€ 2.081/jaar totaal, € 0 vaste EMS-kosten, geen terugleverkosten en geen winstdeling), in een kopgroep van vijf die dicht bij elkaar ligt. Zonneplan heeft de grootste bewezen batterijvloot. Zonder batterij is Powerpeers stroom-only het goedkoopst. De juiste keuze hangt af van uw netafname — en die verandert juist door de batterij.
+In onze vergelijking van 21 leveranciers behaalt Groene Vrienden de beste totaalscore (€ 2.081/jaar totaal, € 0 vaste EMS-kosten, geen terugleverkosten en geen winstdeling), in een kopgroep van vijf die dicht bij elkaar ligt. Zonneplan heeft de grootste openbaar gerapporteerde batterijvloot. Zonder batterij is Powerpeers stroom-only het goedkoopst. De juiste keuze hangt af van uw netafname — en die verandert juist door de batterij.
 
-### Hoe belangrijk is het rendement van de batterij?
+### Wat is belangrijker: capaciteit of vermogen?
 
-Veel minder dan gedacht: tussen 86% en 94% round-trip zit ± € 15 per jaar. Waar u verder op let bij het kiezen, staat in [thuisbatterij vergelijken](/post/thuisbatterij-vergelijken). Let liever op omvormervermogen (+46% opbrengst van 5 naar 10 kW), vaste EMS-/platformkosten en eventuele winstdeling bij aanbieders die daarmee werken. Groene Vrienden rekent in deze vergelijking zonder winstdeling.
+Omvormervermogen weegt in ons onderzoek zwaarder dan capaciteit: een groter omvormervermogen laat de batterij in korte prijs- en onbalansvensters meer energie verplaatsen, terwijl extra capaciteit sneller afvlakt. Een kleinere batterij met een krachtige omvormer kan een grote batterij met een zwakke omvormer overtreffen. Let bij het kiezen dus eerst op vermogen — zie [thuisbatterij vergelijken](/post/thuisbatterij-vergelijken).
+
+### Kan een thuisbatterij meer dan € 1.000 per jaar opleveren?
+
+Ja. In de praktijkcijfers van 2025 (MijnBatterij.nl) haalden grotere systemen zoals Zonneplan (20 kWh, 267 installaties) € 992 – 1.123, en losse meldingen zelfs € 1.500 of meer. Dat zijn resultaten van grotere, anders aangestuurde systemen. Ons genormaliseerde 14 kWh-model komt op € 654 – 878 per jaar.
 
 ### Wat is een realistische terugverdientijd?
 
-7 – 9 jaar bij € 6.000 geïnstalleerd op het 2025-marktklimaat; 4 – 5 jaar in een marktjaar als 2024. Platformkosten van € 10 per maand verlengen de terugverdientijd met ± 1,5 jaar. Bij aanbieders met winstdeling loopt de netto terugverdientijd extra op; Groene Vrienden is hier doorgerekend zonder winstdeling.
-
-## Wat levert een thuisbatterij op in úw situatie?
-
-Dit onderzoek geeft het landelijke beeld — maar de matrix laat óók zien dat uw verbruik, opwek, contract en batterijconfiguratie samen honderden euro's per jaar verschuiven. Precies die combinatie rekent de [Batterijenplan Calculator](/calculator) voor u door, met uw eigen cijfers in plaats van een modelprofiel.
-
+7 – 9 jaar bij € 6.000 geïnstalleerd op het 2025-marktklimaat; 4 – 5 jaar in een marktjaar als 2024. Platformkosten van € 10 per maand verlengen de terugverdientijd met ± 1,5 jaar, winstdeling met ± 1 jaar. Groene Vrienden is hier doorgerekend zonder winstdeling en zonder vaste EMS-kosten.

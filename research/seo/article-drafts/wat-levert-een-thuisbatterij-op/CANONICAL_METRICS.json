@@ -1,0 +1,200 @@
+{
+  "schema": "batterijenplan-canonical-metrics/1",
+  "generated_at": "2026-08-02T08:42:30.001727+00:00",
+  "article": "wat-levert-een-thuisbatterij-op",
+  "configuration": {
+    "battery_kwh": 14,
+    "inverter_kw": 10,
+    "ems": "actief",
+    "contract": "dynamisch",
+    "market_year": 2025,
+    "vat_included": true
+  },
+  "matrix": {
+    "row_labels": [
+      "appartement",
+      "tussenwoning",
+      "hoekwoning",
+      "2-onder-1-kap",
+      "vrijstaand / warmtepomp"
+    ],
+    "col_labels": [
+      "Geen zon",
+      "0,5x",
+      "0,8x",
+      "1,2x",
+      "1,6x"
+    ],
+    "row_meta": [
+      {
+        "annual_consumption_kwh": 1800,
+        "woningtype": "appartement"
+      },
+      {
+        "annual_consumption_kwh": 2650,
+        "woningtype": "tussenwoning"
+      },
+      {
+        "annual_consumption_kwh": 3500,
+        "woningtype": "hoekwoning"
+      },
+      {
+        "annual_consumption_kwh": 4500,
+        "woningtype": "2-onder-1-kap"
+      },
+      {
+        "annual_consumption_kwh": 6500,
+        "woningtype": "vrijstaand / warmtepomp"
+      }
+    ],
+    "col_meta": [
+      {
+        "label": "Geen zon",
+        "pv_ratio": 0.0
+      },
+      {
+        "label": "0,5x",
+        "pv_ratio": 0.5
+      },
+      {
+        "label": "0,8x",
+        "pv_ratio": 0.8
+      },
+      {
+        "label": "1,2x",
+        "pv_ratio": 1.2
+      },
+      {
+        "label": "1,6x",
+        "pv_ratio": 1.6
+      }
+    ],
+    "cells_eur_per_year": [
+      [
+        654,
+        683,
+        691,
+        695,
+        696
+      ],
+      [
+        673,
+        699,
+        719,
+        729,
+        734
+      ],
+      [
+        686,
+        734,
+        754,
+        768,
+        772
+      ],
+      [
+        684,
+        764,
+        788,
+        812,
+        817
+      ],
+      [
+        675,
+        796,
+        839,
+        867,
+        878
+      ]
+    ],
+    "unit": "EUR/jaar incl. btw"
+  },
+  "definitions": {
+    "mean": "arithmetic mean of all 25 cells (unweighted)",
+    "median": "middle value of the 25 sorted cells",
+    "p10_p90": "10th/90th percentile, linear interpolation over the 25 cells",
+    "per_nominal_kwh": "annual EUR divided by nominal battery capacity 14 kWh",
+    "excl_no_solar": "statistics over the 20 cells excluding the 'Geen zon' column"
+  },
+  "statistics_unweighted": {
+    "n": 25,
+    "min": 654,
+    "max": 878,
+    "range": 224,
+    "mean": 744.28,
+    "median": 734,
+    "p10": 678.2,
+    "p90": 830.2,
+    "per_nominal_kwh_mean": 53.16,
+    "per_nominal_kwh_range": [
+      46.71,
+      62.71
+    ],
+    "no_solar_column": {
+      "values": [
+        654,
+        673,
+        686,
+        684,
+        675
+      ],
+      "min": 654,
+      "max": 686
+    },
+    "excl_no_solar": {
+      "mean": 761.75,
+      "median": 759.0
+    },
+    "per_row_mean": {
+      "appartement": 683.8,
+      "tussenwoning": 710.8,
+      "hoekwoning": 742.8,
+      "2-onder-1-kap": 773,
+      "vrijstaand / warmtepomp": 811
+    },
+    "per_col_mean": {
+      "Geen zon": 674.4,
+      "0,5x": 735.2,
+      "0,8x": 758.2,
+      "1,2x": 774.2,
+      "1,6x": 779.4
+    }
+  },
+  "statistics_weighted": {
+    "status": "BLOCKED_WEIGHTS_UNDOCUMENTED",
+    "claimed_weighted_average_eur": 750,
+    "claimed_weighted_median_eur": 764,
+    "claimed_p10_p90_eur": [
+      695,
+      839
+    ],
+    "note": "The article's 750/764/695-839 figures imply a housing-stock x PV-ratio weighting whose weights are NOT in this repository. They cannot be reproduced here and must not be published as calculated statistics until the weights are recovered (pending Render export). Use statistics_unweighted meanwhile."
+  },
+  "recommended_publication_values": {
+    "median_eur": 734,
+    "mean_eur": 744,
+    "range_eur": [
+      654,
+      878
+    ],
+    "p10_p90_eur": [
+      678,
+      830
+    ],
+    "per_nominal_kwh_eur": 53,
+    "per_nominal_kwh_range_eur": [
+      47,
+      63
+    ],
+    "no_solar_range_eur": [
+      654,
+      686
+    ],
+    "note": "Reproducible from the 25 visible cells. Prefer exact range 654-878 over the rounded '650-900'."
+  },
+  "provenance": {
+    "source": "PROPOSED_ARTICLE.md section 4 visible 25-cell matrix",
+    "derivation": "own simulation on EPEX/TenneT data (archived); raw per-run data resides on Render and is pending read-only export",
+    "market_year_2024_reference": "EUR 1.260-1.460 (favourable historical market year; archived model output, source pending)"
+  },
+  "input_sha256": "da18ae339ff2354f1ed0c6dafbad4640c8491e1e2c9f1b0b86a461936986dfdd"
+}
