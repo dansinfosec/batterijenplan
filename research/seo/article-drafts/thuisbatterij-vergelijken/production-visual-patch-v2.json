@@ -1,0 +1,83 @@
+{
+  "schema": "batterijenplan-release-v2/1",
+  "mode": "visual_patch",
+  "slug": "thuisbatterij-vergelijken",
+  "generated": "2026-08-02",
+  "notes": "Guarded exact-anchor visuele patch: voegt 6 goedgekeurde afbeeldingen toe. Herschrijft geen tekst; wijzigt geen titel/excerpt/SEO/slug/status/published_at; behoudt beide tabellen. Anchors worden lokaal niet tegen productie geverifieerd — de Render dry-run controleert exact-éénmalig voorkomen.",
+  "precondition": {
+    "chars": 8969,
+    "sha256": "2b136a6eceac4e62a9a959a83d326df5ddce63769e4440ffc083517f439d9e2a",
+    "h2": 15,
+    "h3": 0,
+    "tables": 2,
+    "status": "published",
+    "published_at": "2026-07-06T00:03:50+00:00"
+  },
+  "preserve": {
+    "slug": "thuisbatterij-vergelijken",
+    "status": "published",
+    "published_at": "2026-07-06T00:03:50+00:00",
+    "cover_image_name": "media/batterijenplan/blog/thuisbatterij-vergelijken-v2_b4wfa1",
+    "cover_change": false,
+    "h2": 15,
+    "h3": 0,
+    "tables": 2
+  },
+  "invariants": {
+    "final_h2": 15,
+    "final_h3": 0,
+    "final_tables": 2,
+    "must_contain_urls": [
+      "https://www.batterijenplan.nl/article-visuals/thuisbatterij-vergelijken/welke-batterij-past-bij-mijn-situatie.png",
+      "https://www.batterijenplan.nl/article-visuals/thuisbatterij-vergelijken/capaciteit-versus-vermogen.png",
+      "https://www.batterijenplan.nl/article-visuals/thuisbatterij-vergelijken/wat-moet-u-vergelijken.png",
+      "https://www.batterijenplan.nl/article-visuals/thuisbatterij-vergelijken/batterijsysteem-overzicht.png",
+      "https://www.batterijenplan.nl/article-visuals/thuisbatterij-vergelijken/een-fase-versus-drie-fasen.png",
+      "https://www.batterijenplan.nl/article-visuals/thuisbatterij-vergelijken/offerte-vergelijkingschecklist.png"
+    ]
+  },
+  "anchors": [
+    {
+      "id": "welke-batterij-past-bij-mijn-situatie",
+      "anchor": "## Wanneer past een thuisbatterij wel of niet?",
+      "occurs": "exactly_once",
+      "insert_after_anchor_line": true,
+      "insertion": "\n\n![Beslishulp: welke thuisbatterij past bij mijn situatie, op basis van zon, contract, vermogen, EMS en aansluiting](https://www.batterijenplan.nl/article-visuals/thuisbatterij-vergelijken/welke-batterij-past-bij-mijn-situatie.png)\n\n*Beslishulp: van zon en contract tot vermogen, EMS en aansluiting.*\n"
+    },
+    {
+      "id": "capaciteit-versus-vermogen",
+      "anchor": "## Capaciteit versus vermogen",
+      "occurs": "exactly_once",
+      "insert_after_anchor_line": true,
+      "insertion": "\n\n![Capaciteit in kWh versus vermogen in kW bij een thuisbatterij](https://www.batterijenplan.nl/article-visuals/thuisbatterij-vergelijken/capaciteit-versus-vermogen.png)\n\n*kWh is hoeveel u opslaat, kW hoe snel u laadt of ontlaadt — beoordeel ze samen.*\n"
+    },
+    {
+      "id": "wat-moet-u-vergelijken",
+      "anchor": "## Vergelijkingschecklist",
+      "occurs": "exactly_once",
+      "insert_after_anchor_line": true,
+      "insertion": "\n\n![Tien vergelijkpunten voor een thuisbatterij](https://www.batterijenplan.nl/article-visuals/thuisbatterij-vergelijken/wat-moet-u-vergelijken.png)\n\n*Vergelijk systemen, niet alleen prijs of kWh.*\n"
+    },
+    {
+      "id": "batterijsysteem-overzicht",
+      "anchor": "## AC-gekoppeld versus DC-gekoppeld",
+      "occurs": "exactly_once",
+      "insert_after_anchor_line": true,
+      "insertion": "\n\n![Schema batterijsysteem: panelen, omvormer, batterij, EMS, meterkast en net](https://www.batterijenplan.nl/article-visuals/thuisbatterij-vergelijken/batterijsysteem-overzicht.png)\n\n*Elk onderdeel moet op elkaar passen; het EMS bepaalt de waarde.*\n"
+    },
+    {
+      "id": "een-fase-versus-drie-fasen",
+      "anchor": "## Omvormer- en meterkastcompatibiliteit",
+      "occurs": "exactly_once",
+      "insert_after_anchor_line": true,
+      "insertion": "\n\n![Eén fase versus drie fasen bij een thuisbatterij](https://www.batterijenplan.nl/article-visuals/thuisbatterij-vergelijken/een-fase-versus-drie-fasen.png)\n\n*Uw aansluiting bepaalt het haalbare vermogen; laat dit vooraf controleren.*\n"
+    },
+    {
+      "id": "offerte-vergelijkingschecklist",
+      "anchor": "## Offerte-vergelijkingschecklist",
+      "occurs": "exactly_once",
+      "insert_after_anchor_line": true,
+      "insertion": "\n\n![Checklist met vergelijkbare punten om per offerte uit te vragen](https://www.batterijenplan.nl/article-visuals/thuisbatterij-vergelijken/offerte-vergelijkingschecklist.png)\n\n*Vraag elke aanbieder dezelfde punten.*\n"
+    }
+  ]
+}
