@@ -1,320 +1,132 @@
 # Terugverdientijd thuisbatterij: handel of zelfconsumptie?
 
-> RECONCILED — preserves the full production body (all research, tables, methodology, sources) and adds contextual internal links + the calculator link. No valuable content removed.
+> **FUTURE DRAFT — NIET VOOR APPLY.** Volledige, schone herschrijving voor een menselijker toon. Dit is
+> geen productiemanifest en niet bestemd voor automatische publicatie. De exacte raw productie-body staat
+> in `CURRENT_RAW_PRODUCTION_BODY.md` en in de git-historie. Publiceer pas na review, via het
+> exact-anchor patch-proces of handmatig in het CMS.
 
-Een van de eerste vragen bij een thuisbatterij is logisch:
+**Kort antwoord:** de terugverdientijd van een thuisbatterij is geen vast getal. Hij hangt af van hoe u
+de batterij inzet. De echte keuze is: gebruikt u de batterij vooral om **uw eigen zonnestroom op te
+slaan** (zelfconsumptie), of ook om **slim te sturen op dynamische prijzen** (handel)? Die twee
+strategieën rekenen anders en passen bij verschillende situaties. Reken uw eigen geval door met de
+[calculator](/calculator) en lees hieronder welke aanpak bij u past.
 
-**wanneer verdien ik hem terug?**
+## Samenvatting in 30 seconden
 
-Maar daar is geen eerlijk standaardantwoord op.
+- Er is geen eerlijke standaard-terugverdientijd; wie er één belooft, negeert uw situatie.
+- **Zelfconsumptie** is eenvoudig en voorspelbaar: u bewaart overdag opgewekte zonnestroom voor 's avonds.
+- **Handel** vraagt een dynamisch contract en een goed EMS, en kan meer opleveren — maar beweegt mee met tarieven, gebruik en aansturing.
+- Groter is niet beter: capaciteit die u niet gebruikt, verdient niets terug.
+- Hoeveel het precies oplevert leest u, volledig doorgerekend, in [wat levert een thuisbatterij op](/post/wat-levert-een-thuisbatterij-op).
 
-De terugverdientijd hangt af van uw woning, zonnepanelen, verbruik, teruglevering, energiecontract en de manier waarop de batterij wordt aangestuurd.
+## Waarom er geen universele terugverdientijd is
 
-Daarom is de betere vraag:
+Een thuisbatterij verdient zichzelf niet vanzelf terug; hij moet passen bij uw huis. Is de batterij te
+klein, dan mist u opslag op de momenten dat het telt. Is hij te groot, dan betaalt u voor capaciteit die
+grotendeels stilstaat. En zonder slimme aansturing laat u sowieso rendement liggen, hoe goed de batterij
+zelf ook is.
 
-**gebruikt u de batterij vooral voor zelfconsumptie, of ook voor handel met dynamische energieprijzen?**
+Een zinnige berekening begint daarom niet bij de batterij, maar bij uw situatie. Drie vragen bepalen de
+basis: hoeveel stroom verbruikt u per jaar, hoeveel levert u terug, en wat wilt u met de batterij
+bereiken? Pas als die duidelijk zijn, zegt een terugverdientijd iets. Twee huishoudens met hetzelfde
+jaarverbruik kunnen zo tot een heel andere uitkomst komen, simpelweg omdat hun verbruikspatroon en
+teruglevering verschillen.
 
-Dat verschil bepaalt veel.
+## Zelfconsumptie versus handel
 
-## Een thuisbatterij verdient zichzelf niet vanzelf terug
+**Zelfconsumptie** draait om uw eigen huishouden. Uw panelen wekken overdag op, terwijl u 's avonds
+juist méér verbruikt. Zonder batterij levert u die middagstroom terug en koopt u 's avonds weer in; met
+een batterij bewaart u een deel voor later. Het voordeel zit in minder inkopen en in minder
+afhankelijkheid van wat teruglevering nog opbrengt. Het is een rustige, begrijpelijke strategie die voor
+de meeste woningen logisch is.
 
-Een batterij is geen magische geldmachine.
+**Handel** kijkt verder dan uw panelen: naar de stroomprijs. Bij een dynamisch contract verschilt die per
+uur. Een batterij met slimme sturing laadt wanneer stroom goedkoop is en ontlaadt of levert wanneer het
+duur is — bovenop de opslag van uw eigen zon. Daar zit meer potentie, maar ook meer afhankelijkheid van
+tarieven, van marktbeweging en van de kwaliteit van de aansturing. Reken hier dus op uw eigen cijfers,
+niet op een belofte. In de praktijk sluiten beide elkaar trouwens niet uit: een goed EMS verhoogt uw
+zelfconsumptie én stuurt op prijs. De vraag is welke van de twee bij ú het zwaarst weegt.
 
-Een batterij moet goed passen bij uw situatie.
+### Zelfconsumptie versus handel in één tabel
 
-Als de batterij te klein is, mist u opslag. 
+| | Zelfconsumptie | Handel (dynamisch contract) |
+|---|---|---|
+| Wat de batterij doet | Eigen zonnestroom opslaan voor later | Ook laden/ontladen op prijs |
+| Wat u nodig heeft | Zonnepanelen, avondverbruik | Dynamisch contract + goed EMS |
+| Complexiteit | Laag, voorspelbaar | Hoger, afhankelijk van sturing |
+| Gevoelig voor | Uw eigen verbruikspatroon | Tarieven, marktbeweging, EMS-kosten |
+| Past vaak bij | De meeste particuliere woningen | Veel teruglevering, grotere batterij, zakelijk |
 
-Als de batterij te groot is, betaalt u mogelijk voor capaciteit die u weinig gebruikt. 
+## Kies uw strategie
 
-Als de aansturing niet slim is, laat u voordeel liggen.
+**Kies zelfconsumptie** wanneer u vooral uw eigen zonnestroom wilt gebruiken, 's avonds meer verbruikt
+dan overdag, en een eenvoudige, voorspelbare opzet zoekt. Voor de meeste woningen is dit de logische
+basis: u haalt direct voordeel uit minder inkopen, zonder dat u van de markt afhankelijk bent.
 
-Daarom begint een goede berekening altijd met drie vragen:
+**Kies (ook) handel** wanneer u veel teruglevert, een grotere batterij overweegt, een dynamisch contract
+wilt benutten of zakelijk verbruikt — en accepteert dat de opbrengst met de markt meebeweegt. Twijfelt u,
+begin dan met zelfconsumptie als fundament en bouw handel eromheen zodra de aansturing en het contract op
+orde zijn.
 
-1. Hoeveel stroom verbruikt u per jaar?
-1. Hoeveel stroom levert u terug?
-1. Wat wilt u met de batterij bereiken?
+## EMS en controle over uw stroom
 
-Pas daarna kunt u iets zinnigs zeggen over terugverdientijd.
+Bij handel valt of staat de winst met de aansturing. Dat is de taak van het EMS (Energy Management
+System): het bepaalt wanneer de batterij laadt, wanneer die ontlaadt en hoe uw stroom wordt ingezet.
+Zonder goede sturing haalt u simpelweg minder uit dezelfde batterij. Niet de batterij, maar het EMS
+bepaalt dus hoeveel een handelsstrategie oplevert.
 
-## Zelfconsumptie: uw eigen zonnestroom beter gebruiken
+Let daarom vooraf op een paar praktische punten: wie stuurt de batterij aan, houdt u zelf inzicht en
+invloed, werkt het systeem met úw energiecontract, en kunt u later nog overstappen? Veel partijen praten
+over "slim handelen"; de bruikbare vraag is of u eigenaar blijft van uw eigen stroom en van de momenten
+waarop die wordt ingezet. Meer hierover leest u in
+[wie de controle houdt over uw stroom](/post/ems-systeem-thuisbatterij-controle-over-stroom) en in
+[dynamisch energiecontract met thuisbatterij](/post/dynamisch-energiecontract-thuisbatterij).
 
-Bij zelfconsumptie gebruikt u de batterij vooral om uw eigen zonnestroom op te slaan.
+## Capaciteit, vermogen en laadcycli
 
-Overdag wekken uw zonnepanelen stroom op.
+Een grotere batterij is niet automatisch een betere batterij. Extra capaciteit kost extra geld en moet
+ook echt gebruikt worden, anders betaalt u vooral voor stilstaande opslag. Bij weinig teruglevering heeft
+een grote batterij vaak weinig zin; bij veel teruglevering kan een kleine juist te beperkt zijn. De beste
+keuze is de capaciteit die past bij uw verbruik, teruglevering en doel.
 
-Maar vaak gebruikt u juist ’s avonds meer stroom.
-
-Zonder batterij levert u overdag stroom terug en koopt u later weer stroom in.
-
-Met een batterij kunt u een deel van die stroom zelf bewaren.
-
-Het voordeel zit dan vooral in:
-
-- minder stroom inkopen
-- meer eigen zonnestroom gebruiken
-- minder afhankelijk zijn van teruglevering
-- meer grip op uw energierekening
-
-Zelfconsumptie is simpel en begrijpelijk.
-
-De batterij werkt vooral voor uw eigen huishouden.
-
-## Handel: slimmer sturen met dynamische prijzen
-
-Bij handel werkt de batterij anders.
-
-Dan kijkt het systeem niet alleen naar uw zonnepanelen, maar ook naar stroomprijzen.
-
-Bij een dynamisch energiecontract kan stroom op het ene moment goedkoper zijn dan op het andere moment.
-
-Met slimme EMS-aansturing kan een batterij daarop inspelen.
-
-Bijvoorbeeld:
-
-- laden wanneer stroom goedkoper is
-- ontladen wanneer stroom duurder is
-- eigen zonnestroom opslaan
-- pieken verminderen
-- slimmer omgaan met teruglevering
-
-Hier zit meer potentie, maar ook meer afhankelijkheid van aansturing, tarieven en gebruik.
-
-Daarom moet u bij handel altijd realistisch rekenen.
-
-Niet op beloftes.
-
-Maar op uw eigen situatie.
-
-## Handel vraagt om een goed EMS-systeem
-
-Een batterij voor handel heeft slimme sturing nodig.
-
-Dat noemen we een EMS-systeem: Energy Management System. Meer hierover: [wie de controle houdt over uw stroom](/post/ems-systeem-thuisbatterij-controle-over-stroom).
-
-Het EMS bepaalt wanneer de batterij laadt, wanneer die ontlaadt en hoe de stroom wordt ingezet.
-
-Zonder goede aansturing haalt u minder uit de batterij.
-
-Daarom is het belangrijk dat u vooraf weet:
-
-- wie stuurt de batterij aan?
-- kunt u zelf inzicht krijgen?
-- kunt u zelf invloed houden?
-- werkt het systeem met uw energiecontract?
-- kunt u later overstappen?
-- blijft de batterij flexibel inzetbaar?
-
-Veel partijen praten over slimme handel.
-
-Maar de echte vraag is:
-
-**houdt u zelf controle over uw batterij en stroom?**
-
-## Zelfconsumptie of handel: wat verdient sneller terug?
-
-In veel situaties kan handel met dynamische prijzen interessanter zijn dan alleen zelfconsumptie. Zie [dynamisch energiecontract met thuisbatterij](/post/dynamisch-energiecontract-thuisbatterij).
-
-Maar dat betekent niet automatisch dat het voor iedereen beter is.
-
-Zelfconsumptie past goed bij mensen die vooral hun eigen zonnestroom willen gebruiken.
-
-Handel past beter bij mensen die meer uit de batterij willen halen met slimme sturing.
-
-Het verschil zit in het doel.
-
-**Zelfconsumptie:**
-
-- eenvoudiger
-- minder afhankelijk van prijsschommelingen
-- vooral eigen zonnestroom gebruiken
-- logisch bij particuliere woningen
-
-**Handel / dynamisch contract:**
-
-- meer mogelijkheden
-- slimme EMS-aansturing nodig
-- interessant bij grotere batterijen
-- interessant bij veel teruglevering
-- interessant bij bedrijven en grotere installaties
-
-Daarom geeft een calculator altijd een eerste indicatie.
-
-De definitieve terugverdientijd moet persoonlijk worden bekeken.
+Naast capaciteit telt het **vermogen** (kW): hoe snel de batterij kan laden en ontladen. Voor handel is
+voldoende vermogen vaak belangrijker dan een paar kWh extra opslag, omdat de batterij dan op korte,
+gunstige momenten meer kan verzetten. Kijk ten slotte naar **laadcycli**: bij handel is de batterij
+vaker actief dan bij alleen zelfconsumptie, dus wegen garantie, levensduur en het batterijtype zwaarder.
+Een batterij moet niet alleen vandaag werken, maar jarenlang waarde blijven leveren.
 
 ## Pas op met vaste beloftes
 
-Als iemand zegt:
+Verdient deze batterij zich "altijd binnen X jaar terug"? Wees dan op uw hoede. De terugverdientijd hangt
+af van aanschafprijs, capaciteit, laadcycli, zonnepanelen, teruglevering, verbruik, contract, aansturing,
+installatiekosten én toekomstige tarieven. Geen twee situaties zijn gelijk, en toekomstige prijzen kent
+niemand. Een berekening geeft een eerlijke eerste indicatie; een harde garantie is een waarschuwingssignaal,
+geen geruststelling.
 
-**deze batterij verdient u altijd binnen X jaar terug**
+## Reken uw eigen situatie door
 
-dan moet u opletten.
+De bruikbare vraag is niet alleen "wat is de terugverdientijd?", maar "welke strategie past bij mijn
+situatie?". Een batterij zonder strategie is enkel opslag; een batterij met goede aansturing wordt
+onderdeel van uw energiesysteem. Begin daarom met uw eigen cijfers en reken uw situatie door met de
+[calculator](/calculator) — die geeft een onderbouwde indicatie op basis van uw verbruik, zonnepanelen en
+teruglevering.
 
-Want geen enkele situatie is hetzelfde.
+## Veelgestelde vragen
 
-De terugverdientijd hangt af van:
+**Wat verdient sneller terug, handel of zelfconsumptie?** Vaak biedt handel meer potentie, maar niet voor
+iedereen — het hangt af van uw teruglevering, uw contract en of u slimme sturing wilt. Voor veel woningen
+is zelfconsumptie de logische basis.
 
-- aanschafprijs
-- batterijcapaciteit
-- aantal laadcycli
-- zonnepanelen
-- teruglevering
-- verbruik
-- energiecontract
-- netaansluiting
-- EMS-aansturing
-- installatiekosten
-- toekomstige energietarieven
+**Heb ik een dynamisch contract nodig?** Voor handel wel: sturen op prijs kan alleen met een dynamisch
+contract én een EMS dat daarop reageert. Zelfconsumptie werkt ook zonder.
 
-Daarom werkt Groene Vrienden niet met loze beloftes.
-
-We kijken eerst naar de situatie.
-
-Daarna pas naar de batterij.
-
-## Waarom capaciteit belangrijk is
-
-Een batterij moet niet alleen groot zijn.
-
-Een batterij moet passend zijn.
-
-Bij weinig teruglevering heeft een enorme batterij vaak weinig zin.
-
-Bij veel teruglevering kan een kleine batterij juist te beperkt zijn.
-
-Voor zelfconsumptie kijken we vooral naar hoeveel zonnestroom u gemiddeld overhoudt.
-
-Voor handel kijken we ruimer, omdat de batterij vaker kan laden en ontladen.
-
-Daarom kan het advies verschillen.
-
-Iemand met hetzelfde jaarverbruik kan toch een andere batterij nodig hebben.
-
-## Grotere batterij betekent niet altijd betere terugverdientijd
-
-Veel mensen denken:
-
-**hoe groter de batterij, hoe beter.**
-
-Maar dat klopt niet altijd.
-
-Een grotere batterij kost meer geld.
-
-Die extra capaciteit moet ook gebruikt worden.
-
-Anders staat u vooral opslag te betalen die weinig oplevert.
-
-De beste batterij is niet automatisch de grootste batterij.
-
-De beste batterij is de batterij die past bij uw verbruik, teruglevering en doel.
-
-## Het verschil in één zin
-
-Bij zelfconsumptie gebruikt u de batterij vooral om uw eigen zonnestroom later zelf te gebruiken.
-
-Bij handel gebruikt u de batterij ook om slim te sturen op momenten waarop stroom goedkoper of duurder is.
-
-Beide kunnen interessant zijn.
-
-Maar ze vragen om een andere berekening.
-
-## Voor wie is zelfconsumptie interessant?
-
-Zelfconsumptie is vooral interessant als u:
-
-- zonnepanelen heeft
-- overdag stroom overhoudt
-- ’s avonds meer stroom gebruikt
-- minder wilt terugleveren
-- meer eigen stroom wilt gebruiken
-- een eenvoudige batterijstrategie wilt
-
-Dit past vaak goed bij particuliere woningen.
-
-## Voor wie is handel interessant?
-
-Handel met een dynamisch contract is vooral interessant als u:
-
-- veel teruglevert
-- een grotere batterij overweegt
-- slimme aansturing wilt
-- dynamische prijzen wilt benutten
-- zakelijk stroom gebruikt
-- laadpalen of piekverbruik heeft
-- meer controle wilt over uw energie
-
-Hier wordt het EMS-systeem extra belangrijk.
-
-Niet alleen de batterij bepaalt het resultaat.
-
-De aansturing bepaalt hoe slim de batterij werkt.
-
-## De rol van laadcycli
-
-Bij terugverdientijd moet u ook kijken naar laadcycli.
-
-Een laadcyclus betekent dat een batterij wordt geladen en ontladen.
-
-Hoe vaker een batterij slim kan laden en ontladen, hoe belangrijker kwaliteit en aansturing worden.
-
-Bij handel kan de batterij vaker actief zijn dan bij alleen zelfconsumptie.
-
-Daarom moet u kijken naar:
-
-- garantie
-- levensduur
-- laadcycli
-- batterijtype
-- EMS-aansturing
-- gebruiksprofiel
-
-Een batterij moet niet alleen vandaag werken.
-
-Hij moet jarenlang waarde blijven leveren.
-
-## De simpele vergelijking
-
-**Zelfconsumptie:**
-
-- eigen zonnestroom opslaan
-- later zelf gebruiken
-- minder stroom inkopen
-- eenvoudiger model
-- vooral geschikt voor woningen
-
-**Handel / dynamisch contract:**
-
-- laden op slimme momenten
-- ontladen op slimme momenten
-- meer afhankelijk van EMS
-- meer mogelijkheden
-- interessant bij grotere systemen
-
-## De belangrijkste vraag
-
-De vraag is dus niet alleen:
-
-**wat is de terugverdientijd?**
-
-De betere vraag is:
-
-**welke strategie past bij mijn situatie?**
-
-Want een batterij zonder strategie is gewoon opslag.
-
-Een batterij met goede aansturing wordt onderdeel van uw energiesysteem.
+**Hoeveel levert het concreet op?** Dat verschilt sterk per woning. Het volledige, doorgerekende beeld
+staat in [wat levert een thuisbatterij op](/post/wat-levert-een-thuisbatterij-op).
 
 ## Conclusie
 
-De terugverdientijd van een thuisbatterij hangt af van meer dan alleen de prijs.
-
-Het gaat om uw verbruik, teruglevering, zonnepanelen, energiecontract en aansturing.
-
-Wilt u vooral uw eigen zonnestroom gebruiken? 
-
-Dan is zelfconsumptie belangrijk.
-
-Wilt u ook inspelen op dynamische energieprijzen? 
-
-Dan wordt handel met EMS-aansturing interessant.
-
-De juiste keuze begint met een goede berekening. Bekijk het volledige opbrengstonderzoek in [wat levert een thuisbatterij op](/post/wat-levert-een-thuisbatterij-op), of reken uw situatie door met de [calculator](/calculator).
+De terugverdientijd van een thuisbatterij hangt af van meer dan de prijs: van uw verbruik, teruglevering,
+zonnepanelen, energiecontract en aansturing. Wilt u vooral uw eigen zonnestroom benutten, dan staat
+zelfconsumptie centraal. Wilt u ook op prijzen inspelen, dan wordt handel met een goed EMS interessant.
+Kies eerst de strategie die bij u past, reken die door met uw eigen cijfers, en beoordeel de batterij pas
+daarna. Zo koopt u geen opslag, maar een oplossing die bij uw situatie hoort.

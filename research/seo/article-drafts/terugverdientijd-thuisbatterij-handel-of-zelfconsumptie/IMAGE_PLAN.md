@@ -1,7 +1,13 @@
-# Image plan — `terugverdientijd-thuisbatterij-handel-of-zelfconsumptie`
+# Image plan - `terugverdientijd-thuisbatterij-handel-of-zelfconsumptie`
 
-- **Cover:** `handel-vs-zelfconsumptie.png` (1600×900), V2 style anchor, real logo overlay. final: `brand-assets/higgsfield-blog/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie/final/handel-vs-zelfconsumptie.png`.
-- **OG:** `social/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie-og.png` (1200×630) built locally from the cover.
-- **Inline:** at most one, only if it genuinely helps; prefer local SVG for exact Dutch labels. Not generated in this pass unless essential.
-- **Alt:** Twee strategieën voor een thuisbatterij: zelfconsumptie verhogen versus handelen op dynamische prijzen
-- Storage-path headroom: short filename keeps generated path ≤ 80 chars.
+All assets local under `brand-assets/article-visuals/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie/`. Editable SVG + exact Dutch text (no AI-generated charts for precise content).
+
+| Asset | File | Size | Purpose |
+|---|---|---|---|
+| Hero (with text overlay) | `brand-assets/article-visuals/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie/hero/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie-hero.png` | 1600x900 | article cover; strong Dutch title + real logo |
+| Open Graph | `brand-assets/article-visuals/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie/social/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie-og.png` | 1200x630 | social share |
+| Explainer diagram | `brand-assets/article-visuals/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie/diagrams/zelfconsumptie-vs-handel.svg` (+ .png) | vector | zelfconsumptie versus handel |
+
+- Hero style: existing brand illustration + bottom title band (logo right), mobile-safe; article 6 uses the approved V2 (title already baked).
+- Diagram: hand-authored SVG (brand palette #F7F6F2/#12130F/#FFD100/#B4592E), editable in Illustrator/Figma/Canva; PNG export included.
+- No Higgsfield credits spent - all local composition.

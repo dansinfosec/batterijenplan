@@ -1,7 +1,13 @@
-# Image plan — `energieprijzen-stijgen-thuisbatterij-voordeel-2027`
+# Image plan - `energieprijzen-stijgen-thuisbatterij-voordeel-2027`
 
-- **Cover:** `thuisbatterij-2027.png` (1600×900), V2 style anchor, real logo overlay. final: `brand-assets/higgsfield-blog/energieprijzen-stijgen-thuisbatterij-voordeel-2027/final/thuisbatterij-2027.png`.
-- **OG:** `social/energieprijzen-stijgen-thuisbatterij-voordeel-2027-og.png` (1200×630) built locally from the cover.
-- **Inline:** at most one, only if it genuinely helps; prefer local SVG for exact Dutch labels. Not generated in this pass unless essential.
-- **Alt:** Tijdlijn richting 2027: einde salderingsregeling en de gevolgen voor teruglevering en thuisbatterij
-- Storage-path headroom: short filename keeps generated path ≤ 80 chars.
+All assets local under `brand-assets/article-visuals/energieprijzen-stijgen-thuisbatterij-voordeel-2027/`. Editable SVG + exact Dutch text (no AI-generated charts for precise content).
+
+| Asset | File | Size | Purpose |
+|---|---|---|---|
+| Hero (with text overlay) | `brand-assets/article-visuals/energieprijzen-stijgen-thuisbatterij-voordeel-2027/hero/energieprijzen-stijgen-thuisbatterij-voordeel-2027-hero.png` | 1600x900 | article cover; strong Dutch title + real logo |
+| Open Graph | `brand-assets/article-visuals/energieprijzen-stijgen-thuisbatterij-voordeel-2027/social/energieprijzen-stijgen-thuisbatterij-voordeel-2027-og.png` | 1200x630 | social share |
+| Explainer diagram | `brand-assets/article-visuals/energieprijzen-stijgen-thuisbatterij-voordeel-2027/diagrams/2027-timeline.svg` (+ .png) | vector | tijdlijn richting 2027 |
+
+- Hero style: existing brand illustration + bottom title band (logo right), mobile-safe; article 6 uses the approved V2 (title already baked).
+- Diagram: hand-authored SVG (brand palette #F7F6F2/#12130F/#FFD100/#B4592E), editable in Illustrator/Figma/Canva; PNG export included.
+- No Higgsfield credits spent - all local composition.

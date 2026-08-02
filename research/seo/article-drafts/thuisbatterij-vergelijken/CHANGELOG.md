@@ -43,3 +43,9 @@ Nothing in this package was pushed to production; no POST/PATCH/PUT/DELETE was m
 - Local source-of-truth files synced to match production: `production-manifest.json`, `PROPOSED_ARTICLE.md`. Historical `CURRENT_ARTICLE_SNAPSHOT.md` left unchanged (pre-update record).
 - Regression guard added: `seo_update_posts` now rejects the banned term `zonovershot` in any text field (`BANNED_TERMS`), with test `test_rejects_known_typo_zonovershot`.
 - No further production update was run for this correction.
+
+
+## Quality upgrade (2026-08-02)
+- Editorial rewrite/pass for a more human, scannable tone (see HUMAN_EDIT_NOTES.md, STYLE_AUDIT.md).
+- Added hero with Dutch text overlay + OG + an editable explainer diagram (see IMAGE_PLAN.md).
+- Local only; not for automatic production apply.

@@ -1,6 +1,14 @@
 # Wat levert een thuisbatterij op? Onderzoek op basis van 135 simulaties en 300+ echte installaties
 
-> RECONCILED — preserves the full production body (all research, tables, methodology, sources) and adds contextual internal links + the calculator link. No valuable content removed.
+> **HUMAN-REWRITE DRAFT (2026-08-02) - editorial pass:** stronger opening + a 30-second summary added; the full research body and all data, tables and sources below are preserved unchanged. Deeper prose polish of the body is a flagged human-review item. Future full-body update - not a production manifest and not for automatic apply.
+
+## Samenvatting in 30 seconden
+
+- Wat een thuisbatterij oplevert, hangt af van uw situatie: er is geen vast bedrag en geen gegarandeerde terugverdientijd.
+- In ons onderzoek: mediaan circa EUR 764 per jaar, normale bandbreedte EUR 650-900 (marktjaar 2025). Dit zijn doorgerekende scenario's, geen belofte.
+- Zelfs zonder zonnepanelen: circa EUR 654-686 per jaar via handel.
+- 2027 is het kantelpunt: het einde van saldering maakt opgeslagen zonnestroom meer waard.
+- Alle cijfers zijn onderbouwd en gevalideerd tegen ruim 300 echte installaties.
 
 Onderzoek van Batterijenplan · 135 simulaties op 70.000+ kwartieren echte markt- en TenneT-data · 25 huishoudprofielen · 21 energieleveranciers · gevalideerd tegen 300+ werkelijke installaties · Laatst bijgewerkt: 17 juli 2026 · Alle bedragen incl. btw
 
@@ -226,3 +234,4 @@ Veel minder dan gedacht: tussen 86% en 94% round-trip zit ± € 15 per jaar. Wa
 ## Wat levert een thuisbatterij op in úw situatie?
 
 Dit onderzoek geeft het landelijke beeld — maar de matrix laat óók zien dat uw verbruik, opwek, contract en batterijconfiguratie samen honderden euro's per jaar verschuiven. Precies die combinatie rekent de [Batterijenplan Calculator](/calculator) voor u door, met uw eigen cijfers in plaats van een modelprofiel.
+

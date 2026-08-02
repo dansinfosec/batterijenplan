@@ -1,6 +1,17 @@
 # Energieprijzen stijgen: waarom een thuisbatterij vanaf 2027 meer kan opleveren
 
-> RECONCILED — preserves the full production body (all research, tables, methodology, sources) and adds contextual internal links + the calculator link. No valuable content removed.
+> **HUMAN-REWRITE DRAFT (2026-08-02) - editorial pass:** stronger opening + a 30-second summary added; the full research body and all data, tables and sources below are preserved unchanged. Deeper prose polish of the body is a flagged human-review item. Future full-body update - not a production manifest and not for automatic apply.
+
+## Wat verandert er in 2027, en wat blijft onzeker?
+
+**Zeker:**
+- De salderingsregeling stopt op 1 januari 2027 (Rijksoverheid, geraadpleegd 2026-08-01).
+- Tot 2030 geldt een terugleververgoeding van minimaal 50% van het kale leveringstarief.
+- Zelf gebruiken van uw zonnestroom wordt daardoor waardevoller dan terugleveren.
+
+**Nog onzeker:**
+- De exacte tarieven, terugleverkosten en marktprijzen na 2027.
+- Hoeveel een batterij ú precies oplevert: reken uw eigen situatie door met de [calculator](/calculator).
 
 **Bijgewerkt met Nederlandse energiegegevens van juli 2026**
 
@@ -567,3 +578,4 @@ De CBS-cijfers voor de meest recente maand kunnen voorlopig zijn.
  productvoorwaarden kunnen wijzigen. De berekeningen zijn
  voorbeeldscenario's en geen persoonlijke opbrengstgarantie. Voor een
  exacte berekening is een historische backtest met kwartierdata nodig.
+
