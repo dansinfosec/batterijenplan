@@ -41,13 +41,29 @@ def body_sha(body: str) -> str:
 
 
 def body_struct(body: str) -> dict:
+    """Count H2/H3/tables in a body that may be Markdown, HTML, or a mix.
+
+    A given heading/table is written in exactly ONE syntax, so summing the
+    Markdown and HTML patterns (which match disjoint text) never double-counts.
+    - Markdown: line-anchored '## ' / '### ' (multiline) and table separator rows.
+      '## ' does not match '### ' (the third char is '#', not a space), so H3 is
+      never counted as H2.
+    - HTML: <h2 ...> / <h3 ...> / <table ...>, case-insensitive, attributes allowed.
+      '<h2' does not match '<h3' or '<h20', so H3/other tags are never counted as H2.
+    """
     b = body or ""
+    md_h2 = re.findall(r"(?m)^## ", b)
+    md_h3 = re.findall(r"(?m)^### ", b)
+    md_tables = re.findall(r"(?m)^\|[ :|-]*-[ :|-]*\|\s*$", b)
+    html_h2 = re.findall(r"(?i)<h2(?:\s[^>]*)?>", b)
+    html_h3 = re.findall(r"(?i)<h3(?:\s[^>]*)?>", b)
+    html_tables = re.findall(r"(?i)<table(?:\s[^>]*)?>", b)
     return {
         "chars": len(b),
         "sha256": body_sha(b),
-        "h2": len(re.findall(r"(?m)^## ", b)),
-        "h3": len(re.findall(r"(?m)^### ", b)),
-        "tables": len(re.findall(r"(?m)^\|[ :|-]*-[ :|-]*\|\s*$", b)),
+        "h2": len(md_h2) + len(html_h2),
+        "h3": len(md_h3) + len(html_h3),
+        "tables": len(md_tables) + len(html_tables),
     }
 
 

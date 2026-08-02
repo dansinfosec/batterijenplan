@@ -192,3 +192,48 @@ class RestoreCommand(Base):
                 "published_at": PUB.isoformat()}
         bk = write(self.tmp, snap)
         self.assertRaises(CommandError, call_command, "seo_restore_post_backup", "--slug", "r3", "--backup", bk, "--apply")
+
+
+class StructureCounter(TestCase):
+    """The shared body_struct must count H2/H3/tables in Markdown, HTML and mixed bodies."""
+
+    def test_pure_markdown(self):
+        b = "## A\n\n### a\n\n| x | y |\n|---|---|\n| 1 | 2 |\n\n## B\n"
+        s = body_struct(b)
+        self.assertEqual((s["h2"], s["h3"], s["tables"]), (2, 1, 1))
+
+    def test_pure_html(self):
+        b = "<h2>A</h2><h3>a</h3><table><tr><td>1</td></tr></table><h2>B</h2>"
+        s = body_struct(b)
+        self.assertEqual((s["h2"], s["h3"], s["tables"]), (2, 1, 1))
+
+    def test_mixed_html_and_markdown(self):
+        b = "## A\n\n<h2>B</h2>\n\n### c\n\n<h3>d</h3>\n\n| a | b |\n|---|---|\n\n<table></table>"
+        s = body_struct(b)
+        self.assertEqual((s["h2"], s["h3"], s["tables"]), (2, 2, 2))
+
+    def test_html_headings_with_attributes(self):
+        b = ('<h2 id="x" class="y">A</h2>'
+             '<h3 data-z aria-level="3">b</h3>'
+             '<table class="t" border="1"><tr><td>1</td></tr></table>')
+        s = body_struct(b)
+        self.assertEqual((s["h2"], s["h3"], s["tables"]), (1, 1, 1))
+
+    def test_ten_html_tables(self):
+        b = "<table class='t'><tr><td>x</td></tr></table>" * 10
+        self.assertEqual(body_struct(b)["tables"], 10)
+
+    def test_2027_html_precondition_structure(self):
+        b = ("".join(f"<h2>H{i}</h2>" for i in range(19))
+             + "".join(f"<h3>S{i}</h3>" for i in range(13))
+             + "<table></table>" * 10)
+        s = body_struct(b)
+        self.assertEqual((s["h2"], s["h3"], s["tables"]), (19, 13, 10))
+
+    def test_h3_and_lookalikes_not_counted_as_h2(self):
+        self.assertEqual(body_struct("### x\n")["h2"], 0)
+        self.assertEqual(body_struct("<h3>x</h3>")["h2"], 0)
+        self.assertEqual(body_struct("<h20>x</h20>")["h2"], 0)
+        # H2 still counted in both syntaxes
+        self.assertEqual(body_struct("## x\n")["h2"], 1)
+        self.assertEqual(body_struct("<H2 CLASS='a'>x</H2>")["h2"], 1)
