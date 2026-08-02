@@ -1,0 +1,28 @@
+{
+  "schema": "batterijenplan-release-v2/1",
+  "mode": "cover_only",
+  "slug": "groene-vrienden-vs-zonneplan-vs-tibber",
+  "generated": "2026-08-02",
+  "family": "C",
+  "precondition": {
+    "status": "published",
+    "published_at": "2026-07-06T16:17:38Z"
+  },
+  "preserve": {
+    "slug": "groene-vrienden-vs-zonneplan-vs-tibber",
+    "status": "published",
+    "published_at": "2026-07-06T16:17:38Z",
+    "body": "PRESERVED_EXACTLY"
+  },
+  "production_precondition_documented": {
+    "current_cover_image": "v1/media/batterijenplan/blog/groene-vrienden-vs-zonneplan-vs-tibber-thuisbatterij_dlig2c",
+    "body_chars": "RUNTIME_CAPTURE",
+    "body_sha256": "RUNTIME_CAPTURE",
+    "note": "Raw Post.body is not exposed by the public read-only API and Render/DB access is prohibited in this phase. The guarded cover_only command captures the live body SHA-256 and character count at dry-run/apply time and verifies byte-for-byte preservation (before==after), rolling back on any change. After the dry-run reveals the live SHA, the operator may pin it into precondition.sha256/chars for a hard pre-write check."
+  },
+  "cover": {
+    "cover_source": "research/seo/cover-review-v1/groene-vrienden-vs-zonneplan-vs-tibber/hero-1600x900.png",
+    "cover_upload_name": "energieplatformen-vergeleken-cover-v1.png",
+    "cover_alt": "Energieplatformen vergeleken — Batterijenplan vergelijkingscover met titel en logo"
+  }
+}

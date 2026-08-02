@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1600" height="900" viewBox="0 0 1600 900">
+    <rect width="1600" height="900" fill="#F7F6F2"/>
+    <svg x="144" y="360" width="1312" height="504" viewBox="0 0 1280 500" preserveAspectRatio="xMidYMid meet">
+    <g transform="translate(120,30) scale(0.9)">
+  <g stroke-linejoin="round">
+    <polygon points="8,120 176,74 208,128 40,174" fill="#12130F" transform="translate(12,14)"/>
+    <polygon points="8,120 176,74 208,128 40,174" fill="#1b6fb0" opacity="0"/>
+    <polygon points="8,120 176,74 208,128 40,174" fill="#F7F6F2" stroke="#12130F" stroke-width="8"/>
+    <g stroke="#12130F" stroke-width="5"><line x1="64" y1="106" x2="96" y2="160"/><line x1="120" y1="92" x2="152" y2="146"/><line x1="30" y1="130" x2="186" y2="86" opacity=".0"/><line x1="24" y1="132" x2="192" y2="86"/><line x1="42" y1="150" x2="200" y2="106" opacity="0"/></g>
+    <line x1="108" y1="150" x2="108" y2="210" stroke="#12130F" stroke-width="8"/><line x1="70" y1="210" x2="146" y2="210" stroke="#12130F" stroke-width="8" stroke-linecap="round"/>
+  </g></g>
+    <g transform="translate(150,150) scale(1.05)"><g stroke-linejoin="round"><rect x="30" y="8" width="150" height="208" rx="10" fill="#12130F" transform="translate(12,14)"/><rect x="26" y="170" width="150" height="46" rx="8" fill="#F7F6F2" stroke="#12130F" stroke-width="7"/><rect x="36" y="183" width="70" height="20" fill="#FFD100" stroke="#12130F" stroke-width="4"/><circle cx="150" cy="193" r="7" fill="#B4592E"/><rect x="26" y="116" width="150" height="46" rx="8" fill="#F7F6F2" stroke="#12130F" stroke-width="7"/><rect x="36" y="129" width="70" height="20" fill="#F7F6F2" stroke="#12130F" stroke-width="4"/><circle cx="150" cy="139" r="7" fill="#B4592E"/><rect x="26" y="62" width="150" height="46" rx="8" fill="#F7F6F2" stroke="#12130F" stroke-width="7"/><rect x="36" y="75" width="70" height="20" fill="#F7F6F2" stroke="#12130F" stroke-width="4"/><circle cx="150" cy="85" r="7" fill="#B4592E"/><rect x="26" y="8" width="150" height="46" rx="8" fill="#F7F6F2" stroke="#12130F" stroke-width="7"/><rect x="36" y="21" width="70" height="20" fill="#F7F6F2" stroke="#12130F" stroke-width="4"/><circle cx="150" cy="31" r="7" fill="#B4592E"/></g></g>
+    <g transform="translate(120,470)"><text x="0" y="0" font-family="IBM Plex Mono,monospace" font-weight="600" font-size="28" letter-spacing="1.5" fill="#12130F">MODULAIR</text></g>
+    <line x1="640" y1="60" x2="640" y2="440" stroke="#12130F" stroke-width="6" stroke-dasharray="4 14" stroke-linecap="round"/>
+    <circle cx="640" cy="250" r="42" fill="#FFD100" stroke="#12130F" stroke-width="7"/><text x="640" y="262" text-anchor="middle" font-family="Archivo,Arial" font-weight="800" font-size="34" fill="#12130F">VS</text>
+    <g transform="translate(820,30) scale(0.9)">
+  <g stroke-linejoin="round">
+    <polygon points="8,120 176,74 208,128 40,174" fill="#12130F" transform="translate(12,14)"/>
+    <polygon points="8,120 176,74 208,128 40,174" fill="#1b6fb0" opacity="0"/>
+    <polygon points="8,120 176,74 208,128 40,174" fill="#F7F6F2" stroke="#12130F" stroke-width="8"/>
+    <g stroke="#12130F" stroke-width="5"><line x1="64" y1="106" x2="96" y2="160"/><line x1="120" y1="92" x2="152" y2="146"/><line x1="30" y1="130" x2="186" y2="86" opacity=".0"/><line x1="24" y1="132" x2="192" y2="86"/><line x1="42" y1="150" x2="200" y2="106" opacity="0"/></g>
+    <line x1="108" y1="150" x2="108" y2="210" stroke="#12130F" stroke-width="8"/><line x1="70" y1="210" x2="146" y2="210" stroke="#12130F" stroke-width="8" stroke-linecap="round"/>
+  </g></g>
+    <g transform="translate(880,120)">
+  <g stroke-linejoin="round">
+    <rect x="20" y="10" width="120" height="230" rx="12" fill="#12130F" transform="translate(12,14)"/>
+    <rect x="20" y="10" width="120" height="230" rx="12" fill="#F7F6F2" stroke="#12130F" stroke-width="9"/>
+    <rect x="36" y="28" width="88" height="40" rx="6" fill="#F7F6F2" stroke="#12130F" stroke-width="5"/><rect x="36" y="82" width="88" height="40" rx="6" fill="#F7F6F2" stroke="#12130F" stroke-width="5"/><rect x="36" y="136" width="88" height="40" rx="6" fill="#F7F6F2" stroke="#12130F" stroke-width="5"/><rect x="36" y="190" width="88" height="40" rx="6" fill="#FFD100" stroke="#12130F" stroke-width="5"/>
+  </g></g>
+    <g transform="translate(1080,200)">
+  <g stroke-linejoin="round">
+    <rect x="8" y="8" width="96" height="140" rx="12" fill="#12130F" transform="translate(11,13)"/>
+    <rect x="8" y="8" width="96" height="140" rx="12" fill="#F7F6F2" stroke="#12130F" stroke-width="9"/>
+    <rect x="26" y="30" width="60" height="40" rx="4" fill="#FFD100" stroke="#12130F" stroke-width="5"/>
+    <circle cx="40" cy="100" r="9" fill="#B4592E"/><circle cx="72" cy="100" r="9" fill="#F7F6F2" stroke="#12130F" stroke-width="5"/>
+    <line x1="26" y1="126" x2="86" y2="126" stroke="#12130F" stroke-width="6" stroke-linecap="round"/>
+  </g></g>
+    <g transform="translate(880,470)"><text x="0" y="0" font-family="IBM Plex Mono,monospace" font-weight="600" font-size="28" letter-spacing="1.5" fill="#12130F">TOWER + OMVORMER</text></g>
+   </svg>
+    
+    <image href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0ODAgMTIwIiB3aWR0aD0iOTYwIiBoZWlnaHQ9IjI0MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJCYXR0ZXJpamVucGxhbiI+CiAgPGc+PHBhdGggZD0iTTIyIDYwIEw2MCAyNiBMOTggNjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzEyMTMwRiIgc3Ryb2tlLXdpZHRoPSIxMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiLz4KICA8cmVjdCB4PSIzNiIgeT0iNjYiIHdpZHRoPSI0OCIgaGVpZ2h0PSI4IiBmaWxsPSIjRkZEMTAwIi8+CiAgPHJlY3QgeD0iMzAiIHk9IjgyIiB3aWR0aD0iNjAiIGhlaWdodD0iMjIiIGZpbGw9IiNCNDU5MkUiLz48L2c+CiAgPHRleHQgeD0iMTUwIiB5PSI3NyIgZm9udC1mYW1pbHk9IlRlWCBHeXJlIEhlcm9zLCBIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiBmb250LXdlaWdodD0iNzAwIiBsZXR0ZXItc3BhY2luZz0iLTEuMiIgZmlsbD0iIzEyMTMwRiI+QmF0dGVyaWplbnBsYW48L3RleHQ+Cjwvc3ZnPgo=" xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0ODAgMTIwIiB3aWR0aD0iOTYwIiBoZWlnaHQ9IjI0MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJCYXR0ZXJpamVucGxhbiI+CiAgPGc+PHBhdGggZD0iTTIyIDYwIEw2MCAyNiBMOTggNjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzEyMTMwRiIgc3Ryb2tlLXdpZHRoPSIxMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiLz4KICA8cmVjdCB4PSIzNiIgeT0iNjYiIHdpZHRoPSI0OCIgaGVpZ2h0PSI4IiBmaWxsPSIjRkZEMTAwIi8+CiAgPHJlY3QgeD0iMzAiIHk9IjgyIiB3aWR0aD0iNjAiIGhlaWdodD0iMjIiIGZpbGw9IiNCNDU5MkUiLz48L2c+CiAgPHRleHQgeD0iMTUwIiB5PSI3NyIgZm9udC1mYW1pbHk9IlRlWCBHeXJlIEhlcm9zLCBIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiBmb250LXdlaWdodD0iNzAwIiBsZXR0ZXItc3BhY2luZz0iLTEuMiIgZmlsbD0iIzEyMTMwRiI+QmF0dGVyaWplbnBsYW48L3RleHQ+Cjwvc3ZnPgo=" x="128" y="68" width="224" height="56"/>
+    <text x="128" y="177" font-family="IBM Plex Mono,monospace" font-weight="600" font-size="21" letter-spacing="3" fill="#8A6D00">VERGELIJKING</text>
+    <text x="128" y="280" font-family="Archivo,Arial,sans-serif" font-weight="800" font-size="83" letter-spacing="-1" fill="#12130F"><tspan x="128" dy="0">Enphase vs Dyness</tspan></text>
+    <rect x="128" y="305" width="141" height="8" rx="4" fill="#FFD100"/>
+    
+  </svg>

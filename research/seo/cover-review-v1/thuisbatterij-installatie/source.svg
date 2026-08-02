@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1600" height="900" viewBox="0 0 1600 900">
+    <rect width="1600" height="900" fill="#F7F6F2"/>
+    <svg x="144" y="360" width="1312" height="504" viewBox="0 0 1300 500" preserveAspectRatio="xMidYMid meet">
+    <circle cx="120" cy="30" r="26" fill="#12130F"/><text x="120" y="40" text-anchor="middle" font-family="Archivo,Arial,sans-serif" font-weight="800" font-size="30" fill="#F7F6F2">1</text><g transform="translate(60,60) scale(0.95)">
+  <g stroke-linejoin="round">
+    <rect x="10" y="6" width="120" height="210" rx="8" fill="#12130F" transform="translate(12,14)"/>
+    <rect x="10" y="6" width="120" height="210" rx="8" fill="#F7F6F2" stroke="#12130F" stroke-width="9"/>
+    <line x1="70" y1="14" x2="70" y2="208" stroke="#12130F" stroke-width="5"/>
+    <rect x="22" y="26" width="40" height="18" fill="#FFD100" stroke="#12130F" stroke-width="4"/><rect x="22" y="56" width="40" height="18" fill="#F7F6F2" stroke="#12130F" stroke-width="4"/><rect x="22" y="86" width="40" height="18" fill="#F7F6F2" stroke="#12130F" stroke-width="4"/>
+    <circle cx="100" cy="52" r="20" fill="#F7F6F2" stroke="#12130F" stroke-width="5"/><line x1="100" y1="52" x2="112" y2="42" stroke="#12130F" stroke-width="4"/>
+    <line x1="84" y1="100" x2="120" y2="100" stroke="#12130F" stroke-width="5"/><line x1="84" y1="122" x2="120" y2="122" stroke="#12130F" stroke-width="5"/><line x1="84" y1="144" x2="120" y2="144" stroke="#12130F" stroke-width="5"/><line x1="84" y1="166" x2="120" y2="166" stroke="#12130F" stroke-width="5"/>
+  </g></g>
+    <circle cx="430" cy="30" r="26" fill="#12130F"/><text x="430" y="40" text-anchor="middle" font-family="Archivo,Arial,sans-serif" font-weight="800" font-size="30" fill="#F7F6F2">2</text><g transform="translate(390,80) scale(1.15)">
+  <g stroke-linejoin="round">
+    <rect x="8" y="8" width="96" height="140" rx="12" fill="#12130F" transform="translate(11,13)"/>
+    <rect x="8" y="8" width="96" height="140" rx="12" fill="#F7F6F2" stroke="#12130F" stroke-width="9"/>
+    <rect x="26" y="30" width="60" height="40" rx="4" fill="#FFD100" stroke="#12130F" stroke-width="5"/>
+    <circle cx="40" cy="100" r="9" fill="#B4592E"/><circle cx="72" cy="100" r="9" fill="#F7F6F2" stroke="#12130F" stroke-width="5"/>
+    <line x1="26" y1="126" x2="86" y2="126" stroke="#12130F" stroke-width="6" stroke-linecap="round"/>
+  </g></g>
+    <circle cx="740" cy="30" r="26" fill="#12130F"/><text x="740" y="40" text-anchor="middle" font-family="Archivo,Arial,sans-serif" font-weight="800" font-size="30" fill="#F7F6F2">3</text><g transform="translate(690,60) scale(1.05)">
+  <g stroke-linejoin="round">
+    <rect x="10" y="26" width="120" height="196" rx="12" fill="#12130F" transform="translate(14,16)"/>
+    <rect x="34" y="8" width="26" height="20" fill="#12130F"/><rect x="82" y="8" width="26" height="20" fill="#12130F"/>
+    <rect x="10" y="26" width="120" height="196" rx="12" fill="#F7F6F2" stroke="#12130F" stroke-width="9"/>
+    <rect x="26" y="44" width="46" height="160" fill="#FFD100" stroke="#12130F" stroke-width="5"/>
+    <g stroke="#B4592E" stroke-width="7" stroke-linecap="round">
+      <line x1="88" y1="54" x2="88" y2="194"/><line x1="104" y1="54" x2="104" y2="194"/><line x1="120" y1="54" x2="120" y2="194"/>
+    </g>
+  </g></g>
+    <circle cx="1050" cy="30" r="26" fill="#12130F"/><text x="1050" y="40" text-anchor="middle" font-family="Archivo,Arial,sans-serif" font-weight="800" font-size="30" fill="#F7F6F2">4</text><g transform="translate(980,70) scale(0.95)">
+  <g stroke-linejoin="round">
+    <rect x="12" y="12" width="200" height="200" rx="22" fill="#12130F" transform="translate(13,15)"/>
+    <rect x="12" y="12" width="200" height="200" rx="22" fill="#F7F6F2" stroke="#12130F" stroke-width="9"/>
+    <circle cx="112" cy="112" r="42" fill="#FFD100" stroke="#12130F" stroke-width="7"/>
+    <g stroke="#12130F" stroke-width="7" stroke-linecap="round">
+      <line x1="112" y1="70" x2="112" y2="34"/><line x1="112" y1="154" x2="112" y2="190"/>
+      <line x1="70" y1="112" x2="34" y2="112"/><line x1="154" y1="112" x2="190" y2="112"/></g>
+    <g fill="#B4592E"><circle cx="112" cy="30" r="10"/><circle cx="112" cy="194" r="10"/><circle cx="30" cy="112" r="10"/><circle cx="194" cy="112" r="10"/></g>
+    <circle cx="112" cy="112" r="14" fill="#12130F"/>
+  </g></g>
+    <line x1="210" y1="240" x2="336" y2="240" stroke="#B4592E" stroke-width="8" stroke-linecap="round"/><polygon points="360,240 336,253 336,227" fill="#B4592E"/>
+    <line x1="520" y1="240" x2="636" y2="240" stroke="#B4592E" stroke-width="8" stroke-linecap="round"/><polygon points="660,240 636,253 636,227" fill="#B4592E"/>
+    <line x1="840" y1="240" x2="936" y2="240" stroke="#B4592E" stroke-width="8" stroke-linecap="round"/><polygon points="960,240 936,253 936,227" fill="#B4592E"/>
+   </svg>
+    
+    <image href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0ODAgMTIwIiB3aWR0aD0iOTYwIiBoZWlnaHQ9IjI0MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJCYXR0ZXJpamVucGxhbiI+CiAgPGc+PHBhdGggZD0iTTIyIDYwIEw2MCAyNiBMOTggNjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzEyMTMwRiIgc3Ryb2tlLXdpZHRoPSIxMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiLz4KICA8cmVjdCB4PSIzNiIgeT0iNjYiIHdpZHRoPSI0OCIgaGVpZ2h0PSI4IiBmaWxsPSIjRkZEMTAwIi8+CiAgPHJlY3QgeD0iMzAiIHk9IjgyIiB3aWR0aD0iNjAiIGhlaWdodD0iMjIiIGZpbGw9IiNCNDU5MkUiLz48L2c+CiAgPHRleHQgeD0iMTUwIiB5PSI3NyIgZm9udC1mYW1pbHk9IlRlWCBHeXJlIEhlcm9zLCBIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiBmb250LXdlaWdodD0iNzAwIiBsZXR0ZXItc3BhY2luZz0iLTEuMiIgZmlsbD0iIzEyMTMwRiI+QmF0dGVyaWplbnBsYW48L3RleHQ+Cjwvc3ZnPgo=" xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0ODAgMTIwIiB3aWR0aD0iOTYwIiBoZWlnaHQ9IjI0MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJCYXR0ZXJpamVucGxhbiI+CiAgPGc+PHBhdGggZD0iTTIyIDYwIEw2MCAyNiBMOTggNjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzEyMTMwRiIgc3Ryb2tlLXdpZHRoPSIxMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiLz4KICA8cmVjdCB4PSIzNiIgeT0iNjYiIHdpZHRoPSI0OCIgaGVpZ2h0PSI4IiBmaWxsPSIjRkZEMTAwIi8+CiAgPHJlY3QgeD0iMzAiIHk9IjgyIiB3aWR0aD0iNjAiIGhlaWdodD0iMjIiIGZpbGw9IiNCNDU5MkUiLz48L2c+CiAgPHRleHQgeD0iMTUwIiB5PSI3NyIgZm9udC1mYW1pbHk9IlRlWCBHeXJlIEhlcm9zLCBIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiBmb250LXdlaWdodD0iNzAwIiBsZXR0ZXItc3BhY2luZz0iLTEuMiIgZmlsbD0iIzEyMTMwRiI+QmF0dGVyaWplbnBsYW48L3RleHQ+Cjwvc3ZnPgo=" x="128" y="68" width="224" height="56"/>
+    <text x="128" y="177" font-family="IBM Plex Mono,monospace" font-weight="600" font-size="21" letter-spacing="3" fill="#8A6D00">PRAKTIJKGIDS</text>
+    <text x="128" y="280" font-family="Archivo,Arial,sans-serif" font-weight="800" font-size="83" letter-spacing="-1" fill="#12130F"><tspan x="128" dy="0">Thuisbatterij installeren</tspan></text>
+    <rect x="128" y="305" width="141" height="8" rx="4" fill="#FFD100"/>
+    
+  </svg>

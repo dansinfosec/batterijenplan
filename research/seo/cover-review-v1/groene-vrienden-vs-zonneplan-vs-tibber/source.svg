@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1600" height="900" viewBox="0 0 1600 900">
+    <rect width="1600" height="900" fill="#F7F6F2"/>
+    <svg x="144" y="360" width="1312" height="504" viewBox="0 0 1280 480" preserveAspectRatio="xMidYMid meet">
+    
+      <g transform="translate(120,40) scale(0.62)">
+  <g stroke-linejoin="round">
+    <rect x="46" y="70" width="128" height="150" fill="#12130F" transform="translate(14,16)"/>
+    <polygon points="110,4 190,74 30,74" fill="#12130F" transform="translate(14,16)"/>
+    <rect x="46" y="70" width="128" height="150" fill="#F7F6F2" stroke="#12130F" stroke-width="9"/>
+    <polygon points="110,4 190,74 30,74" fill="#B4592E" stroke="#12130F" stroke-width="9"/>
+    <rect x="66" y="120" width="40" height="42" fill="#FFD100" stroke="#12130F" stroke-width="6"/>
+    <rect x="122" y="150" width="34" height="70" fill="#12130F"/>
+  </g></g>
+      <g transform="translate(160,190) scale(0.72)">
+  <g stroke-linejoin="round">
+    <rect x="10" y="26" width="120" height="196" rx="12" fill="#12130F" transform="translate(14,16)"/>
+    <rect x="34" y="8" width="26" height="20" fill="#12130F"/><rect x="82" y="8" width="26" height="20" fill="#12130F"/>
+    <rect x="10" y="26" width="120" height="196" rx="12" fill="#F7F6F2" stroke="#12130F" stroke-width="9"/>
+    <rect x="26" y="44" width="46" height="160" fill="#FFD100" stroke="#12130F" stroke-width="5"/>
+    <g stroke="#B4592E" stroke-width="7" stroke-linecap="round">
+      <line x1="88" y1="54" x2="88" y2="194"/><line x1="104" y1="54" x2="104" y2="194"/><line x1="120" y1="54" x2="120" y2="194"/>
+    </g>
+  </g></g>
+      <line x1="150" y1="150" x2="150" y2="144" stroke="#B4592E" stroke-width="7" stroke-linecap="round"/><polygon points="150,120 163,144 137,144" fill="#B4592E"/>
+      <line x1="270" y1="120" x2="270" y2="126" stroke="#FFD100" stroke-width="7" stroke-linecap="round"/><polygon points="270,150 257,126 283,126" fill="#FFD100"/>
+      <text x="120" y="430" font-family="IBM Plex Mono,monospace" font-weight="600" font-size="24" letter-spacing="1.5" fill="#12130F">GROENE VRIENDEN</text>
+    
+      <g transform="translate(520,40) scale(0.62)">
+  <g stroke-linejoin="round">
+    <rect x="46" y="70" width="128" height="150" fill="#12130F" transform="translate(14,16)"/>
+    <polygon points="110,4 190,74 30,74" fill="#12130F" transform="translate(14,16)"/>
+    <rect x="46" y="70" width="128" height="150" fill="#F7F6F2" stroke="#12130F" stroke-width="9"/>
+    <polygon points="110,4 190,74 30,74" fill="#B4592E" stroke="#12130F" stroke-width="9"/>
+    <rect x="66" y="120" width="40" height="42" fill="#FFD100" stroke="#12130F" stroke-width="6"/>
+    <rect x="122" y="150" width="34" height="70" fill="#12130F"/>
+  </g></g>
+      <g transform="translate(560,190) scale(0.72)">
+  <g stroke-linejoin="round">
+    <rect x="10" y="26" width="120" height="196" rx="12" fill="#12130F" transform="translate(14,16)"/>
+    <rect x="34" y="8" width="26" height="20" fill="#12130F"/><rect x="82" y="8" width="26" height="20" fill="#12130F"/>
+    <rect x="10" y="26" width="120" height="196" rx="12" fill="#F7F6F2" stroke="#12130F" stroke-width="9"/>
+    <rect x="26" y="44" width="46" height="160" fill="#FFD100" stroke="#12130F" stroke-width="5"/>
+    <g stroke="#B4592E" stroke-width="7" stroke-linecap="round">
+      <line x1="88" y1="54" x2="88" y2="194"/><line x1="104" y1="54" x2="104" y2="194"/><line x1="120" y1="54" x2="120" y2="194"/>
+    </g>
+  </g></g>
+      <line x1="550" y1="150" x2="550" y2="144" stroke="#B4592E" stroke-width="7" stroke-linecap="round"/><polygon points="550,120 563,144 537,144" fill="#B4592E"/>
+      <line x1="670" y1="120" x2="670" y2="126" stroke="#FFD100" stroke-width="7" stroke-linecap="round"/><polygon points="670,150 657,126 683,126" fill="#FFD100"/>
+      <text x="520" y="430" font-family="IBM Plex Mono,monospace" font-weight="600" font-size="24" letter-spacing="1.5" fill="#12130F">ZONNEPLAN</text>
+    
+      <g transform="translate(920,40) scale(0.62)">
+  <g stroke-linejoin="round">
+    <rect x="46" y="70" width="128" height="150" fill="#12130F" transform="translate(14,16)"/>
+    <polygon points="110,4 190,74 30,74" fill="#12130F" transform="translate(14,16)"/>
+    <rect x="46" y="70" width="128" height="150" fill="#F7F6F2" stroke="#12130F" stroke-width="9"/>
+    <polygon points="110,4 190,74 30,74" fill="#B4592E" stroke="#12130F" stroke-width="9"/>
+    <rect x="66" y="120" width="40" height="42" fill="#FFD100" stroke="#12130F" stroke-width="6"/>
+    <rect x="122" y="150" width="34" height="70" fill="#12130F"/>
+  </g></g>
+      <g transform="translate(960,190) scale(0.72)">
+  <g stroke-linejoin="round">
+    <rect x="10" y="26" width="120" height="196" rx="12" fill="#12130F" transform="translate(14,16)"/>
+    <rect x="34" y="8" width="26" height="20" fill="#12130F"/><rect x="82" y="8" width="26" height="20" fill="#12130F"/>
+    <rect x="10" y="26" width="120" height="196" rx="12" fill="#F7F6F2" stroke="#12130F" stroke-width="9"/>
+    <rect x="26" y="44" width="46" height="160" fill="#FFD100" stroke="#12130F" stroke-width="5"/>
+    <g stroke="#B4592E" stroke-width="7" stroke-linecap="round">
+      <line x1="88" y1="54" x2="88" y2="194"/><line x1="104" y1="54" x2="104" y2="194"/><line x1="120" y1="54" x2="120" y2="194"/>
+    </g>
+  </g></g>
+      <line x1="950" y1="150" x2="950" y2="144" stroke="#B4592E" stroke-width="7" stroke-linecap="round"/><polygon points="950,120 963,144 937,144" fill="#B4592E"/>
+      <line x1="1070" y1="120" x2="1070" y2="126" stroke="#FFD100" stroke-width="7" stroke-linecap="round"/><polygon points="1070,150 1057,126 1083,126" fill="#FFD100"/>
+      <text x="920" y="430" font-family="IBM Plex Mono,monospace" font-weight="600" font-size="24" letter-spacing="1.5" fill="#12130F">TIBBER</text>
+    
+   </svg>
+    
+    <image href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0ODAgMTIwIiB3aWR0aD0iOTYwIiBoZWlnaHQ9IjI0MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJCYXR0ZXJpamVucGxhbiI+CiAgPGc+PHBhdGggZD0iTTIyIDYwIEw2MCAyNiBMOTggNjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzEyMTMwRiIgc3Ryb2tlLXdpZHRoPSIxMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiLz4KICA8cmVjdCB4PSIzNiIgeT0iNjYiIHdpZHRoPSI0OCIgaGVpZ2h0PSI4IiBmaWxsPSIjRkZEMTAwIi8+CiAgPHJlY3QgeD0iMzAiIHk9IjgyIiB3aWR0aD0iNjAiIGhlaWdodD0iMjIiIGZpbGw9IiNCNDU5MkUiLz48L2c+CiAgPHRleHQgeD0iMTUwIiB5PSI3NyIgZm9udC1mYW1pbHk9IlRlWCBHeXJlIEhlcm9zLCBIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiBmb250LXdlaWdodD0iNzAwIiBsZXR0ZXItc3BhY2luZz0iLTEuMiIgZmlsbD0iIzEyMTMwRiI+QmF0dGVyaWplbnBsYW48L3RleHQ+Cjwvc3ZnPgo=" xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0ODAgMTIwIiB3aWR0aD0iOTYwIiBoZWlnaHQ9IjI0MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJCYXR0ZXJpamVucGxhbiI+CiAgPGc+PHBhdGggZD0iTTIyIDYwIEw2MCAyNiBMOTggNjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzEyMTMwRiIgc3Ryb2tlLXdpZHRoPSIxMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiLz4KICA8cmVjdCB4PSIzNiIgeT0iNjYiIHdpZHRoPSI0OCIgaGVpZ2h0PSI4IiBmaWxsPSIjRkZEMTAwIi8+CiAgPHJlY3QgeD0iMzAiIHk9IjgyIiB3aWR0aD0iNjAiIGhlaWdodD0iMjIiIGZpbGw9IiNCNDU5MkUiLz48L2c+CiAgPHRleHQgeD0iMTUwIiB5PSI3NyIgZm9udC1mYW1pbHk9IlRlWCBHeXJlIEhlcm9zLCBIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiBmb250LXdlaWdodD0iNzAwIiBsZXR0ZXItc3BhY2luZz0iLTEuMiIgZmlsbD0iIzEyMTMwRiI+QmF0dGVyaWplbnBsYW48L3RleHQ+Cjwvc3ZnPgo=" x="128" y="68" width="224" height="56"/>
+    <text x="128" y="177" font-family="IBM Plex Mono,monospace" font-weight="600" font-size="21" letter-spacing="3" fill="#8A6D00">VERGELIJKING</text>
+    <text x="128" y="280" font-family="Archivo,Arial,sans-serif" font-weight="800" font-size="83" letter-spacing="-1" fill="#12130F"><tspan x="128" dy="0">Energieplatformen vergeleken</tspan></text>
+    <rect x="128" y="305" width="141" height="8" rx="4" fill="#FFD100"/>
+    
+  </svg>

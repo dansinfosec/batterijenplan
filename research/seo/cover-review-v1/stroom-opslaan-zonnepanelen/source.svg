@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1600" height="900" viewBox="0 0 1600 900">
+    <rect width="1600" height="900" fill="#F7F6F2"/>
+    <svg x="144" y="360" width="1312" height="504" viewBox="0 0 1280 480" preserveAspectRatio="xMidYMid meet">
+    <g transform="translate(60,10)"><g><circle cx="60" cy="60" r="34" fill="#FFD100" stroke="#12130F" stroke-width="7"/>
+  <g stroke="#12130F" stroke-width="7" stroke-linecap="round"><line x1="104" y1="60" x2="122" y2="60"/><line x1="91.11269837220809" y1="91.11269837220809" x2="103.84062043356596" y2="103.84062043356595"/><line x1="60" y1="104" x2="60.00000000000001" y2="122"/><line x1="28.887301627791913" y1="91.11269837220809" x2="16.159379566434055" y2="103.84062043356596"/><line x1="16" y1="60.00000000000001" x2="-2" y2="60.00000000000001"/><line x1="28.887301627791903" y1="28.887301627791913" x2="16.15937956643404" y2="16.159379566434055"/><line x1="59.99999999999999" y1="16" x2="59.999999999999986" y2="-2"/><line x1="91.11269837220809" y1="28.887301627791903" x2="103.84062043356593" y2="16.15937956643404"/></g></g></g>
+    <g transform="translate(150,120) scale(0.95)">
+  <g stroke-linejoin="round">
+    <polygon points="8,120 176,74 208,128 40,174" fill="#12130F" transform="translate(12,14)"/>
+    <polygon points="8,120 176,74 208,128 40,174" fill="#1b6fb0" opacity="0"/>
+    <polygon points="8,120 176,74 208,128 40,174" fill="#F7F6F2" stroke="#12130F" stroke-width="8"/>
+    <g stroke="#12130F" stroke-width="5"><line x1="64" y1="106" x2="96" y2="160"/><line x1="120" y1="92" x2="152" y2="146"/><line x1="30" y1="130" x2="186" y2="86" opacity=".0"/><line x1="24" y1="132" x2="192" y2="86"/><line x1="42" y1="150" x2="200" y2="106" opacity="0"/></g>
+    <line x1="108" y1="150" x2="108" y2="210" stroke="#12130F" stroke-width="8"/><line x1="70" y1="210" x2="146" y2="210" stroke="#12130F" stroke-width="8" stroke-linecap="round"/>
+  </g></g>
+    <g transform="translate(360,150)">
+  <g stroke-linejoin="round">
+    <rect x="10" y="26" width="120" height="196" rx="12" fill="#12130F" transform="translate(14,16)"/>
+    <rect x="34" y="8" width="26" height="20" fill="#12130F"/><rect x="82" y="8" width="26" height="20" fill="#12130F"/>
+    <rect x="10" y="26" width="120" height="196" rx="12" fill="#F7F6F2" stroke="#12130F" stroke-width="9"/>
+    <rect x="26" y="44" width="46" height="160" fill="#FFD100" stroke="#12130F" stroke-width="5"/>
+    <g stroke="#B4592E" stroke-width="7" stroke-linecap="round">
+      <line x1="88" y1="54" x2="88" y2="194"/><line x1="104" y1="54" x2="104" y2="194"/><line x1="120" y1="54" x2="120" y2="194"/>
+    </g>
+  </g></g>
+    <line x1="300" y1="240" x2="343" y2="283" stroke="#FFD100" stroke-width="9" stroke-linecap="round"/><polygon points="360,300 334,292 352,274" fill="#FFD100"/>
+    <line x1="560" y1="300" x2="696" y2="300" stroke="#B4592E" stroke-width="10" stroke-linecap="round"/><polygon points="720,300 696,313 696,287" fill="#B4592E"/>
+    <g transform="translate(760,20) scale(0.9)"><g><path d="M92 60 A44 44 0 1 1 48 16 A34 34 0 1 0 92 60 Z" fill="#F7F6F2" stroke="#12130F" stroke-width="7" stroke-linejoin="round"/></g></g>
+    <g transform="translate(900,150) scale(0.95)">
+  <g stroke-linejoin="round">
+    <rect x="46" y="70" width="128" height="150" fill="#12130F" transform="translate(14,16)"/>
+    <polygon points="110,4 190,74 30,74" fill="#12130F" transform="translate(14,16)"/>
+    <rect x="46" y="70" width="128" height="150" fill="#F7F6F2" stroke="#12130F" stroke-width="9"/>
+    <polygon points="110,4 190,74 30,74" fill="#B4592E" stroke="#12130F" stroke-width="9"/>
+    <rect x="66" y="120" width="40" height="42" fill="#FFD100" stroke="#12130F" stroke-width="6"/>
+    <rect x="122" y="150" width="34" height="70" fill="#12130F"/>
+  </g></g>
+    <g transform="translate(760,180) scale(0.85)">
+  <g stroke-linejoin="round">
+    <rect x="10" y="26" width="120" height="196" rx="12" fill="#12130F" transform="translate(14,16)"/>
+    <rect x="34" y="8" width="26" height="20" fill="#12130F"/><rect x="82" y="8" width="26" height="20" fill="#12130F"/>
+    <rect x="10" y="26" width="120" height="196" rx="12" fill="#F7F6F2" stroke="#12130F" stroke-width="9"/>
+    <rect x="26" y="44" width="46" height="160" fill="#F7F6F2" stroke="#12130F" stroke-width="5"/>
+    <g stroke="#B4592E" stroke-width="7" stroke-linecap="round">
+      <line x1="88" y1="54" x2="88" y2="194"/><line x1="104" y1="54" x2="104" y2="194"/><line x1="120" y1="54" x2="120" y2="194"/>
+    </g>
+  </g></g>
+    <line x1="880" y1="300" x2="876" y2="300" stroke="#FFD100" stroke-width="9" stroke-linecap="round"/><polygon points="900,300 876,313 876,287" fill="#FFD100"/>
+    <text x="150" y="470" font-family="IBM Plex Mono,monospace" font-weight="600" font-size="24" letter-spacing="1.5" fill="#12130F">OVERDAG OPSLAAN</text>
+    <text x="760" y="470" font-family="IBM Plex Mono,monospace" font-weight="600" font-size="24" letter-spacing="1.5" fill="#12130F">'S AVONDS GEBRUIKEN</text>
+   </svg>
+    
+    <image href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0ODAgMTIwIiB3aWR0aD0iOTYwIiBoZWlnaHQ9IjI0MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJCYXR0ZXJpamVucGxhbiI+CiAgPGc+PHBhdGggZD0iTTIyIDYwIEw2MCAyNiBMOTggNjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzEyMTMwRiIgc3Ryb2tlLXdpZHRoPSIxMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiLz4KICA8cmVjdCB4PSIzNiIgeT0iNjYiIHdpZHRoPSI0OCIgaGVpZ2h0PSI4IiBmaWxsPSIjRkZEMTAwIi8+CiAgPHJlY3QgeD0iMzAiIHk9IjgyIiB3aWR0aD0iNjAiIGhlaWdodD0iMjIiIGZpbGw9IiNCNDU5MkUiLz48L2c+CiAgPHRleHQgeD0iMTUwIiB5PSI3NyIgZm9udC1mYW1pbHk9IlRlWCBHeXJlIEhlcm9zLCBIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiBmb250LXdlaWdodD0iNzAwIiBsZXR0ZXItc3BhY2luZz0iLTEuMiIgZmlsbD0iIzEyMTMwRiI+QmF0dGVyaWplbnBsYW48L3RleHQ+Cjwvc3ZnPgo=" xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0ODAgMTIwIiB3aWR0aD0iOTYwIiBoZWlnaHQ9IjI0MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJCYXR0ZXJpamVucGxhbiI+CiAgPGc+PHBhdGggZD0iTTIyIDYwIEw2MCAyNiBMOTggNjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzEyMTMwRiIgc3Ryb2tlLXdpZHRoPSIxMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiLz4KICA8cmVjdCB4PSIzNiIgeT0iNjYiIHdpZHRoPSI0OCIgaGVpZ2h0PSI4IiBmaWxsPSIjRkZEMTAwIi8+CiAgPHJlY3QgeD0iMzAiIHk9IjgyIiB3aWR0aD0iNjAiIGhlaWdodD0iMjIiIGZpbGw9IiNCNDU5MkUiLz48L2c+CiAgPHRleHQgeD0iMTUwIiB5PSI3NyIgZm9udC1mYW1pbHk9IlRlWCBHeXJlIEhlcm9zLCBIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiBmb250LXdlaWdodD0iNzAwIiBsZXR0ZXItc3BhY2luZz0iLTEuMiIgZmlsbD0iIzEyMTMwRiI+QmF0dGVyaWplbnBsYW48L3RleHQ+Cjwvc3ZnPgo=" x="128" y="68" width="224" height="56"/>
+    <text x="128" y="177" font-family="IBM Plex Mono,monospace" font-weight="600" font-size="21" letter-spacing="3" fill="#8A6D00">PRAKTIJKGIDS</text>
+    <text x="128" y="280" font-family="Archivo,Arial,sans-serif" font-weight="800" font-size="83" letter-spacing="-1" fill="#12130F"><tspan x="128" dy="0">Zonnestroom opslaan</tspan></text>
+    <rect x="128" y="305" width="141" height="8" rx="4" fill="#FFD100"/>
+    
+  </svg>

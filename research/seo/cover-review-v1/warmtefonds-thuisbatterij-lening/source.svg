@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1600" height="900" viewBox="0 0 1600 900">
+    <rect width="1600" height="900" fill="#F7F6F2"/>
+    <svg x="720" y="81" width="848" height="792" viewBox="0 0 800 760" preserveAspectRatio="xMidYMid meet">
+    <g transform="translate(470,60) scale(1.05)">
+  <g stroke-linejoin="round">
+    <rect x="12" y="10" width="150" height="196" rx="8" fill="#12130F" transform="translate(12,14)"/>
+    <rect x="12" y="10" width="150" height="196" rx="8" fill="#F7F6F2" stroke="#12130F" stroke-width="9"/>
+    <rect x="30" y="30" width="114" height="30" fill="#B4592E"/>
+    <g stroke="#12130F" stroke-width="7" stroke-linecap="round"><line x1="30" y1="86" x2="144" y2="86"/><line x1="30" y1="110" x2="144" y2="110"/><line x1="30" y1="134" x2="144" y2="134"/><line x1="30" y1="158" x2="110" y2="158"/></g>
+    <circle cx="128" cy="178" r="26" fill="#FFD100" stroke="#12130F" stroke-width="6"/>
+    <path d="M116 178 l9 10 l16 -20" fill="none" stroke="#12130F" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  </g></g>
+    <g transform="translate(60,430) scale(1.15)">
+  <g stroke-linejoin="round">
+    <rect x="46" y="70" width="128" height="150" fill="#12130F" transform="translate(14,16)"/>
+    <polygon points="110,4 190,74 30,74" fill="#12130F" transform="translate(14,16)"/>
+    <rect x="46" y="70" width="128" height="150" fill="#F7F6F2" stroke="#12130F" stroke-width="9"/>
+    <polygon points="110,4 190,74 30,74" fill="#B4592E" stroke="#12130F" stroke-width="9"/>
+    <rect x="66" y="120" width="40" height="42" fill="#FFD100" stroke="#12130F" stroke-width="6"/>
+    <rect x="122" y="150" width="34" height="70" fill="#12130F"/>
+  </g></g>
+    <g transform="translate(360,440) scale(1.05)">
+  <g stroke-linejoin="round">
+    <rect x="10" y="26" width="120" height="196" rx="12" fill="#12130F" transform="translate(14,16)"/>
+    <rect x="34" y="8" width="26" height="20" fill="#12130F"/><rect x="82" y="8" width="26" height="20" fill="#12130F"/>
+    <rect x="10" y="26" width="120" height="196" rx="12" fill="#F7F6F2" stroke="#12130F" stroke-width="9"/>
+    <rect x="26" y="44" width="46" height="160" fill="#FFD100" stroke="#12130F" stroke-width="5"/>
+    <g stroke="#B4592E" stroke-width="7" stroke-linecap="round">
+      <line x1="88" y1="54" x2="88" y2="194"/><line x1="104" y1="54" x2="104" y2="194"/><line x1="120" y1="54" x2="120" y2="194"/>
+    </g>
+  </g></g>
+    <line x1="520" y1="300" x2="482" y2="231" stroke="#B4592E" stroke-width="9" stroke-linecap="round"/><polygon points="470,210 493,225 470,237" fill="#B4592E"/>
+    <line x1="250" y1="520" x2="306" y2="520" stroke="#B4592E" stroke-width="9" stroke-linecap="round"/><polygon points="330,520 306,533 306,507" fill="#B4592E"/>
+   </svg>
+    <defs><linearGradient id="s" x1="0" x2="1"><stop offset="0" stop-color="#12130F" stop-opacity=".9"/><stop offset=".42" stop-color="#12130F" stop-opacity=".62"/><stop offset=".8" stop-color="#12130F" stop-opacity=".1"/><stop offset="1" stop-color="#12130F" stop-opacity="0"/></linearGradient></defs><rect width="1600" height="900" fill="url(#s)"/><rect x="118" y="58" width="244" height="76" rx="10" fill="#F7F6F2"/>
+    <image href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0ODAgMTIwIiB3aWR0aD0iOTYwIiBoZWlnaHQ9IjI0MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJCYXR0ZXJpamVucGxhbiI+CiAgPGc+PHBhdGggZD0iTTIyIDYwIEw2MCAyNiBMOTggNjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzEyMTMwRiIgc3Ryb2tlLXdpZHRoPSIxMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiLz4KICA8cmVjdCB4PSIzNiIgeT0iNjYiIHdpZHRoPSI0OCIgaGVpZ2h0PSI4IiBmaWxsPSIjRkZEMTAwIi8+CiAgPHJlY3QgeD0iMzAiIHk9IjgyIiB3aWR0aD0iNjAiIGhlaWdodD0iMjIiIGZpbGw9IiNCNDU5MkUiLz48L2c+CiAgPHRleHQgeD0iMTUwIiB5PSI3NyIgZm9udC1mYW1pbHk9IlRlWCBHeXJlIEhlcm9zLCBIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiBmb250LXdlaWdodD0iNzAwIiBsZXR0ZXItc3BhY2luZz0iLTEuMiIgZmlsbD0iIzEyMTMwRiI+QmF0dGVyaWplbnBsYW48L3RleHQ+Cjwvc3ZnPgo=" xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0ODAgMTIwIiB3aWR0aD0iOTYwIiBoZWlnaHQ9IjI0MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJCYXR0ZXJpamVucGxhbiI+CiAgPGc+PHBhdGggZD0iTTIyIDYwIEw2MCAyNiBMOTggNjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzEyMTMwRiIgc3Ryb2tlLXdpZHRoPSIxMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiLz4KICA8cmVjdCB4PSIzNiIgeT0iNjYiIHdpZHRoPSI0OCIgaGVpZ2h0PSI4IiBmaWxsPSIjRkZEMTAwIi8+CiAgPHJlY3QgeD0iMzAiIHk9IjgyIiB3aWR0aD0iNjAiIGhlaWdodD0iMjIiIGZpbGw9IiNCNDU5MkUiLz48L2c+CiAgPHRleHQgeD0iMTUwIiB5PSI3NyIgZm9udC1mYW1pbHk9IlRlWCBHeXJlIEhlcm9zLCBIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiBmb250LXdlaWdodD0iNzAwIiBsZXR0ZXItc3BhY2luZz0iLTEuMiIgZmlsbD0iIzEyMTMwRiI+QmF0dGVyaWplbnBsYW48L3RleHQ+Cjwvc3ZnPgo=" x="128" y="68" width="224" height="56"/>
+    <text x="128" y="177" font-family="IBM Plex Mono,monospace" font-weight="600" font-size="21" letter-spacing="3" fill="#FFD100">BELEID & SUBSIDIE</text>
+    <text x="128" y="421" font-family="Archivo,Arial,sans-serif" font-weight="800" font-size="79" letter-spacing="-1" fill="#F7F6F2"><tspan x="128" dy="0">Warmtefonds en</tspan><tspan x="128" dy="84">thuisbatterij</tspan></text>
+    <rect x="128" y="529" width="134" height="8" rx="4" fill="#FFD100"/>
+    
+  </svg>

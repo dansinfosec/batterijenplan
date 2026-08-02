@@ -4,14 +4,44 @@ import json
 import os
 import tempfile
 from datetime import datetime, timezone
+from unittest import mock
 
 from django.contrib.auth.models import User
+from django.core.files.storage import InMemoryStorage
 from django.core.management import call_command
 from django.core.management.base import CommandError
 from django.test import TestCase, override_settings
 
 from blog.models import Post
 from blog.management.commands.seo_release_v2 import body_sha, body_struct, lint_body
+
+
+class BoomStorage(InMemoryStorage):
+    """Storage whose save() always fails — simulates a Cloudinary upload failure."""
+    def save(self, *a, **k):
+        raise IOError("simulated Cloudinary upload failure")
+
+
+BOOM_STORAGE = {
+    "default": {"BACKEND": "blog.test_release_v2.BoomStorage"},
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+}
+
+# The 12 READY release slugs (confirmed against the live public API at manifest-generation time).
+RELEASE_SLUGS_V1 = [
+    "wat-levert-een-thuisbatterij-op",
+    "energieprijzen-stijgen-thuisbatterij-voordeel-2027",
+    "warmtefonds-thuisbatterij-lening",
+    "enphase-vs-dyness",
+    "groene-vrienden-vs-zonneplan-vs-tibber",
+    "terugverdientijd-thuisbatterij-handel-of-zelfconsumptie",
+    "dynamisch-energiecontract-thuisbatterij",
+    "elektrische-auto-ems-systeem",
+    "ems-systeem-thuisbatterij-controle-over-stroom",
+    "thuisbatterij-installatie",
+    "stroom-opslaan-zonnepanelen",
+    "batterijopslag-woonstichtingen-vve",
+]
 
 ART_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)),
                        "research", "seo", "article-drafts",
@@ -313,6 +343,94 @@ class CoverOnly(Base):
         m = self._manifest("c6", self._png(), alt="   ")
         self.assertRaises(CommandError, call_command,
                           "seo_release_v2", "--slug", "c6", "--manifest", m, "--apply")
+
+    def test_body_sha_precondition_mismatch_aborts(self):
+        self.mkpost("c7", CUR)
+        m = self._manifest("c7", self._png(), pre={"status": "published", "sha256": "0" * 64})
+        self.assertRaises(CommandError, call_command,
+                          "seo_release_v2", "--slug", "c7", "--manifest", m, "--apply")
+        self.assertFalse(Post.objects.get(slug="c7").cover_image.name)  # no write
+
+    def test_wrong_manifest_slug_aborts(self):
+        self.mkpost("c8", CUR)
+        man = {"schema": "x", "mode": "cover_only", "slug": "some-other-slug",
+               "precondition": {"status": "published"},
+               "cover": {"cover_source": self._png(), "cover_upload_name": "c-v1.png", "cover_alt": "x"}}
+        m = write(self.tmp, man)
+        self.assertRaises(CommandError, call_command,
+                          "seo_release_v2", "--slug", "c8", "--manifest", m, "--apply")
+
+    def test_body_change_rolls_back(self):
+        p = self.mkpost("c9", CUR)
+        before = body_sha(p.body)
+        m = self._manifest("c9", self._png())
+        # Force the reloaded body to differ -> command must detect and roll back.
+        with mock.patch.object(Post, "refresh_from_db", autospec=True,
+                               side_effect=lambda self, *a, **k: setattr(self, "body", CUR + " MUTATED")):
+            self.assertRaises(CommandError, call_command,
+                              "seo_release_v2", "--slug", "c9", "--manifest", m, "--apply",
+                              "--backup-dir", os.path.join(self.tmp, "bk"))
+        fresh = Post.objects.get(slug="c9")
+        self.assertEqual(fresh.body, CUR)              # body rolled back (unchanged)
+        self.assertEqual(body_sha(fresh.body), before)
+        self.assertFalse(fresh.cover_image.name)       # cover assignment rolled back
+
+    @override_settings(STORAGES=BOOM_STORAGE)
+    def test_cover_upload_failure_rolls_back(self):
+        p = self.mkpost("c10", CUR)
+        before = body_sha(p.body)
+        m = self._manifest("c10", self._png())
+        self.assertRaises(CommandError, call_command,
+                          "seo_release_v2", "--slug", "c10", "--manifest", m, "--apply",
+                          "--backup-dir", os.path.join(self.tmp, "bk"))
+        fresh = Post.objects.get(slug="c10")
+        self.assertFalse(fresh.cover_image.name)       # no cover persisted
+        self.assertEqual(body_sha(fresh.body), before)  # body untouched
+
+
+class CoverReleaseManifestsV1(TestCase):
+    """Integrity of the 12 shipped cover_only release manifests."""
+
+    DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)),
+                       "research", "seo", "cover-review-v1", "release-manifests")
+
+    def _load(self, slug):
+        p = os.path.join(self.DIR, f"{slug}-cover-v1.json")
+        self.assertTrue(os.path.isfile(p), f"missing manifest {p}")
+        return json.load(open(p, encoding="utf-8"))
+
+    def test_exactly_twelve_manifests_for_ready_slugs(self):
+        if not os.path.isdir(self.DIR):
+            self.skipTest("release-manifests not present")
+        files = sorted(f for f in os.listdir(self.DIR) if f.endswith("-cover-v1.json"))
+        self.assertEqual(len(files), 12)
+        self.assertEqual({f[:-len("-cover-v1.json")] for f in files}, set(RELEASE_SLUGS_V1))
+        # thuisbatterij-vergelijken (PASS) must NOT have a manifest
+        self.assertNotIn("thuisbatterij-vergelijken-cover-v1.json", files)
+
+    def test_each_manifest_is_wellformed_cover_only(self):
+        if not os.path.isdir(self.DIR):
+            self.skipTest("release-manifests not present")
+        from PIL import Image
+        field = Post._meta.get_field("cover_image")
+        limit = field.max_length - 20
+        root = os.path.dirname(os.path.dirname(__file__))
+        for slug in RELEASE_SLUGS_V1:
+            man = self._load(slug)
+            self.assertEqual(man["mode"], "cover_only", slug)
+            self.assertEqual(man["slug"], slug, slug)
+            # no content-changing fields anywhere at top level
+            for forbidden in ("body", "title", "excerpt", "seo_title", "seo_description", "tags"):
+                self.assertNotIn(forbidden, man, f"{slug} has forbidden field {forbidden}")
+            cov = man["cover"]
+            self.assertTrue(cov["cover_alt"].strip(), f"{slug} empty cover_alt")
+            self.assertTrue(cov["cover_upload_name"].endswith(".png"))
+            gen = field.generate_filename(None, cov["cover_upload_name"])
+            self.assertLessEqual(len(gen), limit, f"{slug} upload name lacks headroom")
+            src = os.path.join(root, cov["cover_source"])
+            self.assertTrue(os.path.isfile(src), f"{slug} source missing: {src}")
+            self.assertEqual(Image.open(src).size, (1600, 900), f"{slug} source not 1600x900")
+            self.assertEqual(man["preserve"].get("body"), "PRESERVED_EXACTLY", slug)
 
 
 class ProductionManifestsV3(TestCase):
