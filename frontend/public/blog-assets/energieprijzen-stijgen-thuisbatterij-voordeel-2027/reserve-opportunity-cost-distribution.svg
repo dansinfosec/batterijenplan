@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 836 536" width="100%" height="auto" font-family="'Inter','Archivo','Segoe UI',system-ui,Arial,sans-serif" role="img" aria-labelledby="rs-title rs-desc">
+  <title id="rs-title">Capaciteit reserveren voor handel kost meestal weinig — maar niet voor iedereen</title>
+  <desc id="rs-desc">Gegroepeerde staafgrafiek van het verlies aan zelfconsumptie in euro per jaar, per gereserveerd aandeel batterijcapaciteit, uitgesplitst naar mediaan, gemiddelde en maximum. Bij 10 procent reserve: mediaan 0,6, gemiddelde 11,6 en maximum 62,6 euro. Bij 20 procent: mediaan 1,4, gemiddelde 26,7 en maximum 131,1 euro. Bij 30 procent: mediaan 8,0, gemiddelde 46,6 en maximum 205,6 euro. Bij 50 procent: mediaan 65,2, gemiddelde 107,8 en maximum 379,1 euro. De mediaan is telkens veel lager dan het gemiddelde, doordat een kleine minderheid met veel PV-overschot bijna alle kosten draagt.</desc>
+  <defs><pattern id="hatchK" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#F7F6F2"/><path d="M-1,1 l2,-2 M0,9 l9,-9 M8,10 l2,-2" stroke="#12130F" stroke-width="1.7"/></pattern><pattern id="hatchC" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#F7F6F2"/><path d="M-1,1 l2,-2 M0,9 l9,-9 M8,10 l2,-2" stroke="#B4592E" stroke-width="1.9"/></pattern></defs><rect x="12" y="12" width="822" height="522" fill="#12130F"/><rect x="4" y="4" width="822" height="522" fill="#F7F6F2" stroke="#12130F" stroke-width="2.5"/><rect x="5" y="5" width="54" height="9" fill="#FFD100"/>
+  <text x="30" y="34" font-size="17" font-weight="700" fill="#12130F">Reserveren voor handel kost meestal weinig — maar niet voor iedereen</text>
+  <text x="30" y="54" font-size="12.5" fill="#4C4D46">Verlies aan zelfconsumptie · €/jaar · per gereserveerd aandeel capaciteit · opportuniteitskost — vergelijk met incrementele handelsopbrengst</text>
+
+  <!-- gridlines -->
+  <line x1="100" y1="410" x2="790" y2="410" stroke="#C9C5BA" stroke-width="1"/>
+  <text x="92" y="414" font-size="11" fill="#6B6C64" text-anchor="end">€0</text>
+  <line x1="100" y1="335" x2="790" y2="335" stroke="#E7E3DA" stroke-width="1"/>
+  <text x="92" y="339" font-size="11" fill="#6B6C64" text-anchor="end">€100</text>
+  <line x1="100" y1="260" x2="790" y2="260" stroke="#E7E3DA" stroke-width="1"/>
+  <text x="92" y="264" font-size="11" fill="#6B6C64" text-anchor="end">€200</text>
+  <line x1="100" y1="185" x2="790" y2="185" stroke="#E7E3DA" stroke-width="1"/>
+  <text x="92" y="189" font-size="11" fill="#6B6C64" text-anchor="end">€300</text>
+  <line x1="100" y1="110" x2="790" y2="110" stroke="#E7E3DA" stroke-width="1"/>
+  <text x="92" y="114" font-size="11" fill="#6B6C64" text-anchor="end">€400</text>
+
+  <!-- 10% -->
+  <rect x="122" y="409" width="40" height="1" fill="#FFD100" stroke="#12130F" stroke-width="2"/>
+  <text x="142" y="403" font-size="10.5" font-weight="700" fill="#12130F" text-anchor="middle">€0,6</text>
+  <rect x="165" y="401" width="40" height="9" fill="#B4592E" stroke="#12130F" stroke-width="2"/>
+  <text x="185" y="395" font-size="10.5" font-weight="700" fill="#B4592E" text-anchor="middle">€11,6</text>
+  <rect x="208" y="363" width="40" height="47" fill="url(#hatchK)" stroke="#12130F" stroke-width="2"/>
+  <text x="228" y="357" font-size="10.5" font-weight="700" fill="#12130F" text-anchor="middle">€62,6</text>
+  <text x="185" y="430" font-size="12.5" fill="#12130F" text-anchor="middle">10%</text>
+
+  <!-- 20% -->
+  <rect x="292" y="409" width="40" height="1" fill="#FFD100" stroke="#12130F" stroke-width="2"/>
+  <text x="312" y="403" font-size="10.5" font-weight="700" fill="#12130F" text-anchor="middle">€1,4</text>
+  <rect x="335" y="390" width="40" height="20" fill="#B4592E" stroke="#12130F" stroke-width="2"/>
+  <text x="355" y="384" font-size="10.5" font-weight="700" fill="#B4592E" text-anchor="middle">€26,7</text>
+  <rect x="378" y="312" width="40" height="98" fill="url(#hatchK)" stroke="#12130F" stroke-width="2"/>
+  <text x="398" y="306" font-size="10.5" font-weight="700" fill="#12130F" text-anchor="middle">€131,1</text>
+  <text x="355" y="430" font-size="12.5" fill="#12130F" text-anchor="middle">20%</text>
+
+  <!-- 30% -->
+  <rect x="462" y="404" width="40" height="6" fill="#FFD100" stroke="#12130F" stroke-width="2"/>
+  <text x="482" y="398" font-size="10.5" font-weight="700" fill="#12130F" text-anchor="middle">€8,0</text>
+  <rect x="505" y="375" width="40" height="35" fill="#B4592E" stroke="#12130F" stroke-width="2"/>
+  <text x="525" y="369" font-size="10.5" font-weight="700" fill="#B4592E" text-anchor="middle">€46,6</text>
+  <rect x="548" y="256" width="40" height="154" fill="url(#hatchK)" stroke="#12130F" stroke-width="2"/>
+  <text x="568" y="250" font-size="10.5" font-weight="700" fill="#12130F" text-anchor="middle">€205,6</text>
+  <text x="525" y="430" font-size="12.5" fill="#12130F" text-anchor="middle">30%</text>
+
+  <!-- 50% -->
+  <rect x="632" y="361" width="40" height="49" fill="#FFD100" stroke="#12130F" stroke-width="2"/>
+  <text x="652" y="355" font-size="10.5" font-weight="700" fill="#12130F" text-anchor="middle">€65,2</text>
+  <rect x="675" y="329" width="40" height="81" fill="#B4592E" stroke="#12130F" stroke-width="2"/>
+  <text x="695" y="323" font-size="10.5" font-weight="700" fill="#B4592E" text-anchor="middle">€107,8</text>
+  <rect x="718" y="126" width="40" height="284" fill="url(#hatchK)" stroke="#12130F" stroke-width="2"/>
+  <text x="738" y="120" font-size="10.5" font-weight="700" fill="#12130F" text-anchor="middle">€379,1</text>
+  <text x="695" y="430" font-size="12.5" fill="#12130F" text-anchor="middle">50%</text>
+
+  <!-- x axis title -->
+  <text x="445" y="452" font-size="12.5" font-weight="600" fill="#12130F" text-anchor="middle">Aandeel batterijcapaciteit gereserveerd voor handel</text>
+
+  <!-- legend -->
+  <rect x="120" y="466" width="13" height="13" fill="#FFD100" stroke="#12130F" stroke-width="2"/><text x="139" y="477" font-size="11" fill="#4C4D46">mediaan</text>
+  <rect x="220" y="466" width="13" height="13" fill="#B4592E" stroke="#12130F" stroke-width="2"/><text x="239" y="477" font-size="11" fill="#4C4D46">gemiddelde</text>
+  <rect x="340" y="466" width="13" height="13" fill="url(#hatchK)" stroke="#12130F" stroke-width="2"/><text x="359" y="477" font-size="11" fill="#4C4D46">maximum</text>
+
+  <text x="30" y="497" font-size="11" fill="#8A6D00" font-weight="600">Mediaan ≪ gemiddelde: een minderheid met veel PV-overschot draagt bijna alle kosten.</text>
+  <text x="500" y="497" font-size="11" fill="#6B6C64">Bron: bp-dispatch-v1 · outputs/2027-study-v5-1/</text>
+  <text x="30" y="514" font-size="10.5" fill="#6B6C64">Classificatie: SCENARIO STUDY — geen voorspelling, geen landelijk gemiddelde</text>
+
+
+<rect x="648" y="22" width="112" height="20" fill="#F7F6F2" stroke="#12130F" stroke-width="2"/><text x="657" y="36" font-size="10.5" font-family="'IBM Plex Mono',ui-monospace,monospace" letter-spacing="0.06em" fill="#12130F">ENGINE RESULT</text>
+</svg>

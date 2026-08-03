@@ -1,5 +1,17 @@
 # PRODUCTION READINESS CHECKLIST — V6 (2027 article)
 
+> ## ⚠️ BASELINE CORRECTION (V6.1) — supersedes stale rows below
+> - Confirmed **production** precondition (Render): id 13, **23265 chars**, SHA
+>   **`03c6c3ab…efd7659`**, **19 H2 / 13 H3 / 10 tables**, published_at **2026-07-15T20:53:41+00:00**,
+>   author **dschu**, cover preserved. (Rows below that cite SHA `f5eb25d8`, `72e48f32`, "datePublished
+>   2026-08-02", "15 H2 / 9 FAQ", or a passed *local* dry-run are stale and superseded.)
+> - Proposed body now **embeds the 6 branded SVGs inline** via `/blog-assets/…` public URLs (static Vite
+>   assets → dist). New proposed SHA **`b0db152a…351d298d`**, **25940 chars, 16 H2 / 2 H3 / 6 tables, no H1**,
+>   FAQ↔schema **10/10**. The "⏳ Add the 6 SVGs / wrap tables / commit+push" items are now DONE.
+> - Local `db.sqlite3` holds only the 62-char placeholder (id 3) → it does NOT match the production baseline;
+>   per instruction it was NOT modified, so no local dry-run was run. Manifest self-consistency validated
+>   offline; the guarded dry-run runs on Render. No `--apply`, no production write.
+
 Status legend: ✅ done in this research pass · ⏳ requires human action before publication · 🚫 explicitly out of scope (do not do)
 
 ## Content & data

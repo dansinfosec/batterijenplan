@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 836 516" width="100%" height="auto" font-family="'Inter','Archivo','Segoe UI',system-ui,Arial,sans-serif" role="img" aria-labelledby="tr-title tr-desc">
+  <title id="tr-title">Onbalanshandel: break-even hangt af van de onzekere bruto-referentie</title>
+  <desc id="tr-desc">Staafgrafiek van de break-even marktfactor (het aandeel van de bruto-referentie dat je moet overhouden om quitte te spelen) tegenover de bruto-referentie in euro per jaar. Bij een bruto-referentie van 300 euro is de break-even 42 procent, bij 600 euro 21 procent, bij 900 euro 14 procent en bij 1.200 euro 10 procent. De break-even bruto-referentie is ongeveer 126 euro. Er bestaat geen universele 25 procent; boven de 100 procent-lijn is handel nooit rendabel.</desc>
+  <defs><pattern id="hatchK" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#F7F6F2"/><path d="M-1,1 l2,-2 M0,9 l9,-9 M8,10 l2,-2" stroke="#12130F" stroke-width="1.7"/></pattern><pattern id="hatchC" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#F7F6F2"/><path d="M-1,1 l2,-2 M0,9 l9,-9 M8,10 l2,-2" stroke="#B4592E" stroke-width="1.9"/></pattern></defs><rect x="12" y="12" width="822" height="502" fill="#12130F"/><rect x="4" y="4" width="822" height="502" fill="#F7F6F2" stroke="#12130F" stroke-width="2.5" stroke-dasharray="9 5"/><rect x="5" y="5" width="54" height="9" fill="#FFD100"/>
+  <text x="30" y="34" font-size="18" font-weight="700" fill="#12130F">Wanneer voegt handel netto waarde toe?</text>
+  <text x="30" y="54" font-size="12.5" fill="#4C4D46">Break-even marktfactor (% van de bruto-referentie dat je moet overhouden) · onzekere referentie</text>
+
+  <!-- gridlines -->
+  <line x1="110" y1="380" x2="780" y2="380" stroke="#C9C5BA" stroke-width="1"/>
+  <text x="102" y="384" font-size="11" fill="#6B6C64" text-anchor="end">0%</text>
+  <line x1="110" y1="314" x2="780" y2="314" stroke="#E7E3DA" stroke-width="1"/>
+  <text x="102" y="318" font-size="11" fill="#6B6C64" text-anchor="end">25%</text>
+  <line x1="110" y1="248" x2="780" y2="248" stroke="#E7E3DA" stroke-width="1"/>
+  <text x="102" y="252" font-size="11" fill="#6B6C64" text-anchor="end">50%</text>
+  <line x1="110" y1="182" x2="780" y2="182" stroke="#E7E3DA" stroke-width="1"/>
+  <text x="102" y="186" font-size="11" fill="#6B6C64" text-anchor="end">75%</text>
+
+  <!-- 100% reference line -->
+  <line x1="110" y1="116" x2="780" y2="116" stroke="#12130F" stroke-width="2.5" stroke-dasharray="7 4"/>
+  <text x="102" y="120" font-size="11" fill="#12130F" text-anchor="end">100%</text>
+  <text x="776" y="110" font-size="11.5" font-weight="600" fill="#12130F" text-anchor="end">boven deze lijn: nooit rendabel</text>
+
+  <!-- bars -->
+  <rect x="159" y="269" width="70" height="111" fill="#B4592E" stroke="#12130F" stroke-width="2"/>
+  <text x="194" y="261" font-size="13" font-weight="700" fill="#12130F" text-anchor="middle">42%</text>
+  <text x="194" y="400" font-size="12.5" fill="#12130F" text-anchor="middle">€300</text>
+
+  <rect x="326" y="325" width="70" height="55" fill="#B4592E" stroke="#12130F" stroke-width="2"/>
+  <text x="361" y="317" font-size="13" font-weight="700" fill="#12130F" text-anchor="middle">21%</text>
+  <text x="361" y="400" font-size="12.5" fill="#12130F" text-anchor="middle">€600</text>
+
+  <rect x="493" y="343" width="70" height="37" fill="#B4592E" stroke="#12130F" stroke-width="2"/>
+  <text x="528" y="335" font-size="13" font-weight="700" fill="#12130F" text-anchor="middle">14%</text>
+  <text x="528" y="400" font-size="12.5" fill="#12130F" text-anchor="middle">€900</text>
+
+  <rect x="660" y="354" width="70" height="26" fill="#B4592E" stroke="#12130F" stroke-width="2"/>
+  <text x="695" y="346" font-size="13" font-weight="700" fill="#12130F" text-anchor="middle">10%</text>
+  <text x="695" y="400" font-size="12.5" fill="#12130F" text-anchor="middle">€1.200</text>
+
+  <!-- x axis title -->
+  <text x="445" y="426" font-size="12.5" font-weight="600" fill="#12130F" text-anchor="middle">Bruto-referentie (€/jaar)</text>
+
+  <!-- note -->
+  <text x="30" y="456" font-size="12" font-weight="600" fill="#12130F">Break-even bruto-referentie ≈ €126. Eén universele "25%" bestaat niet.</text>
+  <text x="30" y="478" font-size="11" fill="#6B6C64">Bron: bp-dispatch-v1 · outputs/2027-study-v5-1/ · SCENARIO-OVERLAY (niet fysiek gesimuleerde onbalansopbrengst)</text>
+  <text x="30" y="496" font-size="10.5" fill="#6B6C64">Classificatie: SCENARIO-OVERLAY — niet fysiek gesimuleerde onbalansopbrengst</text>
+
+
+<rect x="30" y="62" width="400" height="20" fill="#F7F6F2" stroke="#12130F" stroke-width="2" stroke-dasharray="5 3"/><text x="39" y="76" font-size="10.5" font-family="'IBM Plex Mono',ui-monospace,monospace" letter-spacing="0.06em" fill="#12130F">SCENARIO-OVERLAY — GEEN GESIMULEERDE HANDELSOPBRENGST</text>
+
+  <text x="470" y="444" font-size="11" fill="#4C4D46">Een EMS doet alleen mee als de netto incrementele waarde positief is.</text>
+</svg>

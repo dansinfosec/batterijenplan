@@ -2,6 +2,29 @@
 
 Date: 2026-08-03.
 
+> ## ⚠️ BASELINE CORRECTION (V6.1) — supersedes stale values below
+> The Render production preflight confirmed the live post is a **substantive older article**, not the local
+> placeholder. The statements further down that reference the placeholder baseline, the old proposed SHA, a
+> passed *local* dry-run, or Cloudinary/`visual_patch` hosting are **superseded** by the following authoritative facts:
+>
+> - **Confirmed production baseline (precondition):** id 13, title "Energieprijzen stijgen: waarom een
+>   thuisbatterij vanaf 2027 meer kan opleveren", body **23265 chars**, SHA-256
+>   **`03c6c3ab6785df87cda2d5d98dfbd2fbc662efac8c56ff8db91521359efd7659`**, **19 H2 / 13 H3 / 10 tables**,
+>   status=published, published_at=**2026-07-15T20:53:41+00:00**, author=**dschu**,
+>   cover=`media/batterijenplan/blog/thuisbatterij-2027-cover-v4_bh5rfd`.
+> - **Proposed body (with 6 inline branded visuals):** **25940 chars**, SHA-256
+>   **`b0db152a8c90d6ecbf246922f4722bbcc85ba4dcd7691845302bc373351d298d`**, **16 H2 / 2 H3 / 6 tables**, no H1,
+>   6 `<img>`. Title/excerpt/seo unchanged from V6.
+> - **Visuals are EMBEDDED INLINE** via public URLs `/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/…`
+>   (static Vite assets, copied unchanged into dist at build). No Cloudinary and no `visual_patch` step.
+> - **FAQ↔schema parity = 10/10.**
+> - **No local dry-run was run against production values:** the local `db.sqlite3` holds only the 62-char
+>   placeholder (id 3), so it does NOT match the confirmed production baseline; per instruction the local DB was
+>   NOT altered to force a pass. The real guarded dry-run must run in the Render shell. Manifest self-consistency
+>   (proposed SHA/structure, required_visuals existence) was validated offline and passes.
+> - Rollback target is the `03c6…` production article — see the corrected `ROLLBACK_PLAN_V6.md`.
+> - No `--apply`, no production write occurred.
+
 ## STATUS: READY WITH HUMAN INPUT REQUIRED
 
 The guarded `full_body` release is **technically validated and safe to apply** (dry-run passed, precondition

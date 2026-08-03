@@ -1,7 +1,7 @@
 {
-  "note": "Visuals are NOT inlined in the full_body release (text/tables only). They are added AFTER hosting via a seo_release_v2 'visual_patch' run (anchor = the H2 line of the intended section). No upload performed here (Cloudinary is out of scope for this task).",
-  "hosting_decision": "Site serves images via Cloudinary (Post.cover_image upload_to='batterijenplan/blog/'; frontend images.js optimizedImageUrl). In-body <img> needs a public https URL. SVG is acceptable on Cloudinary or the site /public. Proposed Cloudinary folder: batterijenplan/blog/2027/.",
-  "final_production_copies": "research/seo/article-drafts/energieprijzen-stijgen-thuisbatterij-voordeel-2027/v6-seo-authority-rebuild/production-visuals/ (6 SVGs, XML-validated)",
+  "note": "6 branded SVGs are EMBEDDED INLINE in the full_body release body (Markdown image syntax rendered to <img> by the site's markdown pipeline: extensions fenced_code, tables, nl2br). No visual_patch and no separate hosting step are required for this release.",
+  "hosting_decision": "Served as static Vite public assets from frontend/public/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/. Vite copies them unchanged into dist/blog-assets/... at build; public URL pattern /blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/<filename>.svg. No Cloudinary upload needed.",
+  "final_production_copies": "Publishable copies: frontend/public/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/ (6 SVGs). Repo research copies remain in production-visuals/ (byte-identical, same SHA-256).",
   "visuals": [
     {
       "filename": "policy-versus-fee-waterfall.svg",
@@ -9,11 +9,14 @@
       "accessible_title": "Waterval: waaruit bestaat de totale verandering na 2027 voor één representatief scenario?",
       "alt": "Waterval voor representatief scenario C3500_R2.00: zuiver beleidseffect €390 plus vermeden terugleverkosten €202 plus interactie €0 is samen €592 totale verandering per jaar.",
       "source_classification": "SCENARIO STUDY (representatief scenario, geen landelijk gemiddelde)",
-      "local_source_path": "production-visuals/policy-versus-fee-waterfall.svg",
-      "proposed_production_destination": "Cloudinary: batterijenplan/blog/2027/policy-versus-fee-waterfall.svg",
-      "upload_required": true,
-      "human_action_required": "Upload SVG, then visual_patch insert an <img> after the section H2.",
-      "sha256": "5952ea937605d670e4a45a48535bd08bb7c01b9d5471949e59330010207a9af6"
+      "local_source_path": "frontend/public/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/policy-versus-fee-waterfall.svg",
+      "sha256": "5952ea937605d670e4a45a48535bd08bb7c01b9d5471949e59330010207a9af6",
+      "public_url": "/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/policy-versus-fee-waterfall.svg",
+      "repo_source_copy": "research/seo/article-drafts/energieprijzen-stijgen-thuisbatterij-voordeel-2027/v6-seo-authority-rebuild/production-visuals/policy-versus-fee-waterfall.svg",
+      "embedded_in_body": true,
+      "inserted_in_section": "Hoeveel voordeel komt door vermeden terugleverkosten?",
+      "inserted_after": "na de voorbeeldberekening van het representatieve scenario C3500_R2.00",
+      "caption": "Opbouw van de €592 voor één representatief scenario (C3500_R2.00). ENGINE RESULT — representatief scenario, geen landelijk gemiddelde en geen decompositie van de losse medianen."
     },
     {
       "filename": "pure-policy-effect-heatmap.svg",
@@ -21,59 +24,74 @@
       "accessible_title": "Zuiver beleidseffect (einde saldering) per huishoudprofiel in euro per jaar",
       "alt": "Warmtekaart van het zuivere beleidseffect per huishoudprofiel (12,6 kWh, zonder terugleverkosten), oplopend van €172 bij laag verbruik en weinig PV tot €761 bij hoog verbruik en veel PV.",
       "source_classification": "SCENARIO STUDY (25 ongewogen profielen, geen landelijk gemiddelde)",
-      "local_source_path": "production-visuals/pure-policy-effect-heatmap.svg",
-      "proposed_production_destination": "Cloudinary: batterijenplan/blog/2027/pure-policy-effect-heatmap.svg",
-      "upload_required": true,
-      "human_action_required": "Upload SVG, then visual_patch insert an <img> after the section H2.",
-      "sha256": "6fd7ae6b079b89dc00fa39f9789cad3e8fa488c90b00b04e33d9a7d696536a80"
+      "local_source_path": "frontend/public/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/pure-policy-effect-heatmap.svg",
+      "sha256": "6fd7ae6b079b89dc00fa39f9789cad3e8fa488c90b00b04e33d9a7d696536a80",
+      "public_url": "/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/pure-policy-effect-heatmap.svg",
+      "repo_source_copy": "research/seo/article-drafts/energieprijzen-stijgen-thuisbatterij-voordeel-2027/v6-seo-authority-rebuild/production-visuals/pure-policy-effect-heatmap.svg",
+      "embedded_in_body": true,
+      "inserted_in_section": "Zuiver effect van het einde van salderen",
+      "inserted_after": "na de beleidstabel (batterijwaarde vóór/na 2027 + zuiver effect)",
+      "caption": "Zuiver beleidseffect (einde saldering) per huishoudprofiel, 12,6 kWh. ENGINE RESULT — spreiding over 25 profielen, geen voorspelling en geen landelijk gemiddelde."
     },
     {
       "filename": "feed-in-structure-comparison.svg",
-      "intended_section_h2": "Per kWh, staffel of vast bedrag: waarom de kostenstructuur telt",
+      "intended_section_h2": "Hoeveel voordeel komt door vermeden terugleverkosten? (§ Waarom de kostenstructuur telt)",
       "accessible_title": "Hoeveel terugleverkosten vermijdt een batterij per tariefstructuur?",
       "alt": "Staafgrafiek van mediane vermeden terugleverkosten (12,6 kWh): per kWh €0,15 €303, €0,10 €202, €0,05 €101, hybride €101, maandstaffel €92, jaarstaffel €90, vast bedrag €0.",
       "source_classification": "SCENARIO STUDY (mediaan over 25 huishoudens, 12,6 kWh)",
-      "local_source_path": "production-visuals/feed-in-structure-comparison.svg",
-      "proposed_production_destination": "Cloudinary: batterijenplan/blog/2027/feed-in-structure-comparison.svg",
-      "upload_required": true,
-      "human_action_required": "Upload SVG, then visual_patch insert an <img> after the section H2.",
-      "sha256": "e18fb0b62b3e22ba8848ba68a0361d76bcf764e67718f922f280c8fce72af6d7"
+      "local_source_path": "frontend/public/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/feed-in-structure-comparison.svg",
+      "sha256": "e18fb0b62b3e22ba8848ba68a0361d76bcf764e67718f922f280c8fce72af6d7",
+      "public_url": "/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/feed-in-structure-comparison.svg",
+      "repo_source_copy": "research/seo/article-drafts/energieprijzen-stijgen-thuisbatterij-voordeel-2027/v6-seo-authority-rebuild/production-visuals/feed-in-structure-comparison.svg",
+      "embedded_in_body": true,
+      "inserted_in_section": "Hoeveel voordeel komt door vermeden terugleverkosten? (§ Waarom de kostenstructuur telt)",
+      "inserted_after": "na de tarief-structuurtabel en de contract-waarschuwing",
+      "caption": "Mediaan vermeden terugleverkosten per tariefstructuur, 12,6 kWh. ENGINE RESULT — mediaan over 25 huishoudens, geen landelijk gemiddelde."
     },
     {
       "filename": "battery-size-diminishing-returns.svg",
-      "intended_section_h2": "Welke batterijcapaciteit levert nog extra voordeel op?",
+      "intended_section_h2": "Welke batterijcapaciteit past bij zelfconsumptie?",
       "accessible_title": "Grotere batterij, nauwelijks meer beleidseffect",
       "alt": "Staafgrafiek: mediaan beleidseffect loopt van €391 (7 kWh) naar €407 (21,8 kWh) — nauwelijks hoger — terwijl het maximum doorstijgt van €539 naar €895.",
       "source_classification": "SCENARIO STUDY (mediaan over 25 huishoudens)",
-      "local_source_path": "production-visuals/battery-size-diminishing-returns.svg",
-      "proposed_production_destination": "Cloudinary: batterijenplan/blog/2027/battery-size-diminishing-returns.svg",
-      "upload_required": true,
-      "human_action_required": "Upload SVG, then visual_patch insert an <img> after the section H2.",
-      "sha256": "3c08444b4ae369cbb6697e695b68ce697e319f543e4d2e5615bc29bcb29acc2b"
+      "local_source_path": "frontend/public/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/battery-size-diminishing-returns.svg",
+      "sha256": "3c08444b4ae369cbb6697e695b68ce697e319f543e4d2e5615bc29bcb29acc2b",
+      "public_url": "/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/battery-size-diminishing-returns.svg",
+      "repo_source_copy": "research/seo/article-drafts/energieprijzen-stijgen-thuisbatterij-voordeel-2027/v6-seo-authority-rebuild/production-visuals/battery-size-diminishing-returns.svg",
+      "embedded_in_body": true,
+      "inserted_in_section": "Welke batterijcapaciteit past bij zelfconsumptie?",
+      "inserted_after": "na de batterijgrootte-tabel (7–21,8 kWh)",
+      "caption": "Mediaan beleidseffect per batterijgrootte. ENGINE RESULT — geen voorspelling en geen landelijk gemiddelde."
     },
     {
       "filename": "optional-trading-downside.svg",
-      "intended_section_h2": "Wat gebeurt er als onbalanshandel minder oplevert?",
+      "intended_section_h2": "Hoe kan handel extra waarde toevoegen? (§ Wat als de handelsopbrengst lager uitvalt?)",
       "accessible_title": "Onbalanshandel: break-even hangt af van de onzekere bruto-referentie",
       "alt": "Staafgrafiek van de benodigde break-even marktfactor per bruto-referentie: 42% bij €300, 21% bij €600, 14% bij €900, 10% bij €1.200; er is geen universele 25%.",
       "source_classification": "SCENARIO-OVERLAY — niet fysiek gesimuleerde onbalansopbrengst",
-      "local_source_path": "production-visuals/optional-trading-downside.svg",
-      "proposed_production_destination": "Cloudinary: batterijenplan/blog/2027/optional-trading-downside.svg",
-      "upload_required": true,
-      "human_action_required": "Upload SVG, then visual_patch insert an <img> after the section H2 (first visual in the section).",
-      "sha256": "f147a3111d417a86c32ad6d77cedd1e2135eceb32c8359ec1e420d0c2aa3d8bf"
+      "local_source_path": "frontend/public/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/optional-trading-downside.svg",
+      "sha256": "f147a3111d417a86c32ad6d77cedd1e2135eceb32c8359ec1e420d0c2aa3d8bf",
+      "public_url": "/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/optional-trading-downside.svg",
+      "repo_source_copy": "research/seo/article-drafts/energieprijzen-stijgen-thuisbatterij-voordeel-2027/v6-seo-authority-rebuild/production-visuals/optional-trading-downside.svg",
+      "embedded_in_body": true,
+      "inserted_in_section": "Hoe kan handel extra waarde toevoegen? (§ Wat als de handelsopbrengst lager uitvalt?)",
+      "inserted_after": "na de break-even tabel (€300/€600/€900/€1.200)",
+      "caption": "Benodigde break-even marktfactor per bruto-handelsreferentie. SCENARIO-OVERLAY — geen gesimuleerde handelsopbrengst en geen voorspelling."
     },
     {
       "filename": "reserve-opportunity-cost-distribution.svg",
-      "intended_section_h2": "Wat gebeurt er als onbalanshandel minder oplevert?",
+      "intended_section_h2": "Hoe kan handel extra waarde toevoegen?",
       "accessible_title": "Capaciteit reserveren voor handel kost meestal weinig — maar niet voor iedereen",
       "alt": "Gegroepeerde staven per reservefractie (10–50%): mediaan verlies zelfconsumptie €0,6–€65,2, gemiddelde €11,6–€107,8, maximum €62,6–€379,1; mediaan ver onder het gemiddelde.",
       "source_classification": "SCENARIO STUDY (verdeling reserve-opportuniteitskosten)",
-      "local_source_path": "production-visuals/reserve-opportunity-cost-distribution.svg",
-      "proposed_production_destination": "Cloudinary: batterijenplan/blog/2027/reserve-opportunity-cost-distribution.svg",
-      "upload_required": true,
-      "human_action_required": "Upload SVG, then visual_patch insert an <img> after the reserve table (second visual in the section).",
-      "sha256": "05a97152dd7335ccb18dabbed5d52a9ff272594b6a15d2b37f70bd594f76926f"
+      "local_source_path": "frontend/public/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/reserve-opportunity-cost-distribution.svg",
+      "sha256": "05a97152dd7335ccb18dabbed5d52a9ff272594b6a15d2b37f70bd594f76926f",
+      "public_url": "/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/reserve-opportunity-cost-distribution.svg",
+      "repo_source_copy": "research/seo/article-drafts/energieprijzen-stijgen-thuisbatterij-voordeel-2027/v6-seo-authority-rebuild/production-visuals/reserve-opportunity-cost-distribution.svg",
+      "embedded_in_body": true,
+      "inserted_in_section": "Hoe kan handel extra waarde toevoegen?",
+      "inserted_after": "na de reserve-tabel (10–50% gereserveerd voor handel)",
+      "caption": "Zelfconsumptieverlies bij capaciteit die voor handel wordt gereserveerd, 12,6 kWh. ENGINE RESULT — scenariostudie, geen voorspelling."
     }
   ],
   "brand_restyle": {
@@ -91,5 +109,8 @@
       "optional-trading-downside.svg": "f147a3111d417a86c32ad6d77cedd1e2135eceb32c8359ec1e420d0c2aa3d8bf",
       "reserve-opportunity-cost-distribution.svg": "05a97152dd7335ccb18dabbed5d52a9ff272594b6a15d2b37f70bd594f76926f"
     }
-  }
+  },
+  "public_url_base": "/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027",
+  "embedded_in_body": true,
+  "responsive": "Global CSS 'img { max-width:100%; display:block }' + each SVG viewBox+width=100% => scales to column; no horizontal overflow."
 }

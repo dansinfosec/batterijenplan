@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 836 576" width="100%" height="auto" font-family="'Inter','Archivo','Segoe UI',system-ui,Arial,sans-serif" role="img" aria-labelledby="hm-title hm-desc">
+  <title id="hm-title">Zuiver beleidseffect (einde saldering) per huishoudprofiel in euro per jaar</title>
+  <desc id="hm-desc">Warmtekaart van het zuivere beleidseffect (einde saldering) bij een batterij van 12,6 kWh, zonder terugleverkosten, in euro per jaar. Rijen zijn jaarverbruik, kolommen zijn de PV-verhouding. Bij 2.500 kWh: 172, 233, 222, 255 en 278 euro. Bij 3.500 kWh: 238, 321, 314, 358 en 390 euro. Bij 4.500 kWh: 304, 409, 405, 462 en 502 euro. Bij 6.000 kWh: 403, 541, 541, 613 en 645 euro. Bij 8.000 kWh: 535, 706, 692, 741 en 761 euro. Het effect groeit vooral met het jaarverbruik; het minimum is 172 en het maximum 761 euro per jaar.</desc>
+  <defs><pattern id="hatchK" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#F7F6F2"/><path d="M-1,1 l2,-2 M0,9 l9,-9 M8,10 l2,-2" stroke="#12130F" stroke-width="1.7"/></pattern><pattern id="hatchC" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#F7F6F2"/><path d="M-1,1 l2,-2 M0,9 l9,-9 M8,10 l2,-2" stroke="#B4592E" stroke-width="1.9"/></pattern></defs><rect x="12" y="12" width="822" height="562" fill="#12130F"/><rect x="4" y="4" width="822" height="562" fill="#F7F6F2" stroke="#12130F" stroke-width="2.5"/><rect x="5" y="5" width="54" height="9" fill="#FFD100"/>
+  <text x="30" y="34" font-size="18" font-weight="700" fill="#12130F">Zuiver beleidseffect (einde saldering) per huishoudprofiel</text>
+  <text x="30" y="54" font-size="12.5" fill="#4C4D46">€/jaar · batterij 12,6 kWh · zonder terugleverkosten · scenariowaarde, geen voorspelling</text>
+
+  <!-- axis titles -->
+  <text x="450" y="82" font-size="12.5" font-weight="600" fill="#12130F" text-anchor="middle">PV-verhouding (opwek ÷ verbruik) →</text>
+  <text x="40" y="265" font-size="12.5" font-weight="600" fill="#12130F" text-anchor="middle" transform="rotate(-90 40 265)">Jaarverbruik (kWh) ↓</text>
+
+  <!-- column headers -->
+  <text x="234" y="105" font-size="12" fill="#4C4D46" text-anchor="middle">0,60</text>
+  <text x="342" y="105" font-size="12" fill="#4C4D46" text-anchor="middle">0,90</text>
+  <text x="450" y="105" font-size="12" fill="#4C4D46" text-anchor="middle">1,20</text>
+  <text x="558" y="105" font-size="12" fill="#4C4D46" text-anchor="middle">1,60</text>
+  <text x="666" y="105" font-size="12" fill="#4C4D46" text-anchor="middle">2,00</text>
+
+  <!-- row labels -->
+  <text x="170" y="150" font-size="12" fill="#4C4D46" text-anchor="end">2.500</text>
+  <text x="170" y="210" font-size="12" fill="#4C4D46" text-anchor="end">3.500</text>
+  <text x="170" y="270" font-size="12" fill="#4C4D46" text-anchor="end">4.500</text>
+  <text x="170" y="330" font-size="12" fill="#4C4D46" text-anchor="end">6.000</text>
+  <text x="170" y="390" font-size="12" fill="#4C4D46" text-anchor="end">8.000</text>
+
+  <!-- Row 2500 -->
+  <rect x="180" y="115" width="108" height="60" fill="#f7f6f2" stroke="#12130F" stroke-width="1.5"/><text x="234" y="150" font-size="13" font-weight="600" fill="#12130F" text-anchor="middle">172</text>
+  <rect x="288" y="115" width="108" height="60" fill="#f8f3de" stroke="#12130F" stroke-width="1.5"/><text x="342" y="150" font-size="13" font-weight="600" fill="#12130F" text-anchor="middle">233</text>
+  <rect x="396" y="115" width="108" height="60" fill="#f8f4e1" stroke="#12130F" stroke-width="1.5"/><text x="450" y="150" font-size="13" font-weight="600" fill="#12130F" text-anchor="middle">222</text>
+  <rect x="504" y="115" width="108" height="60" fill="#f9f3d6" stroke="#12130F" stroke-width="1.5"/><text x="558" y="150" font-size="13" font-weight="600" fill="#12130F" text-anchor="middle">255</text>
+  <rect x="612" y="115" width="108" height="60" fill="#f9f2cf" stroke="#12130F" stroke-width="1.5"/><text x="666" y="150" font-size="13" font-weight="600" fill="#12130F" text-anchor="middle">278</text>
+
+  <!-- Row 3500 -->
+  <rect x="180" y="175" width="108" height="60" fill="#f8f3dc" stroke="#12130F" stroke-width="1.5"/><text x="234" y="210" font-size="13" font-weight="600" fill="#12130F" text-anchor="middle">238</text>
+  <rect x="288" y="175" width="108" height="60" fill="#faf0c1" stroke="#12130F" stroke-width="1.5"/><text x="342" y="210" font-size="13" font-weight="600" fill="#12130F" text-anchor="middle">321</text>
+  <rect x="396" y="175" width="108" height="60" fill="#faf0c3" stroke="#12130F" stroke-width="1.5"/><text x="450" y="210" font-size="13" font-weight="600" fill="#12130F" text-anchor="middle">314</text>
+  <rect x="504" y="175" width="108" height="60" fill="#fbeeb4" stroke="#12130F" stroke-width="1.5"/><text x="558" y="210" font-size="13" font-weight="600" fill="#12130F" text-anchor="middle">358</text>
+  <rect x="612" y="175" width="108" height="60" fill="#fbedaa" stroke="#12130F" stroke-width="1.5"/><text x="666" y="210" font-size="13" font-weight="600" fill="#12130F" text-anchor="middle">390</text>
+
+  <!-- Row 4500 -->
+  <rect x="180" y="235" width="108" height="60" fill="#f9f1c6" stroke="#12130F" stroke-width="1.5"/><text x="234" y="270" font-size="13" font-weight="600" fill="#12130F" text-anchor="middle">304</text>
+  <rect x="288" y="235" width="108" height="60" fill="#fbeca3" stroke="#12130F" stroke-width="1.5"/><text x="342" y="270" font-size="13" font-weight="600" fill="#12130F" text-anchor="middle">409</text>
+  <rect x="396" y="235" width="108" height="60" fill="#fbeca5" stroke="#12130F" stroke-width="1.5"/><text x="450" y="270" font-size="13" font-weight="600" fill="#12130F" text-anchor="middle">405</text>
+  <rect x="504" y="235" width="108" height="60" fill="#fce782" stroke="#12130F" stroke-width="1.5"/><text x="558" y="270" font-size="13" font-weight="600" fill="#12130F" text-anchor="middle">462</text>
+  <rect x="612" y="235" width="108" height="60" fill="#fde05b" stroke="#12130F" stroke-width="1.5"/><text x="666" y="270" font-size="13" font-weight="600" fill="#12130F" text-anchor="middle">502</text>
+
+  <!-- Row 6000 -->
+  <rect x="180" y="295" width="108" height="60" fill="#fbeca5" stroke="#12130F" stroke-width="1.5"/><text x="234" y="330" font-size="13" font-weight="600" fill="#12130F" text-anchor="middle">403</text>
+  <rect x="288" y="295" width="108" height="60" fill="#feda35" stroke="#12130F" stroke-width="1.5"/><text x="342" y="330" font-size="13" font-weight="600" fill="#12130F" text-anchor="middle">541</text>
+  <rect x="396" y="295" width="108" height="60" fill="#feda35" stroke="#12130F" stroke-width="1.5"/><text x="450" y="330" font-size="13" font-weight="600" fill="#12130F" text-anchor="middle">541</text>
+  <rect x="504" y="295" width="108" height="60" fill="#e7be02" stroke="#12130F" stroke-width="1.5"/><text x="558" y="330" font-size="13" font-weight="600" fill="#F7F6F2" text-anchor="middle">613</text>
+  <rect x="612" y="295" width="108" height="60" fill="#b99904" stroke="#12130F" stroke-width="1.5"/><text x="666" y="330" font-size="13" font-weight="600" fill="#F7F6F2" text-anchor="middle">645</text>
+
+  <!-- Row 8000 -->
+  <rect x="180" y="355" width="108" height="60" fill="#fedb3b" stroke="#12130F" stroke-width="1.5"/><text x="234" y="390" font-size="13" font-weight="600" fill="#12130F" text-anchor="middle">535</text>
+  <rect x="288" y="355" width="108" height="60" fill="#61520a" stroke="#12130F" stroke-width="1.5"/><text x="342" y="390" font-size="13" font-weight="600" fill="#F7F6F2" text-anchor="middle">706</text>
+  <rect x="396" y="355" width="108" height="60" fill="#756209" stroke="#12130F" stroke-width="1.5"/><text x="450" y="390" font-size="13" font-weight="600" fill="#F7F6F2" text-anchor="middle">692</text>
+  <rect x="504" y="355" width="108" height="60" fill="#2f2a0d" stroke="#12130F" stroke-width="1.5"/><text x="558" y="390" font-size="13" font-weight="600" fill="#F7F6F2" text-anchor="middle">741</text>
+  <rect x="612" y="355" width="108" height="60" fill="#12130f" stroke="#12130F" stroke-width="1.5"/><text x="666" y="390" font-size="13" font-weight="600" fill="#F7F6F2" text-anchor="middle">761</text>
+
+  <!-- legend -->
+  <defs>
+    <linearGradient id="hm-scale" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F7F6F2"/><stop offset="0.5" stop-color="#FFD100"/>
+      <stop offset="1" stop-color="#12130F"/>
+    </linearGradient>
+  </defs>
+  <text x="180" y="452" font-size="11.5" fill="#4C4D46">Kleurschaal (€/jaar):</text>
+  <rect x="300" y="442" width="240" height="14" fill="url(#hm-scale)" stroke="#C9C5BA" stroke-width="1"/>
+  <text x="298" y="452" font-size="11" fill="#6B6C64" text-anchor="end">€172</text>
+  <text x="546" y="452" font-size="11" fill="#6B6C64" text-anchor="start">€761</text>
+
+  <text x="30" y="510" font-size="11" fill="#6B6C64">Bron: bp-dispatch-v1 · outputs/2027-study-v5-1/ · ENGINE RESULT (zuiver beleidseffect, kosteneffect uitgezet)</text>
+  <text x="30" y="528" font-size="10.5" fill="#6B6C64">Classificatie: SCENARIO STUDY — geen voorspelling, geen landelijk gemiddelde</text>
+
+
+<rect x="648" y="22" width="112" height="20" fill="#F7F6F2" stroke="#12130F" stroke-width="2"/><text x="657" y="36" font-size="10.5" font-family="'IBM Plex Mono',ui-monospace,monospace" letter-spacing="0.06em" fill="#12130F">ENGINE RESULT</text>
+</svg>

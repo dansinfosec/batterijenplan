@@ -36,6 +36,10 @@ Om te weten wat het **einde van salderen op zichzelf** doet, vergelijken we de b
 | batterijwaarde ná 2027 (geen saldering) | €297 | €97 … €588 |
 | **zuiver effect van einde salderen** | **€405** | **€172 … €760** |
 
+![Warmtekaart van het zuivere beleidseffect per huishoudprofiel (12,6 kWh, zonder terugleverkosten), oplopend van €172 bij laag verbruik en weinig PV tot €761 bij hoog verbruik en veel PV.](/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/pure-policy-effect-heatmap.svg)
+
+*Zuiver beleidseffect (einde saldering) per huishoudprofiel, 12,6 kWh. ENGINE RESULT — spreiding over 25 profielen, geen voorspelling en geen landelijk gemiddelde.*
+
 Dus: puur door het wegvallen van saldering wordt een 12,6 kWh-batterij mediaan zo'n **€405 per jaar** meer waard. Bij huishoudens met veel zonnepanelen en hoog verbruik loopt dat op tot €760; bij kleine profielen blijft het rond €172. Merk op: dit cijfer bevat **nog geen** terugleverkosten en **geen** handelsopbrengst.
 
 ## Hoeveel voordeel komt door vermeden terugleverkosten?
@@ -54,6 +58,10 @@ Een transparante voorbeeldberekening voor één representatief scenario — het 
 
 Voor dít scenario tellen de zelfconsumptie-componenten exact op: €390 + €202 + €0 = €592. Dit is **één representatief scenario — geen landelijk gemiddelde en geen decompositie van de afzonderlijke medianen** — en het beschrijft alleen zelfconsumptie, niet de handelswaarde.
 
+![Waterval voor representatief scenario C3500_R2.00: zuiver beleidseffect €390 plus vermeden terugleverkosten €202 plus interactie €0 is samen €592 totale verandering per jaar.](/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/policy-versus-fee-waterfall.svg)
+
+*Opbouw van de €592 voor één representatief scenario (C3500_R2.00). ENGINE RESULT — representatief scenario, geen landelijk gemiddelde en geen decompositie van de losse medianen.*
+
 ### Waarom de kostenstructuur telt
 
 "Een batterij haalt je terugleverkosten weg" klopt niet altijd. Het hangt volledig af van **hoe** je leverancier ze rekent:
@@ -71,6 +79,10 @@ Voor dít scenario tellen de zelfconsumptie-componenten exact op: €390 + €20
 *(mediaan over 25 huishoudens, 12,6 kWh-referentiebatterij)*
 
 Bij een **per-kWh**-tarief bespaart elke vermeden kilowattuur geld; bij een **staffel** alleen als je onder een grens zakt; bij een **vast bedrag** bespaart een batterij niets. Reken dus nooit met "de terugleverkosten verdwijnen" zonder eerst je eigen contract te kennen.
+
+![Staafgrafiek van mediane vermeden terugleverkosten (12,6 kWh): per kWh €0,15 €303, €0,10 €202, €0,05 €101, hybride €101, maandstaffel €92, jaarstaffel €90, vast bedrag €0.](/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/feed-in-structure-comparison.svg)
+
+*Mediaan vermeden terugleverkosten per tariefstructuur, 12,6 kWh. ENGINE RESULT — mediaan over 25 huishoudens, geen landelijk gemiddelde.*
 
 ## Resultaten voor 25 huishoudprofielen
 
@@ -95,6 +107,10 @@ Puur voor **zelfconsumptie** is meer kWh niet evenredig meer waarde. Het mediane
 | 12,6 kWh | €405 | €761 |
 | 21,8 kWh | €407 | €895 |
 
+![Staafgrafiek: mediaan beleidseffect loopt van €391 (7 kWh) naar €407 (21,8 kWh) — nauwelijks hoger — terwijl het maximum doorstijgt van €539 naar €895.](/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/battery-size-diminishing-returns.svg)
+
+*Mediaan beleidseffect per batterijgrootte. ENGINE RESULT — geen voorspelling en geen landelijk gemiddelde.*
+
 De mediaan loopt van €391 (7 kWh) naar €407 (21,8 kWh) — nauwelijks meer, ondanks veel meer capaciteit — omdat de batterij 's avonds al leeg is en 's nachts nog niet bijgevuld. Alleen bij veel structureel overschot vult een grote batterij nog bij (het maximum stijgt wél door). **Belangrijk:** dit gaat over zelfconsumptie. Voor **handel** kan extra capaciteit juist wél waarde toevoegen, want die reikt verder dan wat je zelf verbruikt. De optimale maat hangt dus af van of je alleen zelfconsumptie wilt of ook wilt handelen — reken je situatie door met de [thuisbatterij-calculator](/calculator).
 
 ## Hoe kan handel extra waarde toevoegen?
@@ -116,6 +132,10 @@ Reserveren van batterijcapaciteit voor handel kost meestal wéinig zelfconsumpti
 | 30% | €8,0 | €46,6 | €205,6 | 48% |
 | 50% | €65,2 | €107,8 | €379,1 | 30% |
 
+![Verdeling van het zelfconsumptieverlies wanneer een deel van de batterijcapaciteit voor handel wordt gereserveerd: bij 10% reserve mediaan €0,6 (max €62,6), bij 50% reserve mediaan €65,2 (max €379,1).](/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/reserve-opportunity-cost-distribution.svg)
+
+*Zelfconsumptieverlies bij capaciteit die voor handel wordt gereserveerd, 12,6 kWh. ENGINE RESULT — scenariostudie, geen voorspelling.*
+
 Voor de meeste huishoudens is de opportuniteitskost bij een beperkte reserve (10–20%) klein (mediaan €0,6–€1,4), dus er blijft veel ruimte om handel bovenop zelfconsumptie te doen. Alleen een minderheid met veel PV-overschot levert meer in. Er is dus geen universeel reservecijfer.
 
 ### Wat als de handelsopbrengst lager uitvalt?
@@ -128,6 +148,10 @@ Omdat we handel niet simuleren, gebruiken we externe **referentiescenario's** (�
 | €600/jaar | 21% |
 | €900/jaar | 14% |
 | €1.200/jaar | 10% |
+
+![Staafgrafiek van de benodigde break-even marktfactor per bruto-referentie: 42% bij €300, 21% bij €600, 14% bij €900, 10% bij €1.200; er is geen universele 25%.](/blog-assets/energieprijzen-stijgen-thuisbatterij-voordeel-2027/optional-trading-downside.svg)
+
+*Benodigde break-even marktfactor per bruto-handelsreferentie. SCENARIO-OVERLAY — geen gesimuleerde handelsopbrengst en geen voorspelling.*
 
 De break-even bruto-referentie ligt rond **€126/jaar**. Er is dus geen universele "je hoeft maar 25% te halen": het hangt af van welke (onzekere) referentie je gelooft. Bij een marktfactor van 0% doet het EMS simpelweg niet mee en houd je gewoon je zelfconsumptiewaarde — precies de `max(0, …)`-logica. Kort gezegd: hoe lager de kosten en hoe hoger de marktwaarde, hoe meer netto waarde handel bovenop zelfconsumptie legt.
 
@@ -235,3 +259,4 @@ Voor zelfconsumptie voegt capaciteit boven ongeveer 10 kWh weinig extra waarde t
 Nee. Day-ahead werkt met een dag vooruit vastgestelde uurprijzen; onbalans draait om real-time bijsturen in kwartieren en is veel onvoorspelbaarder. Opbrengsten uit de één zeggen niets over de ander.
 
 *Bron: eigen kwartiersimulatie van Batterijenplan voor de zelfconsumptiewaarde (25 huishoudprofielen, 4 batterijen, meerdere kostenstructuren). Handelsopbrengsten zijn niet gesimuleerd. Juridische feiten: Rijksoverheid (salderingsregeling), ACM (terugleverkosten, 8 mei 2024 en 17 december 2025) en Consumentenbond. Scenariostudie — geen voorspelling of gegarandeerde opbrengst.*
+
