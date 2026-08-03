@@ -518,10 +518,21 @@ article.post-detail > img.cover {
   }
 }
 
-/* leesvoortgang bovenin, als laadbalk */
-.read-progress {
-  position: fixed; top: 64px; left: 0; height: 5px;
-  background: var(--volt); z-index: 9; width: 0;
+/* Leesvoortgang: dunne balk vastgezet aan de bovenrand van de viewport. Groeit
+   horizontaal via scaleX (geen layout-breedte-wijziging), blokkeert geen clicks,
+   reserveert geen hoogte, en staat boven de sticky header (z-index 10). */
+.reading-progress {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 4px;
+  pointer-events: none;
+  z-index: 9999;
+}
+.reading-progress__bar {
+  width: 100%; height: 100%;
+  background: var(--volt);
+  transform: scaleX(var(--reading-progress, 0));
+  transform-origin: left center;
+  will-change: transform;
 }
 
 /* ── Gerelateerde artikelen ── */
@@ -1548,8 +1559,8 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
   .nav-cta { order: 2; }
   .nav { order: 3; width: 100%; gap: 20px; }
   .nav a { display: inline-block; padding: 6px 0; } /* tap-target */
-  /* Header is nu hoger dan 64px: laadbalk bovenop het scherm zelf */
-  .read-progress { top: 0; height: 4px; z-index: 11; }
+  /* Leesvoortgangsbalk zit nu op alle breedtes aan de bovenrand (top:0), dus geen
+     mobiele override meer nodig — zie .reading-progress in de basisregels. */
 
   /* Hero / homepage */
   .hero { padding: 44px 0 48px; }

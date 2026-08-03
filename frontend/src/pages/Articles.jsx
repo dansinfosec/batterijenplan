@@ -70,8 +70,13 @@ export default function Articles() {
     window.scrollTo(0, 0);
   }, []);
 
-  const items = posts.data?.results ?? posts.data ?? [];
+  // fetchPosts levert nu ALLE pagina's (volledige, ontdubbelde lijst in API-volgorde),
+  // niet alleen de eerste DRF-pagina. Fallback op .results/[] blijft voor de zekerheid.
+  const items = Array.isArray(posts.data)
+    ? posts.data
+    : posts.data?.results ?? [];
   // Uitgelicht = de eerste post uit de bestaande sortering (geen backend-wijziging).
+  // rest begint bij index 1, dus het uitgelichte artikel verschijnt nooit dubbel.
   const featured = items[0];
   const rest = items.slice(1);
 

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch.js";
 import { fetchPost, fetchComments, postComment } from "../api.js";
@@ -63,26 +63,46 @@ function enhanceArticleBody(html) {
   }
 }
 
+// Leesvoortgangsbalk: dun, vastgezet aan de bovenrand van de viewport, groeit
+// horizontaal via CSS `transform: scaleX(var(--reading-progress))` (geen layout-
+// breedte-wijziging). Berekening geklemd op 0..1, rAF-gethrottled, en luistert op
+// scroll + resize; listeners worden bij unmount opgeruimd. Alleen op artikelpagina's.
 function ReadProgress() {
-  const [w, setW] = useState(0);
+  const barRef = useRef(null);
 
   useEffect(() => {
-    const onScroll = () => {
-      const h = document.documentElement;
-      const max = h.scrollHeight - h.clientHeight;
-      setW(max > 0 ? (h.scrollTop / max) * 100 : 0);
+    let frame = 0;
+
+    const apply = () => {
+      frame = 0;
+      const scrollable =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollable > 0 ? window.scrollY / scrollable : 0;
+      const clamped = Math.min(1, Math.max(0, progress)); // nooit < 0 of > 1, geen NaN/Infinity
+      if (barRef.current) {
+        barRef.current.style.setProperty("--reading-progress", String(clamped || 0));
+      }
     };
 
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const onChange = () => {
+      if (!frame) frame = requestAnimationFrame(apply); // één update per frame; geen dubbele listeners
+    };
+
+    apply(); // initiële stand (0% boven aan het artikel, ook na route-wissel + scrollTo(0,0))
+    window.addEventListener("scroll", onChange, { passive: true });
+    window.addEventListener("resize", onChange, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", onChange);
+      window.removeEventListener("resize", onChange);
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, []);
 
   return (
-    <div
-      className="read-progress"
-      style={{ width: `${w}%` }}
-      aria-hidden="true"
-    />
+    <div className="reading-progress" aria-hidden="true">
+      <div className="reading-progress__bar" ref={barRef} />
+    </div>
   );
 }
 

@@ -2,6 +2,8 @@
 // In productie wijst VITE_API_BASE_URL naar de gedeployde backend (zonder /api
 // en zonder trailing slash); zonder die variabele valt een productie-build
 // terug op de canonieke API-URL.
+import { fetchAllPages } from "./pagination.js";
+
 const PROD_API_ORIGIN = "https://api.batterijenplan.nl";
 const API_ORIGIN = (
   import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? PROD_API_ORIGIN : "")
@@ -14,12 +16,29 @@ async function get(path) {
   return res.json();
 }
 
+// DRF builds `next` as an absolute URL from the request host, which in dev (Vite proxy) or behind a
+// proxy can differ from our configured API origin. Re-point every page request to API_ORIGIN so all
+// pages are fetched same-origin/proxied regardless of the host embedded in `next`.
+function sameOriginFetch(url) {
+  let target = url;
+  try {
+    const base = typeof window !== "undefined" ? window.location.origin : "http://localhost";
+    const parsed = new URL(url, base);
+    target = `${API_ORIGIN}${parsed.pathname}${parsed.search}`;
+  } catch {
+    /* leave target as-is if URL parsing fails */
+  }
+  return fetch(target);
+}
+
+// Returns EVERY published post across all API pages (ordering preserved, deduped by slug), not just
+// the first page. Server-side tag/search filters are applied to the query and paginated the same way.
 export const fetchPosts = ({ tag, search } = {}) => {
   const params = new URLSearchParams();
   if (tag) params.set("tag", tag);
   if (search) params.set("search", search);
   const qs = params.toString();
-  return get(`/posts/${qs ? `?${qs}` : ""}`);
+  return fetchAllPages(`${BASE}/posts/${qs ? `?${qs}` : ""}`, sameOriginFetch);
 };
 
 export const fetchPost = (slug) => get(`/posts/${slug}/`);
