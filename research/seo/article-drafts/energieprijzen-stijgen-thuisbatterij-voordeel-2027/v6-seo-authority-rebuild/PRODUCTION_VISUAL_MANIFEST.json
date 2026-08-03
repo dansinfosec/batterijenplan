@@ -1,0 +1,95 @@
+{
+  "note": "Visuals are NOT inlined in the full_body release (text/tables only). They are added AFTER hosting via a seo_release_v2 'visual_patch' run (anchor = the H2 line of the intended section). No upload performed here (Cloudinary is out of scope for this task).",
+  "hosting_decision": "Site serves images via Cloudinary (Post.cover_image upload_to='batterijenplan/blog/'; frontend images.js optimizedImageUrl). In-body <img> needs a public https URL. SVG is acceptable on Cloudinary or the site /public. Proposed Cloudinary folder: batterijenplan/blog/2027/.",
+  "final_production_copies": "research/seo/article-drafts/energieprijzen-stijgen-thuisbatterij-voordeel-2027/v6-seo-authority-rebuild/production-visuals/ (6 SVGs, XML-validated)",
+  "visuals": [
+    {
+      "filename": "policy-versus-fee-waterfall.svg",
+      "intended_section_h2": "Hoeveel voordeel komt door vermeden terugleverkosten?",
+      "accessible_title": "Waterval: waaruit bestaat de totale verandering na 2027 voor één representatief scenario?",
+      "alt": "Waterval voor representatief scenario C3500_R2.00: zuiver beleidseffect €390 plus vermeden terugleverkosten €202 plus interactie €0 is samen €592 totale verandering per jaar.",
+      "source_classification": "SCENARIO STUDY (representatief scenario, geen landelijk gemiddelde)",
+      "local_source_path": "production-visuals/policy-versus-fee-waterfall.svg",
+      "proposed_production_destination": "Cloudinary: batterijenplan/blog/2027/policy-versus-fee-waterfall.svg",
+      "upload_required": true,
+      "human_action_required": "Upload SVG, then visual_patch insert an <img> after the section H2.",
+      "sha256": "5952ea937605d670e4a45a48535bd08bb7c01b9d5471949e59330010207a9af6"
+    },
+    {
+      "filename": "pure-policy-effect-heatmap.svg",
+      "intended_section_h2": "Zuiver effect van het einde van salderen",
+      "accessible_title": "Zuiver beleidseffect (einde saldering) per huishoudprofiel in euro per jaar",
+      "alt": "Warmtekaart van het zuivere beleidseffect per huishoudprofiel (12,6 kWh, zonder terugleverkosten), oplopend van €172 bij laag verbruik en weinig PV tot €761 bij hoog verbruik en veel PV.",
+      "source_classification": "SCENARIO STUDY (25 ongewogen profielen, geen landelijk gemiddelde)",
+      "local_source_path": "production-visuals/pure-policy-effect-heatmap.svg",
+      "proposed_production_destination": "Cloudinary: batterijenplan/blog/2027/pure-policy-effect-heatmap.svg",
+      "upload_required": true,
+      "human_action_required": "Upload SVG, then visual_patch insert an <img> after the section H2.",
+      "sha256": "6fd7ae6b079b89dc00fa39f9789cad3e8fa488c90b00b04e33d9a7d696536a80"
+    },
+    {
+      "filename": "feed-in-structure-comparison.svg",
+      "intended_section_h2": "Per kWh, staffel of vast bedrag: waarom de kostenstructuur telt",
+      "accessible_title": "Hoeveel terugleverkosten vermijdt een batterij per tariefstructuur?",
+      "alt": "Staafgrafiek van mediane vermeden terugleverkosten (12,6 kWh): per kWh €0,15 €303, €0,10 €202, €0,05 €101, hybride €101, maandstaffel €92, jaarstaffel €90, vast bedrag €0.",
+      "source_classification": "SCENARIO STUDY (mediaan over 25 huishoudens, 12,6 kWh)",
+      "local_source_path": "production-visuals/feed-in-structure-comparison.svg",
+      "proposed_production_destination": "Cloudinary: batterijenplan/blog/2027/feed-in-structure-comparison.svg",
+      "upload_required": true,
+      "human_action_required": "Upload SVG, then visual_patch insert an <img> after the section H2.",
+      "sha256": "e18fb0b62b3e22ba8848ba68a0361d76bcf764e67718f922f280c8fce72af6d7"
+    },
+    {
+      "filename": "battery-size-diminishing-returns.svg",
+      "intended_section_h2": "Welke batterijcapaciteit levert nog extra voordeel op?",
+      "accessible_title": "Grotere batterij, nauwelijks meer beleidseffect",
+      "alt": "Staafgrafiek: mediaan beleidseffect loopt van €391 (7 kWh) naar €407 (21,8 kWh) — nauwelijks hoger — terwijl het maximum doorstijgt van €539 naar €895.",
+      "source_classification": "SCENARIO STUDY (mediaan over 25 huishoudens)",
+      "local_source_path": "production-visuals/battery-size-diminishing-returns.svg",
+      "proposed_production_destination": "Cloudinary: batterijenplan/blog/2027/battery-size-diminishing-returns.svg",
+      "upload_required": true,
+      "human_action_required": "Upload SVG, then visual_patch insert an <img> after the section H2.",
+      "sha256": "3c08444b4ae369cbb6697e695b68ce697e319f543e4d2e5615bc29bcb29acc2b"
+    },
+    {
+      "filename": "optional-trading-downside.svg",
+      "intended_section_h2": "Wat gebeurt er als onbalanshandel minder oplevert?",
+      "accessible_title": "Onbalanshandel: break-even hangt af van de onzekere bruto-referentie",
+      "alt": "Staafgrafiek van de benodigde break-even marktfactor per bruto-referentie: 42% bij €300, 21% bij €600, 14% bij €900, 10% bij €1.200; er is geen universele 25%.",
+      "source_classification": "SCENARIO-OVERLAY — niet fysiek gesimuleerde onbalansopbrengst",
+      "local_source_path": "production-visuals/optional-trading-downside.svg",
+      "proposed_production_destination": "Cloudinary: batterijenplan/blog/2027/optional-trading-downside.svg",
+      "upload_required": true,
+      "human_action_required": "Upload SVG, then visual_patch insert an <img> after the section H2 (first visual in the section).",
+      "sha256": "f147a3111d417a86c32ad6d77cedd1e2135eceb32c8359ec1e420d0c2aa3d8bf"
+    },
+    {
+      "filename": "reserve-opportunity-cost-distribution.svg",
+      "intended_section_h2": "Wat gebeurt er als onbalanshandel minder oplevert?",
+      "accessible_title": "Capaciteit reserveren voor handel kost meestal weinig — maar niet voor iedereen",
+      "alt": "Gegroepeerde staven per reservefractie (10–50%): mediaan verlies zelfconsumptie €0,6–€65,2, gemiddelde €11,6–€107,8, maximum €62,6–€379,1; mediaan ver onder het gemiddelde.",
+      "source_classification": "SCENARIO STUDY (verdeling reserve-opportuniteitskosten)",
+      "local_source_path": "production-visuals/reserve-opportunity-cost-distribution.svg",
+      "proposed_production_destination": "Cloudinary: batterijenplan/blog/2027/reserve-opportunity-cost-distribution.svg",
+      "upload_required": true,
+      "human_action_required": "Upload SVG, then visual_patch insert an <img> after the reserve table (second visual in the section).",
+      "sha256": "05a97152dd7335ccb18dabbed5d52a9ff272594b6a15d2b37f70bd594f76926f"
+    }
+  ],
+  "brand_restyle": {
+    "date": "2026-08-03",
+    "identity": "Batterijenplan industrieel energielabel (paper/ink/volt/copper)",
+    "tokens_ref": "VISUAL_BRAND_TOKENS.json",
+    "report_ref": "VISUAL_BRAND_RESTYLE_REPORT.md",
+    "data_changed": false,
+    "old_palette_remaining": 0,
+    "sha256_visuals_and_production_visuals_identical": {
+      "policy-versus-fee-waterfall.svg": "5952ea937605d670e4a45a48535bd08bb7c01b9d5471949e59330010207a9af6",
+      "pure-policy-effect-heatmap.svg": "6fd7ae6b079b89dc00fa39f9789cad3e8fa488c90b00b04e33d9a7d696536a80",
+      "feed-in-structure-comparison.svg": "e18fb0b62b3e22ba8848ba68a0361d76bcf764e67718f922f280c8fce72af6d7",
+      "battery-size-diminishing-returns.svg": "3c08444b4ae369cbb6697e695b68ce697e319f543e4d2e5615bc29bcb29acc2b",
+      "optional-trading-downside.svg": "f147a3111d417a86c32ad6d77cedd1e2135eceb32c8359ec1e420d0c2aa3d8bf",
+      "reserve-opportunity-cost-distribution.svg": "05a97152dd7335ccb18dabbed5d52a9ff272594b6a15d2b37f70bd594f76926f"
+    }
+  }
+}

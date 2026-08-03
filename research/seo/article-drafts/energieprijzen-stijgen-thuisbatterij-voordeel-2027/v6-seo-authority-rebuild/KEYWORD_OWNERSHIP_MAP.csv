@@ -1,0 +1,22 @@
+keyword,search_volume,seo_difficulty,intended_owner_page,owner_url,this_article_role,cannibalisation_rule
+thuisbatterij calculator,NOT RESEARCHED (owned),NOT RESEARCHED,Calculator page,/thuisbatterij-calculator/,none,EXCLUDE - calculator owns; only link to it
+thuisbatterij capaciteit berekenen,NOT RESEARCHED (owned),NOT RESEARCHED,Calculator page,/thuisbatterij-calculator/,none,EXCLUDE - calculator owns
+thuisbatterij vermogen berekenen,NOT RESEARCHED (owned),NOT RESEARCHED,Calculator page,/thuisbatterij-calculator/,none,EXCLUDE - calculator owns
+thuisbatterij vergelijken,NOT RESEARCHED (owned),NOT RESEARCHED,Comparison article,/thuisbatterij-vergelijken/,none,EXCLUDE - comparison article owns; link only
+thuisbatterij terugverdientijd berekenen,NOT RESEARCHED (owned),NOT RESEARCHED,Payback article,/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie/,none,EXCLUDE - payback article owns; link only
+thuisbatterij dynamisch contract,110,14,Dynamic-contract article,/dynamisch-energiecontract-thuisbatterij/,supporting mention,EXCLUDE as target - dynamic-contract article owns; link only
+opbrengst thuisbatterij,20,46,Opbrengst article,/wat-levert-een-thuisbatterij-op/,supporting mention,EXCLUDE as target - opbrengst article owns; link only
+thuisbatterij rendement,50,31,Opbrengst article,/wat-levert-een-thuisbatterij-op/,supporting mention,EXCLUDE as target - opbrengst article owns
+thuisbatterij na 2027,140,15,2027 article (THIS),/energieprijzen-stijgen-thuisbatterij-voordeel-2027/,PRIMARY,OWN
+saldering 2027,110,42,2027 article (THIS),/energieprijzen-stijgen-thuisbatterij-voordeel-2027/,SECONDARY,OWN
+thuisbatterij 2027,20,43,2027 article (THIS),/energieprijzen-stijgen-thuisbatterij-voordeel-2027/,SECONDARY,OWN
+thuisbatterij zonder saldering,0,12,2027 article (THIS),/energieprijzen-stijgen-thuisbatterij-voordeel-2027/,SECONDARY (topical),OWN
+einde salderingsregeling thuisbatterij,0,12,2027 article (THIS),/energieprijzen-stijgen-thuisbatterij-voordeel-2027/,SECONDARY (topical),OWN
+thuisbatterij rendabel 2027,20,36,2027 article (THIS),/energieprijzen-stijgen-thuisbatterij-voordeel-2027/,SECONDARY,OWN
+terugleverkosten,6600,37,2027 article (THIS) - support angle,/energieprijzen-stijgen-thuisbatterij-voordeel-2027/,SECONDARY (avoid-with-battery angle only),OWN the battery-avoidance intent; head term shared with suppliers/Consumentenbond
+terugleverkosten voorkomen,70,21,2027 article (THIS),/energieprijzen-stijgen-thuisbatterij-voordeel-2027/,SECONDARY,OWN
+is een thuisbatterij rendabel,880,25,2027 article (THIS) - 2027 lens,/energieprijzen-stijgen-thuisbatterij-voordeel-2027/,SECONDARY,Partial overlap with opbrengst/payback; 2027 article owns the post-saldering rendability angle
+zelfconsumptie thuisbatterij,0,17,Self-consumption/storage article,/stroom-opslaan-zonnepanelen/,supporting topic,SHARED topic - use in body but link storage article; 2027 article owns post-2027 zelfconsumptie value
+thuisbatterij onbalansmarkt,70,10,EMS/onbalans article,/ems-systeem-thuisbatterij-controle-over-stroom/,supporting mention (downside overlay),EXCLUDE as target - link EMS article; 2027 article only frames imbalance as uncertain overlay
+hoeveel bespaar je met een thuisbatterij,30,31,2027 article (THIS) FAQ,/energieprijzen-stijgen-thuisbatterij-voordeel-2027/,FAQ,OWN via FAQ
+thuisbatterij verplicht 2027,0,12,2027 article (THIS) FAQ,/energieprijzen-stijgen-thuisbatterij-voordeel-2027/,FAQ (myth-busting),OWN via FAQ

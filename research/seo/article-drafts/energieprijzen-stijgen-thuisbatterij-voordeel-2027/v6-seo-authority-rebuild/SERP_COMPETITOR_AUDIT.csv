@@ -1,0 +1,19 @@
+keyword,position,type,domain,domain_authority,est_clicks,title,content_type,search_intent,uses_original_simulation,separates_policy_vs_fee,handles_fee_structures,treats_imbalance_vs_dayahead,shows_battery_size_diminishing,has_calculator,key_weakness,retrieval_date
+thuisbatterij na 2027,1,ai_overview,NODOMAIN,NOT RETURNED BY UBERSUGGEST MCP,NOT RETURNED BY UBERSUGGEST MCP,AI overview,Informational,no,no,no,no,no,no,AI summary of third-party pages; no original data,2026-07-01
+thuisbatterij na 2027,2,organic,zonneplan.nl,38,67,De impact van afschaffen salderen op je thuisbatterij,Vendor kennisbank,Informational/Commercial,no,no,no,no,partial,no,Vendor angle; explains impact qualitatively; no quarter-hour simulation or fee decomposition,2026-07-01
+thuisbatterij na 2027,4,organic,eigenhuis.nl,53,12,Afschaffen salderingsregeling 2027,Consumer org explainer,Informational,no,no,no,no,no,no,Policy explainer; no battery value quantification,2026-07-01
+thuisbatterij na 2027,5,organic,solarmagazine.nl,44,5,Einde salderingsregeling vanaf 2027: wachtrij thuisbatterij aanstaande,News,Informational,no,no,no,no,no,no,News; demand story not value analysis,2026-07-01
+thuisbatterij na 2027,6,organic,blenditpower.com,12,4,Salderen met een thuisbatterij in 2027: wat verandert er?,Vendor blog,Informational,no,no,no,no,no,no,Low authority; generic explainer,2026-07-01
+thuisbatterij na 2027,7,organic,jeroen.nl,32,4,Thuisbatterij terugverdienen vanaf 2027? Ja maar lang,Personal blog,Informational,no,no,no,no,partial,no,Opinion; payback framed as long; no transparent model,2026-07-01
+thuisbatterij na 2027,8,organic,rijksoverheid.nl,81,2,Salderingsregeling stopt in 2027,Official government,Informational,no,no,no,no,no,no,Authoritative on law only; no consumer value analysis,2026-07-01
+thuisbatterij na 2027,9,organic,youtube.com,100,1,Thuisbatterij of niet? Wat echt werkt na het einde,Video,Informational,no,no,no,no,no,no,Video; not indexable text depth,2026-07-01
+thuisbatterij na 2027,11,organic,weblog.independer.nl,56,1,Einde van salderen: wat gebeurt er vanaf 2027 met je energierekening,Comparison-site blog,Informational,no,no,no,no,no,no,Bill-focused; no battery simulation,2026-07-01
+thuisbatterij na 2027,13,organic,solarwatt.nl,35,1,Thuisbatterij na einde salderingsregeling: loont het nog?,Vendor kennisbank,Commercial,no,no,no,no,no,no,Vendor; qualitative loont-het framing,2026-07-01
+thuisbatterij na 2027,14,organic,ankersolix.com,51,2,Thuisbatterij kopen voor of na 2027? Dit verandert er,Vendor blog,Commercial,no,no,no,no,no,no,Buy-timing angle; product-led,2026-07-01
+terugleverkosten,1,ai_overview,NODOMAIN,NOT RETURNED BY UBERSUGGEST MCP,NOT RETURNED BY UBERSUGGEST MCP,AI overview,Informational,no,no,no,no,no,no,Summary only,2026-07-15
+terugleverkosten,2,organic,consumentenbond.nl,66,2594,Terugleverkosten en terugleververgoedingen zonnepanelen,Consumer org guide,Informational,no,no,partial,no,no,no,Dominant result; explains fees + lists suppliers; no battery-avoidance quantification,2026-07-15
+terugleverkosten,3,organic,essent.nl,48,410,Terugleverkosten zonnepanelen,Supplier page,Commercial/Informational,no,no,no,no,no,no,Supplier self-description of own tariff,2026-07-15
+terugleverkosten,5,organic,eigenhuis.nl,53,207,Terugleverkosten zonnepanelen,Consumer org explainer,Informational,no,no,no,no,no,no,General explainer,2026-07-15
+terugleverkosten,6,organic,overstappen.nl,39,250,Terugleverkosten zonnepanelen overzicht alle leveranciers,Comparison table,Informational,no,no,partial,no,no,no,Supplier fee list; no battery angle,2026-07-15
+terugleverkosten,7,organic,vandebron.nl,46,75,Zo werken onze terugleverkosten voor zonnepanelen,Supplier page,Commercial,no,no,no,no,no,no,Own-tariff page,2026-07-15
+terugleverkosten,8,organic,greenchoice.nl,47,37,Terugleverkosten bij zonnepanelen,Supplier page,Commercial,no,no,no,no,no,no,Own-tariff page,2026-07-15

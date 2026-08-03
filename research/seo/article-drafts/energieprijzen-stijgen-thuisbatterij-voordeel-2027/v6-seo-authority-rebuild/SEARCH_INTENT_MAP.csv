@@ -1,0 +1,14 @@
+keyword,search_volume,seo_difficulty,search_intent_ubersuggest,inferred_user_question,intent_stage,article_section_answering
+thuisbatterij na 2027,140,15,Informational,Is a home battery still worth it once saldering ends in 2027?,Consideration,H1 + "Is een thuisbatterij na 2027 meer waard?" (intro answer)
+saldering 2027,110,42,Informational,What changes with net metering in 2027?,Awareness,"Wat verandert er in 2027?"
+is een thuisbatterij rendabel,880,25,Informational,Is a home battery profitable (now / after 2027)?,Consideration,"Voor wie is een thuisbatterij na 2027 interessant?" + representative calculation
+terugleverkosten,6600,37,Informational,What are feed-in costs and how much are they?,Awareness,"Hoeveel voordeel komt door vermeden terugleverkosten?"
+terugleverkosten voorkomen,70,21,Informational,How can I avoid feed-in costs?,Consideration,"Per kWh, staffel of vast bedrag: waarom de kostenstructuur telt"
+thuisbatterij 2027,20,43,NOT RETURNED BY UBERSUGGEST MCP,What happens to home batteries in 2027?,Awareness,"Wat verandert er in 2027?"
+thuisbatterij rendabel 2027,20,36,NOT RETURNED BY UBERSUGGEST MCP,Is a battery profitable specifically after 2027?,Consideration,Representative calculation + conclusion
+thuisbatterij zonder saldering,0,12,NOT RETURNED BY UBERSUGGEST MCP,How does a battery work without net metering?,Consideration,"Waarom wordt zelfconsumptie meer waard?"
+hoeveel bespaar je met een thuisbatterij,30,31,NOT RETURNED BY UBERSUGGEST MCP,How much do I save with a home battery?,Consideration,Representative calculation + "Resultaten voor 25 huishoudprofielen"
+thuisbatterij verplicht 2027,0,12,NOT RETURNED BY UBERSUGGEST MCP,Is a home battery mandatory from 2027?,Awareness,FAQ (myth-busting)
+thuisbatterij onbalansmarkt,70,10,Commercial,Can I earn money trading on the imbalance market with a battery?,Evaluation,"Wat gebeurt er als onbalanshandel minder oplevert?" + "Waarom day-ahead en onbalans niet hetzelfde zijn"
+thuisbatterij dynamisch contract,110,14,Commercial,Do I need a dynamic contract for a battery?,Evaluation,Supporting mention -> link dynamic-contract article
+zelfconsumptie thuisbatterij,0,17,NOT RETURNED BY UBERSUGGEST MCP,How much self-consumption does a battery add?,Consideration,"Waarom wordt zelfconsumptie meer waard?"

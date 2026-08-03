@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 796 536" width="100%" height="auto" font-family="'Inter','Archivo','Segoe UI',system-ui,Arial,sans-serif" role="img" aria-labelledby="wf-title wf-desc">
+  <title id="wf-title">Waterval: waaruit bestaat de totale verandering na 2027 voor één representatief scenario?</title>
+  <desc id="wf-desc">Voor het representatieve scenario C3500_R2.00 (3.500 kWh verbruik, PV-verhouding 2,0; batterij 12,6 kWh; terugleverkosten 0,10 euro per kWh) bestaat de totale verandering van de batterijwaarde door 2027 uit een zuiver beleidseffect (einde saldering) van 390 euro per jaar plus vermeden terugleverkosten van 202 euro per jaar plus een interactie van 0 euro, samen 592 euro per jaar. Dit is de totale verandering (batterijwaarde na 2027 min batterijwaarde voor 2027). Het is een representatief scenario, geen landelijk gemiddelde en geen decompositie van de afzonderlijke medianen.</desc>
+  <defs><pattern id="hatchK" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#F7F6F2"/><path d="M-1,1 l2,-2 M0,9 l9,-9 M8,10 l2,-2" stroke="#12130F" stroke-width="1.7"/></pattern><pattern id="hatchC" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#F7F6F2"/><path d="M-1,1 l2,-2 M0,9 l9,-9 M8,10 l2,-2" stroke="#B4592E" stroke-width="1.9"/></pattern></defs><rect x="12" y="12" width="782" height="522" fill="#12130F"/><rect x="4" y="4" width="782" height="522" fill="#F7F6F2" stroke="#12130F" stroke-width="2.5"/><rect x="5" y="5" width="54" height="9" fill="#FFD100"/>
+  <text x="30" y="34" font-size="18.5" font-weight="700" fill="#12130F">Waaruit bestaat de totale verandering na 2027?</text>
+  <text x="30" y="54" font-size="12.5" fill="#4C4D46">Representatief scenario C3500_R2.00 · 12,6 kWh · terugleverkosten €0,10/kWh · totale verandering = waarde ná 2027 − vóór 2027</text>
+
+  <!-- gridlines -->
+  <line x1="70" y1="340" x2="760" y2="340" stroke="#C9C5BA" stroke-width="1"/>
+  <text x="62" y="344" font-size="11" fill="#6B6C64" text-anchor="end">€0</text>
+  <line x1="70" y1="256.7" x2="760" y2="256.7" stroke="#E7E3DA" stroke-width="1"/>
+  <text x="62" y="260" font-size="11" fill="#6B6C64" text-anchor="end">€200</text>
+  <line x1="70" y1="173.3" x2="760" y2="173.3" stroke="#E7E3DA" stroke-width="1"/>
+  <text x="62" y="177" font-size="11" fill="#6B6C64" text-anchor="end">€400</text>
+  <line x1="70" y1="90" x2="760" y2="90" stroke="#E7E3DA" stroke-width="1"/>
+  <text x="62" y="94" font-size="11" fill="#6B6C64" text-anchor="end">€600</text>
+
+  <!-- policy step: 0 -> 390 -->
+  <rect x="100" y="177.5" width="95" height="162.5" fill="#FFD100" stroke="#12130F" stroke-width="2"/>
+  <text x="147" y="366" font-size="12.5" fill="#12130F" text-anchor="middle" font-weight="600">Zuiver</text>
+  <text x="147" y="382" font-size="12.5" fill="#4C4D46" text-anchor="middle">beleidseffect</text>
+  <text x="147" y="169" font-size="13.5" fill="#8A6D00" text-anchor="middle" font-weight="700">+€390</text>
+
+  <!-- connector -->
+  <line x1="195" y1="177.5" x2="250" y2="177.5" stroke="#C9C5BA" stroke-width="1" stroke-dasharray="3 3"/>
+
+  <!-- fee step: 390 -> 592 -->
+  <rect x="250" y="93.3" width="95" height="84.2" fill="#B4592E" stroke="#12130F" stroke-width="2"/>
+  <text x="297" y="366" font-size="12.5" fill="#12130F" text-anchor="middle" font-weight="600">Vermeden</text>
+  <text x="297" y="382" font-size="12.5" fill="#4C4D46" text-anchor="middle">terugleverkosten</text>
+  <text x="297" y="85" font-size="13.5" fill="#B4592E" text-anchor="middle" font-weight="700">+€202</text>
+
+  <!-- connector -->
+  <line x1="345" y1="93.3" x2="400" y2="93.3" stroke="#C9C5BA" stroke-width="1" stroke-dasharray="3 3"/>
+
+  <!-- interaction: 0 -->
+  <line x1="400" y1="93.3" x2="495" y2="93.3" stroke="#12130F" stroke-width="3"/>
+  <text x="447" y="366" font-size="12.5" fill="#12130F" text-anchor="middle" font-weight="600">Interactie</text>
+  <text x="447" y="85" font-size="13.5" fill="#4C4D46" text-anchor="middle" font-weight="700">€0</text>
+
+  <!-- connector -->
+  <line x1="495" y1="93.3" x2="560" y2="93.3" stroke="#C9C5BA" stroke-width="1" stroke-dasharray="3 3"/>
+
+  <!-- total: 0 -> 592 -->
+  <rect x="566" y="99.3" width="110" height="246.7" fill="#FFD100"/><rect x="560" y="93.3" width="110" height="246.7" fill="#12130F" stroke="#12130F" stroke-width="2"/>
+  <text x="615" y="366" font-size="12.5" fill="#12130F" text-anchor="middle" font-weight="700">Totale</text>
+  <text x="615" y="382" font-size="12.5" fill="#4C4D46" text-anchor="middle">verandering</text>
+  <text x="615" y="85" font-size="14" fill="#12130F" text-anchor="middle" font-weight="700">€592</text>
+
+  <!-- additive note + required label -->
+  <text x="30" y="424" font-size="12.5" fill="#12130F" font-weight="600">€390 + €202 + €0 = €592 — voor dít scenario tellen de componenten exact op.</text>
+  <text x="30" y="446" font-size="12" fill="#B4592E" font-weight="600">Representatief scenario — geen landelijk gemiddelde en geen decompositie van de afzonderlijke medianen.</text>
+  <text x="30" y="480" font-size="11" fill="#6B6C64">Bron: bp-dispatch-v1 · outputs/2027-study-v5-1/ · profiel C3500_R2.00 (dichtst bij de mediane totale verandering)</text>
+  <text x="30" y="498" font-size="10.5" fill="#6B6C64">Classificatie: SCENARIO STUDY — geen voorspelling, geen landelijk gemiddelde</text>
+
+<rect x="588" y="22" width="112" height="20" fill="#F7F6F2" stroke="#12130F" stroke-width="2"/><text x="597" y="36" font-size="10.5" font-family="'IBM Plex Mono',ui-monospace,monospace" letter-spacing="0.06em" fill="#12130F">ENGINE RESULT</text>
+
+
+<rect x="608" y="22" width="112" height="20" fill="#F7F6F2" stroke="#12130F" stroke-width="2"/><text x="617" y="36" font-size="10.5" font-family="'IBM Plex Mono',ui-monospace,monospace" letter-spacing="0.06em" fill="#12130F">ENGINE RESULT</text>
+  <text x="30" y="514" font-size="10.5" font-family="'IBM Plex Mono',ui-monospace,monospace" fill="#6B6C64">GEEL = ZUIVER BELEIDSEFFECT · KOPER = VERMEDEN TERUGLEVERKOSTEN · ZWART = TOTAAL · HANDEL NIET MEEGEREKEND</text>
+</svg>

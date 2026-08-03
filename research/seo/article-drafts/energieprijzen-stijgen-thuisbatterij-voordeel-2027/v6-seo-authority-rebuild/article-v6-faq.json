@@ -1,0 +1,54 @@
+{
+  "faq": [
+    {
+      "question": "Is een thuisbatterij interessant in 2027?",
+      "answer": "Ja, vooral voor huishoudens met veel zonne-overschot en een per-kWh-terugleverkost. In de 25 onderzochte scenario's was de mediane batterijwaarde na 2027 ongeveer €499 per jaar bij €0,10/kWh terugleverkosten. De mediane verandering ten opzichte van de situatie vóór 2027 was ongeveer €592 per jaar. Dit zijn afzonderlijke verdelingsmedianen en geen gegarandeerde opbrengsten, en ze betreffen alleen zelfconsumptie — handel kan er netto bovenop komen.",
+      "primary_keyword": "thuisbatterij na 2027"
+    },
+    {
+      "question": "Wat gebeurt er met salderen in 2027?",
+      "answer": "De salderingsregeling stopt vanaf 1 januari 2027. Je mag teruggeleverde stroom dan niet meer wegstrepen tegen je verbruik. Je krijgt een aparte terugleververgoeding, die tot 2030 wettelijk minimaal 50% van het kale leveringstarief moet zijn (toezicht ACM).",
+      "primary_keyword": "saldering 2027"
+    },
+    {
+      "question": "Zijn de €592 de volledige opbrengst van een thuisbatterij?",
+      "answer": "Nee. De €592 is de mediane verandering van de zelfconsumptie- en terugleverkostenwaarde in de onderzochte scenario's. Day-ahead-, onbalans- en andere handelsopbrengsten zijn niet meegerekend.",
+      "primary_keyword": "thuisbatterij opbrengst"
+    },
+    {
+      "question": "Hoeveel extra bespaart een thuisbatterij zonder saldering?",
+      "answer": "Puur door het einde van salderen wordt een 12,6 kWh-batterij mediaan ongeveer €405 per jaar meer waard (spreiding €172–€760 over 25 profielen). Vermeden terugleverkosten vormen een aparte component. De mediane beleidscomponent en de mediane kostencomponent zijn afzonderlijke verdelingsmedianen en mogen niet rechtstreeks worden opgeteld. Binnen ieder individueel scenario tellen de componenten wel exact op.",
+      "primary_keyword": "thuisbatterij zonder saldering"
+    },
+    {
+      "question": "Komt handelsopbrengst bovenop zelfconsumptie?",
+      "answer": "Dat kan. De relevante maatstaf is de netto incrementele handelswaarde nadat EMS-kosten, aggregatoraandeel, degradatie en eventueel verloren zelfconsumptie zijn afgetrokken. Een geïntegreerd EMS kan alleen handelen wanneer die extra waarde positief is.",
+      "primary_keyword": "geld verdienen met thuisbatterij"
+    },
+    {
+      "question": "Dalen handelsopbrengsten wanneer meer mensen een batterij kopen?",
+      "answer": "Niet automatisch. Meer batterijen vergroten het aanbod van flexibiliteit, maar tegelijkertijd kan de vraag naar flexibiliteit groeien door meer hernieuwbare opwek, elektrificatie, prijsvolatiliteit en netproblemen. De verhouding tussen vraag en aanbod bepaalt de opbrengst, niet het aantal batterijen alleen.",
+      "primary_keyword": "thuisbatterij onbalans"
+    },
+    {
+      "question": "Kan een thuisbatterij terugleverkosten voorkomen?",
+      "answer": "Deels, en alleen bij bepaalde structuren. Bij een tarief per kWh vermijd je met elke opgeslagen kilowattuur kosten (mediaan €202/jaar bij €0,10/kWh, 12,6 kWh). Bij een staffel alleen als je onder een grens zakt. Bij een vast maandbedrag vermijd je niets.",
+      "primary_keyword": "terugleverkosten voorkomen"
+    },
+    {
+      "question": "Zijn terugleverkosten per kWh of per staffel?",
+      "answer": "Beide komen voor: sommige leveranciers rekenen per teruggeleverde kWh, andere een vast bedrag verdeeld in staffels, en soms een vast maandbedrag of een combinatie. Alleen de per-kWh-vorm laat een batterij echt besparen. Controleer altijd je eigen contract.",
+      "primary_keyword": "terugleverkosten"
+    },
+    {
+      "question": "Welke batterijcapaciteit heb ik nodig?",
+      "answer": "Voor zelfconsumptie voegt capaciteit boven ongeveer 10 kWh weinig extra waarde toe: het mediane beleidseffect loopt van €391 (7 kWh) naar €407 (21,8 kWh). Voor handel kan extra capaciteit juist wél lonen, omdat die verder reikt dan je eigen verbruik. Reken je maat na met de calculator.",
+      "primary_keyword": "batterijcapaciteit"
+    },
+    {
+      "question": "Is day-ahead hetzelfde als onbalanshandel?",
+      "answer": "Nee. Day-ahead werkt met een dag vooruit vastgestelde uurprijzen; onbalans draait om real-time bijsturen in kwartieren en is veel onvoorspelbaarder. Opbrengsten uit de één zeggen niets over de ander.",
+      "primary_keyword": "day-ahead vs onbalans"
+    }
+  ]
+}

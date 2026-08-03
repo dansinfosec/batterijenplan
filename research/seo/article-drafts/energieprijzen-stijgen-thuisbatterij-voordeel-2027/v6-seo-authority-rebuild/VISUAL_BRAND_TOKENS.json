@@ -1,0 +1,47 @@
+{
+  "source_of_truth": "frontend/src/styles/global.css (:root) — verified, not a generic framework palette",
+  "identity": "Industrieel energielabel: papierwit + inktzwart + hazard-geel + koper; mono voor data. Editorial, technisch, research-led. Geen blauwe SaaS-look, geen cartoon, geen glossy gradient, geen willekeurige stoplichtkleuren.",
+  "palette": {
+    "paper": "#F7F6F2",
+    "paper_2": "#F1EFE8",
+    "ink": "#12130F",
+    "ink_60": "#4C4D46",
+    "ink_40": "#6B6C64",
+    "volt_yellow": "#FFD100",
+    "volt_dk": "#8A6D00",
+    "copper": "#B4592E",
+    "rule_line": "#C9C5BA",
+    "rule_soft": "#E7E3DA"
+  },
+  "typography": {
+    "display": "'Archivo', sans-serif",
+    "body": "'Inter', sans-serif",
+    "data_mono": "'IBM Plex Mono', monospace",
+    "svg_font_stack": "'Inter','Archivo','Segoe UI',system-ui,Arial,sans-serif",
+    "svg_mono_stack": "'IBM Plex Mono',ui-monospace,monospace",
+    "note": "SVGs name the brand fonts first with system fallbacks (no external font required)."
+  },
+  "outline": {"chart_marks": "2px solid ink", "cards": "2.5px solid ink", "heatmap_grid": "1.5px solid ink", "table_cells_site": "1.5px solid ink"},
+  "shadow": {"style": "hard offset (no blur)", "offset": "+6..+8px down-right", "colour": "ink #12130F (or volt for accents)", "site_examples": "3-8px Npx 0 var(--ink)/var(--volt)"},
+  "card": {"background": "#F7F6F2 (paper)", "border": "2.5px ink", "hard_shadow": "ink rect offset +8", "accent_tab": "volt #FFD100 top-left", "radius_site": "3-10px"},
+  "value_stream_colour_ownership": {
+    "self_consumption_policy": {"fill": "#FFD100 (volt)", "outline": "ink", "label_text_on_light": "#8A6D00 (volt_dk)", "meaning": "quantified self-consumption / avoided import / policy effect"},
+    "trading_flexibility_and_secondary_component": {"fill": "#B4592E (copper)", "outline": "ink", "meaning": "potential incremental day-ahead/onbalans/flex value; and the secondary component (avoided feed-in cost) in the waterfall"},
+    "total_combined": {"fill": "#12130F (ink)", "accent": "volt hard-shadow/label", "meaning": "total change; strongest bar"},
+    "cost_opportunity_cost": {"fill": "ink hatch (url(#hatchK)) or copper", "outline": "ink", "label": "explicit cost/lost self-consumption"},
+    "interaction_zero": {"fill": "paper", "marker": "ink line + labelled €0"}
+  },
+  "classification_styles": {
+    "engine_result": {"badge": "paper fill, 2px solid ink border, mono text 'ENGINE RESULT'", "marks": "solid outlined forms"},
+    "scenario_overlay": {"badge": "paper fill, 2px DASHED ink border, mono text 'SCENARIO-OVERLAY — …'", "panel": "dashed ink card border", "meaning": "must look different from an engine result"}
+  },
+  "negative_values": {"rule": "NOT generic red", "use": ["copper", "ink hatch", "paper shape + copper/ink outline", "explicit minus sign"]},
+  "positive_values": {"rule": "NOT generic green", "use": ["volt yellow", "ink outline", "explicit plus sign"]},
+  "accessibility_rules": {
+    "grayscale_safe": "every classification also uses labels/patterns/shape — never colour alone",
+    "text_contrast": "ink on paper/volt; volt_dk for yellow text on light; paper text only on dark cells",
+    "svg_a11y": "role=img + unique <title> id + unique <desc> id + aria-labelledby; responsive viewBox (width=100%); no external scripts/fonts/images",
+    "sequential_scale": "paper -> pale volt -> volt -> ink (monotone luminance; no blue/rainbow)"
+  },
+  "removed_old_palette": ["#0f2f4a", "#3d7ea6", "#25526e", "#2e8b57", "#c94b4b", "#8a97a1", "#5a6b78", "#c3ccd3", "#eef1f3", "#a7b1b9", "#eef4f8", "#ffffff"]
+}
