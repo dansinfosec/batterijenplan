@@ -106,22 +106,6 @@ function ReadProgress() {
   );
 }
 
-// Splitst de body op het tweede H2 (≈ na de intro + eerste sectie) zodat de
-// lichte inline CTA ongeveer na het eerste derde tussen twee blokken valt.
-// Splitst alleen tussen top-level elementen (H2 is een blokgrens), dus de
-// markdown-structuur blijft intact. Null als er geen tweede H2 is.
-function splitAtSecondH2(html) {
-  if (!html) return null;
-  const re = /<h2[\s>]/gi;
-  let match;
-  let count = 0;
-  while ((match = re.exec(html)) !== null) {
-    count += 1;
-    if (count === 2) return [html.slice(0, match.index), html.slice(match.index)];
-  }
-  return null;
-}
-
 function Comments({ slug }) {
   const { data, loading } = useFetch(() => fetchComments(slug), [slug]);
 
@@ -327,12 +311,6 @@ export default function PostDetail() {
   const showUpdated = updatedDate && updatedDate !== publishedDate;
   const primaryTag = post.tags?.[0];
 
-  // Lichte inline CTA na ~eerste derde: alleen bij voldoende lange artikelen
-  // (genoeg leestijd of structuur) én als er een natuurlijk splitspunt (2e H2)
-  // is. Zeer korte artikelen krijgen geen inline CTA.
-  const longEnough = (post.reading_minutes ?? 0) >= 4 || toc.length >= 4;
-  const inlineParts = longEnough ? splitAtSecondH2(bodyHtml) : null;
-
   return (
     <article className="container post-detail article-detail">
       <ReadProgress />
@@ -383,27 +361,14 @@ export default function PostDetail() {
         </nav>
       )}
 
-      {/* Precies één calculator-CTA per artikel. Lange artikelen: licht,
-          tekst-only, na ~het eerste derde (tussen twee H2's). Korte artikelen
-          (geen tweede H2 / te kort): dezelfde herbruikbare CTA aan het einde,
-          mét kop. De CTA is een React-broer van de body en wijzigt de body_html
-          van de API niet. */}
-      {inlineParts ? (
-        <>
-          <div className="prose article-body" dangerouslySetInnerHTML={{ __html: inlineParts[0] }} />
-          <ArticleCalculatorCta
-            heading=""
-            body="Bereken met uw eigen energiegegevens welke batterijcapaciteit bij uw woning past."
-            source="article_inline"
-          />
-          <div className="prose article-body" dangerouslySetInnerHTML={{ __html: inlineParts[1] }} />
-        </>
-      ) : (
-        <>
-          <div className="prose article-body" dangerouslySetInnerHTML={{ __html: bodyHtml }} />
-          <ArticleCalculatorCta source="article_end" />
-        </>
-      )}
+      <div className="prose article-body" dangerouslySetInnerHTML={{ __html: bodyHtml }} />
+
+      {/* Precies één gebrande calculator-CTA per artikel, altijd onderaan: ná de
+          volledige body + FAQ en vóór het adviesformulier / gerelateerde
+          artikelen. Geldt automatisch voor bestaande én toekomstige posts. De
+          CTA is een React-broer van de body en wijzigt de body_html van de API
+          niet; contextuele /calculator-links in de tekst blijven behouden. */}
+      <ArticleCalculatorCta source="article_end" />
 
       {/* Compact adviesformulier aan het einde, vóór gerelateerde artikelen. */}
       <div className="article-advice">
