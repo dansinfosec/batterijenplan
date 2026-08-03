@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import useFetch from "../hooks/useFetch.js";
-import { fetchPosts, fetchTags } from "../api.js";
+import { fetchPostsPage, fetchTags } from "../api.js";
 import MobileStickyCta from "../components/MobileStickyCta.jsx";
 import BatteryPreview from "../components/home/BatteryPreview.jsx";
 import AdviceJourney from "../components/home/AdviceJourney.jsx";
@@ -66,7 +66,8 @@ export default function Home() {
     };
   }, []);
 
-  const posts = useFetch(() => fetchPosts({ tag }), [tag], fetchReady);
+  // Homepage toont maar een handvol artikelen: één pagina volstaat (geen volledige archief-fetch).
+  const posts = useFetch(() => fetchPostsPage({ tag }), [tag], fetchReady);
   const tags = useFetch(fetchTags, [], fetchReady);
 
   useEffect(() => {
