@@ -41,5 +41,5 @@
 slug `thuisbatterij-vergelijken` · status `published` · published_at `2026-07-06T00:03:50+00:00` · author `dschu` · cover `media/batterijenplan/blog/thuisbatterij-vergelijken-v2_b4wfa1` · cover_alt unchanged.
 
 ## Not done (by instruction / correctly deferred)
-- **No `production-release.json`** — the real production precondition (current markdown SHA/structure) is unknown and must NOT be taken from the local placeholder DB. It will be captured by the `seo_release_v2` **dry-run** on Render before the manifest is written.
+- **`production-release.json` created** — precondition captured read-only from the Render production DB (`blog.Post` id 6): chars 10427, SHA `7df12c30…4991a32`, 15 H2 / 0 H3 / 2 tables, status published, published_at 2026-07-06T00:03:50+00:00 (no `updated_at` — seo_release_v2 does not use it). Proposed = the approved body (chars 22,063, SHA `da3b5d89…`, 20 H2 / 1 H3 / 1 table, embedded). Not from the local placeholder DB. **Not applied** — the guarded dry-run then `--apply` run on Render after deploying commit `ce096a7`.
 - No commit, push, deploy, apply. No other article edited (child up-links are recommendations only).

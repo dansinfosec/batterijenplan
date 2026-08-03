@@ -11,7 +11,7 @@
 - ✅ `vite build` OK; `node --test` 22/22; 390px render verified (no overflow).
 
 ## Human action required before release
-1. **Capture the real production baseline** — run the `seo_release_v2` (full_body) **dry-run** in the Render shell to read the current markdown SHA/structure of the live post. Only then write `production-release.json` with that precondition. Do NOT fabricate it from the local placeholder DB.
+1. **Production baseline captured** ✅ — read read-only from the Render production DB (`blog.Post` id 6): chars **10427** · SHA **`7df12c30…4991a32`** · **15 H2 / 0 H3 / 2 tables** · status published · published_at 2026-07-06T00:03:50+00:00 · author_id 1 (dschu) · cover preserved. **`production-release.json` created** with this exact precondition (not from the local placeholder DB). Next: deploy commit `ce096a7` to Render, run the guarded **dry-run**, then `--apply` after human approval.
 2. **Confirm cover** — reuse the existing production cover (`…/thuisbatterij-vergelijken-v2_b4wfa1`); no cover change proposed.
 3. **Optional reciprocal child links** — add up-links in `enphase-vs-dyness` and `groene-vrienden-vs-zonneplan-vs-tibber` to this pillar (separate approved tasks — not edited here).
 4. **Optional** — old production PNG diagrams at `/article-visuals/thuisbatterij-vergelijken/` become unused once this body ships (the rebuild uses the new `/blog-assets/…` SVGs). Leave in place or clean up separately.
