@@ -1,0 +1,50 @@
+{
+  "slug": "thuisbatterij-vergelijken",
+  "mode": "full_body",
+  "source_package_version": "seo-authority-rebuild",
+  "title": "Thuisbatterij vergelijken: waar moet u écht op letten? (2026)",
+  "seo_title": "Thuisbatterij vergelijken: waar op letten? | Batterijenplan",
+  "seo_description": "Thuisbatterij vergelijken? Let op capaciteit, vermogen, koppeling, EMS, garantie, noodstroom en kosten — niet op prijs alleen. Bereken gratis welke past.",
+  "excerpt": "Een thuisbatterij vergelijkt u niet op prijs alleen. Ontdek op welke criteria — bruikbare capaciteit, vermogen, systeemarchitectuur (AC/DC/hybride) en fasen, chemie, EMS, garantie, noodstroom en totale kosten — u écht moet letten, en reken uw situatie door.",
+  "canonical": "https://www.batterijenplan.nl/post/thuisbatterij-vergelijken",
+  "preserve_on_apply": {
+    "slug": "thuisbatterij-vergelijken",
+    "status": "published",
+    "published_at": "2026-07-06T00:03:50+00:00",
+    "author": "dschu",
+    "cover_image": "media/batterijenplan/blog/thuisbatterij-vergelijken-v2_b4wfa1",
+    "cover_alt": "Thuisbatterij vergelijken op capaciteit, vermogen, EMS en garantie"
+  },
+  "proposed_structure": {
+    "chars": 22063,
+    "sha256": "da3b5d8987cde4254c4e4cb7e1131a4e64cadee764f76ea741a11bed6d039dcf",
+    "h1": 0,
+    "h2": 20,
+    "h3": 1,
+    "tables": 1,
+    "images": 4
+  },
+  "public_visual_urls": [
+    "/blog-assets/thuisbatterij-vergelijken/vergelijkingsraamwerk.svg",
+    "/blog-assets/thuisbatterij-vergelijken/een-fase-versus-drie-fasen.svg",
+    "/blog-assets/thuisbatterij-vergelijken/open-versus-gesloten-ems.svg",
+    "/blog-assets/thuisbatterij-vergelijken/totale-kosten-stack.svg"
+  ],
+  "faq_count": 9,
+  "primary_keyword": {
+    "keyword": "thuisbatterij vergelijken",
+    "volume": 1300,
+    "seo_difficulty": 25,
+    "cpc": 3.93,
+    "intent": "Commercial",
+    "source": "Ubersuggest nl/2528 2026-08-03"
+  },
+  "lengths": {
+    "title_chars": 61,
+    "seo_title_chars": 59,
+    "seo_description_chars": 153,
+    "excerpt_chars": 257
+  },
+  "baseline_note": "Real production precondition (current markdown SHA/structure) is NOT captured here and must NOT be taken from the local placeholder DB. Live rendered body_html (fetched 2026-08-03) had ~15 H2 + FAQ; the markdown SOURCE and its SHA must be read from the Render production DB via the seo_release_v2 dry-run before a production-release.json is written.",
+  "schema_note": "Site auto-generates BlogPosting + Breadcrumb (frontend seo.js). article-schema.json (FAQPage) is a REFERENCE artifact; emitting it needs a small frontend change and must NOT duplicate the auto BlogPosting/Breadcrumb."
+}

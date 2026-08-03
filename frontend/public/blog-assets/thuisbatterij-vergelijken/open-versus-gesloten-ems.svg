@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 470" width="100%" height="auto" font-family="'Inter','Archivo','Segoe UI',system-ui,Arial,sans-serif" role="img" aria-labelledby="ems-title ems-desc">
+  <title id="ems-title">Eigenschappen om een EMS op te vergelijken</title>
+  <desc id="ems-desc">"Open" en "gesloten" zijn labels, geen eindoordeel. Vergelijk in plaats daarvan de verifieerbare eigenschappen van een EMS: compatibiliteit met batterij en omvormer, compatibiliteit met de energieleverancier, toegang tot en export van data, beschikbaarheid van een gedocumenteerde API, overstapmogelijkheden en verlies van functies na overstappen, terugkerende EMS- of platformkosten, een eventueel aggregatoraandeel op de handelsopbrengst, contractduur en opzegvoorwaarden, en afhankelijkheid van clouddiensten, updates en support. Beoordeel deze punten per aanbieder.</desc>
+  <rect x="0" y="0" width="800" height="470" fill="#F7F6F2"/>
+  <text x="32" y="46" font-size="24" font-weight="700" fill="#12130F">Vergelijk het EMS op eigenschappen, niet op het label</text>
+  <rect x="32" y="64" width="736" height="34" fill="#F1EFE8" stroke="#12130F" stroke-width="1.5"/>
+  <text x="46" y="86" font-size="14.5" fill="#12130F">"Open" en "gesloten" zijn labels, geen eindoordeel — beoordeel de werkelijke voorwaarden per aanbieder.</text>
+
+  <!-- single neutral card with the verifiable properties -->
+  <rect x="40" y="122" width="720" height="316" fill="#12130F"/>
+  <rect x="32" y="114" width="720" height="316" fill="#F7F6F2" stroke="#12130F" stroke-width="2.5"/>
+  <rect x="32" y="114" width="720" height="12" fill="#FFD100"/>
+
+  <text x="56" y="160" font-size="15" fill="#12130F">•  Compatibiliteit met uw batterij en omvormer</text>
+  <text x="56" y="190" font-size="15" fill="#12130F">•  Compatibiliteit met uw energieleverancier(s)</text>
+  <text x="56" y="220" font-size="15" fill="#12130F">•  Toegang tot en export van uw meet- en stuurdata</text>
+  <text x="56" y="250" font-size="15" fill="#12130F">•  Gedocumenteerde API beschikbaar?</text>
+  <text x="56" y="280" font-size="15" fill="#12130F">•  Overstapmogelijkheden en functieverlies na overstap</text>
+  <text x="410" y="160" font-size="15" fill="#12130F">•  Terugkerende EMS- of platformkosten</text>
+  <text x="410" y="190" font-size="15" fill="#12130F">•  Aggregatoraandeel op de handelsopbrengst</text>
+  <text x="410" y="220" font-size="15" fill="#12130F">•  Contractduur en opzegvoorwaarden</text>
+  <text x="410" y="250" font-size="15" fill="#12130F">•  Afhankelijkheid van cloud, updates en support</text>
+
+  <line x1="56" y1="312" x2="728" y2="312" stroke="#C9C5BA" stroke-width="1.5"/>
+  <text x="56" y="342" font-size="13.5" fill="#4C4D46">Een opener systeem biedt mogelijk meer keuze, maar is niet automatisch gratis of merkonafhankelijk.</text>
+  <text x="56" y="366" font-size="13.5" fill="#4C4D46">Een geslotener systeem kan gemak bieden, maar kan combinaties of overstappen beperken.</text>
+  <text x="56" y="398" font-size="13.5" font-weight="700" fill="#12130F">Vergelijk de bovenstaande eigenschappen concreet per aanbieder.</text>
+</svg>

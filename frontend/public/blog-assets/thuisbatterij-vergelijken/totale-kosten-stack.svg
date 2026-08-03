@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 460" width="100%" height="auto" font-family="'Inter','Archivo','Segoe UI',system-ui,Arial,sans-serif" role="img" aria-labelledby="tco-title tco-desc">
+  <title id="tco-title">Totale kosten van een thuisbatterij als kostenstapel</title>
+  <desc id="tco-desc">Een schematische kostenstapel van een thuisbatterij, van onder naar boven: hardware (batterij en eventueel omvormer), installatie, en terugkerende kosten (EMS- of platformabonnement en een eventueel aggregatoraandeel op de handelsopbrengst). De verhoudingen zijn illustratief en geen prijsopgave; vergelijk uw eigen offerte over de looptijd, niet alleen de aanschafprijs. Hier tegenover staat opbrengst uit zelfconsumptie en mogelijke handel; die handelswaarde is niet gegarandeerd en concurreert om batterijcapaciteit. Reken de opbrengstkant door met de calculator.</desc>
+  <defs>
+    <pattern id="hatchCu" patternUnits="userSpaceOnUse" width="10" height="10" patternTransform="rotate(45)">
+      <rect width="10" height="10" fill="#B4592E"/>
+      <line x1="0" y1="0" x2="0" y2="10" stroke="#12130F" stroke-width="2.5"/>
+    </pattern>
+  </defs>
+  <rect x="0" y="0" width="800" height="460" fill="#F7F6F2"/>
+  <text x="32" y="46" font-size="24" font-weight="700" fill="#12130F">Vergelijk de totale kosten, niet alleen de prijs</text>
+  <text x="32" y="72" font-size="15" fill="#4C4D46">Aanschaf én terugkerende kosten bepalen wat u netto overhoudt.</text>
+
+  <!-- Stacked bar -->
+  <rect x="70" y="118" width="150" height="70" fill="url(#hatchCu)" stroke="#12130F" stroke-width="2"/>
+  <rect x="70" y="188" width="150" height="80" fill="#4C4D46" stroke="#12130F" stroke-width="2"/>
+  <rect x="70" y="268" width="150" height="130" fill="#12130F" stroke="#12130F" stroke-width="2"/>
+  <text x="145" y="412" font-size="13" fill="#6B6C64" text-anchor="middle">Kostenstapel</text>
+
+  <!-- Labels -->
+  <line x1="220" y1="153" x2="270" y2="153" stroke="#12130F" stroke-width="1.5"/>
+  <text x="280" y="149" font-size="16" font-weight="700" fill="#12130F">Terugkerend</text>
+  <text x="280" y="170" font-size="13.5" fill="#12130F">EMS-/platformabonnement + aggregatoraandeel</text>
+
+  <line x1="220" y1="228" x2="270" y2="228" stroke="#12130F" stroke-width="1.5"/>
+  <text x="280" y="224" font-size="16" font-weight="700" fill="#12130F">Installatie</text>
+  <text x="280" y="245" font-size="13.5" fill="#12130F">Schouw, plaatsing, meterkast, groepen</text>
+
+  <line x1="220" y1="333" x2="270" y2="333" stroke="#12130F" stroke-width="1.5"/>
+  <text x="280" y="329" font-size="16" font-weight="700" fill="#12130F">Hardware</text>
+  <text x="280" y="350" font-size="13.5" fill="#12130F">Batterij + eventueel (hybride) omvormer, noodstroom</text>
+
+  <!-- illustrative badge (dashed = not a quote) -->
+  <rect x="70" y="418" width="330" height="26" fill="#F1EFE8" stroke="#12130F" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="84" y="436" font-size="12.5" fill="#12130F">ILLUSTRATIEF — geen prijsopgave; vergelijk uw eigen offerte</text>
+
+  <!-- value side -->
+  <rect x="470" y="300" width="298" height="120" fill="#F1EFE8" stroke="#12130F" stroke-width="1.5"/>
+  <rect x="470" y="300" width="298" height="8" fill="#FFD100"/>
+  <text x="486" y="332" font-size="15" font-weight="700" fill="#12130F">Hier tegenover staat opbrengst</text>
+  <text x="486" y="356" font-size="13.5" fill="#12130F">Zelfconsumptie (geel) en mogelijke</text>
+  <text x="486" y="376" font-size="13.5" fill="#12130F">handel (koper) — niet gegarandeerd;</text>
+  <text x="486" y="396" font-size="13.5" fill="#12130F">handel concurreert om capaciteit.</text>
+</svg>

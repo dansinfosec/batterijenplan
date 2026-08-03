@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="100%" height="auto" font-family="'Inter','Archivo','Segoe UI',system-ui,Arial,sans-serif" role="img" aria-labelledby="ph-title ph-desc">
+  <title id="ph-title">Eén fase versus drie fasen bij een thuisbatterij</title>
+  <desc id="ph-desc">Links een éénfaseaansluiting: één stroomlijn tussen de meterkast en de thuisbatterij. Rechts een driefasenaansluiting: drie stroomlijnen, waardoor het vermogen over drie fasen kan worden verdeeld. De aansluiting en de meterkast bepalen mede het haalbare vermogen; laat dit vooraf controleren.</desc>
+  <rect x="0" y="0" width="800" height="420" fill="#F7F6F2"/>
+  <text x="32" y="46" font-size="24" font-weight="700" fill="#12130F">Eén fase versus drie fasen</text>
+  <text x="32" y="72" font-size="15" fill="#4C4D46">Uw aansluiting en meterkast bepalen mede het haalbare vermogen.</text>
+
+  <!-- One phase -->
+  <rect x="48" y="104" width="140" height="70" fill="#12130F"/>
+  <rect x="40" y="96" width="140" height="70" fill="#F1EFE8" stroke="#12130F" stroke-width="2.5"/>
+  <text x="110" y="128" font-size="15" font-weight="700" fill="#12130F" text-anchor="middle">Meterkast</text>
+  <text x="110" y="150" font-size="12.5" fill="#6B6C64" text-anchor="middle">1 fase</text>
+  <line x1="180" y1="131" x2="300" y2="131" stroke="#12130F" stroke-width="3.5"/>
+  <rect x="308" y="104" width="60" height="10" fill="#FFD100"/>
+  <rect x="300" y="96" width="60" height="70" fill="#12130F"/>
+  <text x="330" y="200" font-size="13" fill="#6B6C64" text-anchor="middle">Batterij</text>
+  <text x="40" y="238" font-size="14.5" font-weight="700" fill="#12130F">Eén fase</text>
+  <text x="40" y="260" font-size="13.5" fill="#12130F">Eén stroomlijn — vermogen op één fase.</text>
+  <text x="40" y="280" font-size="13.5" fill="#12130F">Vaak in oudere of kleinere aansluitingen.</text>
+
+  <!-- Three phase -->
+  <rect x="448" y="104" width="140" height="70" fill="#12130F"/>
+  <rect x="440" y="96" width="140" height="70" fill="#F1EFE8" stroke="#12130F" stroke-width="2.5"/>
+  <text x="510" y="128" font-size="15" font-weight="700" fill="#12130F" text-anchor="middle">Meterkast</text>
+  <text x="510" y="150" font-size="12.5" fill="#6B6C64" text-anchor="middle">3 fasen</text>
+  <line x1="580" y1="118" x2="700" y2="118" stroke="#12130F" stroke-width="3.5"/>
+  <line x1="580" y1="131" x2="700" y2="131" stroke="#12130F" stroke-width="3.5"/>
+  <line x1="580" y1="144" x2="700" y2="144" stroke="#12130F" stroke-width="3.5"/>
+  <rect x="708" y="104" width="60" height="10" fill="#FFD100"/>
+  <rect x="700" y="96" width="60" height="70" fill="#12130F"/>
+  <text x="730" y="200" font-size="13" fill="#6B6C64" text-anchor="middle">Batterij</text>
+  <text x="440" y="238" font-size="14.5" font-weight="700" fill="#12130F">Drie fasen</text>
+  <text x="440" y="260" font-size="13.5" fill="#12130F">Drie stroomlijnen — vermogen verdeeld.</text>
+  <text x="440" y="280" font-size="13.5" fill="#12130F">Meer piekvermogen mogelijk, mits geschikt.</text>
+
+  <rect x="40" y="320" width="720" height="64" fill="#F1EFE8" stroke="#12130F" stroke-width="1.5"/>
+  <text x="56" y="346" font-size="13.5" fill="#12130F">Controleer vooraf: type omvormer, of een hybride omvormer nodig is, en of de meterkast</text>
+  <text x="56" y="368" font-size="13.5" fill="#12130F">geschikt is (ruimte, groepen, aarding). Vraag de leverancier om een schouw vóór de offerte.</text>
+</svg>

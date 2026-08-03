@@ -1,0 +1,78 @@
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Waar moet ik op letten bij het vergelijken van een thuisbatterij?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Op bruikbare capaciteit, laad- en ontlaadvermogen, systeemarchitectuur (AC-, DC- of hybride) en fasen, omvormercompatibiliteit, chemie en round-trip-rendement, EMS (open of gesloten), garantie met restcapaciteit, uitbreidbaarheid, noodstroom en de totale kosten inclusief eventuele EMS- of platformkosten en een eventueel aggregatoraandeel — niet alleen op prijs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Wat is de beste thuisbatterij?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Er is geen batterij die voor iedereen de beste is. De beste keuze past bij uw verbruik, zonnepanelen, contract en toekomstplannen. Kies op criteria (capaciteit, vermogen, EMS, garantie, kosten) en reken uw situatie door in plaats van blind op een merk te varen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Hoeveel kWh heb ik nodig — 10 of 20 kWh?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Dat hangt af van uw verbruik, uw zonne-overschot en of u ook wilt handelen. Meer kWh is niet automatisch beter: een te grote batterij zit zelden vol en verdient zich trager terug. Reken de passende maat door met de calculator."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Wat is het verschil tussen bruikbare en nominale capaciteit?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Nominaal is de brutowaarde; bruikbaar is wat u dagelijks kunt gebruiken na aftrek van de Depth of Discharge (DoD). Vergelijk altijd de bruikbare kWh en vraag de DoD op uit de datasheet."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Wat is het verschil tussen AC-, DC- en hybride gekoppeld?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Het zijn beschrijvingen van de systeemarchitectuur, geen kwaliteitsoordeel. AC-gekoppeld is vaak eenvoudiger toe te voegen aan een bestaande installatie; bij DC- en hybride opstellingen zijn panelen en batterij via de gelijkstroomzijde van een hybride omvormer verbonden, waarbij de batterij afhankelijk van het ontwerp ook uit het net kan laden. Rendement en compatibiliteit hangen af van het complete systeem — laat de leverancier de energiestromen en het round-trip-rendement voor uw volledige installatie uitleggen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Wat is het verschil tussen een open en een gesloten EMS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "\"Open\" en \"gesloten\" zijn labels, geen eindoordeel. Een opener systeem biedt mogelijk meer keuze maar is niet automatisch gratis of merkonafhankelijk; een geslotener systeem kan gemak bieden maar combinaties of overstappen beperken. Vergelijk de werkelijke eigenschappen: compatibiliteit met uw batterij, omvormer en leverancier, toegang tot en export van uw data, een eventuele API, overstapmogelijkheden, terugkerende kosten, een eventueel aggregatoraandeel, contractduur en afhankelijkheid van clouddiensten."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Heb ik noodstroom nodig bij een thuisbatterij?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Alleen als u bij een stroomuitval door wilt kunnen. Niet elke batterij levert noodstroom, en als die functie er is, controleer dan of het automatisch overschakelt en welke groepen beschikbaar blijven. Noodstroom vraagt vaak extra hardware, dus neem het mee in de prijsvergelijking."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is een duurdere thuisbatterij altijd beter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Een goed passende batterij is niet automatisch de duurste. Bruikbare capaciteit, vermogen, compatibiliteit, een passend EMS, garantie en de totale terugkerende kosten zijn belangrijker dan de aanschafprijs alleen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Wat kost een thuisbatterij — en welke kosten komen jaarlijks terug?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "De totale kosten bestaan uit hardware, installatie en eventueel terugkerende EMS-/platformkosten en een aggregatoraandeel op de handelsopbrengst. Vergelijk de volledige kostenstapel over de looptijd, niet alleen de prijs op dag één, en reken de opbrengstkant door met de calculator."
+      }
+    }
+  ]
+}

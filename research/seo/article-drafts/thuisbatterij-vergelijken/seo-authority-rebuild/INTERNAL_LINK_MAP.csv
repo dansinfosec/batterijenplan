@@ -1,0 +1,11 @@
+﻿href,anchor_text,relation,status,reciprocal_recommendation
+/post/enphase-vs-dyness,Enphase versus Dyness,child (product comparison),ADDED (was missing) — pillar->child,enphase-vs-dyness should add up-link 'thuisbatterij vergelijken'
+/post/groene-vrienden-vs-zonneplan-vs-tibber,"Groene Vrienden, Zonneplan en Tibber vergeleken",child (provider comparison),ADDED (was missing) — pillar->child,groene-vrienden should make its pillar reference an in-body contextual link
+/post/ems-systeem-thuisbatterij-controle-over-stroom,wie de controle houdt over uw stroom,cluster hub,kept,ems-systeem may add up-link to pillar
+/post/dynamisch-energiecontract-thuisbatterij,een dynamisch energiecontract,sibling,kept,-
+/post/thuisbatterij-installatie,thuisbatterij installatie,sibling,kept,installatie may add up-link to pillar
+/post/wat-levert-een-thuisbatterij-op,wat een thuisbatterij oplevert,yield pillar,kept,-
+/post/terugverdientijd-thuisbatterij-handel-of-zelfconsumptie,hoe de terugverdientijd werkt,payback (TREATED),ADDED,link-to only (treated); do not edit
+/post/energieprijzen-stijgen-thuisbatterij-voordeel-2027,wat er in 2027 verandert,policy (PROTECTED),ADDED,link-to only (protected); do not edit
+/post/stroom-opslaan-zonnepanelen,zonnestroom op te slaan,how-to,kept,-
+/calculator,gratis calculator / calculator,"tool (contextual, x3 inline)",kept,Shared branded bottom CTA (ArticleCalculatorCta) auto-rendered separately — NOT a second card in body

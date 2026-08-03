@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" width="100%" height="auto" font-family="'Inter','Archivo','Segoe UI',system-ui,Arial,sans-serif" role="img" aria-labelledby="rk-title rk-desc">
+  <title id="rk-title">Vergelijkingsraamwerk voor een thuisbatterij</title>
+  <desc id="rk-desc">Vier lagen om een thuisbatterij op te vergelijken. Techniek: bruikbare capaciteit, laad- en ontlaadvermogen, systeemtype en fasen, chemie en round-trip-rendement. Sturing: open of gesloten EMS. Zekerheid: garantie op cycli, doorzet en restcapaciteit, en noodstroom. Kosten: totale aanschafprijs plus terugkerende EMS- of platformkosten en aggregatoraandeel. Beoordeel de vier lagen samen.</desc>
+  <rect x="0" y="0" width="800" height="560" fill="#F7F6F2"/>
+  <text x="32" y="46" font-size="26" font-weight="700" fill="#12130F">Waarop vergelijkt u een thuisbatterij?</text>
+  <text x="32" y="74" font-size="16" fill="#4C4D46">Beoordeel deze vier lagen samen — niet los van elkaar.</text>
+
+  <!-- Techniek (volt accent) -->
+  <rect x="40" y="104" width="350" height="196" fill="#12130F"/>
+  <rect x="32" y="96" width="350" height="196" fill="#F1EFE8" stroke="#12130F" stroke-width="2.5"/>
+  <rect x="32" y="96" width="64" height="10" fill="#FFD100"/>
+  <text x="48" y="132" font-size="19" font-weight="700" fill="#12130F">1 · Techniek</text>
+  <text x="48" y="160" font-size="14.5" fill="#12130F">Bruikbare capaciteit (kWh) + DoD</text>
+  <text x="48" y="184" font-size="14.5" fill="#12130F">Laad- en ontlaadvermogen (kW)</text>
+  <text x="48" y="208" font-size="14.5" fill="#12130F">Systeemtype: AC/DC, één-/driefasen</text>
+  <text x="48" y="232" font-size="14.5" fill="#12130F">Chemie (bv. LFP) + round-trip</text>
+  <text x="48" y="268" font-size="12.5" fill="#6B6C64">Wat de batterij kan</text>
+
+  <!-- Sturing (volt accent) -->
+  <rect x="426" y="104" width="342" height="196" fill="#12130F"/>
+  <rect x="418" y="96" width="342" height="196" fill="#F1EFE8" stroke="#12130F" stroke-width="2.5"/>
+  <rect x="418" y="96" width="64" height="10" fill="#FFD100"/>
+  <text x="434" y="132" font-size="19" font-weight="700" fill="#12130F">2 · Sturing</text>
+  <text x="434" y="160" font-size="14.5" fill="#12130F">EMS: open of gesloten platform</text>
+  <text x="434" y="184" font-size="14.5" fill="#12130F">Werkt het met uw contract?</text>
+  <text x="434" y="208" font-size="14.5" fill="#12130F">Keuzevrijheid en data-eigendom</text>
+  <text x="434" y="268" font-size="12.5" fill="#6B6C64">Hoe slim én hoe vrij</text>
+
+  <!-- Zekerheid (volt accent) -->
+  <rect x="40" y="332" width="350" height="196" fill="#12130F"/>
+  <rect x="32" y="324" width="350" height="196" fill="#F1EFE8" stroke="#12130F" stroke-width="2.5"/>
+  <rect x="32" y="324" width="64" height="10" fill="#FFD100"/>
+  <text x="48" y="360" font-size="19" font-weight="700" fill="#12130F">3 · Zekerheid</text>
+  <text x="48" y="388" font-size="14.5" fill="#12130F">Garantie: jaren en cycli</text>
+  <text x="48" y="412" font-size="14.5" fill="#12130F">Doorzet (kWh) + restcapaciteit %</text>
+  <text x="48" y="436" font-size="14.5" fill="#12130F">Noodstroom: wel/niet, automatisch</text>
+  <text x="48" y="472" font-size="12.5" fill="#6B6C64">Zekerheid over de levensduur</text>
+
+  <!-- Kosten (copper accent) -->
+  <rect x="426" y="332" width="342" height="196" fill="#12130F"/>
+  <rect x="418" y="324" width="342" height="196" fill="#F1EFE8" stroke="#12130F" stroke-width="2.5"/>
+  <rect x="418" y="324" width="64" height="10" fill="#B4592E"/>
+  <text x="434" y="360" font-size="19" font-weight="700" fill="#12130F">4 · Kosten</text>
+  <text x="434" y="388" font-size="14.5" fill="#12130F">Aanschaf: hardware + installatie</text>
+  <text x="434" y="412" font-size="14.5" fill="#12130F">Terugkerend: EMS-/platformkosten</text>
+  <text x="434" y="436" font-size="14.5" fill="#12130F">Aggregatoraandeel op handel</text>
+  <text x="434" y="472" font-size="12.5" fill="#6B6C64">Aanschaf én terugkerend</text>
+</svg>

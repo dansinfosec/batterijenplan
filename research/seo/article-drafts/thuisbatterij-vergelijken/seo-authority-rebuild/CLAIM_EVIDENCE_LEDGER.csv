@@ -1,0 +1,14 @@
+﻿claim,category,support_status,primary_source,freshness_risk,risk_level
+Bruikbare capaciteit < nominale door DoD,FACT (engineering-general),Stated + advises datasheet,Fabrikant datasheet (productspecificatie),Low,Low
+Capaciteit (kWh) vs vermogen (kW) zijn verschillend,FACT,Definitional,—,None,Low
+"AC-, DC- of hybride koppeling beschrijft de systeemarchitectuur; rendement/compatibiliteit hangen af van het complete systeem; geen universele 'AC of DC is beter'",FACT (engineering-general),Neutral three-way; no winner asserted; routes specifics to installer/datasheet,Installateur/omvormer- en batterijdatasheet,Low,Low
+Meeste thuisbatterijen gebruiken LFP/LiFePO4; er bestaan andere celtypen,FACT (market-general),"Stated generally, no brand spec",Fabrikant datasheet / celtype-classificatie,Low,Low
+Round-trip-rendement: deel van opgeslagen energie gaat verloren; staat in datasheet,FACT (engineering-general),"Concept only, no universal number asserted",Fabrikant datasheet,Low,Low
+"Garantie vergelijken op jaren, cycli, doorzet én restcapaciteit",FACT (framework) + advisory,Editorial framework,Fabrikant garantievoorwaarden,Low,Low
+"'Open'/'gesloten' EMS zijn labels, geen eindoordeel; vergelijk verifieerbare eigenschappen (compatibiliteit, data/API, overstap, terugkerende kosten, aggregatoraandeel, contract, cloudafhankelijkheid)",EDITORIAL FRAMEWORK (neutral),No universal open=free/closed=locked claim; per-provider verification,Per-aanbieder contract- en technische voorwaarden (verify),"Medium (offer-dependent, per provider)",Low (neutral framing)
+Day-ahead/onbalanshandel kan in sommige strategieën extra netto waarde geven; NIET gegarandeerd en concurreert om capaciteit/SoC,SCENARIO / MODEL RESULT,Explicitly not-guaranteed + total vs incremental kept separate,Batterijenplan simulatie (wat-levert / terugverdientijd),Medium,Low (hedged)
+Salderingsregeling stopt vanaf 1 januari 2027,FACT (legal),Attributed + linked to 2027 owner,Rijksoverheid (via validated 2027 LEGAL_SOURCE_LEDGER),Medium,Low (sourced+linked)
+Opbrengst/terugverdiencijfers zijn scenariowaarden uit eigen kwartiersimulatie,MODEL RESULT / SCENARIO,No numbers restated; linked to owners,Batterijenplan simulatie (wat-levert / terugverdientijd),Low,Low
+"Named brands (Enphase, Dyness, Groene Vrienden, Zonneplan, Tibber) referenced without specs/prices",FACT (existence) only,Names only; specs routed to child articles,Child articles (sourced there),Low now (HIGH if specs added),Low
+Noodstroom: niet elke batterij levert back-up; controleer automatisch overschakelen,FACT (engineering-general) + advisory,Stated generally,Fabrikant specificatie,Low,Low
+'Beste thuisbatterij' bestaat niet universeel; kies op criteria,EDITORIAL STANCE,Explicit; no brand ranking made,—,None,Low
