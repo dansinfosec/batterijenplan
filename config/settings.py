@@ -162,7 +162,14 @@ INSTALLED_APPS += [
     "cloudinary",
     "blog",
     "api",
+    "smartmeter",
 ]
+
+# Slimme-meterdata-analyse: een vol jaar aan kwartierintervallen als JSON is
+# ~2,5-4 MB — boven Django's default van 2,5 MB. Ruimte voor het maximum
+# (36.864 intervallen) plus marge; de endpoint-validatie begrenst daarnaast
+# zelf het aantal intervallen.
+DATA_UPLOAD_MAX_MEMORY_SIZE = 8 * 1024 * 1024
 
 MIDDLEWARE.insert(
     MIDDLEWARE.index("django.middleware.common.CommonMiddleware"),
@@ -182,6 +189,11 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticatedOrReadOnly"],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
+    # Slimme-meterdata-analyse: ~3 s rekentijd per vol-jaar-request; per
+    # client (IP) begrensd via ScopedRateThrottle op de analysis-view.
+    "DEFAULT_THROTTLE_RATES": {
+        "smartmeter_analysis": "30/hour",
+    },
 }
 
 MEDIA_URL = "/media/"

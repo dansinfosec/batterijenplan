@@ -1,6 +1,7 @@
 from django.urls import include, path
 from . import views
 from calculators.api import CalculatorAPIView
+from smartmeter.api import SmartMeterAnalysisAPIView
 
 urlpatterns = [
     path("leads/", include("leads.urls")),
@@ -9,4 +10,5 @@ urlpatterns = [
     path("posts/<slug:slug>/comments/", views.CommentListCreateView.as_view(), name="comment-list"),
     path("tags/", views.TagListView.as_view(), name="tag-list"),
     path("calculator/", CalculatorAPIView.as_view(), name="calculator-api"),
+    path("smartmeter/analysis/", SmartMeterAnalysisAPIView.as_view(), name="smartmeter-analysis-api"),
 ]
