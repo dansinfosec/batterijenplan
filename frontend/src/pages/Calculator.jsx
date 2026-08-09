@@ -8,38 +8,15 @@ import CalcProgress from "../components/calculator/CalcProgress.jsx";
 import LiveSummary from "../components/calculator/LiveSummary.jsx";
 import MilestoneTracker from "../components/calculator/MilestoneTracker.jsx";
 import PaybackUnlock from "../components/calculator/PaybackUnlock.jsx";
+import SmartMeterEntryChoice from "../components/calculator/smartmeter/SmartMeterEntryChoice.jsx";
+import SmartMeterFlow from "../components/calculator/smartmeter/SmartMeterFlow.jsx";
+// Centrale step-scroll: gedeeld met de slimme-meterdata-route (zie scroll.js).
+import {
+  prefersReducedMotion,
+  scrollToCalculatorTarget,
+} from "../components/calculator/scroll.js";
 import { setPageMeta, setJsonLd, ORGANIZATION_SCHEMA } from "../seo.js";
 import { friendlyValidity, withValidityClear } from "../formValidation.js";
-
-// ── Centrale step-scroll ──────────────────────────────────────────────────
-// Eén betrouwbare functie voor alle stapovergangen: scrollt naar de bovenkant
-// van de actieve vraagkaart, met ruimte voor de sticky header. Respecteert
-// prefers-reduced-motion. De eindpositie wordt berekend uit de werkelijke
-// layout (getBoundingClientRect), zodat een onboardingblok dat net verdween
-// de landing niet meer verschuift.
-function prefersReducedMotion() {
-  return (
-    typeof window !== "undefined" &&
-    typeof window.matchMedia === "function" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  );
-}
-
-// Sticky-headerhoogte dynamisch meten (verschilt desktop/mobiel) + visuele marge.
-function calcHeaderOffset() {
-  const header = document.querySelector(".site-header");
-  const h = header ? header.getBoundingClientRect().height : 64;
-  return h + 20;
-}
-
-function scrollToCalculatorTarget(el) {
-  if (!el) return;
-  const top = el.getBoundingClientRect().top + window.scrollY - calcHeaderOffset();
-  window.scrollTo({
-    top: Math.max(0, top),
-    behavior: prefersReducedMotion() ? "auto" : "smooth",
-  });
-}
 
 const CUSTOMER_TYPES = [
   { value: "residential", label: "Particulier" },
@@ -262,6 +239,13 @@ function CalcHelpCard({ onStart, className, variant }) {
 export default function Calculator() {
   const [searchParams] = useSearchParams();
   const directAdvice = searchParams.get("advies") === "1";
+
+  // ── Rekenroute ──
+  // mode: null = startscherm (snel vs. slimme-meterdata) · "quick" = de
+  // bestaande wizard · "smart" = de slimme-meterdata-route. Bij ?advies=1
+  // (deep-link vanuit blogposts) direct de bestaande quick-flow, zodat het
+  // gedrag van die links exact gelijk blijft.
+  const [mode, setMode] = useState(directAdvice ? "quick" : null);
 
   // ── Wizard-state ──
   // hasSolar: null = stap 1 (keuze) · "yes"/"no" = pad gekozen.
@@ -489,10 +473,33 @@ export default function Calculator() {
     setStage("usage");
   };
 
+  // Brug vanuit de slimme-meterdata-route: het geparsede profiel (omgerekend
+  // naar jaartotalen) vult de bestaande zon-flow voor. Alleen invoervelden —
+  // de berekening zelf blijft volledig bij de bestaande backend-API.
+  const useProfileInQuick = ({ yearlyUsageKwh, yearlyExportKwh }) => {
+    clearResults();
+    setMode("quick");
+    setHasSolar("yes");
+    setStage("energy");
+    setForm((prev) => ({
+      ...prev,
+      yearly_usage: String(yearlyUsageKwh),
+      exported_energy: String(yearlyExportKwh),
+      sunny_day_export: "",
+    }));
+  };
+
   // Alleen voor de onboarding-CTA ("Start hieronder met stap 1 ↓"): scroll naar
   // stap 1 op het beginscherm. De stapovergangen zelf scrollen via het centrale
-  // useLayoutEffect (na render), niet hier.
-  const scrollToWizard = () => scrollToCalculatorTarget(wizardRef.current);
+  // useLayoutEffect (na render), niet hier. Op het routekeuze-/smart-scherm
+  // bestaat de wizard niet; dan scrollen we naar de bovenkant van de pagina.
+  const scrollToWizard = () => {
+    if (wizardRef.current) {
+      scrollToCalculatorTarget(wizardRef.current);
+    } else {
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? "auto" : "smooth" });
+    }
+  };
 
   // Bij een validatiefout: naar de actieve stapkaart scrollen en het eerste
   // invoerveld focussen, zodat de foutmelding + het veld in beeld staan.
@@ -699,6 +706,18 @@ export default function Calculator() {
       </header>
 
       <div className="container calc2-container">
+
+      {/* ── Routekeuze: snel berekenen vs. slimme-meterdata ── */}
+      {mode === null ? (
+        <div className="calc2-sm-entry-wrap">
+          <SmartMeterEntryChoice
+            onQuick={() => setMode("quick")}
+            onSmart={() => setMode("smart")}
+          />
+        </div>
+      ) : mode === "smart" ? (
+        <SmartMeterFlow onExit={() => setMode(null)} onUseInQuick={useProfileInQuick} />
+      ) : (
       <div className="calc2-layout">
       <div className="calc2-main">
 
@@ -744,6 +763,16 @@ export default function Calculator() {
       {/* ── Stap 1: klanttype + zonnepanelen (voor beide klanttypen) ── */}
       {hasSolar === null && (
         <div className="calc-solar-choice calc-step-panel">
+          {/* Terug naar de routekeuze (niet bij ?advies=1: die deep-link start
+              bewust direct in deze flow). */}
+          {!directAdvice && (
+            <div className="calc2-progress-top calc2-sm-quickback">
+              <button type="button" className="calc2-back" onClick={() => setMode(null)}>
+                ← Terug
+              </button>
+              <span className="mono calc2-progress-label">Snel berekenen</span>
+            </div>
+          )}
           {/* Het totaal aantal stappen hangt af van het antwoord hieronder
               (zon = 3 stappen, geen zon = 4). Daarom hier alleen "Stap 1";
               vanaf stap 2 toont de wizard-bar het juiste totaal. */}
@@ -1177,6 +1206,7 @@ export default function Calculator() {
         remainingLabel={hasSolar !== null && !activeResult ? progressLabel : null}
       />
       </div>
+      )}
       </div>
 
       {/* Ondersteunende secties in hun eigen container (het artikel zelf is

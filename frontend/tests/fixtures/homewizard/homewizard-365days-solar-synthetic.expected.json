@@ -1,0 +1,15 @@
+{
+  "synthetic": true,
+  "seed": 20260809,
+  "interval_minutes": 15,
+  "reading_rows": 35041,
+  "interval_count": 35040,
+  "first_reading": "2025-01-01 00:00",
+  "last_reading": "2026-01-01 00:00",
+  "total_import_kwh": 3008.305,
+  "total_export_kwh": 4008.305,
+  "max_interval_import_kwh": 0.9513,
+  "max_interval_export_kwh": 1.3498,
+  "target_annual_load_kwh": 4500.0,
+  "target_annual_pv_kwh": 5500.0
+}

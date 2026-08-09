@@ -4219,3 +4219,328 @@ details[open] > summary .hp2-acc-chevron { transform: rotate(225deg); }
   from { transform: scaleY(0.15); }
   to { transform: scaleY(1); }
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   Fase 3 — Slimme-meterdata-route (calc2-sm-*). ADDITIEF bovenop de
+   bestaande calc2-stijlen: zelfde paper/ink/volt-taal, zelfde panelen
+   (.calc-step-panel), zelfde offset-schaduwen. Beweging valt onder de
+   globale reduced-motion-kill.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── Startscherm: routekeuze ── */
+.calc2-sm-entry-wrap { margin: 36px 0 64px; }
+.calc2-sm-entry-title { margin-top: 10px; }
+.calc2-sm-entry-sub {
+  color: var(--ink-60); font-size: 15.5px; line-height: 1.6;
+  max-width: 62ch; margin-bottom: 24px;
+}
+.calc2-sm-entry-grid { display: grid; gap: 18px; align-items: stretch; }
+@media (min-width: 860px) {
+  .calc2-sm-entry-grid { grid-template-columns: 1fr 1fr; gap: 22px; }
+}
+
+.calc2-sm-option {
+  position: relative;
+  display: flex; flex-direction: column; gap: 12px;
+  padding: 24px 22px 22px;
+  background: var(--paper);
+  border: 1px solid var(--border); border-radius: var(--radius);
+}
+/* Slimme-meterkaart: prominenter via dikkere inktrand + offset-schaduw,
+   zonder de snelle route er goedkoop uit te laten zien. */
+.calc2-sm-option--premium {
+  background: var(--surface);
+  border: 2px solid var(--ink);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+.calc2-sm-option-head {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+}
+.calc2-sm-option-title {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: 19px; line-height: 1.2;
+}
+.calc2-sm-option-meta { font-size: 11px; color: var(--ink-60); white-space: nowrap; }
+.calc2-sm-option-text { font-size: 14.5px; color: var(--ink-60); line-height: 1.6; }
+.calc2-sm-option-actions {
+  margin-top: auto; padding-top: 10px;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+}
+.calc2-sm-option-actions .field-submit-button { width: 100%; text-align: center; }
+
+/* Badge in mono-chipstijl (zoals calc-sunny-chip / kickers). */
+.calc2-sm-badge {
+  position: absolute; top: -13px; left: 18px;
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  background: var(--volt); color: var(--ink);
+  border: 2px solid var(--ink); border-radius: var(--radius-sm);
+  padding: 3px 10px;
+}
+.calc2-sm-badge--soon {
+  background: var(--paper-2); color: var(--ink-60); border-color: var(--border);
+}
+.calc2-sm-badge--card {
+  position: static; display: inline-block; margin-bottom: 10px;
+}
+
+/* Voordelenlijst met volt-vinkjes. */
+.calc2-sm-benefits { list-style: none; display: grid; gap: 7px; margin: 2px 0 4px; }
+.calc2-sm-benefits li {
+  position: relative; padding-left: 26px;
+  font-size: 14px; line-height: 1.5;
+}
+.calc2-sm-benefits li::before {
+  content: "✓";
+  position: absolute; left: 0; top: 1px;
+  width: 17px; height: 17px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700;
+  background: var(--volt); border: 1.5px solid var(--ink); color: var(--ink);
+}
+
+/* Secundaire knop: zelfde vorm als field-submit-button, ink-op-wit. */
+.calc2-sm-btn-secondary {
+  cursor: pointer; width: 100%;
+  font-family: var(--font-display); font-weight: 800; font-size: 15px;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  background: var(--surface); color: var(--ink);
+  border: 2px solid var(--ink); border-radius: 8px; padding: 13px 28px;
+  box-shadow: 3px 3px 0 rgba(18, 19, 15, 0.25);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease;
+}
+.calc2-sm-btn-secondary:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 rgba(18, 19, 15, 0.25);
+  background: var(--paper);
+}
+
+/* Tekstuele secundaire actie (help / dev / brug naar snelle berekening). */
+.calc2-sm-linkbtn {
+  background: none; border: none; padding: 0; cursor: pointer;
+  font: inherit; font-size: 14px; font-weight: 600;
+  color: var(--ink-60); text-decoration: underline; text-underline-offset: 3px;
+  text-align: left;
+}
+.calc2-sm-linkbtn:hover { color: var(--ink); }
+.calc2-sm-devbtn {
+  display: block; margin-top: 14px;
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--copper);
+}
+
+/* ── Bronkeuze ── */
+.calc2-sm-source-grid { display: grid; gap: 18px; margin-top: 6px; }
+@media (min-width: 860px) {
+  .calc2-sm-source-grid { grid-template-columns: 1.08fr 1fr; gap: 22px; }
+}
+.calc2-sm-source {
+  position: relative;
+  display: flex; flex-direction: column; gap: 12px;
+  padding: 22px 20px 20px;
+  background: var(--paper);
+  border: 1px solid var(--border); border-radius: var(--radius);
+}
+.calc2-sm-source--primary {
+  background: var(--surface);
+  border: 2px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+/* Informatieve (nog niet ondersteunde) bron: zichtbaar maar zonder actie. */
+.calc2-sm-source--disabled {
+  background: var(--paper-2);
+  border-style: dashed;
+}
+.calc2-sm-source--disabled .calc2-sm-source-title,
+.calc2-sm-source--disabled .calc2-sm-option-text { color: var(--ink-60); }
+.calc2-sm-source-head { display: flex; align-items: center; gap: 14px; }
+/* Neutraal monogram-label voor de bron (géén merkkleuren): ink op wit,
+   zelfde chip-taal als de rest van de site. */
+.calc2-sm-source-mark {
+  flex: none; width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 900; font-size: 15px;
+  letter-spacing: 0.02em;
+  background: var(--surface); color: var(--ink);
+  border: 2px solid var(--ink); border-radius: var(--radius);
+  box-shadow: 2px 2px 0 var(--volt);
+}
+.calc2-sm-source-mark--other {
+  font-family: var(--font-mono); font-size: 11px;
+  box-shadow: 2px 2px 0 rgba(18, 19, 15, 0.2);
+  border-color: var(--border); color: var(--ink-60);
+}
+.calc2-sm-source-title {
+  font-family: var(--font-display); font-weight: 900; font-size: 18px; line-height: 1.2;
+}
+.calc2-sm-source-sub { font-size: 11px; color: var(--volt-dk); margin-top: 3px; }
+
+/* ── Help-paneel (in de bestaande lead-modal-schil) ── */
+.calc2-sm-help {
+  background: var(--surface);
+  border: 3px solid var(--ink); border-radius: 10px;
+  box-shadow: 8px 8px 0 var(--volt);
+  padding: 26px 24px;
+}
+.calc2-sm-help-eyebrow {
+  display: block; font-size: 11px; color: var(--volt-dk); margin-bottom: 8px;
+}
+.calc2-sm-help h3 {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: 21px; line-height: 1.2; margin-bottom: 14px;
+}
+.calc2-sm-help-steps {
+  margin: 0 0 14px 20px; display: grid; gap: 8px;
+  font-size: 15px; line-height: 1.55;
+}
+.calc2-sm-help-note {
+  font-size: 13.5px; color: var(--ink-60); line-height: 1.6;
+  border-top: 1px solid var(--rule); padding-top: 12px;
+}
+
+/* ── Uploadzone ── */
+.calc2-sm-drop {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  text-align: center;
+  padding: 36px 20px 30px;
+  background: var(--paper);
+  border: 2px dashed var(--border); border-radius: var(--radius);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.calc2-sm-drop.is-drag {
+  border-color: var(--ink);
+  background: rgba(255, 209, 0, 0.08);
+}
+.calc2-sm-drop--checking { border-style: solid; gap: 12px; }
+.calc2-sm-drop-icon {
+  font-size: 26px; line-height: 1;
+  width: 52px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface); border: 2px solid var(--ink); border-radius: 50%;
+  box-shadow: 2px 2px 0 var(--volt);
+  margin-bottom: 4px;
+}
+.calc2-sm-drop-title {
+  font-family: var(--font-display); font-weight: 900; font-size: 18px;
+}
+.calc2-sm-drop-sub { font-size: 13.5px; color: var(--ink-60); }
+.calc2-sm-drop .field-submit-button { margin-top: 6px; }
+.calc2-sm-drop-formats { font-size: 11px; color: var(--ink-40); margin-top: 10px; }
+.calc2-sm-file-input { display: none; }
+
+.calc2-sm-privacy {
+  display: flex; gap: 8px; align-items: flex-start;
+  margin-top: 16px; padding: 12px 14px;
+  font-size: 13.5px; color: var(--ink-60); line-height: 1.55;
+  background: var(--paper-2); border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+}
+
+/* ── Profiel-samenvatting ── */
+.calc2-sm-filechip {
+  display: inline-flex; align-items: center; gap: 8px;
+  max-width: 100%;
+  margin: 10px 0 4px;
+  padding: 6px 12px;
+  font-family: var(--font-mono); font-size: 12.5px;
+  background: var(--paper); border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.calc2-sm-filechip-name {
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  min-width: 0;
+}
+.calc2-sm-metrics {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px; margin: 16px 0 6px;
+}
+@media (min-width: 720px) {
+  .calc2-sm-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+}
+.calc2-sm-metric {
+  display: flex; flex-direction: column; gap: 3px;
+  padding: 12px 14px;
+  background: var(--paper); border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  min-width: 0;
+}
+.calc2-sm-metric--wide { grid-column: 1 / -1; border-left: 3px solid var(--volt); }
+.calc2-sm-metric dt { font-size: 12px; color: var(--ink-60); }
+.calc2-sm-metric dd {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: 18px; line-height: 1.25; overflow-wrap: break-word;
+}
+.calc2-sm-metric--wide dd { font-size: 16px; }
+.calc2-sm-metric-note {
+  font-size: 12.5px; color: var(--ink-40); line-height: 1.55; margin-top: 8px;
+}
+.calc2-sm-profile-nav { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; margin-top: 18px; }
+
+/* ── Batterijvergelijking ── */
+.calc2-sm-main > section + section { margin-top: 24px; }
+.calc2-sm-compare > .calc-form-start { margin-top: 8px; }
+.calc2-sm-demo-note {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--copper);
+  border: 1px dashed var(--copper); border-radius: var(--radius-sm);
+  background: rgba(180, 89, 46, 0.06);
+  padding: 8px 12px; margin-bottom: 16px;
+}
+.calc2-sm-compare-grid { display: grid; gap: 14px; }
+@media (min-width: 720px) {
+  .calc2-sm-compare-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+}
+.calc2-sm-batt-card {
+  display: flex; flex-direction: column;
+  padding: 16px 14px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius);
+}
+.calc2-sm-batt-card.is-recommended {
+  border: 2px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+  background: var(--surface);
+}
+.calc2-sm-batt-size {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: 24px; line-height: 1.1;
+  padding-bottom: 10px; margin-bottom: 10px;
+  border-bottom: 2px solid var(--ink);
+}
+.calc2-sm-batt-rows { display: grid; gap: 0; }
+.calc2-sm-batt-row {
+  display: flex; flex-direction: column; gap: 1px;
+  padding: 6px 0; border-bottom: 1px solid var(--rule);
+}
+.calc2-sm-batt-row dt { font-size: 11.5px; color: var(--ink-60); }
+.calc2-sm-batt-row dd { font-family: var(--font-mono); font-size: 13px; }
+.calc2-sm-batt-delta {
+  margin-top: 10px;
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--volt-dk);
+}
+
+/* ── Aside in de smart-flow (hergebruikt calc2-summary-schil) ── */
+.calc2-sm-aside-list { margin: 12px 0 4px; }
+.calc2-sm-aside-privacy {
+  margin-top: 14px; padding-top: 12px;
+  border-top: 1px solid var(--rule);
+  font-size: 12.5px; color: var(--ink-40); line-height: 1.55;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .calc2-sm-entry-wrap { margin: 24px 0 48px; }
+  .calc2-sm-option { padding: 20px 16px 18px; }
+  .calc2-sm-source { padding: 18px 14px 16px; }
+  .calc2-sm-drop { padding: 28px 14px 24px; }
+  .calc2-sm-drop .field-submit-button { width: 100%; padding: 14px 20px; min-height: 48px; }
+  .calc2-sm-option-actions .field-submit-button,
+  .calc2-sm-btn-secondary { width: 100%; padding: 14px 20px; min-height: 48px; }
+  .calc2-sm-profile-nav .field-submit-button { width: 100%; padding: 14px 20px; min-height: 48px; }
+  .calc2-sm-compare-grid { grid-template-columns: 1fr; }
+  .calc2-sm-batt-rows { grid-template-columns: 1fr 1fr; column-gap: 12px; }
+  .calc2-sm-metric dd { font-size: 16px; }
+}
+@media (max-width: 360px) {
+  .calc2-sm-metrics { grid-template-columns: 1fr; }
+  .calc2-sm-batt-rows { grid-template-columns: 1fr; }
+}
