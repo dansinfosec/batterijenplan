@@ -215,7 +215,7 @@
     "svg": "model-versus-praktijk.svg",
     "label": "Zonneplan Nexus 20 kWh / 10 kW min",
     "displayed_value": 992.48,
-    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "canonical_file": "data/practice/CANONICAL_PRACTICE_REFERENCE.json",
     "json_path": "$.systems[?(@.id=='zonneplan_nexus_20')].eur_min",
     "claim_id": "zonneplan_nexus_20"
   },
@@ -223,7 +223,7 @@
     "svg": "model-versus-praktijk.svg",
     "label": "Zonneplan Nexus 20 kWh / 10 kW max",
     "displayed_value": 1122.71,
-    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "canonical_file": "data/practice/CANONICAL_PRACTICE_REFERENCE.json",
     "json_path": "$.systems[?(@.id=='zonneplan_nexus_20')].eur_max",
     "claim_id": "zonneplan_nexus_20"
   },
@@ -231,7 +231,7 @@
     "svg": "model-versus-praktijk.svg",
     "label": "Sigenergy 24,2 kWh / 12 kW min",
     "displayed_value": 733.39,
-    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "canonical_file": "data/practice/CANONICAL_PRACTICE_REFERENCE.json",
     "json_path": "$.systems[?(@.id=='sigenergy_242')].eur_min",
     "claim_id": "sigenergy_242"
   },
@@ -239,7 +239,7 @@
     "svg": "model-versus-praktijk.svg",
     "label": "Sigenergy 24,2 kWh / 12 kW max",
     "displayed_value": 1800.06,
-    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "canonical_file": "data/practice/CANONICAL_PRACTICE_REFERENCE.json",
     "json_path": "$.systems[?(@.id=='sigenergy_242')].eur_max",
     "claim_id": "sigenergy_242"
   },
@@ -247,7 +247,7 @@
     "svg": "model-versus-praktijk.svg",
     "label": "Tibber Homevolt 13,3 kWh / 6 kW min",
     "displayed_value": 1162.0,
-    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "canonical_file": "data/practice/CANONICAL_PRACTICE_REFERENCE.json",
     "json_path": "$.systems[?(@.id=='tibber_homevolt_133')].eur_min",
     "claim_id": "tibber_homevolt_133"
   },
@@ -255,7 +255,7 @@
     "svg": "model-versus-praktijk.svg",
     "label": "Tibber Homevolt 13,3 kWh / 6 kW max",
     "displayed_value": 1298.0,
-    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "canonical_file": "data/practice/CANONICAL_PRACTICE_REFERENCE.json",
     "json_path": "$.systems[?(@.id=='tibber_homevolt_133')].eur_max",
     "claim_id": "tibber_homevolt_133"
   },
@@ -263,7 +263,7 @@
     "svg": "model-versus-praktijk.svg",
     "label": "Bliq 20 kWh / 8 kW min",
     "displayed_value": 966.68,
-    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "canonical_file": "data/practice/CANONICAL_PRACTICE_REFERENCE.json",
     "json_path": "$.systems[?(@.id=='bliq_20')].eur_min",
     "claim_id": "bliq_20"
   },
@@ -271,7 +271,7 @@
     "svg": "model-versus-praktijk.svg",
     "label": "Bliq 20 kWh / 8 kW max",
     "displayed_value": 1276.68,
-    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "canonical_file": "data/practice/CANONICAL_PRACTICE_REFERENCE.json",
     "json_path": "$.systems[?(@.id=='bliq_20')].eur_max",
     "claim_id": "bliq_20"
   },
@@ -279,7 +279,7 @@
     "svg": "model-versus-praktijk.svg",
     "label": "GivEnergy 20,4 kWh / 10 kW min",
     "displayed_value": 639.44,
-    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "canonical_file": "data/practice/CANONICAL_PRACTICE_REFERENCE.json",
     "json_path": "$.systems[?(@.id=='givenergy_204')].eur_min",
     "claim_id": "givenergy_204"
   },
@@ -287,7 +287,7 @@
     "svg": "model-versus-praktijk.svg",
     "label": "GivEnergy 20,4 kWh / 10 kW max",
     "displayed_value": 1363.55,
-    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "canonical_file": "data/practice/CANONICAL_PRACTICE_REFERENCE.json",
     "json_path": "$.systems[?(@.id=='givenergy_204')].eur_max",
     "claim_id": "givenergy_204"
   },
@@ -295,7 +295,7 @@
     "svg": "model-versus-praktijk.svg",
     "label": "Dyness–Solis 21,3 kWh / 10 kW min",
     "displayed_value": 1139.71,
-    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "canonical_file": "data/practice/CANONICAL_PRACTICE_REFERENCE.json",
     "json_path": "$.systems[?(@.id=='dyness_solis_213')].eur_min",
     "claim_id": "dyness_solis_213"
   },
@@ -303,7 +303,7 @@
     "svg": "model-versus-praktijk.svg",
     "label": "Dyness–Solis 21,3 kWh / 10 kW max",
     "displayed_value": 1139.71,
-    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "canonical_file": "data/practice/CANONICAL_PRACTICE_REFERENCE.json",
     "json_path": "$.systems[?(@.id=='dyness_solis_213')].eur_max",
     "claim_id": "dyness_solis_213"
   },
@@ -311,7 +311,7 @@
     "svg": "model-versus-praktijk.svg",
     "label": "HYXiPOWER 21,2 kWh / 12 kW min",
     "displayed_value": 657.19,
-    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "canonical_file": "data/practice/CANONICAL_PRACTICE_REFERENCE.json",
     "json_path": "$.systems[?(@.id=='hyxipower_212')].eur_min",
     "claim_id": "hyxipower_212"
   },
@@ -319,7 +319,7 @@
     "svg": "model-versus-praktijk.svg",
     "label": "HYXiPOWER 21,2 kWh / 12 kW max",
     "displayed_value": 657.19,
-    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "canonical_file": "data/practice/CANONICAL_PRACTICE_REFERENCE.json",
     "json_path": "$.systems[?(@.id=='hyxipower_212')].eur_max",
     "claim_id": "hyxipower_212"
   },
@@ -354,7 +354,7 @@
       49.6,
       56.1
     ],
-    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "canonical_file": "data/practice/CANONICAL_PRACTICE_REFERENCE.json",
     "json_path": "$.systems[?(@.id=='zonneplan_nexus_20')].eur_per_kwh_min|max",
     "claim_id": "zonneplan_nexus_20"
   },
@@ -365,7 +365,7 @@
       30.3,
       74.4
     ],
-    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "canonical_file": "data/practice/CANONICAL_PRACTICE_REFERENCE.json",
     "json_path": "$.systems[?(@.id=='sigenergy_242')].eur_per_kwh_min|max",
     "claim_id": "sigenergy_242"
   },
@@ -376,7 +376,7 @@
       87.4,
       97.6
     ],
-    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "canonical_file": "data/practice/CANONICAL_PRACTICE_REFERENCE.json",
     "json_path": "$.systems[?(@.id=='tibber_homevolt_133')].eur_per_kwh_min|max",
     "claim_id": "tibber_homevolt_133"
   },
@@ -387,7 +387,7 @@
       53.5,
       53.5
     ],
-    "canonical_file": "CANONICAL_PRACTICE_REFERENCE.json",
+    "canonical_file": "data/practice/CANONICAL_PRACTICE_REFERENCE.json",
     "json_path": "$.systems[?(@.id=='dyness_solis_213')].eur_per_kwh_min|max",
     "claim_id": "dyness_solis_213"
   },

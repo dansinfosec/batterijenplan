@@ -1,6 +1,6 @@
 # SVG asset index — `wat-levert-een-thuisbatterij-op`
 
-*All READY SVGs read their numbers from canonical JSON (`CANONICAL_METRICS.json`, `CANONICAL_PRACTICE_REFERENCE.json`); mappings in `SVG_DATA_LINEAGE.json`. Editable text, valid XML, `role="img"` + title/desc, ≥16 px labels, brand palette. PNG = review preview only; publish the SVG. Not for production apply.*
+*All READY SVGs read their numbers from canonical JSON (`CANONICAL_METRICS.json`, `data/practice/CANONICAL_PRACTICE_REFERENCE.json` (verplaatst uit deze map)); mappings in `SVG_DATA_LINEAGE.json`. Editable text, valid XML, `role="img"` + title/desc, ≥16 px labels, brand palette. PNG = review preview only; publish the SVG. Not for production apply.*
 
 ## READY (built) — in `brand-assets/article-visuals/wat-levert-een-thuisbatterij-op/diagrams/`
 | # | File (.svg + .png) | Data source | Status | Placement |

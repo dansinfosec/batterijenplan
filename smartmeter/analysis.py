@@ -55,6 +55,8 @@ from bp_dispatch.core import (
 from bp_dispatch.engine import simulate
 from bp_dispatch.study2027 import self_consumption_battery
 
+from . import practice_evidence
+
 API_MODEL_VERSION = "smartmeter-analysis-v1"
 
 # Tijdbasis-metadata (zie module-docstring + methodology).
@@ -394,6 +396,19 @@ def run_analysis(validated: dict) -> dict:
             "assumption_flags": [FLAG_USABLE_ESTIMATED, spec["power_flag"]],
             "physical": physical,
             "financial": financial,
+            # Handelsbewijs — twee gescheiden lagen, los van physical/financial
+            # en NIET optelbaar met de zelfconsumptie-modelwaarde (zie
+            # methodology.trading_evidence.not_additive_note). Gebaseerd op
+            # uitsluitend (nominale capaciteit, vermogen) en waargenomen
+            # teruglevering — nooit op huishoudprofiel-details. Terminologie:
+            # GERAPPORTEERDE praktijkresultaten (extern), geen eigen
+            # waarnemingen van Batterijenplan.
+            "calculator_trading_band": practice_evidence.calculator_trading_band_block(
+                spec["nominal_kwh"], baseline_export_kwh > 0
+            ),
+            "reported_practice_evidence": practice_evidence.reported_practice_evidence_block(
+                spec["nominal_kwh"], spec["power_kw"]
+            ),
             "comparison": None,  # ingevuld na de lus
         })
         timings[spec["id"]] = round((time.perf_counter() - t_c) * 1000.0, 1)
@@ -443,9 +458,12 @@ def run_analysis(validated: dict) -> dict:
             ["avoided_grid_import", "lost_feed_in_compensation", "degradation_cost"]
             if include_financial else []
         ),
+        "trading_evidence": practice_evidence.methodology_block(),
         "excluded_value_streams": [
             {"stream": "day_ahead_trading",
-             "reason": "geen dag-ahead-prijsreeks gekoppeld aan geüploade profielen in v1"},
+             "reason": "geen dag-ahead-prijsreeks gekoppeld aan geüploade profielen in v1; "
+                       "handelsopbrengst wordt als gerapporteerde praktijk getoond "
+                       "(reported_practice_evidence/calculator_trading_band), niet gesimuleerd"},
             {"stream": "imbalance_flex",
              "reason": "onbalanssturing is experimenteel in de engine en niet gevalideerd voor dit pad"},
             {"stream": "feed_in_cost_avoided",

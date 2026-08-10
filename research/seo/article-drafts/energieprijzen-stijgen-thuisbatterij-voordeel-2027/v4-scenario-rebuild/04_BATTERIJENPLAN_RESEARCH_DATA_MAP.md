@@ -4,7 +4,7 @@
 | Bron | Inhoud | Gebruik hier |
 |---|---|---|
 | `wat-levert-.../CANONICAL_METRICS.json` | 25-cel matrix **totale** batterijwaarde, config 14 kWh/10 kW/EMS/**dynamisch**/**marktjaar 2025**; mediaan EUR 734, gem 744, bereik 654-878 | **Totale-waarde context (A)**, link naar yield-artikel. Niet het 2027-effect. |
-| `wat-levert-.../CANONICAL_PRACTICE_REFERENCE.json` | 9 praktijksystemen (MijnBatterij.nl), EUR/jaar-bereiken | Praktijk-ijking (context) |
+| `data/practice/CANONICAL_PRACTICE_REFERENCE.json` (voorheen in de artikelmap) | 9 praktijksystemen (MijnBatterij.nl), EUR/jaar-bereiken | Praktijk-ijking (context) |
 | `wat-levert-.../QUANTITATIVE_CLAIM_REGISTRY.json` | classificatie + herkomst per claim | Fact ledger (06) |
 | `calculators/stage2.py` | praktijkbanden EUR/kWh/jr per contract (dynamisch 55-95, vast 30-60; BP-PRACTICE) | Totale-waarde banden dynamisch |
 | 2027 `PROPOSED_ARTICLE_V2.md` | uitgewerkt voorbeeld (4.300 kWh): 3.010/1.584/1.250 kWh, EUR 502,47, 290/405/519 | Basis afgeleide incrementele model |
