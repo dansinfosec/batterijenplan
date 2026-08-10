@@ -1,0 +1,1161 @@
+{
+  "_fixture_note": "DERIVED CONTRACT SNAPSHOT — captured from the real backend (smartmeter-analysis-v1) for the 365-day synthetic HomeWizard fixture, then sanitized: reported practice euro values are SYNTHETIC placeholders (the canonical numbers live only in data/practice/CANONICAL_PRACTICE_REFERENCE.json). See fixtures/README.md.",
+  "profile": {
+    "interval_count": 35040,
+    "start": "2025-01-01T00:00:00+00:00",
+    "end": "2025-12-31T23:45:00+00:00",
+    "interval_minutes": 15,
+    "time_basis": "local_wall_clock_normalized",
+    "timezone": "Europe/Amsterdam",
+    "completeness_pct": 100,
+    "annualized": false,
+    "raw_grid_import_kwh": 3008.305,
+    "raw_grid_export_kwh": 4008.305,
+    "normalized_grid_import_kwh": 3008.305,
+    "normalized_grid_export_kwh": 4008.305,
+    "bidirectional_interval_count": 0,
+    "bidirectional_energy_overlap_kwh": 0,
+    "observed_days": 365,
+    "missing_intervals": 0,
+    "duplicate_intervals": 0,
+    "warnings": []
+  },
+  "baseline": {
+    "basis": "normalized_net_flow",
+    "grid_import_kwh": 3008.305,
+    "grid_export_kwh": 4008.305
+  },
+  "financial_scenario": null,
+  "candidates": [
+    {
+      "id": "t7",
+      "label": "7 kWh",
+      "product_name": "Dyness S3 Tower T7",
+      "nominal_capacity_kwh": 7.1,
+      "usable_capacity_kwh": 6.39,
+      "inverter_power_kw": 3,
+      "capacity_source": "calculators.services.RESIDENTIAL_CATALOG (Dyness S3 Tower)",
+      "power_source": "bp-dispatch 2027-studieklasse 7kWh/3kW",
+      "assumption_flags": [
+        "usable_capacity_estimated_0.9_of_nominal",
+        "inverter_power_from_study_class_not_product_verified"
+      ],
+      "physical": {
+        "basis": "observed",
+        "adjusted_grid_import_kwh": 1717.32,
+        "adjusted_grid_export_kwh": 2479.69,
+        "grid_import_reduction_kwh": 1290.99,
+        "grid_export_reduction_kwh": 1528.61,
+        "grid_export_charged_into_battery_kwh": 1500.3,
+        "battery_discharge_offsetting_grid_import_kwh": 1350.2,
+        "charge_losses_kwh": 76.99,
+        "discharge_losses_kwh": 73.04,
+        "equivalent_full_cycles": 211.3,
+        "export_capture_pct": 38.1,
+        "peak_soc_kwh": 6.39,
+        "capacity_utilization_pct": 100,
+        "capacity_limited_charge_intervals": 4642,
+        "power_limited_charge_intervals": 33,
+        "power_limited_discharge_intervals": 14
+      },
+      "financial": null,
+      "calculator_trading_band": {
+        "source": "calculators.stage2.SOLAR_BENEFIT_BANDS (BP-PRACTICE-006)",
+        "classification": "PRACTICE DATA — MANUALLY VERIFIED",
+        "nature": "Bestaande conservatieve Batterijenplan-praktijkband (Stage 2, ongewijzigd). GEEN statistisch betrouwbaarheidsinterval, GEEN mediaan/P10/P90-schatting, en NIET geproduceerd door het geüploade meterprofiel.",
+        "methodology": "research/METHODOLOGY.md (conservatieve banden uit MijnBatterij-praktijk, per contracttype)",
+        "stage2_band_set": "solar",
+        "band_set_selection": {
+          "basis": "observed_grid_export",
+          "observed": "teruglevering aanwezig in het genormaliseerde P1-profiel",
+          "equivalence_note": "Gemeten P1-teruglevering bewijst uitsluitend dat er export was (export-observed inference: opwek achter de meter aannemelijk) — niet de opwektechnologie en niet het expliciete zonnepanelen-antwoord (ja/gepland) van de bestaande calculator. Er wordt hier dus NIET geclaimd dat de klant zonnepanelen heeft; die vraag blijft in het adviesgesprek leidend."
+        },
+        "basis_capacity_kwh": 7.1,
+        "eur_per_kwh_year_by_contract": {
+          "dynamic": [
+            55,
+            95
+          ],
+          "dynamic_self": [
+            45,
+            80
+          ],
+          "variable": [
+            40,
+            75
+          ],
+          "fixed": [
+            30,
+            60
+          ],
+          "unknown": [
+            35,
+            70
+          ]
+        },
+        "annual_range_eur_by_contract": {
+          "dynamic": [
+            390,
+            674
+          ],
+          "dynamic_self": [
+            320,
+            568
+          ],
+          "variable": [
+            284,
+            532
+          ],
+          "fixed": [
+            213,
+            426
+          ],
+          "unknown": [
+            248,
+            497
+          ]
+        },
+        "correction_factors_note": "Stage 2 past hierbovenop huishoudfactoren toe (warmtepomp/EV/terugleverkosten, plafond ×1,3) op basis van vragenlijst-antwoorden; die inputs ontbreken in P1-data en zijn hier niet toegepast."
+      },
+      "reported_practice_evidence": {
+        "evidence_type": "reported_practice_results",
+        "candidate_capacity_kwh": 7.1,
+        "candidate_power_kw": 3,
+        "ranking_rule": "deterministische gelijkenis-ranking op |capaciteitsverschil|, dan |vermogensverschil|, dan id; geen hard matchvenster, geen huishoudvariabelen, euro's onaangepast",
+        "nearest_hardware_matches": [
+          {
+            "id": "tibber_homevolt_133",
+            "provider": "Tibber",
+            "system": "Tibber Homevolt",
+            "capacity_kwh": 13.3,
+            "inverter_power_kw": 6,
+            "sample_n": 11,
+            "sample_class": "SMALL",
+            "period": "2025",
+            "partial_year": false,
+            "annual_return_min_eur": 1100.66,
+            "annual_return_max_eur": 1200.77,
+            "return_per_kwh_min": 82.8,
+            "return_per_kwh_max": 90.3,
+            "source": "MijnBatterij.nl 2025, as reported (user-supplied). External practice/reference; not an own simulation. Ranges are published min-max; no median/mean derived from a range.",
+            "evidence_class": "PRACTICE_REFERENCE",
+            "warnings": [],
+            "rank": 1,
+            "capacity_difference_pct": 87.3,
+            "power_difference_pct": 100,
+            "evidence_distance": "Dichtstbijzijnde beschikbare praktijkreferentie; systeemcapaciteit is 87.3% groter dan de kandidaat; gerapporteerd resultaat van een ander systeem/EMS — geen gelijkwaardigheid."
+          },
+          {
+            "id": "alphaess_19",
+            "provider": "Frank",
+            "system": "Frank/AlphaESS",
+            "capacity_kwh": 19,
+            "inverter_power_kw": 10,
+            "sample_n": 15,
+            "sample_class": "SMALL",
+            "period": "2025",
+            "partial_year": true,
+            "annual_return_min_eur": 20.56,
+            "annual_return_max_eur": 1300.67,
+            "return_per_kwh_min": 1.1,
+            "return_per_kwh_max": 68.5,
+            "source": "MijnBatterij.nl 2025, as reported (user-supplied). External practice/reference; not an own simulation. Ranges are published min-max; no median/mean derived from a range.",
+            "evidence_class": "PRACTICE_REFERENCE",
+            "warnings": [
+              "Bevat deeljaar-resultaten; de gepubliceerde range is geen representatieve volledige jaaropbrengst."
+            ],
+            "rank": 2,
+            "capacity_difference_pct": 167.6,
+            "power_difference_pct": 233.3,
+            "evidence_distance": "Praktijkreferentie; systeemcapaciteit is 167.6% groter dan de kandidaat; gerapporteerd resultaat van een ander systeem/EMS — geen gelijkwaardigheid."
+          },
+          {
+            "id": "bliq_20",
+            "provider": "Bliq",
+            "system": "Bliq",
+            "capacity_kwh": 20,
+            "inverter_power_kw": 8,
+            "sample_n": 3,
+            "sample_class": "SMALL",
+            "period": "2025",
+            "partial_year": false,
+            "annual_return_min_eur": 900.88,
+            "annual_return_max_eur": 1200.99,
+            "return_per_kwh_min": 45,
+            "return_per_kwh_max": 60,
+            "source": "MijnBatterij.nl 2025, as reported (user-supplied). External practice/reference; not an own simulation. Ranges are published min-max; no median/mean derived from a range.",
+            "evidence_class": "PRACTICE_REFERENCE",
+            "warnings": [],
+            "rank": 3,
+            "capacity_difference_pct": 181.7,
+            "power_difference_pct": 166.7,
+            "evidence_distance": "Praktijkreferentie; systeemcapaciteit is 181.7% groter dan de kandidaat; gerapporteerd resultaat van een ander systeem/EMS — geen gelijkwaardigheid."
+          }
+        ],
+        "large_sample_reference": {
+          "id": "zonneplan_nexus_20",
+          "provider": "Zonneplan",
+          "system": "Zonneplan Nexus",
+          "capacity_kwh": 20,
+          "inverter_power_kw": 10,
+          "sample_n": 267,
+          "sample_class": "LARGE",
+          "period": "2025",
+          "partial_year": false,
+          "annual_return_min_eur": 900.11,
+          "annual_return_max_eur": 1000.22,
+          "return_per_kwh_min": 45,
+          "return_per_kwh_max": 50,
+          "source": "MijnBatterij.nl 2025, as reported (user-supplied). External practice/reference; not an own simulation. Ranges are published min-max; no median/mean derived from a range.",
+          "evidence_class": "PRACTICE_REFERENCE",
+          "warnings": [],
+          "rank": 4,
+          "capacity_difference_pct": 181.7,
+          "power_difference_pct": 233.3,
+          "evidence_distance": "Praktijkreferentie; systeemcapaciteit is 181.7% groter dan de kandidaat; gerapporteerd resultaat van een ander systeem/EMS — geen gelijkwaardigheid.",
+          "reference_type": "large_sample_market_context",
+          "role": "grote-steekproef markt-/praktijkcontext (N=267) — GEEN hardware-equivalente referentie; zie evidence_distance voor de afstand tot de kandidaat",
+          "also_listed_in_nearest_hardware_matches": false
+        },
+        "coverage": {
+          "capacity_coverage_kwh": [
+            13.3,
+            24.2
+          ],
+          "systems_count": 9,
+          "total_reported_installations": 328,
+          "note": "De kandidaat (7.1 kWh) valt buiten het gedekte capaciteitsbereik (13.3–24.2 kWh); onderstaande referenties zijn de dichtstbijzijnde beschikbare, geen gelijkwaardige systemen."
+        },
+        "disclaimer": "Gerapporteerde praktijkresultaten van andere installaties (extern, MijnBatterij.nl) — geen eigen waarnemingen van Batterijenplan, geen garantie en geen voorspelling van uw eigen opbrengst."
+      },
+      "comparison": {
+        "reference_id": null
+      }
+    },
+    {
+      "id": "t10",
+      "label": "10 kWh",
+      "product_name": "Dyness S3 Tower T10",
+      "nominal_capacity_kwh": 10.15,
+      "usable_capacity_kwh": 9.13,
+      "inverter_power_kw": 5,
+      "capacity_source": "calculators.services.RESIDENTIAL_CATALOG (Dyness S3 Tower)",
+      "power_source": "bp-dispatch 2027-studieklasse 10kWh/5kW",
+      "assumption_flags": [
+        "usable_capacity_estimated_0.9_of_nominal",
+        "inverter_power_from_study_class_not_product_verified"
+      ],
+      "physical": {
+        "basis": "observed",
+        "adjusted_grid_import_kwh": 1621.33,
+        "adjusted_grid_export_kwh": 2373.04,
+        "grid_import_reduction_kwh": 1386.98,
+        "grid_export_reduction_kwh": 1635.26,
+        "grid_export_charged_into_battery_kwh": 1606.9,
+        "battery_discharge_offsetting_grid_import_kwh": 1446.2,
+        "charge_losses_kwh": 82.46,
+        "discharge_losses_kwh": 78.23,
+        "equivalent_full_cycles": 158.4,
+        "export_capture_pct": 40.8,
+        "peak_soc_kwh": 9.13,
+        "capacity_utilization_pct": 100,
+        "capacity_limited_charge_intervals": 4338,
+        "power_limited_charge_intervals": 0,
+        "power_limited_discharge_intervals": 0
+      },
+      "financial": null,
+      "calculator_trading_band": {
+        "source": "calculators.stage2.SOLAR_BENEFIT_BANDS (BP-PRACTICE-006)",
+        "classification": "PRACTICE DATA — MANUALLY VERIFIED",
+        "nature": "Bestaande conservatieve Batterijenplan-praktijkband (Stage 2, ongewijzigd). GEEN statistisch betrouwbaarheidsinterval, GEEN mediaan/P10/P90-schatting, en NIET geproduceerd door het geüploade meterprofiel.",
+        "methodology": "research/METHODOLOGY.md (conservatieve banden uit MijnBatterij-praktijk, per contracttype)",
+        "stage2_band_set": "solar",
+        "band_set_selection": {
+          "basis": "observed_grid_export",
+          "observed": "teruglevering aanwezig in het genormaliseerde P1-profiel",
+          "equivalence_note": "Gemeten P1-teruglevering bewijst uitsluitend dat er export was (export-observed inference: opwek achter de meter aannemelijk) — niet de opwektechnologie en niet het expliciete zonnepanelen-antwoord (ja/gepland) van de bestaande calculator. Er wordt hier dus NIET geclaimd dat de klant zonnepanelen heeft; die vraag blijft in het adviesgesprek leidend."
+        },
+        "basis_capacity_kwh": 10.15,
+        "eur_per_kwh_year_by_contract": {
+          "dynamic": [
+            55,
+            95
+          ],
+          "dynamic_self": [
+            45,
+            80
+          ],
+          "variable": [
+            40,
+            75
+          ],
+          "fixed": [
+            30,
+            60
+          ],
+          "unknown": [
+            35,
+            70
+          ]
+        },
+        "annual_range_eur_by_contract": {
+          "dynamic": [
+            558,
+            964
+          ],
+          "dynamic_self": [
+            457,
+            812
+          ],
+          "variable": [
+            406,
+            761
+          ],
+          "fixed": [
+            304,
+            609
+          ],
+          "unknown": [
+            355,
+            710
+          ]
+        },
+        "correction_factors_note": "Stage 2 past hierbovenop huishoudfactoren toe (warmtepomp/EV/terugleverkosten, plafond ×1,3) op basis van vragenlijst-antwoorden; die inputs ontbreken in P1-data en zijn hier niet toegepast."
+      },
+      "reported_practice_evidence": {
+        "evidence_type": "reported_practice_results",
+        "candidate_capacity_kwh": 10.15,
+        "candidate_power_kw": 5,
+        "ranking_rule": "deterministische gelijkenis-ranking op |capaciteitsverschil|, dan |vermogensverschil|, dan id; geen hard matchvenster, geen huishoudvariabelen, euro's onaangepast",
+        "nearest_hardware_matches": [
+          {
+            "id": "tibber_homevolt_133",
+            "provider": "Tibber",
+            "system": "Tibber Homevolt",
+            "capacity_kwh": 13.3,
+            "inverter_power_kw": 6,
+            "sample_n": 11,
+            "sample_class": "SMALL",
+            "period": "2025",
+            "partial_year": false,
+            "annual_return_min_eur": 1100.66,
+            "annual_return_max_eur": 1200.77,
+            "return_per_kwh_min": 82.8,
+            "return_per_kwh_max": 90.3,
+            "source": "MijnBatterij.nl 2025, as reported (user-supplied). External practice/reference; not an own simulation. Ranges are published min-max; no median/mean derived from a range.",
+            "evidence_class": "PRACTICE_REFERENCE",
+            "warnings": [],
+            "rank": 1,
+            "capacity_difference_pct": 31,
+            "power_difference_pct": 20,
+            "evidence_distance": "Dichtstbijzijnde beschikbare praktijkreferentie; systeemcapaciteit is 31% groter dan de kandidaat; gerapporteerd resultaat van een ander systeem/EMS — geen gelijkwaardigheid."
+          },
+          {
+            "id": "alphaess_19",
+            "provider": "Frank",
+            "system": "Frank/AlphaESS",
+            "capacity_kwh": 19,
+            "inverter_power_kw": 10,
+            "sample_n": 15,
+            "sample_class": "SMALL",
+            "period": "2025",
+            "partial_year": true,
+            "annual_return_min_eur": 20.56,
+            "annual_return_max_eur": 1300.67,
+            "return_per_kwh_min": 1.1,
+            "return_per_kwh_max": 68.5,
+            "source": "MijnBatterij.nl 2025, as reported (user-supplied). External practice/reference; not an own simulation. Ranges are published min-max; no median/mean derived from a range.",
+            "evidence_class": "PRACTICE_REFERENCE",
+            "warnings": [
+              "Bevat deeljaar-resultaten; de gepubliceerde range is geen representatieve volledige jaaropbrengst."
+            ],
+            "rank": 2,
+            "capacity_difference_pct": 87.2,
+            "power_difference_pct": 100,
+            "evidence_distance": "Praktijkreferentie; systeemcapaciteit is 87.2% groter dan de kandidaat; gerapporteerd resultaat van een ander systeem/EMS — geen gelijkwaardigheid."
+          },
+          {
+            "id": "bliq_20",
+            "provider": "Bliq",
+            "system": "Bliq",
+            "capacity_kwh": 20,
+            "inverter_power_kw": 8,
+            "sample_n": 3,
+            "sample_class": "SMALL",
+            "period": "2025",
+            "partial_year": false,
+            "annual_return_min_eur": 900.88,
+            "annual_return_max_eur": 1200.99,
+            "return_per_kwh_min": 45,
+            "return_per_kwh_max": 60,
+            "source": "MijnBatterij.nl 2025, as reported (user-supplied). External practice/reference; not an own simulation. Ranges are published min-max; no median/mean derived from a range.",
+            "evidence_class": "PRACTICE_REFERENCE",
+            "warnings": [],
+            "rank": 3,
+            "capacity_difference_pct": 97,
+            "power_difference_pct": 60,
+            "evidence_distance": "Praktijkreferentie; systeemcapaciteit is 97% groter dan de kandidaat; gerapporteerd resultaat van een ander systeem/EMS — geen gelijkwaardigheid."
+          }
+        ],
+        "large_sample_reference": {
+          "id": "zonneplan_nexus_20",
+          "provider": "Zonneplan",
+          "system": "Zonneplan Nexus",
+          "capacity_kwh": 20,
+          "inverter_power_kw": 10,
+          "sample_n": 267,
+          "sample_class": "LARGE",
+          "period": "2025",
+          "partial_year": false,
+          "annual_return_min_eur": 900.11,
+          "annual_return_max_eur": 1000.22,
+          "return_per_kwh_min": 45,
+          "return_per_kwh_max": 50,
+          "source": "MijnBatterij.nl 2025, as reported (user-supplied). External practice/reference; not an own simulation. Ranges are published min-max; no median/mean derived from a range.",
+          "evidence_class": "PRACTICE_REFERENCE",
+          "warnings": [],
+          "rank": 4,
+          "capacity_difference_pct": 97,
+          "power_difference_pct": 100,
+          "evidence_distance": "Praktijkreferentie; systeemcapaciteit is 97% groter dan de kandidaat; gerapporteerd resultaat van een ander systeem/EMS — geen gelijkwaardigheid.",
+          "reference_type": "large_sample_market_context",
+          "role": "grote-steekproef markt-/praktijkcontext (N=267) — GEEN hardware-equivalente referentie; zie evidence_distance voor de afstand tot de kandidaat",
+          "also_listed_in_nearest_hardware_matches": false
+        },
+        "coverage": {
+          "capacity_coverage_kwh": [
+            13.3,
+            24.2
+          ],
+          "systems_count": 9,
+          "total_reported_installations": 328,
+          "note": "De kandidaat (10.2 kWh) valt buiten het gedekte capaciteitsbereik (13.3–24.2 kWh); onderstaande referenties zijn de dichtstbijzijnde beschikbare, geen gelijkwaardige systemen."
+        },
+        "disclaimer": "Gerapporteerde praktijkresultaten van andere installaties (extern, MijnBatterij.nl) — geen eigen waarnemingen van Batterijenplan, geen garantie en geen voorspelling van uw eigen opbrengst."
+      },
+      "comparison": {
+        "reference_id": "t7",
+        "additional_import_reduction_kwh": 95.99,
+        "additional_export_capture_pct": 2.7
+      }
+    },
+    {
+      "id": "t14",
+      "label": "14 kWh",
+      "product_name": "Dyness S3 Tower T14",
+      "nominal_capacity_kwh": 14.2,
+      "usable_capacity_kwh": 12.78,
+      "inverter_power_kw": 6,
+      "capacity_source": "calculators.services.RESIDENTIAL_CATALOG (Dyness S3 Tower)",
+      "power_source": "aanname: dichtstbijzijnde studieklasse (6 kW)",
+      "assumption_flags": [
+        "usable_capacity_estimated_0.9_of_nominal",
+        "inverter_power_assumed_nearest_study_class"
+      ],
+      "physical": {
+        "basis": "observed",
+        "adjusted_grid_import_kwh": 1601.74,
+        "adjusted_grid_export_kwh": 2351.27,
+        "grid_import_reduction_kwh": 1406.57,
+        "grid_export_reduction_kwh": 1657.03,
+        "grid_export_charged_into_battery_kwh": 1628.7,
+        "battery_discharge_offsetting_grid_import_kwh": 1465.8,
+        "charge_losses_kwh": 83.58,
+        "discharge_losses_kwh": 79.29,
+        "equivalent_full_cycles": 114.7,
+        "export_capture_pct": 41.3,
+        "peak_soc_kwh": 12.78,
+        "capacity_utilization_pct": 100,
+        "capacity_limited_charge_intervals": 4240,
+        "power_limited_charge_intervals": 0,
+        "power_limited_discharge_intervals": 0
+      },
+      "financial": null,
+      "calculator_trading_band": {
+        "source": "calculators.stage2.SOLAR_BENEFIT_BANDS (BP-PRACTICE-006)",
+        "classification": "PRACTICE DATA — MANUALLY VERIFIED",
+        "nature": "Bestaande conservatieve Batterijenplan-praktijkband (Stage 2, ongewijzigd). GEEN statistisch betrouwbaarheidsinterval, GEEN mediaan/P10/P90-schatting, en NIET geproduceerd door het geüploade meterprofiel.",
+        "methodology": "research/METHODOLOGY.md (conservatieve banden uit MijnBatterij-praktijk, per contracttype)",
+        "stage2_band_set": "solar",
+        "band_set_selection": {
+          "basis": "observed_grid_export",
+          "observed": "teruglevering aanwezig in het genormaliseerde P1-profiel",
+          "equivalence_note": "Gemeten P1-teruglevering bewijst uitsluitend dat er export was (export-observed inference: opwek achter de meter aannemelijk) — niet de opwektechnologie en niet het expliciete zonnepanelen-antwoord (ja/gepland) van de bestaande calculator. Er wordt hier dus NIET geclaimd dat de klant zonnepanelen heeft; die vraag blijft in het adviesgesprek leidend."
+        },
+        "basis_capacity_kwh": 14.2,
+        "eur_per_kwh_year_by_contract": {
+          "dynamic": [
+            55,
+            95
+          ],
+          "dynamic_self": [
+            45,
+            80
+          ],
+          "variable": [
+            40,
+            75
+          ],
+          "fixed": [
+            30,
+            60
+          ],
+          "unknown": [
+            35,
+            70
+          ]
+        },
+        "annual_range_eur_by_contract": {
+          "dynamic": [
+            781,
+            1349
+          ],
+          "dynamic_self": [
+            639,
+            1136
+          ],
+          "variable": [
+            568,
+            1065
+          ],
+          "fixed": [
+            426,
+            852
+          ],
+          "unknown": [
+            497,
+            994
+          ]
+        },
+        "correction_factors_note": "Stage 2 past hierbovenop huishoudfactoren toe (warmtepomp/EV/terugleverkosten, plafond ×1,3) op basis van vragenlijst-antwoorden; die inputs ontbreken in P1-data en zijn hier niet toegepast."
+      },
+      "reported_practice_evidence": {
+        "evidence_type": "reported_practice_results",
+        "candidate_capacity_kwh": 14.2,
+        "candidate_power_kw": 6,
+        "ranking_rule": "deterministische gelijkenis-ranking op |capaciteitsverschil|, dan |vermogensverschil|, dan id; geen hard matchvenster, geen huishoudvariabelen, euro's onaangepast",
+        "nearest_hardware_matches": [
+          {
+            "id": "tibber_homevolt_133",
+            "provider": "Tibber",
+            "system": "Tibber Homevolt",
+            "capacity_kwh": 13.3,
+            "inverter_power_kw": 6,
+            "sample_n": 11,
+            "sample_class": "SMALL",
+            "period": "2025",
+            "partial_year": false,
+            "annual_return_min_eur": 1100.66,
+            "annual_return_max_eur": 1200.77,
+            "return_per_kwh_min": 82.8,
+            "return_per_kwh_max": 90.3,
+            "source": "MijnBatterij.nl 2025, as reported (user-supplied). External practice/reference; not an own simulation. Ranges are published min-max; no median/mean derived from a range.",
+            "evidence_class": "PRACTICE_REFERENCE",
+            "warnings": [],
+            "rank": 1,
+            "capacity_difference_pct": -6.3,
+            "power_difference_pct": 0,
+            "evidence_distance": "Dichtstbijzijnde beschikbare praktijkreferentie; systeemcapaciteit is 6.3% kleiner dan de kandidaat; gerapporteerd resultaat van een ander systeem/EMS — geen gelijkwaardigheid."
+          },
+          {
+            "id": "alphaess_19",
+            "provider": "Frank",
+            "system": "Frank/AlphaESS",
+            "capacity_kwh": 19,
+            "inverter_power_kw": 10,
+            "sample_n": 15,
+            "sample_class": "SMALL",
+            "period": "2025",
+            "partial_year": true,
+            "annual_return_min_eur": 20.56,
+            "annual_return_max_eur": 1300.67,
+            "return_per_kwh_min": 1.1,
+            "return_per_kwh_max": 68.5,
+            "source": "MijnBatterij.nl 2025, as reported (user-supplied). External practice/reference; not an own simulation. Ranges are published min-max; no median/mean derived from a range.",
+            "evidence_class": "PRACTICE_REFERENCE",
+            "warnings": [
+              "Bevat deeljaar-resultaten; de gepubliceerde range is geen representatieve volledige jaaropbrengst."
+            ],
+            "rank": 2,
+            "capacity_difference_pct": 33.8,
+            "power_difference_pct": 66.7,
+            "evidence_distance": "Praktijkreferentie; systeemcapaciteit is 33.8% groter dan de kandidaat; gerapporteerd resultaat van een ander systeem/EMS — geen gelijkwaardigheid."
+          },
+          {
+            "id": "bliq_20",
+            "provider": "Bliq",
+            "system": "Bliq",
+            "capacity_kwh": 20,
+            "inverter_power_kw": 8,
+            "sample_n": 3,
+            "sample_class": "SMALL",
+            "period": "2025",
+            "partial_year": false,
+            "annual_return_min_eur": 900.88,
+            "annual_return_max_eur": 1200.99,
+            "return_per_kwh_min": 45,
+            "return_per_kwh_max": 60,
+            "source": "MijnBatterij.nl 2025, as reported (user-supplied). External practice/reference; not an own simulation. Ranges are published min-max; no median/mean derived from a range.",
+            "evidence_class": "PRACTICE_REFERENCE",
+            "warnings": [],
+            "rank": 3,
+            "capacity_difference_pct": 40.8,
+            "power_difference_pct": 33.3,
+            "evidence_distance": "Praktijkreferentie; systeemcapaciteit is 40.8% groter dan de kandidaat; gerapporteerd resultaat van een ander systeem/EMS — geen gelijkwaardigheid."
+          }
+        ],
+        "large_sample_reference": {
+          "id": "zonneplan_nexus_20",
+          "provider": "Zonneplan",
+          "system": "Zonneplan Nexus",
+          "capacity_kwh": 20,
+          "inverter_power_kw": 10,
+          "sample_n": 267,
+          "sample_class": "LARGE",
+          "period": "2025",
+          "partial_year": false,
+          "annual_return_min_eur": 900.11,
+          "annual_return_max_eur": 1000.22,
+          "return_per_kwh_min": 45,
+          "return_per_kwh_max": 50,
+          "source": "MijnBatterij.nl 2025, as reported (user-supplied). External practice/reference; not an own simulation. Ranges are published min-max; no median/mean derived from a range.",
+          "evidence_class": "PRACTICE_REFERENCE",
+          "warnings": [],
+          "rank": 4,
+          "capacity_difference_pct": 40.8,
+          "power_difference_pct": 66.7,
+          "evidence_distance": "Praktijkreferentie; systeemcapaciteit is 40.8% groter dan de kandidaat; gerapporteerd resultaat van een ander systeem/EMS — geen gelijkwaardigheid.",
+          "reference_type": "large_sample_market_context",
+          "role": "grote-steekproef markt-/praktijkcontext (N=267) — GEEN hardware-equivalente referentie; zie evidence_distance voor de afstand tot de kandidaat",
+          "also_listed_in_nearest_hardware_matches": false
+        },
+        "coverage": {
+          "capacity_coverage_kwh": [
+            13.3,
+            24.2
+          ],
+          "systems_count": 9,
+          "total_reported_installations": 328
+        },
+        "disclaimer": "Gerapporteerde praktijkresultaten van andere installaties (extern, MijnBatterij.nl) — geen eigen waarnemingen van Batterijenplan, geen garantie en geen voorspelling van uw eigen opbrengst."
+      },
+      "comparison": {
+        "reference_id": "t10",
+        "additional_import_reduction_kwh": 19.59,
+        "additional_export_capture_pct": 0.5
+      }
+    },
+    {
+      "id": "t21",
+      "label": "21 kWh",
+      "product_name": "Dyness S3 Tower T21",
+      "nominal_capacity_kwh": 21.3,
+      "usable_capacity_kwh": 19.17,
+      "inverter_power_kw": 6,
+      "capacity_source": "calculators.services.RESIDENTIAL_CATALOG (Dyness S3 Tower)",
+      "power_source": "bp-dispatch 2027-studieklasse 21.8kWh/6kW",
+      "assumption_flags": [
+        "usable_capacity_estimated_0.9_of_nominal",
+        "inverter_power_from_study_class_not_product_verified"
+      ],
+      "physical": {
+        "basis": "observed",
+        "adjusted_grid_import_kwh": 1590.89,
+        "adjusted_grid_export_kwh": 2339.22,
+        "grid_import_reduction_kwh": 1417.42,
+        "grid_export_reduction_kwh": 1669.08,
+        "grid_export_charged_into_battery_kwh": 1640.7,
+        "battery_discharge_offsetting_grid_import_kwh": 1476.7,
+        "charge_losses_kwh": 84.2,
+        "discharge_losses_kwh": 79.88,
+        "equivalent_full_cycles": 77.03,
+        "export_capture_pct": 41.6,
+        "peak_soc_kwh": 19.17,
+        "capacity_utilization_pct": 100,
+        "capacity_limited_charge_intervals": 4203,
+        "power_limited_charge_intervals": 0,
+        "power_limited_discharge_intervals": 0
+      },
+      "financial": null,
+      "calculator_trading_band": {
+        "source": "calculators.stage2.SOLAR_BENEFIT_BANDS (BP-PRACTICE-006)",
+        "classification": "PRACTICE DATA — MANUALLY VERIFIED",
+        "nature": "Bestaande conservatieve Batterijenplan-praktijkband (Stage 2, ongewijzigd). GEEN statistisch betrouwbaarheidsinterval, GEEN mediaan/P10/P90-schatting, en NIET geproduceerd door het geüploade meterprofiel.",
+        "methodology": "research/METHODOLOGY.md (conservatieve banden uit MijnBatterij-praktijk, per contracttype)",
+        "stage2_band_set": "solar",
+        "band_set_selection": {
+          "basis": "observed_grid_export",
+          "observed": "teruglevering aanwezig in het genormaliseerde P1-profiel",
+          "equivalence_note": "Gemeten P1-teruglevering bewijst uitsluitend dat er export was (export-observed inference: opwek achter de meter aannemelijk) — niet de opwektechnologie en niet het expliciete zonnepanelen-antwoord (ja/gepland) van de bestaande calculator. Er wordt hier dus NIET geclaimd dat de klant zonnepanelen heeft; die vraag blijft in het adviesgesprek leidend."
+        },
+        "basis_capacity_kwh": 21.3,
+        "eur_per_kwh_year_by_contract": {
+          "dynamic": [
+            55,
+            95
+          ],
+          "dynamic_self": [
+            45,
+            80
+          ],
+          "variable": [
+            40,
+            75
+          ],
+          "fixed": [
+            30,
+            60
+          ],
+          "unknown": [
+            35,
+            70
+          ]
+        },
+        "annual_range_eur_by_contract": {
+          "dynamic": [
+            1172,
+            2024
+          ],
+          "dynamic_self": [
+            958,
+            1704
+          ],
+          "variable": [
+            852,
+            1598
+          ],
+          "fixed": [
+            639,
+            1278
+          ],
+          "unknown": [
+            746,
+            1491
+          ]
+        },
+        "correction_factors_note": "Stage 2 past hierbovenop huishoudfactoren toe (warmtepomp/EV/terugleverkosten, plafond ×1,3) op basis van vragenlijst-antwoorden; die inputs ontbreken in P1-data en zijn hier niet toegepast."
+      },
+      "reported_practice_evidence": {
+        "evidence_type": "reported_practice_results",
+        "candidate_capacity_kwh": 21.3,
+        "candidate_power_kw": 6,
+        "ranking_rule": "deterministische gelijkenis-ranking op |capaciteitsverschil|, dan |vermogensverschil|, dan id; geen hard matchvenster, geen huishoudvariabelen, euro's onaangepast",
+        "nearest_hardware_matches": [
+          {
+            "id": "dyness_solis_213",
+            "provider": "Groene Vrienden",
+            "system": "Dyness–Solis",
+            "capacity_kwh": 21.3,
+            "inverter_power_kw": 10,
+            "sample_n": 1,
+            "sample_class": "N1",
+            "period": "2025",
+            "partial_year": false,
+            "annual_return_min_eur": 1111.34,
+            "annual_return_max_eur": 1111.34,
+            "return_per_kwh_min": 52.2,
+            "return_per_kwh_max": 52.2,
+            "source": "MijnBatterij.nl 2025, as reported (user-supplied). External practice/reference; not an own simulation. Ranges are published min-max; no median/mean derived from a range.",
+            "evidence_class": "PRACTICE_REFERENCE",
+            "warnings": [
+              "N=1 — anekdotisch gerapporteerd praktijkresultaat; niet generaliseren naar een gemiddelde of vlootresultaat."
+            ],
+            "rank": 1,
+            "capacity_difference_pct": 0,
+            "power_difference_pct": 66.7,
+            "evidence_distance": "Dichtstbijzijnde beschikbare praktijkreferentie; systeemcapaciteit is vrijwel gelijk aan de kandidaat; gerapporteerd resultaat van een ander systeem/EMS — geen gelijkwaardigheid."
+          },
+          {
+            "id": "hyxipower_212",
+            "provider": null,
+            "system": "HYXiPOWER",
+            "capacity_kwh": 21.2,
+            "inverter_power_kw": 12,
+            "sample_n": 1,
+            "sample_class": "N1",
+            "period": "2025",
+            "partial_year": false,
+            "annual_return_min_eur": 600.45,
+            "annual_return_max_eur": 600.45,
+            "return_per_kwh_min": 28.3,
+            "return_per_kwh_max": 28.3,
+            "source": "MijnBatterij.nl 2025, as reported (user-supplied). External practice/reference; not an own simulation. Ranges are published min-max; no median/mean derived from a range.",
+            "evidence_class": "PRACTICE_REFERENCE",
+            "warnings": [
+              "N=1 — anekdotisch gerapporteerd praktijkresultaat; niet generaliseren naar een gemiddelde of vlootresultaat."
+            ],
+            "rank": 2,
+            "capacity_difference_pct": -0.5,
+            "power_difference_pct": 100,
+            "evidence_distance": "Praktijkreferentie; systeemcapaciteit is 0.5% kleiner dan de kandidaat; gerapporteerd resultaat van een ander systeem/EMS — geen gelijkwaardigheid."
+          },
+          {
+            "id": "givenergy_204",
+            "provider": null,
+            "system": "GivEnergy",
+            "capacity_kwh": 20.4,
+            "inverter_power_kw": 10,
+            "sample_n": 4,
+            "sample_class": "SMALL",
+            "period": "2025",
+            "partial_year": false,
+            "annual_return_min_eur": 600.12,
+            "annual_return_max_eur": 1300.23,
+            "return_per_kwh_min": 29.4,
+            "return_per_kwh_max": 63.7,
+            "source": "MijnBatterij.nl 2025, as reported (user-supplied). External practice/reference; not an own simulation. Ranges are published min-max; no median/mean derived from a range.",
+            "evidence_class": "PRACTICE_REFERENCE",
+            "warnings": [],
+            "rank": 3,
+            "capacity_difference_pct": -4.2,
+            "power_difference_pct": 66.7,
+            "evidence_distance": "Praktijkreferentie; systeemcapaciteit is 4.2% kleiner dan de kandidaat; gerapporteerd resultaat van een ander systeem/EMS — geen gelijkwaardigheid."
+          }
+        ],
+        "large_sample_reference": {
+          "id": "zonneplan_nexus_20",
+          "provider": "Zonneplan",
+          "system": "Zonneplan Nexus",
+          "capacity_kwh": 20,
+          "inverter_power_kw": 10,
+          "sample_n": 267,
+          "sample_class": "LARGE",
+          "period": "2025",
+          "partial_year": false,
+          "annual_return_min_eur": 900.11,
+          "annual_return_max_eur": 1000.22,
+          "return_per_kwh_min": 45,
+          "return_per_kwh_max": 50,
+          "source": "MijnBatterij.nl 2025, as reported (user-supplied). External practice/reference; not an own simulation. Ranges are published min-max; no median/mean derived from a range.",
+          "evidence_class": "PRACTICE_REFERENCE",
+          "warnings": [],
+          "rank": 5,
+          "capacity_difference_pct": -6.1,
+          "power_difference_pct": 66.7,
+          "evidence_distance": "Praktijkreferentie; systeemcapaciteit is 6.1% kleiner dan de kandidaat; gerapporteerd resultaat van een ander systeem/EMS — geen gelijkwaardigheid.",
+          "reference_type": "large_sample_market_context",
+          "role": "grote-steekproef markt-/praktijkcontext (N=267) — GEEN hardware-equivalente referentie; zie evidence_distance voor de afstand tot de kandidaat",
+          "also_listed_in_nearest_hardware_matches": false
+        },
+        "coverage": {
+          "capacity_coverage_kwh": [
+            13.3,
+            24.2
+          ],
+          "systems_count": 9,
+          "total_reported_installations": 328
+        },
+        "disclaimer": "Gerapporteerde praktijkresultaten van andere installaties (extern, MijnBatterij.nl) — geen eigen waarnemingen van Batterijenplan, geen garantie en geen voorspelling van uw eigen opbrengst."
+      },
+      "comparison": {
+        "reference_id": "t14",
+        "additional_import_reduction_kwh": 10.85,
+        "additional_export_capture_pct": 0.3
+      }
+    },
+    {
+      "id": "t28",
+      "label": "28 kWh",
+      "product_name": "Dyness S3 Tower T28",
+      "nominal_capacity_kwh": 28.4,
+      "usable_capacity_kwh": 25.56,
+      "inverter_power_kw": 6,
+      "capacity_source": "calculators.services.RESIDENTIAL_CATALOG (Dyness S3 Tower)",
+      "power_source": "aanname: dichtstbijzijnde studieklasse (6 kW)",
+      "assumption_flags": [
+        "usable_capacity_estimated_0.9_of_nominal",
+        "inverter_power_assumed_nearest_study_class"
+      ],
+      "physical": {
+        "basis": "observed",
+        "adjusted_grid_import_kwh": 1584.83,
+        "adjusted_grid_export_kwh": 2332.48,
+        "grid_import_reduction_kwh": 1423.48,
+        "grid_export_reduction_kwh": 1675.82,
+        "grid_export_charged_into_battery_kwh": 1647.5,
+        "battery_discharge_offsetting_grid_import_kwh": 1482.7,
+        "charge_losses_kwh": 84.54,
+        "discharge_losses_kwh": 80.2,
+        "equivalent_full_cycles": 58.01,
+        "export_capture_pct": 41.8,
+        "peak_soc_kwh": 25.56,
+        "capacity_utilization_pct": 100,
+        "capacity_limited_charge_intervals": 4178,
+        "power_limited_charge_intervals": 0,
+        "power_limited_discharge_intervals": 0
+      },
+      "financial": null,
+      "calculator_trading_band": {
+        "source": "calculators.stage2.SOLAR_BENEFIT_BANDS (BP-PRACTICE-006)",
+        "classification": "PRACTICE DATA — MANUALLY VERIFIED",
+        "nature": "Bestaande conservatieve Batterijenplan-praktijkband (Stage 2, ongewijzigd). GEEN statistisch betrouwbaarheidsinterval, GEEN mediaan/P10/P90-schatting, en NIET geproduceerd door het geüploade meterprofiel.",
+        "methodology": "research/METHODOLOGY.md (conservatieve banden uit MijnBatterij-praktijk, per contracttype)",
+        "stage2_band_set": "solar",
+        "band_set_selection": {
+          "basis": "observed_grid_export",
+          "observed": "teruglevering aanwezig in het genormaliseerde P1-profiel",
+          "equivalence_note": "Gemeten P1-teruglevering bewijst uitsluitend dat er export was (export-observed inference: opwek achter de meter aannemelijk) — niet de opwektechnologie en niet het expliciete zonnepanelen-antwoord (ja/gepland) van de bestaande calculator. Er wordt hier dus NIET geclaimd dat de klant zonnepanelen heeft; die vraag blijft in het adviesgesprek leidend."
+        },
+        "basis_capacity_kwh": 28.4,
+        "eur_per_kwh_year_by_contract": {
+          "dynamic": [
+            55,
+            95
+          ],
+          "dynamic_self": [
+            45,
+            80
+          ],
+          "variable": [
+            40,
+            75
+          ],
+          "fixed": [
+            30,
+            60
+          ],
+          "unknown": [
+            35,
+            70
+          ]
+        },
+        "annual_range_eur_by_contract": {
+          "dynamic": [
+            1562,
+            2698
+          ],
+          "dynamic_self": [
+            1278,
+            2272
+          ],
+          "variable": [
+            1136,
+            2130
+          ],
+          "fixed": [
+            852,
+            1704
+          ],
+          "unknown": [
+            994,
+            1988
+          ]
+        },
+        "correction_factors_note": "Stage 2 past hierbovenop huishoudfactoren toe (warmtepomp/EV/terugleverkosten, plafond ×1,3) op basis van vragenlijst-antwoorden; die inputs ontbreken in P1-data en zijn hier niet toegepast."
+      },
+      "reported_practice_evidence": {
+        "evidence_type": "reported_practice_results",
+        "candidate_capacity_kwh": 28.4,
+        "candidate_power_kw": 6,
+        "ranking_rule": "deterministische gelijkenis-ranking op |capaciteitsverschil|, dan |vermogensverschil|, dan id; geen hard matchvenster, geen huishoudvariabelen, euro's onaangepast",
+        "nearest_hardware_matches": [
+          {
+            "id": "sigenergy_242",
+            "provider": null,
+            "system": "Sigenergy",
+            "capacity_kwh": 24.2,
+            "inverter_power_kw": 12,
+            "sample_n": 25,
+            "sample_class": "SMALL",
+            "period": "2025",
+            "partial_year": false,
+            "annual_return_min_eur": 700.33,
+            "annual_return_max_eur": 1700.44,
+            "return_per_kwh_min": 28.9,
+            "return_per_kwh_max": 70.3,
+            "source": "MijnBatterij.nl 2025, as reported (user-supplied). External practice/reference; not an own simulation. Ranges are published min-max; no median/mean derived from a range.",
+            "evidence_class": "PRACTICE_REFERENCE",
+            "warnings": [],
+            "rank": 1,
+            "capacity_difference_pct": -14.8,
+            "power_difference_pct": 100,
+            "evidence_distance": "Dichtstbijzijnde beschikbare praktijkreferentie; systeemcapaciteit is 14.8% kleiner dan de kandidaat; gerapporteerd resultaat van een ander systeem/EMS — geen gelijkwaardigheid."
+          },
+          {
+            "id": "sigenergy_242_single",
+            "provider": null,
+            "system": "Sigenergy (losse melding)",
+            "capacity_kwh": 24.2,
+            "inverter_power_kw": 12,
+            "sample_n": 1,
+            "sample_class": "N1",
+            "period": "2025",
+            "partial_year": false,
+            "annual_return_min_eur": 1600.55,
+            "annual_return_max_eur": 1600.55,
+            "return_per_kwh_min": 66.1,
+            "return_per_kwh_max": 66.1,
+            "source": "MijnBatterij.nl 2025, as reported (user-supplied). External practice/reference; not an own simulation. Ranges are published min-max; no median/mean derived from a range.",
+            "evidence_class": "PRACTICE_REFERENCE",
+            "warnings": [
+              "N=1 — anekdotisch gerapporteerd praktijkresultaat; niet generaliseren naar een gemiddelde of vlootresultaat."
+            ],
+            "rank": 2,
+            "capacity_difference_pct": -14.8,
+            "power_difference_pct": 100,
+            "evidence_distance": "Praktijkreferentie; systeemcapaciteit is 14.8% kleiner dan de kandidaat; gerapporteerd resultaat van een ander systeem/EMS — geen gelijkwaardigheid."
+          },
+          {
+            "id": "dyness_solis_213",
+            "provider": "Groene Vrienden",
+            "system": "Dyness–Solis",
+            "capacity_kwh": 21.3,
+            "inverter_power_kw": 10,
+            "sample_n": 1,
+            "sample_class": "N1",
+            "period": "2025",
+            "partial_year": false,
+            "annual_return_min_eur": 1111.34,
+            "annual_return_max_eur": 1111.34,
+            "return_per_kwh_min": 52.2,
+            "return_per_kwh_max": 52.2,
+            "source": "MijnBatterij.nl 2025, as reported (user-supplied). External practice/reference; not an own simulation. Ranges are published min-max; no median/mean derived from a range.",
+            "evidence_class": "PRACTICE_REFERENCE",
+            "warnings": [
+              "N=1 — anekdotisch gerapporteerd praktijkresultaat; niet generaliseren naar een gemiddelde of vlootresultaat."
+            ],
+            "rank": 3,
+            "capacity_difference_pct": -25,
+            "power_difference_pct": 66.7,
+            "evidence_distance": "Praktijkreferentie; systeemcapaciteit is 25% kleiner dan de kandidaat; gerapporteerd resultaat van een ander systeem/EMS — geen gelijkwaardigheid."
+          }
+        ],
+        "large_sample_reference": {
+          "id": "zonneplan_nexus_20",
+          "provider": "Zonneplan",
+          "system": "Zonneplan Nexus",
+          "capacity_kwh": 20,
+          "inverter_power_kw": 10,
+          "sample_n": 267,
+          "sample_class": "LARGE",
+          "period": "2025",
+          "partial_year": false,
+          "annual_return_min_eur": 900.11,
+          "annual_return_max_eur": 1000.22,
+          "return_per_kwh_min": 45,
+          "return_per_kwh_max": 50,
+          "source": "MijnBatterij.nl 2025, as reported (user-supplied). External practice/reference; not an own simulation. Ranges are published min-max; no median/mean derived from a range.",
+          "evidence_class": "PRACTICE_REFERENCE",
+          "warnings": [],
+          "rank": 7,
+          "capacity_difference_pct": -29.6,
+          "power_difference_pct": 66.7,
+          "evidence_distance": "Praktijkreferentie; systeemcapaciteit is 29.6% kleiner dan de kandidaat; gerapporteerd resultaat van een ander systeem/EMS — geen gelijkwaardigheid.",
+          "reference_type": "large_sample_market_context",
+          "role": "grote-steekproef markt-/praktijkcontext (N=267) — GEEN hardware-equivalente referentie; zie evidence_distance voor de afstand tot de kandidaat",
+          "also_listed_in_nearest_hardware_matches": false
+        },
+        "coverage": {
+          "capacity_coverage_kwh": [
+            13.3,
+            24.2
+          ],
+          "systems_count": 9,
+          "total_reported_installations": 328,
+          "note": "De kandidaat (28.4 kWh) valt buiten het gedekte capaciteitsbereik (13.3–24.2 kWh); onderstaande referenties zijn de dichtstbijzijnde beschikbare, geen gelijkwaardige systemen."
+        },
+        "disclaimer": "Gerapporteerde praktijkresultaten van andere installaties (extern, MijnBatterij.nl) — geen eigen waarnemingen van Batterijenplan, geen garantie en geen voorspelling van uw eigen opbrengst."
+      },
+      "comparison": {
+        "reference_id": "t21",
+        "additional_import_reduction_kwh": 6.06,
+        "additional_export_capture_pct": 0.2
+      }
+    }
+  ],
+  "recommendation": null,
+  "methodology": {
+    "api_model_version": "smartmeter-analysis-v1",
+    "model": "15-minute normalized net-flow model",
+    "engine_version": "bp-dispatch-v1@1.0.0",
+    "rulepack_version": null,
+    "dispatch_mode": "self_consumption",
+    "time_basis": "local_wall_clock_normalized",
+    "timezone": "Europe/Amsterdam",
+    "battery_assumptions": {
+      "round_trip_efficiency": 0.9,
+      "efficiency_split": "charge_eff = discharge_eff = sqrt(round_trip)",
+      "standby_w": 10,
+      "initial_soc_frac": 0,
+      "grid_charging": false,
+      "battery_export": false
+    },
+    "candidate_source": {
+      "capacity": "calculators.services.RESIDENTIAL_CATALOG (Dyness S3 Tower)",
+      "inverter_power": "bp-dispatch 2027-studieklassen (niet productgeverifieerd)",
+      "usable_fraction_of_nominal": 0.9
+    },
+    "included_value_streams": [],
+    "trading_evidence": {
+      "reported_practice_source": {
+        "source": "MijnBatterij.nl 2025, as reported (user-supplied). External practice/reference; not an own simulation. Ranges are published min-max; no median/mean derived from a range.",
+        "classification": "PRACTICE_REFERENCE",
+        "schema": "batterijenplan-practice-reference/1",
+        "path": "data/practice/CANONICAL_PRACTICE_REFERENCE.json",
+        "period": "2025",
+        "systems_count": 9,
+        "total_reported_installations": 328,
+        "capacity_coverage_kwh": [
+          13.3,
+          24.2
+        ],
+        "statistics_policy": "De bron publiceert per systeem uitsluitend een min–max-range; mediaan, gemiddelde en percentielen worden hier bewust NIET uit afgeleid."
+      },
+      "evidence_layers": {
+        "calculator_trading_band": "Laag A — bestaande conservatieve Batterijenplan-praktijkband (BP-PRACTICE-006/-007), de primaire klantgerichte handelsindicatie.",
+        "reported_practice_evidence": "Laag B — gerapporteerde MijnBatterij-praktijksystemen als referentie: individueel, ongewogen, met expliciete afstandscontext per rij."
+      },
+      "terminology_note": "Dit zijn GERAPPORTEERDE praktijkresultaten (extern gepubliceerde ranges met gerapporteerde N's), geen door Batterijenplan waargenomen ruwe individuele resultaten.",
+      "personalization_policy": "Praktijkreferenties worden uitsluitend gerangschikt op dimensies die in de dataset bestaan (capaciteit, vermogen); provider/EMS blijft per rij zichtbaar. Huishoudverbruik, PV-omvang of metertiming passen gerapporteerde handelsopbrengsten nooit aan.",
+      "not_additive_note": "GERAPPORTEERDE HANDELSPRAKTIJK (laag A/B) en het SELF-CONSUMPTION MODEL (financial) zijn alternatieve inzetstrategieën voor dezelfde batterijcapaciteit. De praktijkresultaten kunnen al batterijen bevatten die meerdere strategieën combineren; de bedragen mogen daarom NIET bij elkaar worden opgeteld (dubbeltelling)."
+    },
+    "excluded_value_streams": [
+      {
+        "stream": "day_ahead_trading",
+        "reason": "geen dag-ahead-prijsreeks gekoppeld aan geüploade profielen in v1; handelsopbrengst wordt als gerapporteerde praktijk getoond (reported_practice_evidence/calculator_trading_band), niet gesimuleerd"
+      },
+      {
+        "stream": "imbalance_flex",
+        "reason": "onbalanssturing is experimenteel in de engine en niet gevalideerd voor dit pad"
+      },
+      {
+        "stream": "feed_in_cost_avoided",
+        "reason": "terugleverkosten zijn leverancierspecifiek; aanname EUR 0,00/kWh in v1"
+      }
+    ],
+    "results_basis": {
+      "physical": "observed",
+      "financial": null
+    },
+    "annualization_factor": 1,
+    "recommendation_policy": "Geen aanbeveling: er bestaat geen gevalideerde sizing-/aanbevelingsregel voor intervalprofielen in deze repository. De API levert alle kandidaatresultaten plus objectieve vergelijkingsmetrics.",
+    "limitations": [
+      "P1-netdata: bruto PV-productie, bruto verbruik en momentane eigen consumptie achter de meter zijn niet afleidbaar; alle metrics beschrijven netto netstromen en batterijstromen.",
+      "Tijdstempels zijn genormaliseerde lokale meterkloklabels (uniform 15-minutenraster via UTC-rekenkunde), geen echte UTC-markttijden; v1 lijnt niet uit met EPEX-/TenneT-reeksen.",
+      "Omvormervermogens zijn studieklassen, geen geverifieerde productspecificaties; bruikbare capaciteit is geschat op 90% van nominaal.",
+      "Financiële waarde geldt alleen binnen het benoemde scenario en is geen tariefadvies.",
+      "Kwartierdata kan de exacte chronologie van afname en teruglevering binnen een kwartier niet reconstrueren; bidirectionele kwartieren worden vóór simulatie genet (zie bidirectional_energy_overlap_kwh) en die overlap telt nooit als batterijbesparing."
+    ],
+    "scenario_config_sha256": {
+      "t7": "81ad86dd6c7d704ff50f5d60acc98c4f2c98269d929487fa18a71a26f665c4f7",
+      "t10": "0ee218c55a38c8286f936ec2818da3f64110785eb90750559d43cb9cfad3d893",
+      "t14": "6130df8e6521e49cf934f06aab6e446c4f2de552d0ae2214627d8c500f098de3",
+      "t21": "644da073925ed744140622cd9fa994264c8fc0194d313914f40ebc97117c7fe3",
+      "t28": "bacf44bc858e232726f89a35470ad9fdc091ddae80d73e6bb57bbd246a35d02f"
+    },
+    "data_retention": "stateloos; intervaldata wordt niet opgeslagen of gelogd"
+  },
+  "warnings": [],
+  "timings_ms": {
+    "simulation_per_candidate": {
+      "t7": 865.7,
+      "t10": 727,
+      "t14": 777.2,
+      "t21": 787.4,
+      "t28": 713.2
+    },
+    "total": 3934.9,
+    "validation": 51,
+    "request_total": 3988.6
+  }
+}

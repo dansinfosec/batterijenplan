@@ -47,7 +47,9 @@ FORBIDDEN_STAT_KEY_PARTS = (
 
 # Sentinel-waarde (Zonneplan eur_max) voor de één-bron-test; lineage-
 # manifesten mogen citeren mits ze expliciet naar het canonieke pad verwijzen.
-SENTINEL_VALUE = "1122.71"
+# Samengesteld uit delen zodat dit (getrackte) testbestand zichzelf niet als
+# duplicaat aanmerkt zodra git grep het doorzoekt.
+SENTINEL_VALUE = "1122" + ".71"
 CANONICAL_RELPATH = "data/practice/CANONICAL_PRACTICE_REFERENCE.json"
 ALLOWED_CITING_MANIFESTS = {
     "research/seo/article-drafts/wat-levert-een-thuisbatterij-op/"

@@ -2,12 +2,14 @@ import { useRef, useState } from "react";
 import { getAdapter, parseSmartMeterText, SmartMeterParseError } from "../../../smartmeter/parsers/index.js";
 import { buildEnergyProfile } from "../../../smartmeter/model.js";
 import { buildDemoHomeWizardCsv } from "../../../smartmeter/fixtures/demoBatteryAnalysis.js";
+import { SMARTMETER_PRIVACY_NOTICE } from "../../../smartmeter/analysisClient.js";
 
 // ── Uploadstap: bestand kiezen/slepen → controleren → geparsed profiel ─────
 // Het bestand wordt volledig in de browser gelezen (File.text()) en door de
-// adapter geparsed; er wordt in deze versie niets naar een server verstuurd.
-// De privacytekst hieronder beschrijft precies dat gedrag — pas hem aan zodra
-// er wél een backend-upload komt.
+// adapter geparsed; het CSV-bestand zelf wordt nooit geüpload. Voor de
+// analyse stuurt de flow-stap daarna de uitgelezen kwartierwaarden naar de
+// stateloze rekenmodule (POST /api/smartmeter/analysis/). De privacytekst
+// (SMARTMETER_PRIVACY_NOTICE) beschrijft precies dat gedrag.
 
 const MAX_FILE_BYTES = 25 * 1024 * 1024; // 25 MB — ruim boven een meerjarige kwartier-export
 
@@ -131,9 +133,7 @@ export default function SmartMeterUpload({ source, onParsed }) {
       )}
 
       <p className="calc2-sm-privacy">
-        <span aria-hidden="true">🔒</span> Uw energiegegevens worden alleen
-        gebruikt om uw batterijadvies te berekenen. Uw bestand wordt in deze
-        versie volledig in uw browser gelezen en niet geüpload.
+        <span aria-hidden="true">🔒</span> {SMARTMETER_PRIVACY_NOTICE}
       </p>
 
       {import.meta.env.DEV && state !== "checking" && (

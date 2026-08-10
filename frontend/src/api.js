@@ -104,6 +104,29 @@ export async function postLeadStage2(leadId, data) {
   return json;
 }
 
+// Slimme-meteranalyse: stateloze POST van de uitgelezen kwartierwaarden.
+// Fysiek-only is de default (geen financial_scenario); het zelfconsumptie-
+// model is een expliciete tweede aanvraag. Time-out + foutvertaling zitten
+// in analysisClient (node-testbaar).
+import {
+  ANALYSIS_TIMEOUT_MS,
+  requestAnalysis,
+} from "./smartmeter/analysisClient.js";
+
+export async function postSmartMeterAnalysis(intervals, { intervalMinutes, financialScenario } = {}) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), ANALYSIS_TIMEOUT_MS);
+  try {
+    return await requestAnalysis((url, opts) => fetch(url, opts), BASE, intervals, {
+      intervalMinutes,
+      financialScenario,
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 export async function postCalculator(data) {
   const res = await fetch(`${BASE}/calculator/`, {
     method: "POST",

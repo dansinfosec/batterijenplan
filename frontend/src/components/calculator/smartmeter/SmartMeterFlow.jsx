@@ -5,15 +5,20 @@ import SmartMeterUpload from "./SmartMeterUpload.jsx";
 import SmartMeterProfileSummary from "./SmartMeterProfileSummary.jsx";
 import BatteryProfileComparison from "./BatteryProfileComparison.jsx";
 import BatteryRecommendationExplanation from "./BatteryRecommendationExplanation.jsx";
-import { DEMO_BATTERY_ANALYSIS } from "../../../smartmeter/fixtures/demoBatteryAnalysis.js";
+import { postSmartMeterAnalysis } from "../../../api.js";
+import {
+  SELF_CONSUMPTION_SCENARIO,
+  SMARTMETER_PRIVACY_NOTICE,
+  SmartMeterApiError,
+} from "../../../smartmeter/analysisClient.js";
 
 // ── Slimme-meterdata-route ─────────────────────────────────────────────────
 // Orkestreert de substappen: bron kiezen → uploaden → profiel → analyse.
-// Parsing gebeurt in de adapters (src/smartmeter/); dit component beheert
-// alleen flow-state en presentatievolgorde. De batterijvergelijking draait in
-// development op een expliciet gelabelde fixture (DEMO_BATTERY_ANALYSIS);
-// in productie toont hij de eerlijke "in ontwikkeling"-status totdat de
-// backend-rekenmodule bestaat.
+// Parsing gebeurt in de adapters (src/smartmeter/); de analyse draait op de
+// echte backend (POST /api/smartmeter/analysis/). Fysiek-only is de default;
+// het zelfconsumptie-model wordt alleen op expliciet verzoek als tweede
+// aanvraag opgehaald. Opnieuw proberen hergebruikt altijd de al geparsede
+// intervallen — er hoeft nooit opnieuw een bestand gekozen te worden.
 
 const STEP_LABELS = {
   source: "Databron",
@@ -22,6 +27,8 @@ const STEP_LABELS = {
   analysis: "Batterijadvies",
 };
 const STEPS = ["source", "upload", "summary", "analysis"];
+
+const nf0 = new Intl.NumberFormat("nl-NL", { maximumFractionDigits: 0 });
 
 function SmartMeterAside() {
   return (
@@ -32,15 +39,31 @@ function SmartMeterAside() {
       </div>
       <ul className="calc2-sm-benefits calc2-sm-aside-list">
         <li>Analyse van verbruik en teruglevering</li>
-        <li>Inzicht per meetinterval</li>
-        <li>Inzicht in benodigd laad- en ontlaadvermogen</li>
+        <li>Indicatieve handelsopbrengst uit praktijkdata</li>
+        <li>Fysieke benutting per batterijgrootte</li>
         <li>Vergelijking van meerdere batterijgroottes</li>
       </ul>
-      <p className="calc2-sm-aside-privacy">
-        Uw energiegegevens worden alleen gebruikt om uw batterijadvies te
-        berekenen.
-      </p>
+      <p className="calc2-sm-aside-privacy">{SMARTMETER_PRIVACY_NOTICE}</p>
     </aside>
+  );
+}
+
+function AnalysisLoading({ pointCount }) {
+  const count = pointCount ? `${nf0.format(pointCount)}` : "Uw";
+  return (
+    <section className="calc-step-panel calc2-sm-loading" role="status" aria-live="polite">
+      <span className="calc2-summary-batt calc2-sm-loading-batt" aria-hidden="true">
+        <span className="calc2-summary-batt-fill" />
+      </span>
+      <p className="calc2-sm-drop-title">
+        {pointCount
+          ? `Uw ${count} kwartieren worden geanalyseerd`
+          : "Uw kwartieren worden geanalyseerd"}
+      </p>
+      <p className="calc2-sm-drop-sub">
+        Netprofiel analyseren en batterijgroottes vergelijken…
+      </p>
+    </section>
   );
 }
 
@@ -48,6 +71,15 @@ export default function SmartMeterFlow({ onExit, onUseInQuick }) {
   const [step, setStep] = useState("source");
   const [source, setSource] = useState(null); // 'homewizard' | 'other'
   const [parsed, setParsed] = useState(null); // { profile, intervals, meta, fileName }
+  // Analyse-state: fysiek-only default; zelfconsumptie is een tweede,
+  // expliciete aanvraag met financial_scenario.
+  const [analysis, setAnalysis] = useState(null);
+  const [analysisState, setAnalysisState] = useState("idle"); // idle | loading | done | error
+  const [analysisError, setAnalysisError] = useState(null);
+  const [scAnalysis, setScAnalysis] = useState(null);
+  const [scState, setScState] = useState("idle"); // idle | loading | done | error
+  const [scError, setScError] = useState(null);
+  const busyRef = useRef(false); // dubbelklik-/dubbelsubmit-slot over beide aanvragen
   const stepRef = useRef(null);
   const didMount = useRef(false);
 
@@ -60,9 +92,67 @@ export default function SmartMeterFlow({ onExit, onUseInQuick }) {
     }
     const raf = requestAnimationFrame(() => scrollToCalculatorTarget(stepRef.current));
     return () => cancelAnimationFrame(raf);
-  }, [step]);
+  }, [step, analysisState]);
 
   const stepIndex = STEPS.indexOf(step);
+
+  const runAnalysis = async (data) => {
+    if (busyRef.current) return; // dubbele submissions voorkomen
+    busyRef.current = true;
+    setAnalysisState("loading");
+    setAnalysisError(null);
+    try {
+      const result = await postSmartMeterAnalysis(data.intervals, {
+        intervalMinutes: data.meta?.intervalMinutes || 15,
+      });
+      setAnalysis(result);
+      setAnalysisState("done");
+    } catch (err) {
+      setAnalysisError(
+        err instanceof SmartMeterApiError
+          ? err.userMessage
+          : "Er ging iets mis bij de analyse. Probeer het opnieuw."
+      );
+      setAnalysisState("error");
+    } finally {
+      busyRef.current = false;
+    }
+  };
+
+  // Tweede aanvraag: zelfde intervallen, nu mét financial_scenario. Alleen op
+  // expliciet verzoek van de bezoeker ("Bekijk ook waarde uit zelfconsumptie").
+  const runSelfConsumption = async () => {
+    if (busyRef.current || !parsed) return;
+    busyRef.current = true;
+    setScState("loading");
+    setScError(null);
+    try {
+      const result = await postSmartMeterAnalysis(parsed.intervals, {
+        intervalMinutes: parsed.meta?.intervalMinutes || 15,
+        financialScenario: SELF_CONSUMPTION_SCENARIO,
+      });
+      setScAnalysis(result);
+      setScState("done");
+    } catch (err) {
+      setScError(
+        err instanceof SmartMeterApiError
+          ? err.userMessage
+          : "Er ging iets mis bij het ophalen van het zelfconsumptie-model."
+      );
+      setScState("error");
+    } finally {
+      busyRef.current = false;
+    }
+  };
+
+  const resetAnalysis = () => {
+    setAnalysis(null);
+    setAnalysisState("idle");
+    setAnalysisError(null);
+    setScAnalysis(null);
+    setScState("idle");
+    setScError(null);
+  };
 
   const goBack = () => {
     if (step === "source") {
@@ -78,17 +168,20 @@ export default function SmartMeterFlow({ onExit, onUseInQuick }) {
       setStep("upload");
       return;
     }
+    resetAnalysis();
     setStep("summary");
   };
 
   const handleParsed = (data) => {
     setParsed(data);
+    resetAnalysis();
     setStep("summary");
   };
 
-  // Alleen in development bestaat de voorbeeld-analyse; productie krijgt de
-  // eerlijke "in ontwikkeling"-weergave (analysis = null).
-  const analysis = import.meta.env.DEV ? DEMO_BATTERY_ANALYSIS : null;
+  const startAnalysis = () => {
+    setStep("analysis");
+    runAnalysis(parsed);
+  };
 
   return (
     <div className="calc2-layout">
@@ -114,21 +207,56 @@ export default function SmartMeterFlow({ onExit, onUseInQuick }) {
         {step === "summary" && parsed && (
           <SmartMeterProfileSummary
             data={parsed}
-            onCalculate={() => setStep("analysis")}
+            onCalculate={startAnalysis}
             onUseInQuick={onUseInQuick}
           />
         )}
 
         {step === "analysis" && parsed && (
           <>
-            <BatteryProfileComparison analysis={analysis} />
-            <BatteryRecommendationExplanation analysis={analysis} />
-            {!analysis && (
-              <div className="calc-step-nav">
-                <button type="button" className="field-submit-button" onClick={goBack}>
-                  Terug naar mijn energieprofiel
-                </button>
-              </div>
+            {analysisState === "loading" && (
+              <AnalysisLoading pointCount={parsed.profile?.pointCount} />
+            )}
+
+            {analysisState === "error" && (
+              <section className="calc-step-panel" aria-labelledby="sm-analysis-error">
+                <h2 id="sm-analysis-error" className="calc-form-start">
+                  De analyse is niet gelukt
+                </h2>
+                <div className="calc-error mono" role="alert">
+                  {analysisError}
+                </div>
+                <div className="calc-step-nav">
+                  {/* Retry hergebruikt de al geparsede intervallen — nooit
+                      opnieuw een bestand vragen. */}
+                  <button
+                    type="button"
+                    className="field-submit-button"
+                    onClick={() => runAnalysis(parsed)}
+                  >
+                    Opnieuw proberen
+                  </button>
+                  <button type="button" className="calc2-sm-linkbtn" onClick={goBack}>
+                    Terug naar mijn energieprofiel
+                  </button>
+                </div>
+              </section>
+            )}
+
+            {analysisState === "done" && analysis && (
+              <>
+                <BatteryProfileComparison
+                  analysis={analysis}
+                  selfConsumption={{
+                    state: scState,
+                    analysis: scAnalysis,
+                    error: scError,
+                    onRequest: runSelfConsumption,
+                    onRetry: runSelfConsumption,
+                  }}
+                />
+                <BatteryRecommendationExplanation analysis={analysis} />
+              </>
             )}
           </>
         )}
