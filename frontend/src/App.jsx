@@ -8,6 +8,7 @@ import Home from "./pages/Home.jsx";
 import Articles from "./pages/Articles.jsx";
 import PostDetail from "./pages/PostDetail.jsx";
 import Calculator from "./pages/Calculator.jsx";
+import HomeWizardLanding from "./pages/HomeWizardLanding.jsx";
 import Privacy from "./pages/Privacy.jsx";
 import Contact from "./pages/Contact.jsx";
 import { trackPageView } from "./analytics.js";
@@ -80,6 +81,7 @@ export default function App() {
           <Route path="/artikelen" element={<Articles />} />
           <Route path="/post/:slug" element={<PostDetail />} />
           <Route path="/calculator" element={<Calculator />} />
+          <Route path="/homewizard-thuisbatterij" element={<HomeWizardLanding />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>

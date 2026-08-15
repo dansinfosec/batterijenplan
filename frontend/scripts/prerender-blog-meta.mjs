@@ -92,6 +92,24 @@ const CALCULATOR_BODY = seoWrap(`        <h1>Thuisbatterij Calculator</h1>
         <p>De uitkomst van de calculator is nadrukkelijk een indicatie en geen definitief ontwerp. Voor een nauwkeurig advies spelen ook uw zonnepanelen, netaansluiting, omvormervermogen, energiecontract en toekomstig verbruik een rol. Een specialist kan uw uitkomst gratis controleren.</p>
         <p><a href="/contact">Vraag gratis advies aan</a> als u uw berekening wilt laten controleren.</p>`);
 
+// Statische crawlbare tekst voor de HomeWizard-landingspagina (React vervangt
+// dit bij mount). Spiegelt de kerncopy van src/pages/HomeWizardLanding.jsx;
+// exact één H1, uniek van /calculator. Geen em-dash-stijl.
+const HOMEWIZARD_BODY = seoWrap(`        <h1>HomeWizard thuisbatterij berekenen met uw meterdata</h1>
+        <p>Heeft u een HomeWizard Energy Meter? Gebruik uw eigen meetdata om verschillende thuisbatterijgroottes te vergelijken op basis van uw werkelijke netafname en teruglevering. De analyse zelf draait in de gratis <a href="/calculator">thuisbatterij calculator</a>.</p>
+        <h2>Wat kunt u met HomeWizard-data berekenen?</h2>
+        <p>Een HomeWizard-export bevat metingen per kwartier. Daarmee kunnen we zien hoe uw netafname en teruglevering over de dag en het jaar variëren, in plaats van alleen met een jaartotaal te rekenen. De snelle berekening gebruikt jaarcijfers voor een eerste indicatie; de HomeWizard-route gebruikt uw werkelijke kwartierprofiel en vergelijkt meerdere batterijgroottes tegen uw gemeten netprofiel.</p>
+        <h2>Welke thuisbatterij past bij uw HomeWizard-profiel?</h2>
+        <p>De analyse vergelijkt de huidige batterijklassen van de calculator: vijf groottes van circa 7 tot 28 kWh. Per grootte rekenen we door hoeveel van uw teruglevering een batterij fysiek zou opslaan en later gebruiken, hoeveel netafname daardoor daalt, hoe goed de capaciteit wordt benut en het aantal equivalente cycli op uw eigen profiel. De indicatieve praktijkband voor actieve handel komt uit gerapporteerde praktijkresultaten en is geen resultaat uit uw eigen meetdata en geen garantie.</p>
+        <h2>Wat uw meterdata wel en niet laat zien</h2>
+        <p>Uw meterdata laat zien wanneer u netto stroom afneemt of teruglevert. Daarmee berekenen we hoeveel van die netto teruglevering een batterij fysiek zou kunnen opslaan en later gebruiken om netto afname te verminderen. Het P1-signaal toont alleen dit netto verkeer op de aansluiting: het bewijst niet hoeveel uw huishouden bruto verbruikt of hoeveel uw zonnepanelen bruto opwekken.</p>
+        <h2>Wat gebeurt er met mijn HomeWizard CSV?</h2>
+        <p>Uw CSV-bestand wordt lokaal in uw browser gelezen. Voor de berekening sturen we alleen de uitgelezen kwartierwaarden tijdelijk naar onze rekenmodule. De meetdata wordt niet opgeslagen en het bestand wordt niet als bestand geüpload. De losse kwartierwaarden gaan niet mee met een adviesaanvraag; alleen een compacte samenvatting kan meegaan nadat u daar zelf voor kiest.</p>
+        <h2>HomeWizard thuisbatterij berekenen in 3 stappen</h2>
+        <p>1. Exporteer uw HomeWizard-data als CSV. 2. Open de Batterijenplan calculator en kies de route met slimme-meterdata. 3. Kies HomeWizard, upload uw bestand en vergelijk de batterijgroottes op uw eigen profiel.</p>
+        <p><a href="/calculator">Start de gratis analyse</a> of lees meer over <a href="/post/wat-levert-een-thuisbatterij-op">wat een thuisbatterij oplevert</a>.</p>
+        <p>HomeWizard is een handelsmerk van de betreffende rechthebbende. Batterijenplan is niet gelieerd aan HomeWizard.</p>`);
+
 const CONTACT_BODY = seoWrap(`        <h1>Contact met Batterijenplan.nl</h1>
         <p>Heeft u een vraag over thuisbatterijen, batterijopslag of de thuisbatterij calculator? Neem gerust contact op met Batterijenplan.nl. Wij helpen Nederlandse huiseigenaren met onafhankelijke informatie en advies over het opslaan van zonnestroom, zonder verkooppraat en met echte getallen.</p>
         <h2>Waarmee helpt Batterijenplan?</h2>
@@ -180,6 +198,16 @@ const STATIC_PAGES = [
     body: CALCULATOR_BODY,
   },
   {
+    slug: "homewizard-thuisbatterij",
+    title: "HomeWizard thuisbatterij | Bereken met uw slimme-meterdata",
+    description:
+      "Gebruik uw HomeWizard-data om te zien welke thuisbatterij bij uw verbruik en teruglevering past. Analyseer uw kwartierwaarden gratis met Batterijenplan.",
+    // Neutrale merk-social-image (dezelfde als de homepage). Een dedicated
+    // HomeWizard-visual zou sterker zijn; zie rapport.
+    image: `${SITE_URL}/og-home.png`,
+    body: HOMEWIZARD_BODY,
+  },
+  {
     slug: "contact",
     title: "Contact | Batterijenplan.nl",
     description:
@@ -204,12 +232,15 @@ const STATIC_PAGES = [
   },
 ];
 
-function pageMetaBlock({ title, description, slug }) {
+function pageMetaBlock({ title, description, slug, image }) {
   const url = `${SITE_URL}/${slug}`;
   const t = escapeHtml(title);
   const d = escapeHtml(description);
   const u = escapeHtml(url);
-  return [
+  // og:image alleen als de pagina er expliciet één opgeeft (additief: pagina's
+  // zonder image-veld houden exact hun bestaande meta, incl. twitter card
+  // "summary"). Met image: grote kaart voor social scrapers zonder JS.
+  const tags = [
     `<title>${t}</title>`,
     `<meta name="description" content="${d}" />`,
     `<meta property="og:title" content="${t}" />`,
@@ -217,11 +248,21 @@ function pageMetaBlock({ title, description, slug }) {
     `<meta property="og:type" content="website" />`,
     `<meta property="og:url" content="${u}" />`,
     `<meta property="og:site_name" content="${SITE_NAME}" />`,
-    `<meta name="twitter:card" content="summary" />`,
+    `<meta name="twitter:card" content="${image ? "summary_large_image" : "summary"}" />`,
     `<meta name="twitter:title" content="${t}" />`,
     `<meta name="twitter:description" content="${d}" />`,
-    `<link rel="canonical" href="${u}" />`,
-  ].join("\n    ");
+  ];
+  if (image) {
+    const i = escapeHtml(image);
+    tags.push(
+      `<meta property="og:image" content="${i}" />`,
+      `<meta property="og:image:width" content="1200" />`,
+      `<meta property="og:image:height" content="630" />`,
+      `<meta name="twitter:image" content="${i}" />`,
+    );
+  }
+  tags.push(`<link rel="canonical" href="${u}" />`);
+  return tags.join("\n    ");
 }
 
 function replaceMetaBlock(html, metaHtml) {
@@ -554,6 +595,7 @@ function buildSitemap(posts) {
   const entries = [
     { loc: `${SITE_URL}/` },
     { loc: `${SITE_URL}/calculator` },
+    { loc: `${SITE_URL}/homewizard-thuisbatterij` },
     { loc: `${SITE_URL}/artikelen` },
     { loc: `${SITE_URL}/privacy` },
     { loc: `${SITE_URL}/contact` },
@@ -634,8 +676,8 @@ async function main() {
   await writeFile(path.join(distDir, "sitemap.xml"), buildSitemap(posts), "utf8");
 
   console.log(`Prerender klaar: ${generated} blogpost-HTML-bestanden gegenereerd in dist/post/.`);
-  console.log(`Statische SEO-pagina's gegenereerd: ${staticCount} (/, /calculator, /artikelen, /contact, /privacy).`);
-  console.log(`sitemap.xml gegenereerd met ${posts.length + 5} URL's.`);
+  console.log(`Statische SEO-pagina's gegenereerd: ${staticCount} (/, /calculator, /homewizard-thuisbatterij, /artikelen, /contact, /privacy).`);
+  console.log(`sitemap.xml gegenereerd met ${posts.length + 6} URL's.`);
 }
 
 main().catch((err) => {

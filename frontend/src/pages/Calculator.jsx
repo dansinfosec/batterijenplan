@@ -1288,7 +1288,11 @@ export default function Calculator() {
           uw afname- en terugleverprofiel, een vergelijking van meerdere
           batterijgroottes en een aparte indicatie op basis van gerapporteerde
           praktijkresultaten. Uw CSV-bestand wordt niet opgeslagen en gaat
-          niet mee met een adviesaanvraag.
+          niet mee met een adviesaanvraag.{" "}
+          <Link to="/homewizard-thuisbatterij">
+            Meer over thuisbatterijen berekenen met HomeWizard
+          </Link>
+          .
         </p>
 
         <h2>Thuisbatterij berekenen zonder zonnepanelen</h2>
