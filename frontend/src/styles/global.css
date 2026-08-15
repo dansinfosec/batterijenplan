@@ -2690,6 +2690,52 @@ body,
   color: var(--ink-60);
 }
 
+/* Toegankelijk verborgen tekst (voor screenreader-statusmeldingen). */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* ── Artikel delen ──────────────────────────────────────────────────────── */
+.article-share { margin: 18px 0 0; }
+.article-share--block {
+  margin: 36px 0 8px; padding: 20px;
+  background: var(--paper-2, #f2f1ec);
+  border: 1px solid var(--rule); border-radius: var(--radius, 10px);
+}
+.article-share-title {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.03em;
+  text-transform: uppercase; color: var(--ink-60); margin: 0 0 10px;
+}
+.article-share--block .article-share-title {
+  font-family: var(--font-display); font-weight: 800; font-size: 17px;
+  letter-spacing: -0.01em; text-transform: none; color: var(--ink);
+}
+/* Wrapt netjes; op mobiel breekt de rij over meerdere regels zonder overflow. */
+.article-share-actions {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.article-share-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  min-height: 40px; padding: 8px 12px;
+  font-family: var(--font-mono); font-size: 12.5px; font-weight: 500;
+  color: var(--ink); text-decoration: none; cursor: pointer;
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #cfcdc4); border-radius: 8px;
+  transition: border-color 0.12s ease, background 0.12s ease, transform 0.08s ease;
+}
+.article-share-btn:hover { border-color: var(--ink); background: var(--paper, #f7f6f2); }
+.article-share-btn:active { transform: translateY(1px); }
+.article-share-btn svg { flex: none; }
+.article-share-btn--copy,
+.article-share-btn--native { border-style: dashed; }
+
+@media (max-width: 430px) {
+  /* Compacte horizontale layout: iets kleinere knoppen, blijft binnen 390px. */
+  .article-share-btn { padding: 8px 10px; font-size: 12px; }
+  .article-share-actions { gap: 7px; }
+}
+
 /* Cover: rustige rand + radius (specificiteit boven de basisregel
    article.post-detail > img.cover). Behoudt object-fit/achtergrond uit de
    basis; alleen rand/radius/marge worden verfijnd. */

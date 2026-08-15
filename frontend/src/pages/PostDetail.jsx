@@ -8,6 +8,7 @@ import RelatedPosts from "../components/RelatedPosts.jsx";
 import AdviceForm from "../components/AdviceForm.jsx";
 import MobileStickyCta from "../components/MobileStickyCta.jsx";
 import ArticleCalculatorCta from "../components/ArticleCalculatorCta.jsx";
+import ArticleShare from "../components/ArticleShare.jsx";
 
 // Wrapt tabellen uit de (server-side gerenderde) markdown-body in een
 // scroll-container, zodat brede vergelijkingstabellen op mobiel zijwaarts
@@ -328,6 +329,11 @@ export default function PostDetail() {
           {showUpdated && <span>Bijgewerkt {updatedDate}</span>}
           {post.reading_minutes ? <span>{post.reading_minutes} min leestijd</span> : null}
         </div>
+
+        {/* Compacte deelrij direct onder titel/meta/intro. Zelfde component als
+            het sterkere blok onderaan; deelt automatisch de canonieke
+            productie-URL van dit artikel. */}
+        <ArticleShare title={post.title} slug={post.slug} variant="row" />
       </header>
 
       {post.cover_image_url && (
@@ -362,6 +368,9 @@ export default function PostDetail() {
       )}
 
       <div className="prose article-body" dangerouslySetInnerHTML={{ __html: bodyHtml }} />
+
+      {/* Sterker deelblok aan het einde van het artikel, vóór de calculator-CTA. */}
+      <ArticleShare title={post.title} slug={post.slug} variant="block" />
 
       {/* Precies één gebrande calculator-CTA per artikel, altijd onderaan: ná de
           volledige body + FAQ en vóór het adviesformulier / gerelateerde
