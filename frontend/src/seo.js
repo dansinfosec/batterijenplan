@@ -9,9 +9,11 @@ const SITE_NAME = "Batterijenplan.nl";
 // verouderde metadata na een redirect. Alle canonicals/og:url site-breed
 // consistent op www houden.
 export const SITE_URL = "https://www.batterijenplan.nl";
-export const DEFAULT_TITLE = "Thuisbatterij Vergelijken & Berekenen | Batterijenplan.nl";
+// Homepage = merk-/platformresultaat. De specifieke zoekintentie
+// "thuisbatterij vergelijken" hoort bij het gelijknamige artikel, niet hier.
+export const DEFAULT_TITLE = "Batterijenplan | Onafhankelijk thuisbatterij-advies & calculator";
 export const DEFAULT_DESCRIPTION =
-  "Thuisbatterij vergelijken en berekenen? Onafhankelijk advies over batterijopslag, EMS en dynamische energiecontracten. Bereken gratis uw batterijcapaciteit.";
+  "Onafhankelijk inzicht in thuisbatterijen: gratis calculator, praktijkdata en heldere vergelijkingen. Bereken welke batterijcapaciteit bij uw woning past.";
 export const DEFAULT_IMAGE = `${SITE_URL}/og-home.png`;
 
 function setMetaTag(attr, key, content) {

@@ -10,7 +10,7 @@ const FACTORS = [
     factor: "Jaarlijks stroomverbruik",
     unit: "kWh / jaar",
     detail:
-      "Uw verbruik geeft context bij het advies, maar bepaalt de batterijgrootte niet rechtstreeks — zo voorkomt de berekening onnodig grote systemen.",
+      "Uw verbruik geeft context bij het advies, maar bepaalt de batterijgrootte niet rechtstreeks. Zo voorkomt de berekening onnodig grote systemen.",
   },
   {
     factor: "Teruglevering",
@@ -40,7 +40,7 @@ const FACTORS = [
     factor: "Toekomstig verbruik",
     unit: "EV / warmtepomp",
     detail:
-      "Een elektrische auto of warmtepomp verhoogt uw eigen verbruik — dat nemen we mee in het adviesgesprek.",
+      "Een elektrische auto of warmtepomp verhoogt uw eigen verbruik. Dat nemen we mee in het adviesgesprek.",
   },
 ];
 
@@ -54,7 +54,7 @@ export default function CalcTransparency() {
             <h2 className="hp-h2">Berekeningen die u kunt volgen</h2>
             <p className="hp-section-intro">
               Wij rekenen niet met vaste beloftes, maar met uw eigen situatie.
-              Elke stap van invoer naar advies is navolgbaar — klap de factoren
+              Elke stap van invoer naar advies is navolgbaar. Klap de factoren
               open om te zien wat meetelt en waarom.
             </p>
             <div className="hp2-method-chain" aria-hidden="true">

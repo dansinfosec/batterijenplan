@@ -11,8 +11,8 @@
 // Volgorde + NL-labels voor de contractbanden van Stage 2. "dynamic" is de
 // primaire handelsindicatie (actieve handel vereist een dynamisch contract).
 export const CONTRACT_LABELS = [
-  ["dynamic", "Dynamisch contract — actieve handel"],
-  ["dynamic_self", "Dynamisch contract — eigen verbruik"],
+  ["dynamic", "Dynamisch contract (actieve handel)"],
+  ["dynamic_self", "Dynamisch contract (eigen verbruik)"],
   ["variable", "Variabel contract"],
   ["fixed", "Vast contract"],
   ["unknown", "Contract onbekend"],

@@ -33,7 +33,7 @@ export default function Footer() {
             <p className="footer-desc">
               Onafhankelijk reken- en vergelijkingsplatform voor thuisbatterijen.
               Wij helpen u bepalen welke batterijcapaciteit past bij uw verbruik,
-              teruglevering en energiedoel — op basis van getallen, niet van
+              teruglevering en energiedoel. Op basis van getallen, niet van
               verkooppraat.
             </p>
           </div>

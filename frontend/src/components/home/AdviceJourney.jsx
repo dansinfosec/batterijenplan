@@ -34,7 +34,7 @@ const STEPS = [
   {
     num: "03",
     title: "Gebruiksdoel",
-    text: "Meer eigen stroom gebruiken of dynamische handel — het doel stuurt de capaciteit.",
+    text: "Meer eigen stroom gebruiken of dynamische handel? Uw doel stuurt de capaciteit.",
     icon: (
       <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
         <circle cx="16" cy="16" r="12" fill="none" stroke="currentColor" strokeWidth="2.2" />

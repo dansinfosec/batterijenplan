@@ -15,7 +15,7 @@ const AFTER_STEPS = [
   },
   {
     title: "Persoonlijk advies",
-    text: "U beslist zelf — het advies is gratis en vrijblijvend.",
+    text: "U beslist zelf. Het advies is gratis en vrijblijvend.",
   },
 ];
 
@@ -57,7 +57,7 @@ export default function LeadSection() {
             <AdviceForm
               variant="compact"
               headline="Vraag uw gratis advies aan"
-              text="Binnen één minuut ingevuld — wij nemen daarna contact met u op."
+              text="Binnen één minuut ingevuld. Wij nemen daarna contact met u op."
               button="Vraag gratis advies aan"
               source="homepage_quick_check"
               submitEvent="homepage_advice_submit"

@@ -66,7 +66,7 @@ function TradingBandBlock({ band }) {
       <p className="calc2-sm-band-sub">
         Indicatieve handelsopbrengst bij een {band.primary.contractLabel.toLowerCase()}
         {band.primary.perKwhRange &&
-          ` (€ ${nf0.format(band.primary.perKwhRange[0])}–${nf0.format(band.primary.perKwhRange[1])} per kWh per jaar)`}
+          `, ofwel € ${nf0.format(band.primary.perKwhRange[0])}–${nf0.format(band.primary.perKwhRange[1])} per kWh per jaar`}
         .
       </p>
       <details className="calc2-sm-details">
@@ -163,7 +163,7 @@ function SelfConsumptionSection({ selfConsumption }) {
   const annualized = models.some((c) => c.selfConsumption.basis === "annualized");
   return (
     <div className="calc2-sm-sc">
-      <h3 className="calc2-sm-sc-title">Zelfconsumptie/netverschuiving — 2027-model</h3>
+      <h3 className="calc2-sm-sc-title">Zelfconsumptie/netverschuiving (2027-model)</h3>
       <dl className="calc2-sm-batt-rows">
         {models.map((c) => (
           <div key={c.id} className="calc2-sm-batt-row">
@@ -207,7 +207,7 @@ export default function BatteryProfileComparison({ analysis, selfConsumption, on
             De <strong>praktijkband actieve batterijhandel</strong> is de
             bestaande, bewust conservatieve praktijkband van Batterijenplan,
             afgeleid uit gerapporteerde MijnBatterij-praktijkresultaten per
-            contracttype. Het is een indicatie — geen garantie, geen
+            contracttype. Het is een indicatie: geen garantie, geen
             statistisch betrouwbaarheidsinterval, en niet berekend uit uw
             geüploade meterprofiel. Uw meterdata bepaalt wél de fysieke
             benutting per batterij hieronder.

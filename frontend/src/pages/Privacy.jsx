@@ -10,7 +10,7 @@ import {
 export default function Privacy() {
   useEffect(() => {
     setPageMeta({
-      title: "Privacyverklaring — Batterijenplan",
+      title: "Privacyverklaring | Batterijenplan.nl",
       description:
         "Lees hoe Batterijenplan.nl omgaat met persoonsgegevens, contactaanvragen en calculatorgegevens.",
       path: "/privacy",

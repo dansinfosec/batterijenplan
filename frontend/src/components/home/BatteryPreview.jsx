@@ -157,7 +157,8 @@ export default function BatteryPreview() {
       </div>
 
       <p className="hp2-preview-note">
-        Uw doel en teruglevering bepalen het advies — bereken uw eigen situatie.
+        Uw doel en teruglevering bepalen het advies. Bereken het voor uw eigen
+        situatie.
       </p>
       <Link to="/calculator" className="hp2-preview-cta">
         Start uw berekening

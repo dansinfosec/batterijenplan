@@ -29,7 +29,7 @@ export default function ArticlesSection({ posts, tags, tag, onSelectTag, section
             <h2 className="hp-h2">Artikelen over thuisbatterijen en energieopslag</h2>
             <p className="hp-section-intro">
               Praktische kennis over batterijopslag, EMS en dynamische
-              energiecontracten — zonder verkooppraat, wel getallen.
+              energiecontracten. Zonder verkooppraat, wel getallen.
             </p>
           </div>
           <Link to="/artikelen" className="hp-link hp2-articles-all">

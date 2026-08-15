@@ -138,7 +138,7 @@ export default function Stage2Analysis({ leadMeta, onReport }) {
     const missing = QUESTIONS.find((q) => !answers[q.field]);
     if (missing) {
       setError(
-        "Beantwoord eerst de 4 korte vragen — 'Weet ik niet' is ook een geldig antwoord."
+        "Beantwoord eerst de 4 korte vragen. 'Weet ik niet' is ook een geldig antwoord."
       );
       return;
     }
@@ -390,7 +390,7 @@ export default function Stage2Analysis({ leadMeta, onReport }) {
         Beantwoord nog {QUESTIONS.length - answeredCount > 0
           ? `${QUESTIONS.length - answeredCount} korte ${QUESTIONS.length - answeredCount === 1 ? "vraag" : "vragen"}`
           : "0 vragen"}. Dan kunnen wij uw maandvoordeel,
-        terugverdientijd en Warmtefonds-mogelijkheden beter inschatten — elk
+        terugverdientijd en Warmtefonds-mogelijkheden beter inschatten. Elk
         antwoord maakt de berekening nauwkeuriger.
       </p>
 

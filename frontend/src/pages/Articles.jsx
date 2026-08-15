@@ -153,7 +153,8 @@ export default function Articles() {
 
   useEffect(() => {
     setPageMeta({
-      title: "Kennisbank thuisbatterijen — artikelen | Batterijenplan",
+      // Gelijkgetrokken met de statische titel in prerender-blog-meta.mjs.
+      title: "Kennisbank thuisbatterijen en energieopslag | Batterijenplan",
       description:
         "Praktische uitleg over thuisbatterijcapaciteit, installatie, energieprijzen, rendement en slimme aansturing. Onafhankelijke kennisbank van Batterijenplan.",
       path: "/artikelen",

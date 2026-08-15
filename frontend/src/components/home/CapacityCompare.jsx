@@ -44,7 +44,7 @@ export default function CapacityCompare() {
             <p className="hp-section-intro">
               Een hoog jaarverbruik betekent niet automatisch een grote
               batterij. Bepalend is hoeveel zonnestroom u per zonnige dag kunt
-              opslaan — en wat u daarmee wilt doen.
+              opslaan, en wat u daarmee wilt doen.
             </p>
 
             {/* Visuele vergelijking op de bestaande voorbeeldcijfers. */}
@@ -64,7 +64,7 @@ export default function CapacityCompare() {
                 <span className="hp2-bar-value mono">3.200 kWh</span>
               </div>
               <p className="hp2-bars-note">
-                De teruglevering — verdeeld over de zonnige dagen — bepaalt wat
+                De teruglevering, verdeeld over de zonnige dagen, bepaalt wat
                 er dagelijks te opslaan valt. Dat is de basis van het
                 capaciteitsadvies.
               </p>

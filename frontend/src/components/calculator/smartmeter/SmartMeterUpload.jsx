@@ -26,7 +26,7 @@ export default function SmartMeterUpload({ source, onParsed }) {
   const isHomeWizard = source === "homewizard";
   const acceptedLabel = adapter
     ? adapter.acceptedFormatsLabel
-    : "CSV (.csv) — herkenning van meer formaten volgt binnenkort";
+    : "CSV (.csv). Herkenning van meer formaten volgt binnenkort.";
 
   const analyzeText = async (text, fileName) => {
     setState("checking");
@@ -79,7 +79,7 @@ export default function SmartMeterUpload({ source, onParsed }) {
       <p className="calc2-sm-entry-sub">
         {isHomeWizard
           ? "Gebruik uw geëxporteerde Energy+ CSV om uw historische afname en teruglevering te analyseren."
-          : "Upload een CSV-export van uw P1-meter, energiemonitor of energieleverancier. Deze formaten worden nog niet automatisch herkend — heeft u een HomeWizard-export, kies dan de HomeWizard-route."}
+          : "Upload een CSV-export van uw P1-meter, energiemonitor of energieleverancier. Deze formaten worden nog niet automatisch herkend. Heeft u een HomeWizard-export, kies dan de HomeWizard-route."}
       </p>
 
       {state === "checking" ? (

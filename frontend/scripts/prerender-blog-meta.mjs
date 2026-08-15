@@ -22,7 +22,7 @@ const SITE_URL = "https://www.batterijenplan.nl";
 const SITE_NAME = "Batterijenplan.nl";
 const API_URL = process.env.PRERENDER_API_URL || "https://api.batterijenplan.nl/api/posts/";
 const DEFAULT_DESCRIPTION =
-  "Thuisbatterij vergelijken en berekenen? Onafhankelijk advies over batterijopslag, EMS en dynamische energiecontracten. Bereken gratis uw batterijcapaciteit.";
+  "Onafhankelijk inzicht in thuisbatterijen: gratis calculator, praktijkdata en heldere vergelijkingen. Bereken welke batterijcapaciteit bij uw woning past.";
 
 const META_START = "<!-- seo:meta:start";
 const META_END = "<!-- seo:meta:end -->";
@@ -63,28 +63,33 @@ function seoWrap(inner) {
   return `<div class="seo-fallback" style="${SEO_STYLE}">\n${inner}\n      </div>`;
 }
 
-const HOMEPAGE_BODY = seoWrap(`        <h1>Thuisbatterij calculator en onafhankelijk batterijadvies</h1>
+// Let op: dit blok staat in dezelfde HTML als de statische homepage-shell,
+// die al een <h1> bevat. Daarom h2 als hoogste kop hier: de pagina houdt zo
+// precies één H1.
+const HOMEPAGE_BODY = seoWrap(`        <h2>Thuisbatterij calculator en onafhankelijk batterijadvies</h2>
         <p>Batterijenplan.nl helpt Nederlandse huiseigenaren met heldere, onafhankelijke informatie over thuisbatterijen, batterijopslag en energieopslag. Steeds meer huishoudens met zonnepanelen willen hun opgewekte stroom niet langer goedkoop terugleveren aan het net, maar zelf gebruiken op het moment dat het uitkomt. Een thuisbatterij maakt dat mogelijk.</p>
-        <h2>Zonnestroom opslaan en minder terugleveren</h2>
+        <h3>Zonnestroom opslaan en minder terugleveren</h3>
         <p>Met een thuisbatterij slaat u overdag opgewekte zonne-energie op om die 's avonds te gebruiken. Zo verhoogt u uw eigen verbruik, levert u minder terug aan het net en bent u beter voorbereid op het einde van de salderingsregeling. Wij leggen in begrijpelijke taal uit hoe dat werkt, zonder verkooppraat en met echte getallen.</p>
-        <h2>Thuisbatterij vergelijken: capaciteit, omvormer, EMS en installatie</h2>
-        <p>Een goede keuze draait om meer dan alleen de prijs. Wij helpen u de batterijcapaciteit, de omvormer, het energiemanagementsysteem (EMS) en de installatie te vergelijken, zodat het systeem past bij uw verbruik, uw zonnepanelen en uw energiedoel. Zo voorkomt u een batterij die te groot, te klein of niet geschikt is voor uw situatie.</p>
-        <h2>Batterijopslag bij een dynamisch energiecontract</h2>
+        <h3>Thuisbatterij vergelijken: capaciteit, omvormer, EMS en installatie</h3>
+        <p>Een goede keuze draait om meer dan alleen de prijs. Wij helpen u de batterijcapaciteit, de omvormer, het energiemanagementsysteem (EMS) en de installatie te vergelijken, zodat het systeem past bij uw verbruik, uw zonnepanelen en uw energiedoel. Lees in ons artikel <a href="/post/thuisbatterij-vergelijken">thuisbatterij vergelijken</a> waar u op moet letten.</p>
+        <h3>Batterijopslag bij een dynamisch energiecontract</h3>
         <p>Heeft u een dynamisch energiecontract? Dan kan een thuisbatterij ook worden ingezet om slim te sturen op wisselende stroomprijzen: opladen wanneer stroom goedkoop is, gebruiken of terugleveren wanneer de prijs hoog staat. Zo haalt u meer waarde uit uw batterijopslag dan met alleen zelfconsumptie.</p>
-        <h2>Gratis thuisbatterij calculator en adviesaanvraag</h2>
+        <h3>Gratis thuisbatterij calculator en adviesaanvraag</h3>
         <p>Met onze gratis thuisbatterij calculator berekent u op basis van uw jaarlijkse stroomverbruik en teruglevering welke batterijcapaciteit bij u past. Het resultaat is een eerste indicatie. Wilt u meer zekerheid? Vraag dan gratis een controle aan bij een specialist, die uw berekening en situatie persoonlijk bekijkt.</p>
         <p><a href="/calculator">Bereken uw thuisbatterij</a> of <a href="/contact">neem contact met ons op</a> voor advies.</p>`);
 
-const CALCULATOR_BODY = seoWrap(`        <h1>Gratis thuisbatterij calculator</h1>
-        <p>Met de gratis thuisbatterij calculator van Batterijenplan.nl berekent u eenvoudig welke batterijcapaciteit past bij uw woning en energieverbruik. U vult een paar gegevens in en ontvangt direct een eerste indicatie van een passende thuisbatterij.</p>
-        <h2>Welke gegevens vult u in?</h2>
-        <p>De calculator vraagt om uw jaarlijkse stroomverbruik in kilowattuur en om de hoeveelheid zonnestroom die u jaarlijks teruglevert aan het net. Op basis van deze twee getallen schatten wij uw gemiddelde dagelijkse verbruik en teruglevering in en bepalen we een passende capaciteitsrange voor uw thuisbatterij.</p>
-        <h2>Eigen verbruik of dynamisch contract</h2>
-        <p>U kiest zelf uw doel. Wilt u vooral uw eigen zonnestroom opslaan en later gebruiken, dan rekenen we op zelfconsumptie. Heeft u een dynamisch energiecontract en wilt u de batterij ook inzetten om slim te sturen op wisselende stroomprijzen, dan houden we daar rekening mee. Beide doelen leiden tot een andere passende capaciteit.</p>
-        <h2>Waarom een thuisbatterij berekenen?</h2>
-        <p>Omdat de salderingsregeling per 1 januari 2027 stopt, wordt het minder aantrekkelijk om zonnestroom terug te leveren aan het net. Door uw stroom op te slaan in een thuisbatterij gebruikt u meer van uw eigen opgewekte energie en bent u minder afhankelijk van de terugleververgoeding. De calculator geeft u snel inzicht in de capaciteit die bij die situatie past.</p>
+const CALCULATOR_BODY = seoWrap(`        <h1>Thuisbatterij Calculator</h1>
+        <p>Met de gratis thuisbatterij calculator van Batterijenplan.nl berekent u welke batterijcapaciteit past bij uw woning en energieverbruik. U kunt snel rekenen met uw jaarcijfers, of nauwkeuriger met uw echte HomeWizard slimme-meterdata. U ziet het resultaat direct, zonder e-mailadres.</p>
+        <h2>Welke thuisbatterij heb ik nodig?</h2>
+        <p>De passende capaciteit hangt af van uw netafname, uw teruglevering, het moment waarop u stroom gebruikt en uw doel: eigen zonnestroom benutten of sturen op dynamische prijzen. Ook het beschikbare laad- en ontlaadvermogen speelt mee. De calculator vertaalt deze factoren naar een capaciteitsrange die bij uw situatie past.</p>
+        <h2>Thuisbatterij capaciteit berekenen</h2>
+        <p>U kunt op twee manieren rekenen. De snelle berekening gebruikt uw jaarlijkse stroomverbruik en teruglevering en geeft binnen een minuut een eerste indicatie. De slimme-meterroute analyseert uw werkelijke kwartierdata en vergelijkt meerdere batterijgroottes op basis van uw eigen profiel.</p>
+        <h2>Berekenen met HomeWizard slimme-meterdata</h2>
+        <p>Exporteert u uw meetdata uit de HomeWizard Energy-app, dan leest uw browser het CSV-bestand lokaal. Voor de berekening gaan alleen de uitgelezen kwartierwaarden tijdelijk naar onze rekenmodule. U ziet uw afname- en terugleverprofiel, een vergelijking van meerdere batterijgroottes en een aparte indicatie op basis van gerapporteerde praktijkresultaten. Uw CSV-bestand wordt niet opgeslagen.</p>
+        <h2>Thuisbatterij berekenen zonder zonnepanelen</h2>
+        <p>Ook zonder zonnepanelen kunt u rekenen. De calculator vraagt dan naar uw verbruik, uw energiecontract en uw doel, en geeft een eerste indicatie voor situaties zoals dynamische sturing of zakelijk energiebeheer.</p>
         <h2>Een indicatie, geen definitief ontwerp</h2>
-        <p>De uitkomst van de calculator is nadrukkelijk een indicatie en geen definitief ontwerp. Voor een nauwkeurig advies spelen ook uw zonnepanelen, netaansluiting, omvormervermogen, energiecontract en toekomstig verbruik een rol. Een specialist kan uw uitkomst gratis controleren en met u meekijken naar wat technisch en financieel het beste past.</p>
+        <p>De uitkomst van de calculator is nadrukkelijk een indicatie en geen definitief ontwerp. Voor een nauwkeurig advies spelen ook uw zonnepanelen, netaansluiting, omvormervermogen, energiecontract en toekomstig verbruik een rol. Een specialist kan uw uitkomst gratis controleren.</p>
         <p><a href="/contact">Vraag gratis advies aan</a> als u uw berekening wilt laten controleren.</p>`);
 
 const CONTACT_BODY = seoWrap(`        <h1>Contact met Batterijenplan.nl</h1>
@@ -109,7 +114,7 @@ const CONTACT_BODY = seoWrap(`        <h1>Contact met Batterijenplan.nl</h1>
           Telefoon: <a href="tel:+31850605738">085 060 5738</a><br />
           WhatsApp: <a href="https://wa.me/31850605738">085 060 5738</a>
         </p>
-        <p>Ons servicegebied is heel Nederland. Bezoek aan ons kantoor is uitsluitend op afspraak mogelijk. Stuur ons een bericht of app ons, dan nemen wij zo snel mogelijk contact met u op — meestal binnen één werkdag.</p>`);
+        <p>Ons servicegebied is heel Nederland. Bezoek aan ons kantoor is uitsluitend op afspraak mogelijk. Stuur ons een bericht of app ons, dan nemen wij meestal binnen één werkdag contact met u op.</p>`);
 
 const PRIVACY_BODY = seoWrap(`        <h1>Privacyverklaring Batterijenplan.nl</h1>
         <p>Batterijenplan.nl gaat zorgvuldig om met uw persoonsgegevens. Hieronder leest u welke gegevens wij verzamelen, waarvoor wij ze gebruiken en hoe u ze kunt laten aanpassen of verwijderen.</p>
@@ -169,21 +174,21 @@ const STATIC_PAGES = [
   { slug: "", keepMeta: true, keepHomeShell: true, body: HOMEPAGE_BODY },
   {
     slug: "calculator",
-    title: "Thuisbatterij Calculator | Bereken gratis uw batterijcapaciteit",
+    title: "Thuisbatterij Calculator | Bereken met uw slimme-meterdata",
     description:
-      "Gebruik de gratis thuisbatterij calculator en bereken welke batterijcapaciteit past bij uw stroomverbruik, zonnepanelen en teruglevering. Ontvang direct een eerste advies.",
+      "Gratis thuisbatterij calculator: bereken welke capaciteit past. Snel met jaarverbruik of nauwkeuriger met uw HomeWizard slimme-meterdata. Geen e-mail nodig.",
     body: CALCULATOR_BODY,
   },
   {
     slug: "contact",
-    title: "Contact — Batterijenplan.nl",
+    title: "Contact | Batterijenplan.nl",
     description:
       "Neem contact op met Batterijenplan.nl voor vragen over thuisbatterijen, batterijopslag en de gratis thuisbatterij calculator.",
     body: CONTACT_BODY,
   },
   {
     slug: "privacy",
-    title: "Privacyverklaring — Batterijenplan.nl",
+    title: "Privacyverklaring | Batterijenplan.nl",
     description:
       "Lees hoe Batterijenplan.nl omgaat met persoonsgegevens, contactaanvragen en calculatorgegevens.",
     body: PRIVACY_BODY,

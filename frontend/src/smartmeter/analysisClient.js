@@ -58,7 +58,7 @@ export function mapHttpError(status, serverDetail) {
   if (status === 429) {
     return new SmartMeterApiError(
       "rate_limited",
-      "Te veel berekeningen kort na elkaar. Wacht een minuut en probeer het opnieuw — uw ingelezen data blijft bewaard.",
+      "Te veel berekeningen kort na elkaar. Wacht een minuut en probeer het opnieuw. Uw ingelezen data blijft bewaard.",
       { status }
     );
   }
@@ -80,7 +80,7 @@ export function mapTransportError(err) {
   if (err && err.name === "AbortError") {
     return new SmartMeterApiError(
       "timeout",
-      "De analyse duurde te lang en is afgebroken. Probeer het opnieuw — uw ingelezen data blijft bewaard.",
+      "De analyse duurde te lang en is afgebroken. Probeer het opnieuw. Uw ingelezen data blijft bewaard.",
       { retryable: true }
     );
   }

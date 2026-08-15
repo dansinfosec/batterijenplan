@@ -10,7 +10,7 @@ import {
 export default function Contact() {
   useEffect(() => {
     setPageMeta({
-      title: "Contact — Batterijenplan",
+      title: "Contact | Batterijenplan.nl",
       description:
         "Neem contact op met Batterijenplan.nl voor vragen over thuisbatterijen, batterijopslag en de gratis thuisbatterij calculator.",
       path: "/contact",

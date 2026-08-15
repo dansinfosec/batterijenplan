@@ -159,7 +159,7 @@ export function parseHomeWizardCsv(text, { source = "homewizard" } = {}) {
   if (text.startsWith("PK") || text.includes(String.fromCharCode(0))) {
     fail(
       "BINARY_FILE",
-      "Dit lijkt geen CSV-tekstbestand te zijn. Excel-bestanden worden nog niet ondersteund — exporteer uw data als CSV."
+      "Dit lijkt geen CSV-tekstbestand te zijn. Excel-bestanden worden nog niet ondersteund. Exporteer uw data als CSV."
     );
   }
 

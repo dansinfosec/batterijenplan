@@ -23,7 +23,7 @@ export function parseSmartMeterText(text, { adapterId = "homewizard" } = {}) {
   if (!adapter) {
     throw new SmartMeterParseError(
       "UNSUPPORTED_SOURCE",
-      "Dit formaat wordt nog niet ondersteund — er volgen binnenkort meer formaten. " +
+      "Dit formaat wordt nog niet ondersteund. Er volgen binnenkort meer formaten. " +
         "Is uw bestand een HomeWizard Energy+-export? Ga dan terug en kies de HomeWizard-optie."
     );
   }

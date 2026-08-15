@@ -1098,6 +1098,13 @@ textarea.field-input { min-height: 96px; resize: vertical; padding-top: 13px; }
 }
 .calc-info-card p { font-size: 14px; line-height: 1.55; color: var(--ink-60); }
 
+/* Ondersteunende zoektekst onder de tool: meerdere h2+p-paren in één sectie. */
+.calc-support > h2 { margin-top: 30px; }
+.calc-support > h2:first-child { margin-top: 0; }
+.calc-support > p {
+  max-width: 68ch; font-size: 15px; line-height: 1.65; color: var(--ink-60);
+}
+
 /* Sterke maar schone strip die terugleidt naar het formulier (geen lead-modal).
    Zwart vlak + geel accent = herkenbaar Batterijenplan, valt duidelijk op. */
 .calc-recalc { margin-top: 40px; }

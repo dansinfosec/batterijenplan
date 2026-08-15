@@ -171,7 +171,7 @@ const RELATED_ARTICLES = [
   {
     slug: "thuisbatterij-vergelijken",
     title: "Thuisbatterij vergelijken",
-    text: "Waar u op let bij capaciteit, omvormer, EMS en installatie — zonder verkooppraat.",
+    text: "Waar u op let bij capaciteit, omvormer, EMS en installatie. Zonder verkooppraat.",
   },
   {
     slug: "thuisbatterij-installatie",
@@ -317,9 +317,11 @@ export default function Calculator() {
 
   useEffect(() => {
     setPageMeta({
-      title: "Thuisbatterij Calculator | Bereken gratis uw batterijcapaciteit",
+      // Gespiegeld in scripts/prerender-blog-meta.mjs (STATIC_PAGES); bij
+      // wijzigen beide bijwerken.
+      title: "Thuisbatterij Calculator | Bereken met uw slimme-meterdata",
       description:
-        "Gebruik de gratis thuisbatterij calculator en bereken welke batterijcapaciteit past bij uw stroomverbruik, zonnepanelen en teruglevering. Ontvang direct een eerste advies.",
+        "Gratis thuisbatterij calculator: bereken welke capaciteit past. Snel met jaarverbruik of nauwkeuriger met uw HomeWizard slimme-meterdata. Geen e-mail nodig.",
       path: "/calculator",
     });
     setJsonLd([ORGANIZATION_SCHEMA]);
@@ -574,7 +576,7 @@ export default function Calculator() {
       return;
     }
     if (needsSunnyDayQuestion && !form.sunny_day_export) {
-      setError("Selecteer een optie — 'Ik weet het niet' is ook een geldig antwoord.");
+      setError("Selecteer een optie. 'Ik weet het niet' is ook een geldig antwoord.");
       const sel = sunnyRef.current?.querySelector("select");
       if (sel) {
         scrollToCalculatorTarget(sunnyRef.current);
@@ -689,8 +691,8 @@ export default function Calculator() {
             Thuisbatterij <span className="accent">Calculator</span>
           </h1>
           <p className="sub calc2-intro">
-            Bereken gratis welke batterijcapaciteit past bij uw stroomverbruik,
-            teruglevering en energiedoel.
+            Bereken snel welke batterijcapaciteit bij uw situatie past, of
+            analyseer uw echte HomeWizard slimme-meterdata.
           </p>
           <p className="calc2-hero-trust">
             Gratis · direct resultaat · geen e-mailadres nodig voor de eerste indicatie
@@ -795,7 +797,7 @@ export default function Calculator() {
 
           <p className="calc-form-start calc-solar-q">Heeft u zonnepanelen?</p>
           <p className="calc-solar-choice-sub">
-            Zo stellen we direct de juiste vervolgvragen — u vult nooit gegevens
+            Zo stellen we direct de juiste vervolgvragen. U vult nooit gegevens
             in die niet op uw situatie slaan.
           </p>
           <div className="calc2-choice-grid calc2-choice-grid--three">
@@ -1149,7 +1151,7 @@ export default function Calculator() {
                 <div className="calc2-reward" role="status">
                   <span className="calc2-reward-check" aria-hidden="true">✓</span>
                   <div>
-                    <b>Gegevens ontvangen — uw berekening is opgeslagen.</b>
+                    <b>Gegevens ontvangen. Uw berekening is opgeslagen.</b>
                     <p>
                       Beantwoord nog enkele korte vragen om uw terugverdientijd
                       te berekenen.
@@ -1253,6 +1255,49 @@ export default function Calculator() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Ondersteunende zoektekst ónder de tool: beantwoordt de vragen
+          waarmee bezoekers de calculator vinden (capaciteit, HomeWizard,
+          zonder zonnepanelen) en leidt terug naar de berekening. Spiegelt
+          CALCULATOR_BODY in scripts/prerender-blog-meta.mjs. */}
+      <section className="calc-info calc-support">
+        <h2>Welke thuisbatterij heb ik nodig?</h2>
+        <p>
+          De passende capaciteit hangt af van uw netafname, uw teruglevering,
+          het moment waarop u stroom gebruikt en uw doel: eigen zonnestroom
+          benutten of sturen op dynamische prijzen. Ook het beschikbare laad-
+          en ontlaadvermogen speelt mee. De calculator hierboven vertaalt deze
+          factoren naar een capaciteitsrange die bij uw situatie past.
+        </p>
+
+        <h2>Thuisbatterij capaciteit berekenen</h2>
+        <p>
+          U kunt op twee manieren rekenen. De snelle berekening gebruikt uw
+          jaarlijkse stroomverbruik en teruglevering en geeft binnen een
+          minuut een eerste indicatie. De slimme-meterroute analyseert uw
+          werkelijke kwartierdata en vergelijkt meerdere batterijgroottes op
+          basis van uw eigen profiel.
+        </p>
+
+        <h2>Berekenen met HomeWizard slimme-meterdata</h2>
+        <p>
+          Exporteert u uw meetdata uit de HomeWizard Energy-app, dan leest uw
+          browser het CSV-bestand lokaal. Voor de berekening gaan alleen de
+          uitgelezen kwartierwaarden tijdelijk naar onze rekenmodule. U ziet
+          uw afname- en terugleverprofiel, een vergelijking van meerdere
+          batterijgroottes en een aparte indicatie op basis van gerapporteerde
+          praktijkresultaten. Uw CSV-bestand wordt niet opgeslagen en gaat
+          niet mee met een adviesaanvraag.
+        </p>
+
+        <h2>Thuisbatterij berekenen zonder zonnepanelen</h2>
+        <p>
+          Ook zonder zonnepanelen kunt u rekenen. De calculator vraagt dan
+          naar uw verbruik, uw energiecontract en uw doel, en geeft een eerste
+          indicatie voor situaties zoals dynamische sturing of zakelijk
+          energiebeheer.
+        </p>
       </section>
 
       {/* Conversie-strip die terugleidt naar de wizard (scrollt, geen
