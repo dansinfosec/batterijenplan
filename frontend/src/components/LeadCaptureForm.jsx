@@ -114,6 +114,9 @@ export default function LeadCaptureForm({
   compact = false,
   onStart,
   onSubmitted,
+  // Optionele succes-copy (titel/tekst) voor paden met een eigen bevestiging
+  // (slimme-meterdata). Zonder override blijft de bestaande kaart exact gelijk.
+  successCopy,
 }) {
   const { lead, update, submit, sent, sending, error, validated, setValidated } = state;
   // Padspecifieke titel/tekst/knop (advies-check, handelscase, terugverdientijd)
@@ -124,11 +127,12 @@ export default function LeadCaptureForm({
   if (sent) {
     return (
       <div className={`lead-form lead-form-success lead-form--${variant}`}>
-        <h2>Bedankt, wij nemen binnenkort contact met u op.</h2>
+        <h2>{successCopy?.title ?? "Bedankt, wij nemen binnenkort contact met u op."}</h2>
         <p>
-          {compact
-            ? "Wij nemen zo snel mogelijk contact met u op over uw situatie."
-            : "Uw berekening is meegestuurd, zodat de specialist direct kan meekijken."}
+          {successCopy?.text ??
+            (compact
+              ? "Wij nemen zo snel mogelijk contact met u op over uw situatie."
+              : "Uw berekening is meegestuurd, zodat de specialist direct kan meekijken.")}
         </p>
       </div>
     );

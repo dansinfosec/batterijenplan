@@ -5,12 +5,15 @@ import SmartMeterUpload from "./SmartMeterUpload.jsx";
 import SmartMeterProfileSummary from "./SmartMeterProfileSummary.jsx";
 import BatteryProfileComparison from "./BatteryProfileComparison.jsx";
 import BatteryRecommendationExplanation from "./BatteryRecommendationExplanation.jsx";
+import SmartMeterLeadCapture from "./SmartMeterLeadCapture.jsx";
 import { postSmartMeterAnalysis } from "../../../api.js";
+import { trackEvent } from "../../../analytics.js";
 import {
   SELF_CONSUMPTION_SCENARIO,
   SMARTMETER_PRIVACY_NOTICE,
   SmartMeterApiError,
 } from "../../../smartmeter/analysisClient.js";
+import { SMARTMETER_LEAD_SOURCE } from "../../../smartmeter/leadContext.js";
 
 // ── Slimme-meterdata-route ─────────────────────────────────────────────────
 // Orkestreert de substappen: bron kiezen → uploaden → profiel → analyse.
@@ -82,6 +85,14 @@ export default function SmartMeterFlow({ onExit, onUseInQuick }) {
   const busyRef = useRef(false); // dubbelklik-/dubbelsubmit-slot over beide aanvragen
   const stepRef = useRef(null);
   const didMount = useRef(false);
+  // ── Leadsectie-state ──
+  // Een kandidaat is alleen "geselecteerd" na een expliciete klik op
+  // "Bespreek deze batterij"; de algemene CTA opent zonder kandidaat. De
+  // invoer zelf leeft in SmartMeterLeadCapture (useLeadCapture) en blijft
+  // bewaard bij sluiten/heropenen — er hoeft nooit opnieuw geüpload te worden.
+  const [leadOpen, setLeadOpen] = useState(false);
+  const [leadCandidateId, setLeadCandidateId] = useState(null);
+  const leadRef = useRef(null);
 
   // Zelfde stap-scrollgedrag als de bestaande wizard: bij elke overgang naar
   // de bovenkant van de actieve kaart, nooit bij de eerste render.
@@ -152,6 +163,30 @@ export default function SmartMeterFlow({ onExit, onUseInQuick }) {
     setScAnalysis(null);
     setScState("idle");
     setScError(null);
+    setLeadOpen(false);
+    setLeadCandidateId(null);
+  };
+
+  // ── Leadsectie-acties ──
+  // Beide open-varianten melden alleen het event + kandidaat-id aan de
+  // dataLayer — nooit PII of analysedata.
+  const openLeadForCandidate = (candidateId) => {
+    setLeadCandidateId(candidateId);
+    setLeadOpen(true);
+    trackEvent("smartmeter_lead_open", {
+      lead_source: SMARTMETER_LEAD_SOURCE,
+      selected_candidate_id: candidateId,
+    });
+    // De leadsectie staat onder de vergelijking; breng hem in beeld.
+    requestAnimationFrame(() => scrollToCalculatorTarget(leadRef.current));
+  };
+
+  const openLeadGeneral = () => {
+    setLeadOpen(true);
+    trackEvent("smartmeter_lead_open", {
+      lead_source: SMARTMETER_LEAD_SOURCE,
+      selected_candidate_id: null,
+    });
   };
 
   const goBack = () => {
@@ -254,8 +289,23 @@ export default function SmartMeterFlow({ onExit, onUseInQuick }) {
                     onRequest: runSelfConsumption,
                     onRetry: runSelfConsumption,
                   }}
+                  onDiscussCandidate={openLeadForCandidate}
                 />
                 <BatteryRecommendationExplanation analysis={analysis} />
+                {/* Vrijwillige vervolgstap ná het volledige resultaat — de
+                    analyse is en blijft zonder formulier zichtbaar. Alleen de
+                    analyse-response gaat als prop mee; de geparsede
+                    kwartierwaarden (parsed) bewust niet. */}
+                <SmartMeterLeadCapture
+                  analysis={analysis}
+                  selfConsumptionAnalysis={scState === "done" ? scAnalysis : null}
+                  open={leadOpen}
+                  selectedCandidateId={leadCandidateId}
+                  onOpenGeneral={openLeadGeneral}
+                  onClose={() => setLeadOpen(false)}
+                  onClearSelection={() => setLeadCandidateId(null)}
+                  sectionRef={leadRef}
+                />
               </>
             )}
           </>

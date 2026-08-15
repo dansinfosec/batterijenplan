@@ -182,7 +182,10 @@ function SelfConsumptionSection({ selfConsumption }) {
   );
 }
 
-export default function BatteryProfileComparison({ analysis, selfConsumption }) {
+// onDiscussCandidate (optioneel): opent de leadsectie met deze kandidaat als
+// gekozen context. Puur een gebruikersactie — de vergelijking zelf blijft
+// zonder "beste"-aanwijzing (analysis.recommendation is null).
+export default function BatteryProfileComparison({ analysis, selfConsumption, onDiscussCandidate }) {
   if (!analysis) return null;
   const candidates = candidateViewModels(analysis);
   const firstBand = candidates[0]?.tradingBand;
@@ -255,6 +258,16 @@ export default function BatteryProfileComparison({ analysis, selfConsumption }) 
             )}
 
             <PhysicalBlock physical={c.physical} />
+
+            {onDiscussCandidate && (
+              <button
+                type="button"
+                className="calc2-sm-btn-secondary calc2-sm-batt-cta"
+                onClick={() => onDiscussCandidate(c.id)}
+              >
+                Bespreek deze batterij
+              </button>
+            )}
           </article>
         ))}
       </div>

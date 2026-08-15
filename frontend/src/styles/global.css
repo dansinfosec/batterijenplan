@@ -4603,3 +4603,38 @@ details[open] > summary .hp2-acc-chevron { transform: rotate(225deg); }
 }
 .calc2-sm-sc-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
 .calc2-sm-sc-note { font-size: 12.5px; color: var(--ink-60); line-height: 1.55; margin-top: 8px; }
+
+/* ── Leadsectie na de batterijvergelijking ── */
+/* Secundaire CTA onderaan elke kandidaatkaart (bestaat naast, niet in plaats
+   van, de neutrale vergelijking): compacter dan de stap-knoppen. */
+.calc2-sm-batt-cta { margin-top: 14px; font-size: 13px; padding: 11px 14px; }
+.calc2-sm-lead { margin-top: 26px; }
+.calc2-sm-lead-pitch {
+  background: var(--surface);
+  border: 2px solid var(--ink); border-radius: var(--radius);
+  box-shadow: 4px 4px 0 var(--volt);
+  padding: 24px 22px;
+}
+.calc2-sm-lead-pitch h2 {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: 21px; line-height: 1.25; margin-bottom: 8px;
+}
+.calc2-sm-lead-pitch p {
+  font-size: 14.5px; color: var(--ink-60); line-height: 1.6; margin-bottom: 16px;
+}
+/* Gekozen-batterij-context boven het formulier. */
+.calc2-sm-lead-chip {
+  display: flex; flex-wrap: wrap; gap: 6px 14px;
+  align-items: baseline; justify-content: space-between;
+  background: var(--paper); border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px; margin-bottom: 12px; font-size: 14px;
+}
+.calc2-sm-lead-privacy {
+  font-size: 12.5px; color: var(--ink-60); line-height: 1.55; margin-top: 10px;
+}
+/* ~390px: CTA volle breedte; de formuliervelden zelf zijn al full-width via
+   de bestaande .lead-form-mobielregels. */
+@media (max-width: 430px) {
+  .calc2-sm-lead-pitch .field-submit-button { width: 100%; }
+}
