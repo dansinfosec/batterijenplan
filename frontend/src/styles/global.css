@@ -4908,3 +4908,53 @@ details[open] > summary .hp2-acc-chevron { transform: rotate(225deg); }
   .hw-versus-vs { padding: 4px 0; }
   .hw-final .hw-btn { width: 100%; justify-content: center; }
 }
+
+/* ── /thuisbatterij-handel: hero-uitlegkaart (stappen i.p.v. datakaart) ── */
+.thb-preview-steps { display: grid; gap: 12px; list-style: none; }
+.thb-preview-steps li {
+  display: flex; align-items: baseline; gap: 10px;
+  font-size: 14px; line-height: 1.5; color: var(--ink);
+}
+.thb-preview-n { flex: 0 0 auto; color: var(--volt-dk); font-weight: 700; }
+
+/* ── /thuisbatterij-handel: "wanneer wel/minder interessant" als paar ── */
+.thb-when-grid { margin-top: 14px; display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 760px) { .thb-when-grid { grid-template-columns: 1fr 1fr; } }
+.thb-when-card {
+  border: 2px solid var(--line); border-radius: 10px;
+  padding: 22px 20px; background: var(--paper);
+}
+.thb-when-card > h2 {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(17px, 2vw, 20px); margin-bottom: 12px;
+}
+.thb-when-card--good { border-left: 6px solid var(--volt); }
+.thb-when-card--muted { background: var(--paper-2); }
+.thb-when-card--muted .hw-check li { color: var(--ink-60); }
+/* Geen groen vinkje bij redenen om NIET te handelen: neutraal streepje i.p.v. ✓ */
+.thb-when-card--muted .hw-check li::before { content: "–"; color: var(--ink-40); font-size: 14px; }
+
+/* ── /thuisbatterij-handel: vergelijkingstabel ──
+   .post-table-scroll/.prose table zijn in dit bestand gescoped op
+   .post-detail (blogpost-rendering, bewust ongemoeid gelaten). Deze pagina
+   zit niet in .post-detail, dus dezelfde visuele taal + mobiele
+   scroll-veiligheid hier apart, additief, gedefinieerd. */
+.thb-page .post-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 20px 0;
+}
+.thb-page .post-table-scroll table {
+  border-collapse: collapse;
+  min-width: 560px;
+  width: 100%;
+  margin: 0;
+}
+.thb-page .post-table-scroll th,
+.thb-page .post-table-scroll td {
+  border: 1.5px solid var(--ink); padding: 8px 12px; text-align: left; vertical-align: top;
+}
+.thb-page .post-table-scroll th {
+  background: var(--volt); font-family: var(--font-mono); font-size: 13px; text-transform: uppercase;
+}

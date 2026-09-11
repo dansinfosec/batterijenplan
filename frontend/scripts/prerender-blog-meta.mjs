@@ -110,6 +110,42 @@ const HOMEWIZARD_BODY = seoWrap(`        <h1>HomeWizard thuisbatterij berekenen 
         <p><a href="/calculator">Start de gratis analyse</a> of lees meer over <a href="/post/wat-levert-een-thuisbatterij-op">wat een thuisbatterij oplevert</a>.</p>
         <p>HomeWizard is een handelsmerk van de betreffende rechthebbende. Batterijenplan is niet gelieerd aan HomeWizard.</p>`);
 
+// Statische crawlbare tekst voor de dedicated SEO-landingspagina
+// "thuisbatterij handel" (React vervangt dit bij mount). Spiegelt de kerncopy
+// van src/pages/ThuisbatterijHandel.jsx; exact één H1, uniek van /calculator.
+const THUISBATTERIJ_HANDEL_BODY = seoWrap(`        <h1>Thuisbatterij handel: slim laden en ontladen met EMS</h1>
+        <p>Handelen met een thuisbatterij draait niet alleen om stroom opslaan. Het gaat om slim laden wanneer stroom goedkoop is en gebruiken of ontladen wanneer stroom duur is. Met een dynamisch energiecontract en EMS-sturing kan een thuisbatterij meer doen dan alleen eigen zonnestroom bewaren. <a href="/calculator">Bereken mijn batterijcapaciteit</a> of lees hoe <a href="/post/dynamisch-energiecontract-thuisbatterij">dynamische sturing werkt</a>.</p>
+        <h2>Wat is thuisbatterij handel?</h2>
+        <p>Bij batterijhandel laadt uw batterij op momenten dat stroom goedkoop is, en ontlaadt of gebruikt hij die stroom op momenten dat stroom duur is. Omdat dynamische energieprijzen per uur verschillen, is de timing van laden en ontladen bepalend voor het resultaat. Een EMS-systeem automatiseert die timing. Dat maakt batterijhandel iets anders dan eenvoudige opslag, waarbij een batterij vooral overtollige zonnestroom bewaart voor later gebruik zonder actief op prijsverschillen te sturen.</p>
+        <h2>Waarom EMS-sturing het verschil maakt</h2>
+        <p>Zonder EMS is een batterij vooral een opslagmiddel. Met EMS wordt de batterij onderdeel van een slim energiesysteem. Het EMS gebruikt uw zonneproductie, uw verbruik, actuele prijsdata en de laadtoestand van de batterij om automatisch te bepalen wanneer laden of ontladen het meeste oplevert, en voorkomt zo verkeerde timing.</p>
+        <h2>Dynamisch energiecontract en thuisbatterij</h2>
+        <p>Bij een dynamisch energiecontract verandert de stroomprijs per uur. Een slim aangestuurde batterij kan op die prijsverschillen reageren: laden wanneer de prijs laag is, ontladen of gebruiken wanneer de prijs hoog is. Lees meer over <a href="/post/dynamisch-energiecontract-thuisbatterij">dynamische energiecontracten en thuisbatterijen</a>.</p>
+        <h2>Wanneer is batterijhandel interessant?</h2>
+        <p>Batterijhandel kan interessant zijn wanneer u zonnepanelen heeft, jaarlijks veel stroom teruglevert, een dynamisch energiecontract heeft of overweegt, uw batterijcapaciteit bij uw teruglevering past, uw systeem EMS-sturing heeft, uw meterkast, omvormer en netaansluiting geschikt zijn, en de verwachte opbrengst realistisch is doorgerekend.</p>
+        <h2>Wanneer is batterijhandel minder interessant?</h2>
+        <p>Batterijhandel is minder interessant wanneer u weinig stroom teruglevert, uw batterij te klein of te groot is voor uw profiel, er geen EMS-sturing aanwezig is, u geen dynamisch energiecontract heeft, uw technische aansluiting beperkt is, of uw verwachtingen zijn gebaseerd op algemene verkooppraatjes.</p>
+        <h2>Plug-in batterij versus slim EMS-systeem</h2>
+        <p>Een plug-in batterij kan nuttig zijn voor eenvoudige opslag, maar dat is niet automatisch hetzelfde als een handelssysteem. Een professioneel geïnstalleerd EMS-systeem met een passende omvormer heeft een duidelijker handelsmodel, omdat het actief kan sturen op dynamische prijzen. Lees het volledige verschil in <a href="/post/thuisbatterij-handel-radar-slimme-sturing">plug-in batterij versus slim EMS</a>.</p>
+        <h2>Hoe berekent Batterijenplan batterijhandel?</h2>
+        <p>Wij kijken niet alleen naar uw jaarverbruik, maar ook naar uw jaarlijkse teruglevering en uw teruglevering per zonnige dag, en bepalen op basis daarvan of het doel vooral zelfconsumptie is of dat dynamische handel kansrijk kan zijn. Een specialist kan uw uitkomst daarna gratis controleren.</p>
+        <p><a href="/calculator">Bereken gratis uw thuisbatterijcapaciteit</a></p>
+        <h2>Veelgestelde vragen over thuisbatterij handel</h2>
+        <h3>Is thuisbatterij handel rendabel?</h3>
+        <p>Dat kan, afhankelijk van uw situatie. Bij veel teruglevering, een dynamisch energiecontract en goede EMS-sturing kan batterijhandel in gunstige situaties een aantrekkelijk maandvoordeel opleveren. Er is geen garantie op een vast rendement.</p>
+        <h3>Heb ik een dynamisch energiecontract nodig?</h3>
+        <p>Voor batterijhandel is een dynamisch energiecontract vrijwel altijd nodig, omdat alleen dan de prijsverschillen gedurende de dag ontstaan waarop een EMS-systeem kan sturen.</p>
+        <h3>Wat doet een EMS-systeem?</h3>
+        <p>Een EMS-systeem bepaalt automatisch wanneer uw batterij het beste kan laden of ontladen, op basis van uw verbruik, uw zonneopwek, de actuele stroomprijs en de laadtoestand van de batterij.</p>
+        <h3>Kan iedere thuisbatterij handelen?</h3>
+        <p>Nee. Een eenvoudige plug-in batterij is vooral gericht op basisopslag. Een professioneel geïnstalleerd systeem met EMS en een passende omvormer is beter geschikt voor batterijhandel.</p>
+        <h3>Waarom is teruglevering belangrijk?</h3>
+        <p>Uw teruglevering laat zien hoeveel overtollige zonnestroom er beschikbaar is om op te slaan of slim in te zetten.</p>
+        <h3>Hoe weet ik welke batterijcapaciteit ik nodig heb?</h3>
+        <p>Bereken dit gratis met de calculator van Batterijenplan, op basis van uw jaarverbruik en teruglevering.</p>
+        <h2>Meer over thuisbatterij handel</h2>
+        <p><a href="/post/dynamisch-energiecontract-thuisbatterij">Dynamisch contract en thuisbatterij</a> · <a href="/post/ems-systeem-thuisbatterij-controle-over-stroom">EMS-systeem: wie heeft controle</a> · <a href="/post/thuisbatterij-vergelijken">Thuisbatterij vergelijken</a> · <a href="/post/warmtefonds-thuisbatterij-lening">Warmtefonds thuisbatterij lening</a></p>`);
+
 const CONTACT_BODY = seoWrap(`        <h1>Contact met Batterijenplan.nl</h1>
         <p>Heeft u een vraag over thuisbatterijen, batterijopslag of de thuisbatterij calculator? Neem gerust contact op met Batterijenplan.nl. Wij helpen Nederlandse huiseigenaren met onafhankelijke informatie en advies over het opslaan van zonnestroom, zonder verkooppraat en met echte getallen.</p>
         <h2>Waarmee helpt Batterijenplan?</h2>
@@ -206,6 +242,14 @@ const STATIC_PAGES = [
     // HomeWizard-visual zou sterker zijn; zie rapport.
     image: `${SITE_URL}/og-home.png`,
     body: HOMEWIZARD_BODY,
+  },
+  {
+    slug: "thuisbatterij-handel",
+    title: "Thuisbatterij handel | Verdienen met EMS en dynamisch contract",
+    description:
+      "Lees hoe thuisbatterij handel werkt met EMS-sturing en een dynamisch energiecontract. Ontdek wanneer batterijhandel interessant kan zijn en bereken uw capaciteit.",
+    image: `${SITE_URL}/og-home.png`,
+    body: THUISBATTERIJ_HANDEL_BODY,
   },
   {
     slug: "contact",
@@ -596,6 +640,7 @@ function buildSitemap(posts) {
     { loc: `${SITE_URL}/` },
     { loc: `${SITE_URL}/calculator` },
     { loc: `${SITE_URL}/homewizard-thuisbatterij` },
+    { loc: `${SITE_URL}/thuisbatterij-handel` },
     { loc: `${SITE_URL}/artikelen` },
     { loc: `${SITE_URL}/privacy` },
     { loc: `${SITE_URL}/contact` },
@@ -676,8 +721,8 @@ async function main() {
   await writeFile(path.join(distDir, "sitemap.xml"), buildSitemap(posts), "utf8");
 
   console.log(`Prerender klaar: ${generated} blogpost-HTML-bestanden gegenereerd in dist/post/.`);
-  console.log(`Statische SEO-pagina's gegenereerd: ${staticCount} (/, /calculator, /homewizard-thuisbatterij, /artikelen, /contact, /privacy).`);
-  console.log(`sitemap.xml gegenereerd met ${posts.length + 6} URL's.`);
+  console.log(`Statische SEO-pagina's gegenereerd: ${staticCount} (/, /calculator, /homewizard-thuisbatterij, /thuisbatterij-handel, /artikelen, /contact, /privacy).`);
+  console.log(`sitemap.xml gegenereerd met ${posts.length + 7} URL's.`);
 }
 
 main().catch((err) => {
